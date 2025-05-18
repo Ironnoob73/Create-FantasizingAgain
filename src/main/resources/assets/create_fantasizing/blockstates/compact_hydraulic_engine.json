@@ -1,0 +1,26 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "create_fantasizing:block/compact_hydraulic_engine_block_vertical",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "create_fantasizing:block/compact_hydraulic_engine_block",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "create_fantasizing:block/compact_hydraulic_engine_block",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "create_fantasizing:block/compact_hydraulic_engine_block"
+    },
+    "facing=up": {
+      "model": "create_fantasizing:block/compact_hydraulic_engine_block_vertical"
+    },
+    "facing=west": {
+      "model": "create_fantasizing:block/compact_hydraulic_engine_block",
+      "y": 90
+    }
+  }
+}
