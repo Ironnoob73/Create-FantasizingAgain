@@ -1,5 +1,8 @@
 {
   "values": [
-    "create_fantasizing:compact_hydraulic_engine"
+    "create_fantasizing:compact_hydraulic_engine",
+    "create_fantasizing:compact_wind_engine",
+    "create_fantasizing:sturdy_girder",
+    "create_fantasizing:sturdy_girder_encased_shaft"
   ]
 }

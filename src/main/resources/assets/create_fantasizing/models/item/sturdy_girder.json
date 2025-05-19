@@ -1,0 +1,6 @@
+{
+	"parent": "create:block/metal_girder/item",
+	"textures": {
+		"0": "create_fantasizing:block/sturdy_girder"
+	}
+}

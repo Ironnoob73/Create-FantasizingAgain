@@ -1,0 +1,8 @@
+{
+	"parent": "create:block/metal_girder/block_pole",
+	"textures": {
+		"1": "create_fantasizing:block/sturdy_girder_pole",
+		"2": "create_fantasizing:block/sturdy_girder_pole_side",
+		"particle": "create:block/railway_casing"
+	}
+}

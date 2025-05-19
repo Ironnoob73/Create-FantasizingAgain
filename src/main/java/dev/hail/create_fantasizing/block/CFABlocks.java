@@ -1,13 +1,24 @@
 package dev.hail.create_fantasizing.block;
 
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.api.stress.BlockStressValues;
+import com.simibubi.create.content.decoration.girder.GirderBlock;
+import com.simibubi.create.content.decoration.girder.GirderBlockStateGenerator;
+import com.simibubi.create.content.decoration.girder.GirderEncasedShaftBlock;
+import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.OrientedRotatingVisual;
+import com.simibubi.create.content.kinetics.base.ShaftRenderer;
+import com.simibubi.create.content.kinetics.base.SingleAxisRotatingVisual;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import dev.hail.create_fantasizing.block.compat_engine.*;
+import dev.hail.create_fantasizing.block.sturdy_girder.ConnectedSturdyGirderModel;
+import dev.hail.create_fantasizing.block.sturdy_girder.SturdyGirderBlock;
+import dev.hail.create_fantasizing.block.sturdy_girder.SturdyGirderEncasedShaftBlock;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.neoforge.registries.DeferredItem;
 
@@ -45,4 +56,24 @@ public class CFABlocks {
             .renderer(() -> CompactWindEngineRenderer::new)
             .register();
     public static final DeferredItem<BlockItem> COMPACT_WIND_ENGINE_ITEM = ITEMS.registerSimpleBlockItem("compact_wind_engine", COMPACT_WIND_ENGINE);
+
+
+    public static final BlockEntry<SturdyGirderBlock> STURDY_GIRDER = REGISTRATE.block("sturdy_girder", SturdyGirderBlock::new)
+            .initialProperties(SharedProperties::softMetal)
+            .properties(p -> p.mapColor(MapColor.COLOR_GRAY).sound(SoundType.NETHERITE_BLOCK))
+            .onRegister(CreateRegistrate.blockModel(() -> ConnectedSturdyGirderModel::new))
+            .register();
+    public static final BlockEntry<SturdyGirderEncasedShaftBlock> STURDY_GIRDER_ENCASED_SHAFT =
+            REGISTRATE.block("sturdy_girder_encased_shaft", SturdyGirderEncasedShaftBlock::new)
+                    .initialProperties(SharedProperties::softMetal)
+                    .properties(p -> p.mapColor(MapColor.COLOR_GRAY).sound(SoundType.NETHERITE_BLOCK))
+                    .onRegister(CreateRegistrate.blockModel(() -> ConnectedSturdyGirderModel::new))
+                    .register();
+    public static final BlockEntityEntry<KineticBlockEntity> STURDY_GIRDER_ENCASED_SHAFT_ENTITY = REGISTRATE
+            .blockEntity("encased_shaft", KineticBlockEntity::new)
+            .visual(() -> SingleAxisRotatingVisual::shaft, false)
+            .validBlocks(STURDY_GIRDER_ENCASED_SHAFT)
+            .renderer(() -> ShaftRenderer::new)
+            .register();
+    public static final DeferredItem<BlockItem> STURDY_GIRDER_ITEM = ITEMS.registerSimpleBlockItem("sturdy_girder", STURDY_GIRDER);
 }

@@ -1,0 +1,7 @@
+{
+	"parent": "create:block/metal_girder/block_z",
+	"textures": {
+		"0": "create_fantasizing:block/sturdy_girder",
+		"particle": "create:block/railway_casing"
+	}
+}
