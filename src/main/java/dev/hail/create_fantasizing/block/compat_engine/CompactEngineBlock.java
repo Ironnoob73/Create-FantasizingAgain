@@ -1,4 +1,4 @@
-package dev.hail.create_fantasizing.block.compat_engine.water;
+package dev.hail.create_fantasizing.block.compat_engine;
 
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.kinetics.base.DirectionalKineticBlock;
@@ -7,14 +7,12 @@ import com.simibubi.create.foundation.data.AssetLookup;
 import com.simibubi.create.foundation.data.SpecialBlockStateGen;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
-import dev.hail.create_fantasizing.block.CFABlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -24,8 +22,8 @@ import net.neoforged.neoforge.client.model.generators.ModelFile;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
-public class CompactHydraulicEngineBlock extends DirectionalKineticBlock implements IBE<CompactHydraulicEngineEntity> {
-    public CompactHydraulicEngineBlock(Properties properties) {
+public abstract class CompactEngineBlock extends DirectionalKineticBlock implements IBE<CompactEngineEntity> {
+    public CompactEngineBlock(Properties properties) {
         super(properties);
     }
     @Override
@@ -60,32 +58,28 @@ public class CompactHydraulicEngineBlock extends DirectionalKineticBlock impleme
         return false;
     }
     @Override
-    public Class<CompactHydraulicEngineEntity> getBlockEntityClass() {
-        return CompactHydraulicEngineEntity.class;
-    }
-    @Override
-    public BlockEntityType<? extends CompactHydraulicEngineEntity> getBlockEntityType() {
-        return CFABlocks.COMPACT_HYDRAULIC_ENGINE_ENTITY.get();
+    public Class<CompactEngineEntity> getBlockEntityClass() {
+        return CompactEngineEntity.class;
     }
 
     public static class CompactHydraulicEngineGenerator extends SpecialBlockStateGen {
 
         @Override
         protected int getXRotation(BlockState state) {
-            return state.getValue(CompactHydraulicEngineBlock.FACING) == Direction.DOWN ? 180 : 0;
+            return state.getValue(CompactEngineBlock.FACING) == Direction.DOWN ? 180 : 0;
         }
 
         @Override
         protected int getYRotation(BlockState state) {
-            return state.getValue(CompactHydraulicEngineBlock.FACING)
+            return state.getValue(CompactEngineBlock.FACING)
                     .getAxis()
-                    .isVertical() ? 0 : horizontalAngle(state.getValue(CompactHydraulicEngineBlock.FACING));
+                    .isVertical() ? 0 : horizontalAngle(state.getValue(CompactEngineBlock.FACING));
         }
 
         @Override
         public <T extends Block> ModelFile getModel(DataGenContext<Block, T> ctx, RegistrateBlockstateProvider prov,
                                                     BlockState state) {
-            return state.getValue(CompactHydraulicEngineBlock.FACING)
+            return state.getValue(CompactEngineBlock.FACING)
                     .getAxis()
                     .isVertical() ? AssetLookup.partialBaseModel(ctx, prov, "vertical")
                     : AssetLookup.partialBaseModel(ctx, prov);

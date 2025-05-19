@@ -6,6 +6,7 @@ import dev.hail.create_fantasizing.FantasizingMod;
 public class CFAPartialModels {
 
     public static final PartialModel COMPACT_HYDRAULIC_ENGINE_HEART = PartialModel.of(FantasizingMod.resourceLocation("block/compact_hydraulic_engine_heart"));
+    public static final PartialModel COMPACT_WIND_ENGINE_CORE = PartialModel.of(FantasizingMod.resourceLocation("block/compact_wind_engine_core"));
 
     public static void init() {
     }

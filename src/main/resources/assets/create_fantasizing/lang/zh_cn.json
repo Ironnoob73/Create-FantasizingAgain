@@ -1,5 +1,11 @@
 {
   "itemGroup.create_fantasizing": "机械动力：又在幻想了",
 
-  "block.create_fantasizing.compact_hydraulic_engine": "紧缩型水力引擎"
+  "block.create_fantasizing.compact_hydraulic_engine": "紧缩型水力引擎",
+  "item.create_fantasizing.incomplete_compact_hydraulic_engine": "未完成的紧缩型水力引擎",
+  "block.create_fantasizing.compact_wind_engine": "紧缩型风力引擎",
+  "item.create_fantasizing.incomplete_compact_wind_engine": "未完成的紧缩型风力引擎",
+  "item.create_fantasizing.prismarine_fan_blades": "海晶扇叶",
+  "item.create_fantasizing.sturdy_conduit": "坚固潮涌核心",
+  "item.create_fantasizing.sturdy_heavy_core": "坚固沉重核心"
 }

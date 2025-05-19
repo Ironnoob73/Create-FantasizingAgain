@@ -3,16 +3,16 @@
 	"parent": "block/block",
 	"texture_size": [32, 32],
 	"textures": {
-		"all": "create_fantasizing:block/compact_hydraulic_engine"
+		"all": "create_fantasizing:block/compact_wind_engine"
 	},
 	"elements": [
 		{
 			"from": [5, 5, 4],
 			"to": [11, 11, 10],
 			"faces": {
-				"east": {"uv": [7, 0, 10, 3], "texture": "#all"},
-				"west": {"uv": [7, 0, 10, 3], "texture": "#all"},
-				"up": {"uv": [7, 0, 10, 3], "texture": "#all"},
+				"east": {"uv": [7, 0, 10, 3], "rotation": 270, "texture": "#all"},
+				"west": {"uv": [7, 0, 10, 3], "rotation": 90, "texture": "#all"},
+				"up": {"uv": [7, 0, 10, 3], "rotation": 180, "texture": "#all"},
 				"down": {"uv": [7, 0, 10, 3], "texture": "#all"}
 			}
 		},

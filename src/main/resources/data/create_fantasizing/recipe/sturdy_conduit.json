@@ -1,0 +1,16 @@
+{
+  "type": "create:deploying",
+  "ingredients": [
+    {
+      "tag": "c:plates/obsidian"
+    },
+    {
+      "item": "minecraft:conduit"
+    }
+  ],
+  "results": [
+    {
+      "id": "create_fantasizing:sturdy_conduit"
+    }
+  ]
+}

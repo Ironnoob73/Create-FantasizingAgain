@@ -1,9 +1,7 @@
-package dev.hail.create_fantasizing.block.compat_engine.water;
+package dev.hail.create_fantasizing.block.compat_engine;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.simibubi.create.content.contraptions.DirectionalExtenderScrollOptionSlot;
 import com.simibubi.create.content.contraptions.IControlContraption;
-import com.simibubi.create.content.contraptions.bearing.BearingBlock;
 import com.simibubi.create.content.contraptions.bearing.WindmillBearingBlockEntity;
 import com.simibubi.create.content.kinetics.base.GeneratingKineticBlockEntity;
 import com.simibubi.create.content.kinetics.motor.CreativeMotorBlock;
@@ -25,11 +23,11 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
-public class CompactHydraulicEngineEntity extends GeneratingKineticBlockEntity {
+public class CompactEngineEntity extends GeneratingKineticBlockEntity {
     protected ScrollOptionBehaviour<IControlContraption.RotationMode> movementMode;
     protected ScrollOptionBehaviour<WindmillBearingBlockEntity.RotationDirection> movementDirection;
 
-    public CompactHydraulicEngineEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    public CompactEngineEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
 
@@ -56,15 +54,15 @@ public class CompactHydraulicEngineEntity extends GeneratingKineticBlockEntity {
 
     @Override
     public float getGeneratedSpeed() {
-        if (!CFABlocks.COMPACT_HYDRAULIC_ENGINE.has(getBlockState()))
+        if (!CFABlocks.COMPACT_HYDRAULIC_ENGINE.has(getBlockState()) && !CFABlocks.COMPACT_WIND_ENGINE.has(getBlockState()))
             return 0;
-        return 4 * getAngleSpeedDirection();
+        return 16 * getAngleSpeedDirection();
     }
     protected float getAngleSpeedDirection() {
         WindmillBearingBlockEntity.RotationDirection rotationDirection = WindmillBearingBlockEntity.RotationDirection.values()[movementDirection.getValue()];
         return (rotationDirection == WindmillBearingBlockEntity.RotationDirection.CLOCKWISE ? 1 : -1);
     }
-    class MotorValueBox extends ValueBoxTransform.Sided {
+    static class MotorValueBox extends ValueBoxTransform.Sided {
 
         @Override
         protected Vec3 getSouthLocation() {

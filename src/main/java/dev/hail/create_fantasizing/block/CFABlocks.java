@@ -1,15 +1,12 @@
 package dev.hail.create_fantasizing.block;
 
-import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.content.kinetics.base.OrientedRotatingVisual;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
-import dev.hail.create_fantasizing.block.compat_engine.water.CompactHydraulicEngineBlock;
-import dev.hail.create_fantasizing.block.compat_engine.water.CompactHydraulicEngineEntity;
-import dev.hail.create_fantasizing.block.compat_engine.water.CompactHydraulicEngineRenderer;
+import dev.hail.create_fantasizing.block.compat_engine.*;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -22,16 +19,30 @@ public class CFABlocks {
 
     public static final BlockEntry<CompactHydraulicEngineBlock> COMPACT_HYDRAULIC_ENGINE =
             REGISTRATE.block("compact_hydraulic_engine", CompactHydraulicEngineBlock::new)
-                    .onRegister((block) -> BlockStressValues.CAPACITIES.register(block, ()->8192/4))
+                    .onRegister((block) -> BlockStressValues.CAPACITIES.register(block, ()->512))
                     .initialProperties(SharedProperties::stone)
                     .properties(p -> p.mapColor(MapColor.COLOR_BLUE).forceSolidOn())
-                    .blockstate(new CompactHydraulicEngineBlock.CompactHydraulicEngineGenerator()::generate)
+                    .blockstate(new CompactEngineBlock.CompactHydraulicEngineGenerator()::generate)
                     .register();
-    public static final BlockEntityEntry<CompactHydraulicEngineEntity> COMPACT_HYDRAULIC_ENGINE_ENTITY = REGISTRATE
-            .blockEntity("compact_hydraulic_engine", CompactHydraulicEngineEntity::new)
+    public static final BlockEntityEntry<CompactEngineEntity> COMPACT_HYDRAULIC_ENGINE_ENTITY = REGISTRATE
+            .blockEntity("compact_hydraulic_engine", CompactEngineEntity::new)
             .visual(() -> OrientedRotatingVisual.of(CFAPartialModels.COMPACT_HYDRAULIC_ENGINE_HEART), false)
-            .validBlocks(COMPACT_HYDRAULIC_ENGINE)
+            .validBlock(COMPACT_HYDRAULIC_ENGINE)
             .renderer(() -> CompactHydraulicEngineRenderer::new)
             .register();
     public static final DeferredItem<BlockItem> COMPACT_HYDRAULIC_ENGINE_ITEM = ITEMS.registerSimpleBlockItem("compact_hydraulic_engine", COMPACT_HYDRAULIC_ENGINE);
+    public static final BlockEntry<CompactWindEngineBlock> COMPACT_WIND_ENGINE =
+            REGISTRATE.block("compact_wind_engine", CompactWindEngineBlock::new)
+                    .onRegister((block) -> BlockStressValues.CAPACITIES.register(block, ()->512))
+                    .initialProperties(SharedProperties::stone)
+                    .properties(p -> p.mapColor(MapColor.COLOR_BLUE).forceSolidOn())
+                    .blockstate(new CompactEngineBlock.CompactHydraulicEngineGenerator()::generate)
+                    .register();
+    public static final BlockEntityEntry<CompactEngineEntity> COMPACT_WIND_ENGINE_ENTITY = REGISTRATE
+            .blockEntity("compact_wind_engine", CompactEngineEntity::new)
+            .visual(() -> OrientedRotatingVisual.of(CFAPartialModels.COMPACT_WIND_ENGINE_CORE), false)
+            .validBlock(COMPACT_WIND_ENGINE)
+            .renderer(() -> CompactWindEngineRenderer::new)
+            .register();
+    public static final DeferredItem<BlockItem> COMPACT_WIND_ENGINE_ITEM = ITEMS.registerSimpleBlockItem("compact_wind_engine", COMPACT_WIND_ENGINE);
 }

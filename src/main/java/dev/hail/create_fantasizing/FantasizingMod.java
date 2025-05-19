@@ -35,6 +35,10 @@ public class FantasizingMod
             .icon(() -> CFABlocks.COMPACT_HYDRAULIC_ENGINE_ITEM.get().getDefaultInstance())
             .displayItems((parameters, output) -> {
                 output.accept(CFABlocks.COMPACT_HYDRAULIC_ENGINE_ITEM.get());
+                output.accept(CFABlocks.COMPACT_WIND_ENGINE_ITEM.get());
+                output.accept(CFAItems.PRISMARINE_FAN_BLADES.get());
+                output.accept(CFAItems.STURDY_CONDUIT.get());
+                output.accept(CFAItems.STURDY_HEAVY_CORE.get());
             }).build());
 
     public FantasizingMod(IEventBus modEventBus)
