@@ -1,13 +1,12 @@
 package dev.hail.create_fantasizing;
 
 import com.mojang.logging.LogUtils;
-import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import dev.hail.create_fantasizing.block.CFAPartialModels;
 import dev.hail.create_fantasizing.block.CFASpriteShifts;
+import dev.hail.create_fantasizing.data.CFADataComponents;
+import dev.hail.create_fantasizing.event.CFAPackets;
 import dev.hail.create_fantasizing.item.CFAItems;
-import dev.hail.create_fantasizing.item.TreeCutterItem;
-import dev.hail.create_fantasizing.item.TreeCutterItemRenderer;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -15,13 +14,10 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.neoforge.client.gui.ConfigurationScreen;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -42,6 +38,7 @@ public class FantasizingMod
                 output.accept(CFABlocks.COMPACT_WIND_ENGINE_ITEM.get());
                 output.accept(CFABlocks.STURDY_GIRDER_ITEM.get());
                 output.accept(CFAItems.TREE_CUTTER.get());
+                output.accept(CFAItems.BLOCK_PLACER.get());
                 output.accept(CFAItems.PRISMARINE_FAN_BLADES.get());
                 output.accept(CFAItems.STURDY_CONDUIT.get());
                 output.accept(CFAItems.STURDY_HEAVY_CORE.get());
@@ -54,6 +51,9 @@ public class FantasizingMod
         CFAItems.ITEMS.register(modEventBus);
         CFABlocks.REGISTRATE.registerEventListeners(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
+
+        CFADataComponents.register(modEventBus);
+        CFAPackets.register();
 
         NeoForge.EVENT_BUS.register(this);
     }
