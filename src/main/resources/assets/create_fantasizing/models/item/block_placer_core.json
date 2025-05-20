@@ -1,0 +1,21 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"all": "minecraft:block/white_concrete"
+	},
+	"elements": [
+		{
+			"from": [7, 4, 1],
+			"to": [9, 6, 9],
+			"color": 6,
+			"faces": {
+				"north": {"uv": [0, 0, 2, 2], "texture": "#all"},
+				"east": {"uv": [0, 0, 8, 2], "texture": "#all"},
+				"south": {"uv": [0, 0, 2, 2], "texture": "#all"},
+				"west": {"uv": [0, 0, 8, 2], "texture": "#all"},
+				"up": {"uv": [0, 0, 2, 8], "texture": "#all"},
+				"down": {"uv": [0, 0, 2, 8], "texture": "#all"}
+			}
+		}
+	]
+}

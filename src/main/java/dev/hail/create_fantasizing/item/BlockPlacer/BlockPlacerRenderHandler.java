@@ -38,10 +38,11 @@ public class BlockPlacerRenderHandler {
 
     protected static void gatherSelectedBlocks() {
         LocalPlayer player = Minecraft.getInstance().player;
+        if(player == null) return;
         ItemStack heldMain = player.getMainHandItem();
         ItemStack heldOff = player.getOffhandItem();
-        boolean zapperInMain = CFAItems.BLOCK_PLACER.isIn(heldMain);
-        boolean zapperInOff = CFAItems.BLOCK_PLACER.isIn(heldOff);
+        boolean zapperInMain = CFAItems.BLOCK_PLACER.get() == heldMain.getItem();
+        boolean zapperInOff = CFAItems.BLOCK_PLACER.get() == heldOff.getItem();
 
         if (zapperInMain) {
             if (!heldMain.has(AllDataComponents.SHAPER_SWAP) || !zapperInOff) {

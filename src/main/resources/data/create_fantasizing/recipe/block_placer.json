@@ -1,0 +1,33 @@
+{
+  "type": "create:mechanical_crafting",
+  "accept_mirrored": true,
+  "category": "tool",
+  "key": {
+    "#": {
+      "tag": "c:plates/obsidian"
+    },
+    "*": {
+      "item": "create:precision_mechanism"
+    },
+    "-": {
+      "item": "minecraft:end_rod"
+    },
+    "%": {
+      "item": "minecraft:end_crystal"
+    },
+    "A": {
+      "item": "create:andesite_alloy"
+    },
+    "B": {
+      "tag": "c:ingots/brass"
+    }
+  },
+  "pattern": [
+    "###*%",
+    "  -AB"
+  ],
+  "result": {
+    "count": 1,
+    "id": "create_fantasizing:block_placer"
+  }
+}

@@ -9,7 +9,7 @@ import com.simibubi.create.content.equipment.zapper.ShootableGadgetItemMethods;
 import com.simibubi.create.content.equipment.zapper.ZapperBeamPacket;
 import com.simibubi.create.content.equipment.zapper.ZapperItem;
 import com.simibubi.create.content.equipment.zapper.terrainzapper.PlacementOptions;
-import com.simibubi.create.content.equipment.zapper.terrainzapper.WorldshaperScreen;
+import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
 import com.simibubi.create.foundation.utility.BlockHelper;
 import com.simibubi.create.foundation.utility.CreateLang;
 import dev.hail.create_fantasizing.data.CFADataComponents;
@@ -34,9 +34,11 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import static com.simibubi.create.content.equipment.zapper.PlacementPatterns.Solid;
@@ -44,6 +46,11 @@ import static com.simibubi.create.content.equipment.zapper.PlacementPatterns.Sol
 public class BlockPlacerItem extends ZapperItem {
     public BlockPlacerItem(Properties properties) {
         super(properties);
+    }
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(SimpleCustomRenderer.create(this, new BlockPlacerItemRenderer()));
     }
     @Override
     public Component validateUsage(ItemStack item) {
@@ -84,7 +91,9 @@ public class BlockPlacerItem extends ZapperItem {
         PlacementOptions option = stack.getOrDefault(AllDataComponents.SHAPER_PLACEMENT_OPTIONS, PlacementOptions.Merged);
         BlockPlacerTools tool = stack.getOrDefault(CFADataComponents.SHAPER_TOOL, BlockPlacerTools.Fill);
 
-        brush.set(params.getX(), params.getY(), params.getZ());
+        if (params != null) {
+            brush.set(params.getX(), params.getY(), params.getZ());
+        }
         targetPos = targetPos.offset(brush.getOffset(player.getLookAngle(), raytrace.getDirection(), option));
         brush.addToGlobalPositions(world, targetPos, raytrace.getDirection(), affectedPositions, tool);
         return brush.redirectTool(tool).runCalculate(world, affectedPositions, stateToUse, stack, zapperItem);

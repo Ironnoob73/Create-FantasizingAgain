@@ -2,8 +2,7 @@
 	"credit": "Made with Blockbench",
 	"ambientocclusion": false,
 	"textures": {
-		"0": "create_fantasizing:item/tree_cutter_wheel",
-		"particle": "create_fantasizing:item/tree_cutter_wheel"
+		"0": "create_fantasizing:item/tree_cutter_wheel"
 	},
 	"elements": [
 		{

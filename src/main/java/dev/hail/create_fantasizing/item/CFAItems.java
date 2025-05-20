@@ -19,8 +19,8 @@ public class CFAItems {
     public static final DeferredItem<Item> TREE_CUTTER = ITEMS.registerItem("tree_cutter", TreeCutterItem::new,
             new Item.Properties().attributes(TreeCutterItem.createAttributes(TreeCutterItem.STURDY, 0.0F, -3.0F))
                     .rarity(Rarity.RARE));
-    public static final ItemEntry<BlockPlacerItem> BLOCK_PLACER = CFABlocks.REGISTRATE.item("block_placer", BlockPlacerItem::new)
-            .properties(p -> p.rarity(Rarity.RARE)).register();
+    public static final DeferredItem<Item> BLOCK_PLACER = ITEMS.registerItem("block_placer", BlockPlacerItem::new,
+            new Item.Properties().rarity(Rarity.RARE));
     public static final DeferredItem<Item> PRISMARINE_FAN_BLADES = ITEMS.registerSimpleItem("prismarine_fan_blades");
     public static final DeferredItem<Item> STURDY_CONDUIT = ITEMS.registerSimpleItem("sturdy_conduit");
     public static final DeferredItem<Item> STURDY_HEAVY_CORE = ITEMS.registerSimpleItem("sturdy_heavy_core");

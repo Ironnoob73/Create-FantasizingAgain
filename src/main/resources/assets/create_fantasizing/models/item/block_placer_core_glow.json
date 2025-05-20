@@ -1,0 +1,21 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "minecraft:block/white_stained_glass"
+	},
+	"elements": [
+		{
+			"from": [6.5, 4, 0],
+			"to": [9.5, 6, 9],
+			"color": 6,
+			"faces": {
+				"north": {"uv": [3, 4, 6, 6], "texture": "#0"},
+				"east": {"uv": [3, 4, 12, 6], "texture": "#0"},
+				"south": {"uv": [3, 4, 6, 6], "texture": "#0"},
+				"west": {"uv": [3, 4, 12, 6], "texture": "#0"},
+				"up": {"uv": [3, 4, 6, 13], "texture": "#0"},
+				"down": {"uv": [3, 4, 6, 13], "texture": "#0"}
+			}
+		}
+	]
+}
