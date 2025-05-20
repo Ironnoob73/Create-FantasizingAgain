@@ -1,10 +1,13 @@
 package dev.hail.create_fantasizing;
 
 import com.mojang.logging.LogUtils;
+import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import dev.hail.create_fantasizing.block.CFAPartialModels;
 import dev.hail.create_fantasizing.block.CFASpriteShifts;
 import dev.hail.create_fantasizing.item.CFAItems;
+import dev.hail.create_fantasizing.item.TreeCutterItem;
+import dev.hail.create_fantasizing.item.TreeCutterItemRenderer;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -38,6 +41,7 @@ public class FantasizingMod
                 output.accept(CFABlocks.COMPACT_HYDRAULIC_ENGINE_ITEM.get());
                 output.accept(CFABlocks.COMPACT_WIND_ENGINE_ITEM.get());
                 output.accept(CFABlocks.STURDY_GIRDER_ITEM.get());
+                output.accept(CFAItems.TREE_CUTTER.get());
                 output.accept(CFAItems.PRISMARINE_FAN_BLADES.get());
                 output.accept(CFAItems.STURDY_CONDUIT.get());
                 output.accept(CFAItems.STURDY_HEAVY_CORE.get());

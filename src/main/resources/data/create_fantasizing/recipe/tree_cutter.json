@@ -1,0 +1,27 @@
+{
+  "type": "create:mechanical_crafting",
+  "accept_mirrored": true,
+  "category": "tool",
+  "key": {
+    "#": {
+      "tag": "c:plates/obsidian"
+    },
+    "*": {
+      "item": "create:flywheel"
+    },
+    "l": {
+      "item": "create:gantry_shaft"
+    }
+  },
+  "pattern": [
+    "#  ",
+    "#*#",
+    "#l ",
+    " l ",
+    " l "
+  ],
+  "result": {
+    "count": 1,
+    "id": "create_fantasizing:tree_cutter"
+  }
+}
