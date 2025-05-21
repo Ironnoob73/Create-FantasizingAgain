@@ -13,7 +13,7 @@
       "item": "minecraft:end_rod"
     },
     "%": {
-      "item": "minecraft:end_crystal"
+      "item": "minecraft:beacon"
     },
     "A": {
       "item": "create:andesite_alloy"

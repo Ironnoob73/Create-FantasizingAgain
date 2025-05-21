@@ -44,6 +44,7 @@ public class TreeCutterItem extends AxeItem {
     };
     @Override
     @OnlyIn(Dist.CLIENT)
+    @SuppressWarnings("removal")
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(SimpleCustomRenderer.create(this, new TreeCutterItemRenderer()));
     }

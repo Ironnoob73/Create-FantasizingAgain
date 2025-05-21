@@ -8,10 +8,14 @@ import com.simibubi.create.foundation.gui.AllIcons;
 import io.netty.buffer.ByteBuf;
 import net.createmod.catnip.codecs.stream.CatnipStreamCodecBuilders;
 import net.createmod.catnip.lang.Lang;
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
@@ -21,7 +25,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -37,6 +40,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
 
+@MethodsReturnNonnullByDefault
 public enum BlockPlacerTools implements StringRepresentable {
 
     Fill(AllIcons.I_FILL),
@@ -45,7 +49,7 @@ public enum BlockPlacerTools implements StringRepresentable {
     Clear(AllIcons.I_CLEAR),
     Overlay(AllIcons.I_OVERLAY),
     ;
-
+    public static final TagKey<Block> UNBREAKABLE_TAG = TagKey.create(Registries.BLOCK, ResourceLocation.withDefaultNamespace("wither_immune"));
     public static final Codec<BlockPlacerTools> CODEC = StringRepresentable.fromValues(BlockPlacerTools::values);
     public static final StreamCodec<ByteBuf, BlockPlacerTools> STREAM_CODEC = CatnipStreamCodecBuilders.ofEnum(BlockPlacerTools.class);
     public final String translationKey;
@@ -65,22 +69,20 @@ public enum BlockPlacerTools implements StringRepresentable {
     }
 
     public void run(Level world, List<BlockPos> targetPositions, BlockState paintedState, CompoundTag data,
-                    Player player, ItemStack stack, BlockPlacerItem zapperItem, InteractionHand hand, PlacementPatterns patterns) {
-        int size = targetPositions.size();
-        int valid = 0;
+                    Player player, ItemStack stack, InteractionHand hand, PlacementPatterns patterns) {
         switch (this) {
-            case Clear:
+            case Clear -> {
                 for (var p : targetPositions)
                     zapperFunction(world, Blocks.AIR.defaultBlockState(), p, world.getBlockState(p), stack, player, hand, data, patterns);
-                break;
-            case Fill:
+            }
+            case Fill -> {
                 for (var p : targetPositions) {
                     BlockState toReplace = world.getBlockState(p);
                     if (!isReplaceable(toReplace)) continue;
                     zapperFunction(world, paintedState, p, toReplace, stack, player, hand, data, patterns);
                 }
-                break;
-            case Overlay:
+            }
+            case Overlay -> {
                 for (var p : targetPositions) {
                     BlockState toOverlay = world.getBlockState(p);
                     if (isReplaceable(toOverlay) || (toOverlay == paintedState)) continue;
@@ -89,59 +91,59 @@ public enum BlockPlacerTools implements StringRepresentable {
                     if (!isReplaceable(toReplace)) continue;
                     zapperFunction(world, paintedState, p, toReplace, stack, player, hand, data, patterns);
                 }
-                break;
-            case Place:
+            }
+            case Place -> {
                 for (var p : targetPositions)
                     zapperFunction(world, paintedState, p, world.getBlockState(p), stack, player, hand, data, patterns);
-                break;
-            case Replace:
+            }
+            case Replace -> {
                 for (var p : targetPositions) {
                     BlockState toReplace = world.getBlockState(p);
                     if (isReplaceable(toReplace)) continue;
                     zapperFunction(world, paintedState, p, toReplace, stack, player, hand, data, patterns);
                 }
-                break;
+            }
         }
     }
 
-    public int runCalculate(Level world, List<BlockPos> targetPositions, BlockState paintedState,
-                            ItemStack stack, BlockPlacerItem zapperItem) {
+    public int runCalculate(Level world, List<BlockPos> targetPositions, BlockState paintedState) {
         int size = 0;
         switch (this) {
-            case Clear:
+            case Clear -> {
                 return 999999;
-            case Place:
+            }
+            case Place -> {
                 for (var p : targetPositions)
-                    if (meetRequirements(world, paintedState, p, world.getBlockState(p), stack, zapperItem) == 0)
+                    if (meetRequirements(world, paintedState, p, world.getBlockState(p)) == 0)
                         size++;
-                break;
-            case Fill:
+            }
+            case Fill -> {
                 for (var p : targetPositions) {
                     BlockState toReplace = world.getBlockState(p);
                     if (!isReplaceable(toReplace)) continue;
-                    if (meetRequirements(world, paintedState, p, toReplace, stack, zapperItem) == 0)
+                    if (meetRequirements(world, paintedState, p, toReplace) == 0)
                         size++;
                 }
-                break;
-            case Overlay:
+            }
+            case Overlay -> {
                 for (var p : targetPositions) {
                     BlockState toOverlay = world.getBlockState(p);
                     if (isReplaceable(toOverlay) || (toOverlay == paintedState)) continue;
                     p = p.above();
                     BlockState toReplace = world.getBlockState(p);
                     if (!isReplaceable(toReplace)) continue;
-                    if (meetRequirements(world, paintedState, p, toReplace, stack, zapperItem) == 0)
+                    if (meetRequirements(world, paintedState, p, toReplace) == 0)
                         size++;
                 }
-                break;
-            case Replace:
+            }
+            case Replace -> {
                 for (var p : targetPositions) {
                     BlockState toReplace = world.getBlockState(p);
                     if (isReplaceable(toReplace)) continue;
-                    if (meetRequirements(world, paintedState, p, toReplace, stack, zapperItem) == 0)
+                    if (meetRequirements(world, paintedState, p, toReplace) == 0)
                         size++;
                 }
-                break;
+            }
         }
         return size;
     }
@@ -159,20 +161,16 @@ public enum BlockPlacerTools implements StringRepresentable {
             case Chance75 -> r.nextBoolean() && r.nextBoolean();
             default -> false;
         }) return;
-        if (meetRequirements(pLevel, paintState, replacePos, replaceState, stack, (BlockPlacerItem) stack.getItem()) != 0) return;
-        //CompoundTag nbt = stack.getOrCreateTag();
-        //int retTier = RETRIEVER.getLevel(nbt);
-        //boolean stasis = STASIS.getLevel(nbt) > 0;
+        if (meetRequirements(pLevel, paintState, replacePos, replaceState) != 0) return;
         Block paintBlock = paintState.getBlock();
         boolean creative = player.isCreative();
-        //boolean hasGenerator = GENERATOR.getLevel(nbt) > 0;
         if (!creative && !paintState.isAir() && !hasItemInInventory(paintBlock, player)) return;
         if (!creative && !paintState.isAir()) calculateItemsInInventory(paintBlock, false, player);
 
-        //if (retTier > 0) dropResources(replaceState, pLevel, replacePos, replaceState.hasBlockEntity() ? pLevel.getBlockEntity(replacePos) : null, player, stack, retTier);
+        dropResources(replaceState, pLevel, replacePos, replaceState.hasBlockEntity() ? pLevel.getBlockEntity(replacePos) : null, player, stack);
         paintBlock.setPlacedBy(pLevel, replacePos, paintState, player, stack);
         pLevel.gameEvent(GameEvent.BLOCK_PLACE, replacePos, GameEvent.Context.of(player, paintState));
-        //if (stasis) pLevel.setBlock(replacePos, paintState, Block.UPDATE_CLIENTS);
+        pLevel.setBlock(replacePos, paintState, Block.UPDATE_CLIENTS);
         pLevel.setBlockAndUpdate(replacePos, paintState);
         ZapperItem.setBlockEntityData(pLevel, replacePos, paintState, data, player);
         if (!creative) stack.hurtAndBreak(2, player, hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
@@ -208,12 +206,12 @@ public enum BlockPlacerTools implements StringRepresentable {
     }
 
     public static boolean blacklist(BlockState toBlacklist) {
-        return /*toBlacklist.is(BZTags.AllBlockTags.BLOCK_ZAPPER_BLACKLIST.tag) ||*/ toBlacklist.is(AllTags.AllBlockTags.NON_MOVABLE.tag) || AllTags.AllBlockTags.SAFE_NBT.matches(toBlacklist);
+        return toBlacklist.is(AllTags.AllBlockTags.NON_MOVABLE.tag) || AllTags.AllBlockTags.SAFE_NBT.matches(toBlacklist) || toBlacklist.is(UNBREAKABLE_TAG);
     }
-    public static int meetRequirements(Level pLevel, BlockState paintState, BlockPos replacePos, BlockState replaceState, ItemStack stack, BlockPlacerItem zapperItem) {
+    public static int meetRequirements(Level pLevel, BlockState paintState, BlockPos replacePos, BlockState replaceState) {
         if (paintState == replaceState)
             return 8;
-        if (/*replaceState.getBlock().defaultDestroyTime() > zapperItem.getHardnessSupport(stack) &&*/ !replaceState.isAir())
+        if (replaceState.getBlock().defaultDestroyTime() > 50 && !replaceState.isAir())
             return 6;
         if (blacklist(replaceState))
             return 4;
@@ -222,16 +220,14 @@ public enum BlockPlacerTools implements StringRepresentable {
         return pLevel.getWorldBorder().isWithinBounds(replacePos) ? 0 : 4;
     }
 
-    public static void dropResources(BlockState pState, Level pLevel, BlockPos pPos, @Nullable BlockEntity pBlockEntity, @Nullable Entity pEntity, ItemStack pTool, int retrieverLevel) {
+    public static void dropResources(BlockState pState, Level pLevel, BlockPos pPos, @Nullable BlockEntity pBlockEntity, @Nullable Entity pEntity, ItemStack pTool) {
         if (pLevel instanceof ServerLevel serverLevel) {
             BlockPos dropPos;
-            if (retrieverLevel == 4 && pEntity != null) dropPos = pEntity.getOnPos().above();
+            if (pEntity != null) dropPos = pEntity.getOnPos().above();
             else dropPos = pPos;
 
-            Block.getDrops(pState, serverLevel, pPos, pBlockEntity, pEntity, pTool).forEach((p_49944_) -> popResource(pLevel, dropPos, p_49944_, retrieverLevel));
+            Block.getDrops(pState, serverLevel, pPos, pBlockEntity, pEntity, pTool).forEach((p_49944_) -> popResource(pLevel, dropPos, p_49944_));
             pState.spawnAfterBreak(serverLevel, pPos, pTool, false);
-            int fortuneLevel = pTool.getEnchantmentLevel(pLevel.holderOrThrow(Enchantments.FORTUNE));
-            int silkTouchLevel = pTool.getEnchantmentLevel(pLevel.holderOrThrow(Enchantments.SILK_TOUCH));
 
             int exp = pState.getExpDrop(serverLevel, pPos, pBlockEntity, pEntity, pTool);
             if (exp > 0) pState.getBlock().popExperience(serverLevel, dropPos, exp);
@@ -280,16 +276,13 @@ public enum BlockPlacerTools implements StringRepresentable {
         return new Vec3(centerX, centerY, centerZ);
     }
 
-    public static void popResource(Level pLevel, BlockPos pPos, ItemStack pStack, int retrieverLevel) {
+    public static void popResource(Level pLevel, BlockPos pPos, ItemStack pStack) {
         double d0 = (double) EntityType.ITEM.getHeight() / 2.0D;
         double d1 = (double)pPos.getX() + 0.5D + Mth.nextDouble(pLevel.random, -0.25D, 0.25D);
         double d2 = (double)pPos.getY() + 0.5D + Mth.nextDouble(pLevel.random, -0.25D, 0.25D) - d0;
         double d3 = (double)pPos.getZ() + 0.5D + Mth.nextDouble(pLevel.random, -0.25D, 0.25D);
         ItemEntity item = new ItemEntity(pLevel, d1, d2, d3, pStack);
-        if (retrieverLevel >= 2) item.addTag("sendToNearestPlayer");
-        if (retrieverLevel == 3) item.setNoGravity(true);
-        if (retrieverLevel >= 3) item.setNoPickUpDelay();
-        if (retrieverLevel >= 4) item.addTag("sendToNearestPlayerInstant");
+        item.addTag("sendToNearestPlayerInstant");
         popResource(pLevel, () -> item, pStack);
     }
 

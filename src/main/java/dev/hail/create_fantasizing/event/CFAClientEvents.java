@@ -12,15 +12,13 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 public class CFAClientEvents {
     @SubscribeEvent
     public static void onTickPre(ClientTickEvent.Pre event) {
-        onTick( true);
+        onTick();
     }
-
     @SubscribeEvent
     public static void onTickPost(ClientTickEvent.Post event) {
-        onTick(false);
+        onTick();
     }
-
-    public static void onTick(boolean isPreEvent) {
+    public static void onTick() {
         if (!isGameActive())
             return;
         SturdyGirderWrenchBehavior.tick();

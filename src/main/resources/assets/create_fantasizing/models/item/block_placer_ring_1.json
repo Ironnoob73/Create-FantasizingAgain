@@ -13,36 +13,5 @@
 				"south": {"uv": [7, 8, 12, 13], "texture": "#0"}
 			}
 		}
-	],
-	"display": {
-		"thirdperson_righthand": {
-			"translation": [0, 3.5, -2],
-			"scale": [0.75, 0.75, 0.75]
-		},
-		"thirdperson_lefthand": {
-			"translation": [0, 3.5, -2],
-			"scale": [0.75, 0.75, 0.75]
-		},
-		"firstperson_righthand": {
-			"rotation": [10, 0, 10],
-			"translation": [1, 4, 1]
-		},
-		"firstperson_lefthand": {
-			"rotation": [10, 0, 10],
-			"translation": [1, 4, 1]
-		},
-		"ground": {
-			"rotation": [0, 0, -90],
-			"translation": [2.5, 0, 0],
-			"scale": [0.75, 0.75, 0.75]
-		},
-		"gui": {
-			"rotation": [30, 45, 0],
-			"translation": [0, 3.5, 0]
-		},
-		"fixed": {
-			"rotation": [0, -90, 0],
-			"translation": [0, 4, 0]
-		}
-	}
+	]
 }
