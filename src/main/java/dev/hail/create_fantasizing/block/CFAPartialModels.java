@@ -10,8 +10,8 @@ import java.util.EnumMap;
 import java.util.Map;
 
 public class CFAPartialModels {
-    public static final PartialModel COMPACT_HYDRAULIC_ENGINE_HEART = PartialModel.of(FantasizingMod.resourceLocation("block/compact_hydraulic_engine_heart"));
-    public static final PartialModel COMPACT_WIND_ENGINE_CORE = PartialModel.of(FantasizingMod.resourceLocation("block/compact_wind_engine_core"));
+    public static final PartialModel COMPACT_HYDRAULIC_ENGINE_HEART = block("compact_hydraulic_engine_heart");
+    public static final PartialModel COMPACT_WIND_ENGINE_CORE = block("compact_wind_engine_core");
 
     public static final Map<Direction, PartialModel> STURDY_METAL_GIRDER_BRACKETS = new EnumMap<>(Direction.class);
     static {
@@ -22,6 +22,5 @@ public class CFAPartialModels {
     private static PartialModel block(String path) {
         return PartialModel.of(FantasizingMod.resourceLocation("block/" + path));
     }
-    public static void init() {
-    }
+    public static void init() {}
 }

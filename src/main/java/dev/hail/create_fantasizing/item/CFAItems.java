@@ -10,6 +10,7 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import static dev.hail.create_fantasizing.FantasizingMod.MOD_ID;
+import static dev.hail.create_fantasizing.FantasizingMod.REGISTRATE;
 
 public class CFAItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MOD_ID);
@@ -25,7 +26,7 @@ public class CFAItems {
     public static final DeferredItem<Item> STURDY_CONDUIT = ITEMS.registerSimpleItem("sturdy_conduit");
     public static final DeferredItem<Item> STURDY_HEAVY_CORE = ITEMS.registerSimpleItem("sturdy_heavy_core");
     private static ItemEntry<SequencedAssemblyItem> sequencedIngredient(String name) {
-        return CFABlocks.REGISTRATE.item(name, SequencedAssemblyItem::new)
+        return REGISTRATE.item(name, SequencedAssemblyItem::new)
                 .register();
     }
 }

@@ -18,12 +18,10 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.neoforge.registries.DeferredItem;
 
-import static dev.hail.create_fantasizing.FantasizingMod.MOD_ID;
+import static dev.hail.create_fantasizing.FantasizingMod.REGISTRATE;
 import static dev.hail.create_fantasizing.item.CFAItems.ITEMS;
 
 public class CFABlocks {
-    public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MOD_ID);
-
     public static final BlockEntry<CompactHydraulicEngineBlock> COMPACT_HYDRAULIC_ENGINE =
             REGISTRATE.block("compact_hydraulic_engine", CompactHydraulicEngineBlock::new)
                     .onRegister((block) -> BlockStressValues.CAPACITIES.register(block, ()->512))
@@ -72,4 +70,5 @@ public class CFABlocks {
             .renderer(() -> ShaftRenderer::new)
             .register();
     public static final DeferredItem<BlockItem> STURDY_GIRDER_ITEM = ITEMS.registerSimpleBlockItem("sturdy_girder", STURDY_GIRDER);
+    public static void init() {}
 }

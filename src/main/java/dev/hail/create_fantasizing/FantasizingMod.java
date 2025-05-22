@@ -3,6 +3,7 @@ package dev.hail.create_fantasizing;
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.AllCreativeModeTabs;
 import com.simibubi.create.AllItems;
+import com.simibubi.create.foundation.data.CreateRegistrate;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import dev.hail.create_fantasizing.block.CFAPartialModels;
 import dev.hail.create_fantasizing.block.CFASpriteShifts;
@@ -34,6 +35,7 @@ public class FantasizingMod
 {
     public static final String MOD_ID = "create_fantasizing";
     public static final Logger LOGGER = LogUtils.getLogger();
+    public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MOD_ID);
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MOD_ID);
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> CREATE_FANTASIZING_TAB = CREATIVE_MODE_TABS.register("create_fantasizing_tab", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.create_fantasizing"))
@@ -53,15 +55,17 @@ public class FantasizingMod
     {
         modEventBus.addListener(this::commonSetup);
 
-        CFAPartialModels.init();
-        CFASpriteShifts.init();
+        REGISTRATE.registerEventListeners(modEventBus);
 
         CFAItems.ITEMS.register(modEventBus);
-        CFABlocks.REGISTRATE.registerEventListeners(modEventBus);
+        CFABlocks.init();
         CREATIVE_MODE_TABS.register(modEventBus);
 
         CFADataComponents.register(modEventBus);
         CFAPackets.register();
+
+        CFAPartialModels.init();
+        CFASpriteShifts.init();
 
         NeoForge.EVENT_BUS.register(this);
     }
