@@ -53,6 +53,9 @@ public class FantasizingMod
     {
         modEventBus.addListener(this::commonSetup);
 
+        CFAPartialModels.init();
+        CFASpriteShifts.init();
+
         CFAItems.ITEMS.register(modEventBus);
         CFABlocks.REGISTRATE.registerEventListeners(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
@@ -78,8 +81,6 @@ public class FantasizingMod
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {
-            CFAPartialModels.init();
-            CFASpriteShifts.init();
         }
     }
     public static ResourceLocation resourceLocation(String path) {

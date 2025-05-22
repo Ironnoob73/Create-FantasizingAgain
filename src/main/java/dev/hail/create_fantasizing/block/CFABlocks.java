@@ -33,7 +33,7 @@ public class CFABlocks {
                     .register();
     public static final BlockEntityEntry<CompactEngineEntity> COMPACT_HYDRAULIC_ENGINE_ENTITY = REGISTRATE
             .blockEntity("compact_hydraulic_engine", CompactEngineEntity::new)
-            .visual(() -> OrientedRotatingVisual.of(CFAPartialModels.COMPACT_HYDRAULIC_ENGINE_HEART), false)
+            .visual(() -> OrientedRotatingVisual.of(CFAPartialModels.COMPACT_HYDRAULIC_ENGINE_HEART), true)
             .validBlock(COMPACT_HYDRAULIC_ENGINE)
             .renderer(() -> CompactHydraulicEngineRenderer::new)
             .register();
@@ -47,7 +47,7 @@ public class CFABlocks {
                     .register();
     public static final BlockEntityEntry<CompactEngineEntity> COMPACT_WIND_ENGINE_ENTITY = REGISTRATE
             .blockEntity("compact_wind_engine", CompactEngineEntity::new)
-            .visual(() -> OrientedRotatingVisual.of(CFAPartialModels.COMPACT_WIND_ENGINE_CORE), false)
+            .visual(() -> OrientedRotatingVisual.of(CFAPartialModels.COMPACT_WIND_ENGINE_CORE), true)
             .validBlock(COMPACT_WIND_ENGINE)
             .renderer(() -> CompactWindEngineRenderer::new)
             .register();
@@ -67,7 +67,7 @@ public class CFABlocks {
                     .register();
     public static final BlockEntityEntry<KineticBlockEntity> STURDY_GIRDER_ENCASED_SHAFT_ENTITY = REGISTRATE
             .blockEntity("encased_shaft", KineticBlockEntity::new)
-            .visual(() -> SingleAxisRotatingVisual::shaft, false)
+            .visual(() -> SingleAxisRotatingVisual::shaft, true)
             .validBlocks(STURDY_GIRDER_ENCASED_SHAFT)
             .renderer(() -> ShaftRenderer::new)
             .register();

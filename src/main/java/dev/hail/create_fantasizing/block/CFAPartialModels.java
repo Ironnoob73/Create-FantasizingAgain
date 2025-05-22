@@ -1,6 +1,5 @@
 package dev.hail.create_fantasizing.block;
 
-import com.simibubi.create.Create;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import dev.hail.create_fantasizing.FantasizingMod;
 import net.createmod.catnip.data.Iterate;
