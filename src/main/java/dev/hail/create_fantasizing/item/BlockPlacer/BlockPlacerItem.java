@@ -12,6 +12,7 @@ import com.simibubi.create.content.equipment.zapper.terrainzapper.PlacementOptio
 import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
 import com.simibubi.create.foundation.utility.BlockHelper;
 import com.simibubi.create.foundation.utility.CreateLang;
+import dev.hail.create_fantasizing.FantasizingMod;
 import dev.hail.create_fantasizing.data.CFADataComponents;
 import net.createmod.catnip.gui.ScreenOpener;
 import net.createmod.catnip.platform.CatnipServices;
@@ -189,7 +190,7 @@ public class BlockPlacerItem extends ZapperItem {
                 return new InteractionResultHolder<>(InteractionResult.FAIL, item);
             } else if (!player.isShiftKeyDown() && items && lookingAtBlock) {
                 float multiplier = activate(level, player, item, stateToUse, raytrace, data, hand);
-                int cooldown = (int) (multiplier * getCooldownDelay(item) * size);
+                int cooldown = (int) (multiplier * getCooldownDelay(item));
                 ShootableGadgetItemMethods.applyCooldown(player, item, hand, this::isZapper, Math.max(cooldown, 5));
                 ShootableGadgetItemMethods.sendPackets(player, b -> new ZapperBeamPacket(barrelPos, hand, b, raytrace.getLocation()));
                 return new InteractionResultHolder<>(InteractionResult.SUCCESS, item);
