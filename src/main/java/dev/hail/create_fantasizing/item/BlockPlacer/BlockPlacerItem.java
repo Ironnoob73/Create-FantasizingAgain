@@ -81,15 +81,10 @@ public class BlockPlacerItem extends ZapperItem {
 
         BPBrush brush = stack.getOrDefault(CFADataComponents.SHAPER_BRUSH, BlockPlacerBrushes.Cuboid).get();
         BlockPos params = stack.get(AllDataComponents.SHAPER_BRUSH_PARAMS);
-        float multiplier = 0;
-        if (params != null) {
-            multiplier = sizeMultiplier(params, brush);
-        }
+        float multiplier = sizeMultiplier(params, brush);
         PlacementOptions option = stack.getOrDefault(AllDataComponents.SHAPER_PLACEMENT_OPTIONS, PlacementOptions.Merged);
         BlockPlacerTools tool = stack.getOrDefault(CFADataComponents.SHAPER_TOOL, BlockPlacerTools.Fill);
-        if (params != null) {
-            brush.set(params.getX(), params.getY(), params.getZ());
-        }
+        brush.set(params.getX(), params.getY(), params.getZ());
         targetPos = targetPos.offset(brush.getOffset(player.getLookAngle(), raytrace.getDirection(), option));
         brush.addToGlobalPositions(world, targetPos, raytrace.getDirection(), affectedPositions, tool);
         brush.redirectTool(tool).run(world, affectedPositions, stateToUse, data, player, stack, hand, applyPattern(affectedPositions, stack));
@@ -116,14 +111,13 @@ public class BlockPlacerItem extends ZapperItem {
         PlacementPatterns pattern = !stack.has(AllDataComponents.PLACEMENT_PATTERN) ? Solid : stack.get(AllDataComponents.PLACEMENT_PATTERN);
         Predicate<BlockPos> filter = Predicates.alwaysFalse();
 
-        if (pattern != null) {
-            switch (pattern) {
-                case Checkered -> filter = pos -> (pos.getX() + pos.getY() + pos.getZ()) % 2 == 0;
-                case InverseCheckered -> filter = pos -> (pos.getX() + pos.getY() + pos.getZ()) % 2 != 0;
-                default -> {
-                }
+        switch (pattern) {
+            case Checkered -> filter = pos -> (pos.getX() + pos.getY() + pos.getZ()) % 2 == 0;
+            case InverseCheckered -> filter = pos -> (pos.getX() + pos.getY() + pos.getZ()) % 2 != 0;
+            default -> {
             }
         }
+
 
         blocksIn.removeIf(filter);
         return pattern;
@@ -134,9 +128,7 @@ public class BlockPlacerItem extends ZapperItem {
         if (pEntity instanceof Player player) {
             BlockState stateToUse = Blocks.AIR.defaultBlockState();
             if (pStack.has(AllDataComponents.SHAPER_BLOCK_USED)) stateToUse = pStack.get(AllDataComponents.SHAPER_BLOCK_USED);
-            if (stateToUse != null) {
-                stateToUse = BlockHelper.setZeroAge(stateToUse);
-            }
+            stateToUse = BlockHelper.setZeroAge(stateToUse);
             Vec3 start = player.position().add(0, player.getEyeHeight(), 0);
             Vec3 range = player.getLookAngle().scale(getZappingRange(pStack));
             BlockHitResult raytrace = pLevel.clip(new ClipContext(start, start.add(range), ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
@@ -170,9 +162,7 @@ public class BlockPlacerItem extends ZapperItem {
 
         BlockState stateToUse = Blocks.AIR.defaultBlockState();
         if (item.has(AllDataComponents.SHAPER_BLOCK_USED)) stateToUse = item.get(AllDataComponents.SHAPER_BLOCK_USED);
-        if (stateToUse != null) {
-            stateToUse = BlockHelper.setZeroAge(stateToUse);
-        }
+        stateToUse = BlockHelper.setZeroAge(stateToUse);
         CompoundTag data = null;
         if (item.has(AllDataComponents.SHAPER_BLOCK_DATA)) data = item.get(AllDataComponents.SHAPER_BLOCK_DATA);
         Vec3 start = player.position().add(0, player.getEyeHeight(), 0);
@@ -198,10 +188,7 @@ public class BlockPlacerItem extends ZapperItem {
                 player.getCooldowns().addCooldown(item.getItem(), 10);
                 return new InteractionResultHolder<>(InteractionResult.FAIL, item);
             } else if (!player.isShiftKeyDown() && items && lookingAtBlock) {
-                float multiplier = 0;
-                if (stateToUse != null && data != null) {
-                    multiplier = activate(level, player, item, stateToUse, raytrace, data, hand);
-                }
+                float multiplier = activate(level, player, item, stateToUse, raytrace, data, hand);
                 int cooldown = (int) (multiplier * getCooldownDelay(item) * size);
                 ShootableGadgetItemMethods.applyCooldown(player, item, hand, this::isZapper, Math.max(cooldown, 5));
                 ShootableGadgetItemMethods.sendPackets(player, b -> new ZapperBeamPacket(barrelPos, hand, b, raytrace.getLocation()));
