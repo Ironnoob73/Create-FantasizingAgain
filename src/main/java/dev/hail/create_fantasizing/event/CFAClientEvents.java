@@ -10,14 +10,8 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 
 @EventBusSubscriber(Dist.CLIENT)
 public class CFAClientEvents {
-    @SubscribeEvent
-    public static void onTickPre(ClientTickEvent.Pre event) {
-        onTick();
-    }
-    @SubscribeEvent
-    public static void onTickPost(ClientTickEvent.Post event) {
-        onTick();
-    }
+    @SubscribeEvent public static void onTickPre(ClientTickEvent.Pre event) { onTick();}
+    //@SubscribeEvent public static void onTickPost(ClientTickEvent.Post event) { onTick();}
     public static void onTick() {
         if (!isGameActive())
             return;

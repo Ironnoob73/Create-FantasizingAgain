@@ -12,6 +12,7 @@ import dev.hail.create_fantasizing.event.CFAPackets;
 import dev.hail.create_fantasizing.item.CFAItems;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.api.distmarker.Dist;
@@ -35,39 +36,21 @@ public class FantasizingMod
 {
     public static final String MOD_ID = "create_fantasizing";
     public static final Logger LOGGER = LogUtils.getLogger();
-    public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MOD_ID);
-    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MOD_ID);
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> CREATE_FANTASIZING_TAB = CREATIVE_MODE_TABS.register("create_fantasizing_tab", () -> CreativeModeTab.builder()
-            .title(Component.translatable("itemGroup.create_fantasizing"))
-            .icon(() -> CFABlocks.COMPACT_HYDRAULIC_ENGINE_ITEM.get().getDefaultInstance())
-            .displayItems((parameters, output) -> {
-                output.accept(CFABlocks.COMPACT_HYDRAULIC_ENGINE_ITEM.get());
-                output.accept(CFABlocks.COMPACT_WIND_ENGINE_ITEM.get());
-                output.accept(CFABlocks.STURDY_GIRDER_ITEM.get());
-                output.accept(CFAItems.TREE_CUTTER.get());
-                output.accept(CFAItems.BLOCK_PLACER.get());
-                output.accept(CFAItems.PRISMARINE_FAN_BLADES.get());
-                output.accept(CFAItems.STURDY_CONDUIT.get());
-                output.accept(CFAItems.STURDY_HEAVY_CORE.get());
-            }).build());
+    public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MOD_ID)
+            .defaultCreativeTab((ResourceKey<CreativeModeTab>) null);
 
     public FantasizingMod(IEventBus modEventBus)
     {
-        modEventBus.addListener(this::commonSetup);
-
         REGISTRATE.registerEventListeners(modEventBus);
 
-        CFAItems.ITEMS.register(modEventBus);
+        modEventBus.addListener(this::commonSetup);
+        REGISTRATE.setCreativeTab(CFACreativeTab.TAB);
         CFABlocks.init();
-        CREATIVE_MODE_TABS.register(modEventBus);
+        CFAItems.init();
+        CFACreativeTab.init(modEventBus);
 
         CFADataComponents.register(modEventBus);
         CFAPackets.register();
-
-        CFAPartialModels.init();
-        CFASpriteShifts.init();
-
-        NeoForge.EVENT_BUS.register(this);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)

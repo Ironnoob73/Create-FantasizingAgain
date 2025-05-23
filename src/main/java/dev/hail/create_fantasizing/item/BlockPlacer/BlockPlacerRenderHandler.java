@@ -41,8 +41,8 @@ public class BlockPlacerRenderHandler {
         if(player == null) return;
         ItemStack heldMain = player.getMainHandItem();
         ItemStack heldOff = player.getOffhandItem();
-        boolean zapperInMain = CFAItems.BLOCK_PLACER.get() == heldMain.getItem();
-        boolean zapperInOff = CFAItems.BLOCK_PLACER.get() == heldOff.getItem();
+        boolean zapperInMain = CFAItems.BLOCK_PLACER.isIn(heldMain);
+        boolean zapperInOff = CFAItems.BLOCK_PLACER.isIn(heldOff);
 
         if (zapperInMain) {
             if (!heldMain.has(AllDataComponents.SHAPER_SWAP) || !zapperInOff) {
