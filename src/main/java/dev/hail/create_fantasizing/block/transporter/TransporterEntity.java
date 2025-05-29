@@ -1,7 +1,7 @@
 package dev.hail.create_fantasizing.block.transporter;
 
-import com.simibubi.create.api.equipment.goggles.IHaveHoveringInformation;
 import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
+import com.simibubi.create.content.logistics.chute.ChuteBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringBehaviour;
@@ -9,7 +9,6 @@ import com.simibubi.create.foundation.blockEntity.behaviour.inventory.InvManipul
 import com.simibubi.create.foundation.blockEntity.behaviour.inventory.VersionedInventoryTrackerBehaviour;
 import com.simibubi.create.foundation.item.ItemHelper;
 import dev.engine_room.flywheel.lib.visualization.VisualizationHelper;
-import dev.hail.create_fantasizing.FantasizingMod;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import net.createmod.catnip.animation.LerpedFloat;
 import net.createmod.catnip.math.BlockFace;
@@ -19,6 +18,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,7 +34,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class TransporterEntity extends SmartBlockEntity implements IHaveHoveringInformation {
+public class TransporterEntity extends SmartBlockEntity{
     ItemStack item;
     TransporterItemHandler itemHandler;
     boolean canPickUpItems;
@@ -64,11 +64,12 @@ public class TransporterEntity extends SmartBlockEntity implements IHaveHovering
 
         boolean clientSide = level != null && level.isClientSide && !isVirtual();
 
+        Direction facing = getBlockState().getValue(TransporterBlock.FACING);
         if (!clientSide) {
-            if (item.isEmpty()){
-                handleInput(grabCapability(getBlockState().getValue(TransporterBlock.FACING).getOpposite()));
+            if (item.isEmpty() && level.getBlockState(this.worldPosition.relative(facing.getOpposite())).getBlock() != CFABlocks.TRANSPORTER.get()){
+                handleInput(grabCapability(facing.getOpposite()));
             }
-            handleOutput(grabCapability(getBlockState().getValue(TransporterBlock.FACING)));
+            handleOutput(grabCapability(facing));
         }
 
     }
@@ -150,6 +151,13 @@ public class TransporterEntity extends SmartBlockEntity implements IHaveHovering
                 : ItemHelper.ExtractionCountMode.UPTO;
     }
 
+    @Override
+    public void destroy() {
+        super.destroy();
+        if (!item.isEmpty() && level != null)
+            Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), item);
+        setRemoved();
+    }
 
     @Override
     protected void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {

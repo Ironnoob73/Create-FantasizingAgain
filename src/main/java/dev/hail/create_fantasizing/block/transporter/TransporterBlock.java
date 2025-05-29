@@ -2,13 +2,17 @@ package dev.hail.create_fantasizing.block.transporter;
 
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.content.logistics.box.PackageEntity;
+import com.simibubi.create.content.logistics.chute.AbstractChuteBlock;
+import com.simibubi.create.content.logistics.chute.ChuteBlockEntity;
 import com.simibubi.create.content.logistics.funnel.FunnelBlockEntity;
 import com.simibubi.create.foundation.block.IBE;
+import com.simibubi.create.foundation.block.ProperWaterloggedBlock;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.inventory.InvManipulationBehaviour;
 import com.simibubi.create.foundation.item.ItemHelper;
 import dev.hail.create_fantasizing.block.CFABlocks;
+import net.createmod.catnip.data.Iterate;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
@@ -19,8 +23,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -31,22 +36,29 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class TransporterBlock extends Block implements IWrenchable, IBE<TransporterEntity> {
+public class TransporterBlock extends Block implements IWrenchable, IBE<TransporterEntity>, ProperWaterloggedBlock {
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public TransporterBlock(Properties properties) {
         super(properties);
         registerDefaultState(defaultBlockState()
                 .setValue(POWERED, false)
-                .setValue(FACING, Direction.DOWN));
+                .setValue(FACING, Direction.DOWN)
+                .setValue(WATERLOGGED, false));
     }
     @Override
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
@@ -55,6 +67,10 @@ public class TransporterBlock extends Block implements IWrenchable, IBE<Transpor
             return;
         if (!level.getBlockTicks().willTickThisTick(pos, this))
             level.scheduleTick(pos, this, 1);
+    }
+    @Override
+    public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
+        IBE.onRemove(state, world, pos, newState);
     }
     @Override
     public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource r) {
@@ -66,12 +82,31 @@ public class TransporterBlock extends Block implements IWrenchable, IBE<Transpor
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState state = super.getStateForPlacement(context);
+        boolean waterFlag = context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER;
         for (Direction direction : context.getNearestLookingDirections()) {
             BlockState blockstate = state.setValue(FACING, direction.getOpposite());
             if (blockstate.canSurvive(context.getLevel(), context.getClickedPos()))
-                return blockstate.setValue(POWERED, state.getValue(POWERED));
+                return blockstate.setValue(POWERED, state.getValue(POWERED)).setValue(WATERLOGGED, waterFlag);
         }
-        return state;
+        return state.setValue(WATERLOGGED, waterFlag);
+    }
+
+    @Override
+    protected @NotNull FluidState getFluidState(BlockState pState) {
+        return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
+    }
+    @Override
+    public BlockState updateShape(BlockState pState, Direction pDirection, BlockState pNeighborState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pNeighborPos) {
+        updateWater(pLevel, pState, pCurrentPos);
+        return pState;
+    }
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+        switch(state.getValue(FACING)){
+            case NORTH, SOUTH -> { return Block.box(2, 2, 0, 14, 14, 16);}
+            case WEST, EAST -> { return Block.box(0, 2, 2, 16, 14, 14);}
+        }
+        return Block.box(2, 0, 2, 14, 16, 14);
     }
 
     @Override
@@ -84,7 +119,7 @@ public class TransporterBlock extends Block implements IWrenchable, IBE<Transpor
     }
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder.add(POWERED,FACING));
+        super.createBlockStateDefinition(builder.add(POWERED,FACING,WATERLOGGED));
     }
 
     @Override

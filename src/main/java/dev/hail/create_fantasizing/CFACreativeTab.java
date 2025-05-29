@@ -21,6 +21,7 @@ public class CFACreativeTab {
                 output.accept(CFABlocks.STURDY_GIRDER.get());
                 output.accept(CFAItems.TREE_CUTTER.get());
                 output.accept(CFAItems.BLOCK_PLACER.get());
+                output.accept(CFABlocks.TRANSPORTER.get());
                 output.accept(CFAItems.PRISMARINE_FAN_BLADES.get());
                 output.accept(CFAItems.STURDY_CONDUIT.get());
                 output.accept(CFAItems.STURDY_HEAVY_CORE.get());})

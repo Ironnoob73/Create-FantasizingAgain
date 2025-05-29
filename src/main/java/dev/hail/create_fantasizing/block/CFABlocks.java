@@ -77,7 +77,6 @@ public class CFABlocks {
                     .sound(SoundType.NETHERITE_BLOCK)
                     .noOcclusion()
                     .isRedstoneConductor((level, pos, state) -> false))
-            .onRegister(CreateRegistrate.blockModel(() -> ConnectedSturdyGirderModel::new))
             .simpleItem()
             .register();
     public static final BlockEntityEntry<TransporterEntity> TRANSPORTER_ENTITY = REGISTRATE

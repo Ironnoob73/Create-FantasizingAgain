@@ -1,0 +1,7 @@
+{
+	"parent": "create_fantasizing:block/transporter",
+	"textures": {
+		"redstone": "create:block/funnel/brass_funnel_powered",
+		"open": "create:block/funnel/funnel_closed"
+	}
+}
