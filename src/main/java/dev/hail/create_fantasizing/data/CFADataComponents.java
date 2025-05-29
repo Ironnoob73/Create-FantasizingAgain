@@ -1,10 +1,9 @@
 package dev.hail.create_fantasizing.data;
 
 import com.mojang.serialization.Codec;
-import com.simibubi.create.content.equipment.zapper.terrainzapper.TerrainBrushes;
 import dev.hail.create_fantasizing.FantasizingMod;
-import dev.hail.create_fantasizing.item.BlockPlacer.BlockPlacerBrushes;
-import dev.hail.create_fantasizing.item.BlockPlacer.BlockPlacerTools;
+import dev.hail.create_fantasizing.item.block_placer.BlockPlacerBrushes;
+import dev.hail.create_fantasizing.item.block_placer.BlockPlacerTools;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;

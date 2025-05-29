@@ -1,4 +1,4 @@
-package dev.hail.create_fantasizing.item.BlockPlacer;
+package dev.hail.create_fantasizing.item.block_placer;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

@@ -1,4 +1,4 @@
-package dev.hail.create_fantasizing.item.BlockPlacer;
+package dev.hail.create_fantasizing.item.block_placer;
 
 import com.simibubi.create.content.equipment.zapper.ConfigureZapperPacket;
 import com.simibubi.create.content.equipment.zapper.PlacementPatterns;

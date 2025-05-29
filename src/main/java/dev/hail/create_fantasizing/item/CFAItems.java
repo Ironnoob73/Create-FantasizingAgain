@@ -2,7 +2,7 @@ package dev.hail.create_fantasizing.item;
 
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
 import com.tterrag.registrate.util.entry.ItemEntry;
-import dev.hail.create_fantasizing.item.BlockPlacer.BlockPlacerItem;
+import dev.hail.create_fantasizing.item.block_placer.BlockPlacerItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 

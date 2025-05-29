@@ -1,7 +1,7 @@
 package dev.hail.create_fantasizing.event;
 
 import dev.hail.create_fantasizing.block.sturdy_girder.SturdyGirderWrenchBehavior;
-import dev.hail.create_fantasizing.item.BlockPlacer.BlockPlacerRenderHandler;
+import dev.hail.create_fantasizing.item.block_placer.BlockPlacerRenderHandler;
 import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;

@@ -1,17 +1,12 @@
 package dev.hail.create_fantasizing;
 
 import com.mojang.logging.LogUtils;
-import com.simibubi.create.AllCreativeModeTabs;
-import com.simibubi.create.AllItems;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import dev.hail.create_fantasizing.block.CFABlocks;
-import dev.hail.create_fantasizing.block.CFAPartialModels;
-import dev.hail.create_fantasizing.block.CFASpriteShifts;
+import dev.hail.create_fantasizing.block.transporter.TransporterEntity;
 import dev.hail.create_fantasizing.data.CFADataComponents;
 import dev.hail.create_fantasizing.event.CFAPackets;
 import dev.hail.create_fantasizing.item.CFAItems;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
@@ -22,14 +17,9 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
 import org.slf4j.Logger;
-
-import static net.minecraft.world.item.CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS;
 
 @Mod(FantasizingMod.MOD_ID)
 public class FantasizingMod
@@ -44,6 +34,7 @@ public class FantasizingMod
         REGISTRATE.registerEventListeners(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::registerCapabilities);
         REGISTRATE.setCreativeTab(CFACreativeTab.TAB);
         CFABlocks.init();
         CFAItems.init();
@@ -55,6 +46,9 @@ public class FantasizingMod
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
+    }
+    private void registerCapabilities(RegisterCapabilitiesEvent event) {
+        TransporterEntity.registerCapabilities(event);
     }
 
     @SubscribeEvent

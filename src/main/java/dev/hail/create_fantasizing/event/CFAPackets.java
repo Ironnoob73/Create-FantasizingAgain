@@ -2,7 +2,7 @@ package dev.hail.create_fantasizing.event;
 
 import com.simibubi.create.Create;
 import dev.hail.create_fantasizing.FantasizingMod;
-import dev.hail.create_fantasizing.item.BlockPlacer.ConfigureBlockPlacerPacket;
+import dev.hail.create_fantasizing.item.block_placer.ConfigureBlockPlacerPacket;
 import net.createmod.catnip.net.base.BasePacketPayload;
 import net.createmod.catnip.net.base.CatnipPacketRegistry;
 import net.minecraft.network.RegistryFriendlyByteBuf;

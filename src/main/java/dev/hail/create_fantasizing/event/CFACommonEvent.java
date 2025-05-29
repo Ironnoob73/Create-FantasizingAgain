@@ -1,6 +1,6 @@
 package dev.hail.create_fantasizing.event;
 
-import dev.hail.create_fantasizing.item.BlockPlacer.BlockPlacerTools;
+import dev.hail.create_fantasizing.item.block_placer.BlockPlacerTools;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;

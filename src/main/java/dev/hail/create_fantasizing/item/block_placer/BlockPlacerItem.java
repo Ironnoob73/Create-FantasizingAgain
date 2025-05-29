@@ -1,4 +1,4 @@
-package dev.hail.create_fantasizing.item.BlockPlacer;
+package dev.hail.create_fantasizing.item.block_placer;
 
 import com.google.common.base.Predicates;
 import com.simibubi.create.AllDataComponents;
@@ -12,7 +12,6 @@ import com.simibubi.create.content.equipment.zapper.terrainzapper.PlacementOptio
 import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
 import com.simibubi.create.foundation.utility.BlockHelper;
 import com.simibubi.create.foundation.utility.CreateLang;
-import dev.hail.create_fantasizing.FantasizingMod;
 import dev.hail.create_fantasizing.data.CFADataComponents;
 import net.createmod.catnip.gui.ScreenOpener;
 import net.createmod.catnip.platform.CatnipServices;
@@ -66,6 +65,7 @@ public class BlockPlacerItem extends ZapperItem {
         return true;
     }
     @Override
+    @SuppressWarnings("deprecation")
     public int getEnchantmentValue() {
         return 1;
     }
