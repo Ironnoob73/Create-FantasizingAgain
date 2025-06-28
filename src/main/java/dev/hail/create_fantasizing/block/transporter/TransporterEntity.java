@@ -2,6 +2,7 @@ package dev.hail.create_fantasizing.block.transporter;
 
 import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
 import com.simibubi.create.content.logistics.chute.ChuteBlockEntity;
+import com.simibubi.create.content.logistics.chute.SmartChuteBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringBehaviour;
@@ -15,22 +16,18 @@ import net.createmod.catnip.math.BlockFace;
 import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
-import org.jetbrains.annotations.NotNull;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.EnumMap;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -42,7 +39,7 @@ public class TransporterEntity extends SmartBlockEntity{
     private FilteringBehaviour filtering;
     private VersionedInventoryTrackerBehaviour invVersionTracker;
     LerpedFloat flap;
-    private final EnumMap<Direction, BlockCapabilityCache<IItemHandler, @Nullable Direction>> capCaches = new EnumMap<>(Direction.class);
+    //private final EnumMap<Direction, BlockCapabilityCache<IItemHandler, @Nullable Direction>> capCaches = new EnumMap<>(Direction.class);
 
     public TransporterEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -51,13 +48,13 @@ public class TransporterEntity extends SmartBlockEntity{
         canPickUpItems = false;
         flap = createChasingFlap();
     }
-    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-        event.registerBlockEntity(
-                Capabilities.ItemHandler.BLOCK,
+    /*public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.register(
+                ForgeCapabilities.ITEM_HANDLER,
                 CFABlocks.TRANSPORTER_ENTITY.get(),
-                (be, context) -> be.itemHandler
+                (be, context) -> be.ITEM_HANDLER
         );
-    }
+    }*/
     @Override
     public void tick() {
         super.tick();
@@ -67,9 +64,9 @@ public class TransporterEntity extends SmartBlockEntity{
         Direction facing = getBlockState().getValue(TransporterBlock.FACING);
         if (!clientSide) {
             if (item.isEmpty() && level.getBlockState(this.worldPosition.relative(facing.getOpposite())).getBlock() != CFABlocks.TRANSPORTER.get()){
-                handleInput(grabCapability(facing.getOpposite()));
+                handleInput(grabCapability(facing.getOpposite()).orElse(null));
             }
-            handleOutput(grabCapability(facing));
+            handleOutput(grabCapability(facing).orElse(null));
         }
 
     }
@@ -95,26 +92,18 @@ public class TransporterEntity extends SmartBlockEntity{
         setItem(ItemHandlerHelper.insertItemStacked(inv, item, false));
         invVersionTracker.awaitNewVersion(inv);
     }
-    private @Nullable IItemHandler grabCapability(@NotNull Direction facing) {
-        BlockPos pos = this.worldPosition.relative(facing);
+    private LazyOptional<IItemHandler> grabCapability(Direction side) {
+        BlockPos pos = this.worldPosition.relative(side);
         if (level == null)
-            return null;
-        if (capCaches.get(facing) == null) {
-            if (level instanceof ServerLevel serverLevel) {
-                BlockCapabilityCache<IItemHandler, @Nullable Direction> cache = BlockCapabilityCache.create(
-                        Capabilities.ItemHandler.BLOCK,
-                        serverLevel,
-                        pos,
-                        facing.getOpposite()
-                );
-                capCaches.put(facing, cache);
-                return cache.getCapability();
-            } else {
-                return level.getCapability(Capabilities.ItemHandler.BLOCK, pos, facing.getOpposite());
-            }
-        } else {
-            return capCaches.get(facing).getCapability();
+            return LazyOptional.empty();
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be == null)
+            return LazyOptional.empty();
+        if (be instanceof ChuteBlockEntity) {
+            if (side != Direction.DOWN || !(be instanceof SmartChuteBlockEntity))
+                return LazyOptional.empty();
         }
+        return be.getCapability(ForgeCapabilities.ITEM_HANDLER, side.getOpposite());
     }
 
     public void setItem(ItemStack stack) {
@@ -160,14 +149,14 @@ public class TransporterEntity extends SmartBlockEntity{
     }
 
     @Override
-    protected void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
-        super.write(compound, registries, clientPacket);
-        compound.put("Item", item.saveOptional(registries));
+    protected void write(CompoundTag compound, boolean clientPacket) {
+        compound.put("Item", item.serializeNBT());
+        super.write(compound, clientPacket);
     }
     @Override
-    protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
-        super.read(compound, registries, clientPacket);
-        item = ItemStack.parseOptional(registries, compound.getCompound("Item"));
+    protected void read(CompoundTag compound, boolean clientPacket) {
+        super.read(compound, clientPacket);
+        item = ItemStack.of(compound.getCompound("Item"));
 
         if (clientPacket)
             CatnipServices.PLATFORM.executeOnClientOnly(() -> () -> VisualizationHelper.queueUpdate(this));

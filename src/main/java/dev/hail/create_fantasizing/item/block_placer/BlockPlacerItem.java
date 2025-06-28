@@ -1,7 +1,6 @@
 package dev.hail.create_fantasizing.item.block_placer;
 
 import com.google.common.base.Predicates;
-import com.simibubi.create.AllDataComponents;
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.CreateClient;
 import com.simibubi.create.content.equipment.zapper.PlacementPatterns;
@@ -12,12 +11,15 @@ import com.simibubi.create.content.equipment.zapper.terrainzapper.PlacementOptio
 import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
 import com.simibubi.create.foundation.utility.BlockHelper;
 import com.simibubi.create.foundation.utility.CreateLang;
-import dev.hail.create_fantasizing.data.CFADataComponents;
 import net.createmod.catnip.gui.ScreenOpener;
+import net.createmod.catnip.nbt.NBTHelper;
 import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -32,9 +34,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -52,12 +54,15 @@ import static com.simibubi.create.content.equipment.zapper.PlacementPatterns.Sol
 
 @ParametersAreNonnullByDefault
 public class BlockPlacerItem extends ZapperItem {
+    static final String SHAPER_BRUSH_PARAMS = "BrushParams"; //BLOCK POS
+    static final String SHAPER_BRUSH = "Brush"; //ENUM
+    static final String SHAPER_TOOL = "Tool"; //ENUM
+    static final String SHAPER_PLACEMENT = "Placement"; //ENUM
     public BlockPlacerItem(Properties properties) {
         super(properties);
     }
     @Override
     @OnlyIn(Dist.CLIENT)
-    @SuppressWarnings("removal")
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(SimpleCustomRenderer.create(this, new BlockPlacerItemRenderer()));
     }
@@ -71,13 +76,13 @@ public class BlockPlacerItem extends ZapperItem {
     }
     @Override
     public Component validateUsage(ItemStack item) {
-        if (!item.has(AllDataComponents.SHAPER_BRUSH_PARAMS))
+        if (!item.getOrCreateTag().contains(SHAPER_BRUSH_PARAMS))
             return CreateLang.translateDirect("terrainzapper.shiftRightClickToSet");
         return super.validateUsage(item);
     }
     @Override
     protected boolean canActivateWithoutSelectedBlock(ItemStack stack) {
-        BlockPlacerTools tool = stack.getOrDefault(CFADataComponents.SHAPER_TOOL, BlockPlacerTools.Fill);
+        BlockPlacerTools tool = NBTHelper.readEnum(stack.getOrCreateTag(), SHAPER_TOOL, BlockPlacerTools.class);
         return !tool.requiresSelectedBlock();
     }
     @Override
@@ -88,11 +93,12 @@ public class BlockPlacerItem extends ZapperItem {
         BlockPos targetPos = raytrace.getBlockPos();
         List<BlockPos> affectedPositions = new ArrayList<>();
 
-        BPBrush brush = stack.getOrDefault(CFADataComponents.SHAPER_BRUSH, BlockPlacerBrushes.Cuboid).get();
-        BlockPos params = stack.get(AllDataComponents.SHAPER_BRUSH_PARAMS);
+        CompoundTag tag = stack.getOrCreateTag();
+        BPBrush brush = NBTHelper.readEnum(tag, SHAPER_BRUSH, BlockPlacerBrushes.class).get();
+        BlockPos params = NbtUtils.readBlockPos(tag.getCompound(SHAPER_BRUSH_PARAMS));
         float multiplier = sizeMultiplier(params, brush);
-        PlacementOptions option = stack.getOrDefault(AllDataComponents.SHAPER_PLACEMENT_OPTIONS, PlacementOptions.Merged);
-        BlockPlacerTools tool = stack.getOrDefault(CFADataComponents.SHAPER_TOOL, BlockPlacerTools.Fill);
+        PlacementOptions option = NBTHelper.readEnum(tag, SHAPER_PLACEMENT, PlacementOptions.class);
+        BlockPlacerTools tool = NBTHelper.readEnum(tag, SHAPER_TOOL, BlockPlacerTools.class);
         brush.set(params.getX(), params.getY(), params.getZ());
         targetPos = targetPos.offset(brush.getOffset(player.getLookAngle(), raytrace.getDirection(), option));
         brush.addToGlobalPositions(world, targetPos, raytrace.getDirection(), affectedPositions, tool);
@@ -103,10 +109,11 @@ public class BlockPlacerItem extends ZapperItem {
         BlockPos targetPos = raytrace.getBlockPos();
         List<BlockPos> affectedPositions = new ArrayList<>();
 
-        BPBrush brush = stack.getOrDefault(CFADataComponents.SHAPER_BRUSH, BlockPlacerBrushes.Cuboid).get();
-        BlockPos params = stack.get(AllDataComponents.SHAPER_BRUSH_PARAMS);
-        PlacementOptions option = stack.getOrDefault(AllDataComponents.SHAPER_PLACEMENT_OPTIONS, PlacementOptions.Merged);
-        BlockPlacerTools tool = stack.getOrDefault(CFADataComponents.SHAPER_TOOL, BlockPlacerTools.Fill);
+        CompoundTag tag = stack.getOrCreateTag();
+        BPBrush brush = NBTHelper.readEnum(tag, SHAPER_BRUSH, BlockPlacerBrushes.class).get();
+        BlockPos params = NbtUtils.readBlockPos(tag.getCompound(SHAPER_BRUSH_PARAMS));
+        PlacementOptions option = NBTHelper.readEnum(tag, SHAPER_PLACEMENT, PlacementOptions.class);
+        BlockPlacerTools tool = NBTHelper.readEnum(tag, SHAPER_TOOL, BlockPlacerTools.class);
 
         if (params != null) {
             brush.set(params.getX(), params.getY(), params.getZ());
@@ -117,7 +124,8 @@ public class BlockPlacerItem extends ZapperItem {
     }
 
     public static PlacementPatterns applyPattern(List<BlockPos> blocksIn, ItemStack stack) {
-        PlacementPatterns pattern = !stack.has(AllDataComponents.PLACEMENT_PATTERN) ? Solid : stack.get(AllDataComponents.PLACEMENT_PATTERN);
+        CompoundTag tag = stack.getTag();
+        PlacementPatterns pattern = !tag.contains("Pattern") ? Solid : PlacementPatterns.valueOf(tag.getString("Pattern"));
         Predicate<BlockPos> filter = Predicates.alwaysFalse();
 
         switch (pattern) {
@@ -134,9 +142,10 @@ public class BlockPlacerItem extends ZapperItem {
     @Override
     public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
         super.inventoryTick(pStack, pLevel, pEntity, pSlotId, pIsSelected);
+        CompoundTag nbt = pStack.getOrCreateTag();
         if (pEntity instanceof Player player) {
             BlockState stateToUse = Blocks.AIR.defaultBlockState();
-            if (pStack.has(AllDataComponents.SHAPER_BLOCK_USED)) stateToUse = pStack.get(AllDataComponents.SHAPER_BLOCK_USED);
+            if (nbt.contains("BlockUsed")) stateToUse = NbtUtils.readBlockState(pLevel.holderLookup(Registries.BLOCK), nbt.getCompound("BlockUsed"));
             stateToUse = BlockHelper.setZeroAge(stateToUse);
             Vec3 start = player.position().add(0, player.getEyeHeight(), 0);
             Vec3 range = player.getLookAngle().scale(getZappingRange(pStack));
@@ -146,10 +155,8 @@ public class BlockPlacerItem extends ZapperItem {
             if (stateToUse != null) {
                 invAmount = BlockPlacerTools.calculateItemsInInventory(stateToUse.getBlock(), true, player);
                 int selSize = activateCalculation(pLevel, player, pStack, stateToUse, raytrace);
-                if (!pStack.has(CFADataComponents.BLOCK_AMOUNT) || (pStack.get(CFADataComponents.BLOCK_AMOUNT) != invAmount))
-                    pStack.set(CFADataComponents.BLOCK_AMOUNT, invAmount);
-                if (!pStack.has(CFADataComponents.PLACE_SIZE) || (pStack.get(CFADataComponents.PLACE_SIZE) != selSize))
-                    pStack.set(CFADataComponents.PLACE_SIZE, selSize);
+                if (!nbt.contains("block_amount") || (nbt.getInt("block_amount") != invAmount)) nbt.putInt("block_amount", invAmount);
+                if (!nbt.contains("place_size") || (nbt.getInt("place_size") != selSize)) nbt.putInt("place_size", selSize);
             }
         }
     }
@@ -169,19 +176,20 @@ public class BlockPlacerItem extends ZapperItem {
             return new InteractionResultHolder<>(InteractionResult.SUCCESS, item);
         }
 
+        CompoundTag nbt = item.getOrCreateTag();
         BlockState stateToUse = Blocks.AIR.defaultBlockState();
-        if (item.has(AllDataComponents.SHAPER_BLOCK_USED)) stateToUse = item.get(AllDataComponents.SHAPER_BLOCK_USED);
+        if (nbt.contains("BlockUsed")) stateToUse = NbtUtils.readBlockState(level.holderLookup(Registries.BLOCK), nbt.getCompound("BlockUsed"));
         stateToUse = BlockHelper.setZeroAge(stateToUse);
         CompoundTag data = null;
-        if (item.has(AllDataComponents.SHAPER_BLOCK_DATA)) data = item.get(AllDataComponents.SHAPER_BLOCK_DATA);
+        if (nbt.contains("BlockData", Tag.TAG_COMPOUND)) data = nbt.getCompound("BlockData");
         Vec3 start = player.position().add(0, player.getEyeHeight(), 0);
         Vec3 range = player.getLookAngle().scale(getZappingRange(item));
         BlockHitResult raytrace = level.clip(new ClipContext(start, start.add(range), ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
         Vec3 barrelPos = ShootableGadgetItemMethods.getGunBarrelVec(player, mainHand, new Vec3(.35f, -0.1f, 1));
         BlockPos lookingPos = raytrace.getBlockPos();
 
-        int amount = item.has(CFADataComponents.BLOCK_AMOUNT) ? item.get(CFADataComponents.BLOCK_AMOUNT) : 0;
-        int size = item.has(CFADataComponents.PLACE_SIZE) ? item.get(CFADataComponents.PLACE_SIZE) : 0;
+        int amount = nbt.getInt("Amount");
+        int size = nbt.getInt("Size");
         boolean items = ((amount >= size || player.isCreative()) && size != 0) || (size == 999999);
         boolean lookingAtBlock = level.getWorldBorder().isWithinBounds(lookingPos) && raytrace.getType() != HitResult.Type.MISS;
         if (level.isClientSide) {
@@ -200,7 +208,7 @@ public class BlockPlacerItem extends ZapperItem {
                 float multiplier = activate(level, player, item, stateToUse, raytrace, data, hand);
                 int cooldown = (int) (multiplier * getCooldownDelay(item));
                 ShootableGadgetItemMethods.applyCooldown(player, item, hand, this::isZapper, Math.max(cooldown, 5));
-                ShootableGadgetItemMethods.sendPackets(player, b -> new ZapperBeamPacket(barrelPos, hand, b, raytrace.getLocation()));
+                ShootableGadgetItemMethods.sendPackets(player, b -> new ZapperBeamPacket(barrelPos, raytrace.getLocation(), hand, b));
                 return new InteractionResultHolder<>(InteractionResult.SUCCESS, item);
             }  else return super.use(level, player, hand);
         }
@@ -234,10 +242,11 @@ public class BlockPlacerItem extends ZapperItem {
     }
     public static void configureSettings(ItemStack stack, PlacementPatterns pattern, BlockPlacerBrushes brush,
                                          int brushParamX, int brushParamY, int brushParamZ, BlockPlacerTools tool, PlacementOptions placement) {
-        stack.set(AllDataComponents.PLACEMENT_PATTERN, pattern);
-        stack.set(CFADataComponents.SHAPER_BRUSH, brush);
-        stack.set(AllDataComponents.SHAPER_BRUSH_PARAMS, new BlockPos(brushParamX, brushParamY, brushParamZ));
-        stack.set(CFADataComponents.SHAPER_TOOL, tool);
-        stack.set(AllDataComponents.SHAPER_PLACEMENT_OPTIONS, placement);
+        ZapperItem.configureSettings(stack, pattern);
+        CompoundTag nbt = stack.getOrCreateTag();
+        NBTHelper.writeEnum(nbt, SHAPER_BRUSH, brush);
+        nbt.put(SHAPER_BRUSH_PARAMS, NbtUtils.writeBlockPos(new BlockPos(brushParamX, brushParamY, brushParamZ)));
+        NBTHelper.writeEnum(nbt, SHAPER_TOOL, tool);
+        NBTHelper.writeEnum(nbt, SHAPER_PLACEMENT, placement);
     }
 }

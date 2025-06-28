@@ -17,9 +17,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Optional;
@@ -32,19 +32,18 @@ public class TreeCutterItem extends AxeItem {
     protected Level level;
     protected BlockPos worldPosition;
     public TreeCutterItem(Properties properties) {
-        super(STURDY,properties);
+        super(STURDY,9,-9,properties);
     }
     public static final Tier STURDY = new Tier() {
         @Override public int getUses() {return 2048;}
         @Override public float getSpeed() {return 9;}
         @Override public float getAttackDamageBonus() {return 9;}
-        @Override public TagKey<Block> getIncorrectBlocksForDrops() {return BlockTags.INCORRECT_FOR_NETHERITE_TOOL;}
+        @Override public int getLevel() { return 4;}
         @Override public int getEnchantmentValue() {return 15;}
         @Override public Ingredient getRepairIngredient() {return Ingredient.of(AllItems.STURDY_SHEET);}
     };
     @Override
     @OnlyIn(Dist.CLIENT)
-    @SuppressWarnings("removal")
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(SimpleCustomRenderer.create(this, new TreeCutterItemRenderer()));
     }

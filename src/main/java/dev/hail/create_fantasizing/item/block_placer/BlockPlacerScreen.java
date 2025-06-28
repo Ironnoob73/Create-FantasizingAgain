@@ -1,6 +1,5 @@
 package dev.hail.create_fantasizing.item.block_placer;
 
-import com.simibubi.create.AllDataComponents;
 import com.simibubi.create.content.equipment.zapper.ConfigureZapperPacket;
 import com.simibubi.create.content.equipment.zapper.ZapperScreen;
 import com.simibubi.create.content.equipment.zapper.terrainzapper.*;
@@ -8,9 +7,12 @@ import com.simibubi.create.foundation.gui.AllGuiTextures;
 import com.simibubi.create.foundation.gui.AllIcons;
 import com.simibubi.create.foundation.gui.widget.*;
 import com.simibubi.create.foundation.utility.CreateLang;
-import dev.hail.create_fantasizing.data.CFADataComponents;
+import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -50,9 +52,10 @@ public class BlockPlacerScreen extends ZapperScreen {
         fontColor = 0x767676;
         title = zapper.getHoverName();
 
-        currentBrush = zapper.getOrDefault(CFADataComponents.SHAPER_BRUSH, BlockPlacerBrushes.Cuboid);
-        if (zapper.has(AllDataComponents.SHAPER_BRUSH_PARAMS)) {
-            BlockPos paramsData = zapper.get(AllDataComponents.SHAPER_BRUSH_PARAMS);
+        CompoundTag nbt = zapper.getOrCreateTag();
+        currentBrush = NBTHelper.readEnum(nbt, "Brush", BlockPlacerBrushes.class);
+        if (nbt.contains("BrushParams", Tag.TAG_COMPOUND)) {
+            BlockPos paramsData = NbtUtils.readBlockPos(nbt.getCompound("BrushParams"));
             currentBrushParams[0] = paramsData.getX();
             currentBrushParams[1] = paramsData.getY();
             currentBrushParams[2] = paramsData.getZ();
@@ -63,8 +66,8 @@ public class BlockPlacerScreen extends ZapperScreen {
                 currentAcrossMaterials = true;
             }
         }
-        currentTool = zapper.getOrDefault(CFADataComponents.SHAPER_TOOL, BlockPlacerTools.Fill);
-        currentPlacement = zapper.getOrDefault(AllDataComponents.SHAPER_PLACEMENT_OPTIONS, PlacementOptions.Merged);
+        currentTool = NBTHelper.readEnum(nbt, "Tool", BlockPlacerTools.class);
+        currentPlacement = NBTHelper.readEnum(nbt, "Placement", PlacementOptions.class);
     }
 
     @Override

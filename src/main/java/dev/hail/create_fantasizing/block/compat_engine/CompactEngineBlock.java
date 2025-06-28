@@ -13,11 +13,13 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.minecraftforge.client.model.generators.ModelFile;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -27,7 +29,8 @@ public abstract class CompactEngineBlock extends DirectionalKineticBlock impleme
         super(properties);
     }
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+    @SuppressWarnings("deprecation")
+    public @NotNull VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
         return AllShapes.MOTOR_BLOCK.get(state.getValue(FACING));
     }
     @Override
@@ -54,7 +57,8 @@ public abstract class CompactEngineBlock extends DirectionalKineticBlock impleme
         return true;
     }
     @Override
-    protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
+    @SuppressWarnings("deprecation")
+    public boolean isPathfindable(BlockState state, BlockGetter blockGetter, BlockPos blockPos, PathComputationType pathComputationType) {
         return false;
     }
     @Override
@@ -85,5 +89,10 @@ public abstract class CompactEngineBlock extends DirectionalKineticBlock impleme
                     : AssetLookup.partialBaseModel(ctx, prov);
         }
 
+    }
+
+    @Override
+    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+        return getBlockEntityType().create(blockPos, blockState);
     }
 }

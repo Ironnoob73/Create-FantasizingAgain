@@ -13,8 +13,7 @@ public class CFAItems {
             INCOMPLETE_COMPACT_HYDRAULIC_ENGINE = sequencedIngredient("incomplete_compact_hydraulic_engine"),
             INCOMPLETE_COMPACT_WIND_ENGINE = sequencedIngredient("incomplete_compact_wind_engine");
     public static final ItemEntry<TreeCutterItem> TREE_CUTTER = REGISTRATE.item("tree_cutter", TreeCutterItem::new)
-            .properties(p->p.attributes(TreeCutterItem.createAttributes(TreeCutterItem.STURDY, 0.0F, -3.0F))
-                    .rarity(Rarity.RARE))
+            .properties(p->p.rarity(Rarity.RARE))
             .register();
     public static final ItemEntry<BlockPlacerItem> BLOCK_PLACER = REGISTRATE.item("block_placer", BlockPlacerItem::new)
             .properties(p->p.rarity(Rarity.RARE))

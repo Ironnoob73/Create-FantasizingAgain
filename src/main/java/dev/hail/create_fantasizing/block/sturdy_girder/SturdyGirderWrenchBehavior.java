@@ -1,7 +1,6 @@
 package dev.hail.create_fantasizing.block.sturdy_girder;
 
 import com.simibubi.create.AllItems;
-import com.simibubi.create.content.decoration.girder.GirderWrenchBehavior;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import net.createmod.catnip.data.Iterate;
 import net.createmod.catnip.data.Pair;
@@ -21,8 +20,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;

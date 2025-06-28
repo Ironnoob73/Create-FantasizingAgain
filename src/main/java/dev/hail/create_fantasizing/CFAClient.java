@@ -2,12 +2,12 @@ package dev.hail.create_fantasizing;
 
 import dev.hail.create_fantasizing.block.CFAPartialModels;
 import dev.hail.create_fantasizing.block.CFASpriteShifts;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
-@Mod(value = FantasizingMod.MOD_ID, dist = Dist.CLIENT)
+@Mod.EventBusSubscriber(Dist.CLIENT)
 public class CFAClient {
     public CFAClient(IEventBus modEventBus) {
         CFAPartialModels.init();

@@ -1,15 +1,16 @@
 package dev.hail.create_fantasizing.event;
 
 import dev.hail.create_fantasizing.item.block_placer.BlockPlacerTools;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.common.Mod;
 
-@EventBusSubscriber
+@Mod.EventBusSubscriber
 public class CFACommonEvent {
     @SubscribeEvent
-    public static void onPlayerTick(PlayerTickEvent.Post event) {
-        if (!event.getEntity().level().isClientSide)
-            BlockPlacerTools.itemTransferTick(event.getEntity().level(), event.getEntity());
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        if (event.phase != TickEvent.Phase.START && event.side == LogicalSide.SERVER)
+            BlockPlacerTools.itemTransferTick(event.player.level(), event.player);
     }
 }

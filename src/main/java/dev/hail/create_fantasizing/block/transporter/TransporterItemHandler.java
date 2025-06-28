@@ -1,9 +1,8 @@
 package dev.hail.create_fantasizing.block.transporter;
 
 import com.simibubi.create.foundation.item.ItemHelper;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 public class TransporterItemHandler implements IItemHandler {
 
@@ -45,7 +44,7 @@ public class TransporterItemHandler implements IItemHandler {
 
     @Override
     public int getSlotLimit(int slot) {
-        return Math.min(64, getStackInSlot(slot).getOrDefault(DataComponents.MAX_STACK_SIZE, 64));
+        return Math.min(64, getStackInSlot(slot).getMaxStackSize());
     }
 
     @Override

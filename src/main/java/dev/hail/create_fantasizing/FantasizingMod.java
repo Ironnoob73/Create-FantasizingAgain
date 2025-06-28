@@ -3,22 +3,18 @@ package dev.hail.create_fantasizing;
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import dev.hail.create_fantasizing.block.CFABlocks;
-import dev.hail.create_fantasizing.block.transporter.TransporterEntity;
-import dev.hail.create_fantasizing.data.CFADataComponents;
-import dev.hail.create_fantasizing.event.CFAPackets;
 import dev.hail.create_fantasizing.item.CFAItems;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.slf4j.Logger;
 
 @Mod(FantasizingMod.MOD_ID)
@@ -39,16 +35,13 @@ public class FantasizingMod
         CFABlocks.init();
         CFAItems.init();
         CFACreativeTab.init(modEventBus);
-
-        CFADataComponents.register(modEventBus);
-        CFAPackets.register();
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
     }
     private void registerCapabilities(RegisterCapabilitiesEvent event) {
-        TransporterEntity.registerCapabilities(event);
+        //TransporterEntity.registerCapabilities(event);
     }
 
     @SubscribeEvent
@@ -56,7 +49,7 @@ public class FantasizingMod
     {
     }
 
-    @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents
     {
         @SubscribeEvent

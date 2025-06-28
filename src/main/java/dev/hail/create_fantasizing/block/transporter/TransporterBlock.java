@@ -2,8 +2,6 @@ package dev.hail.create_fantasizing.block.transporter;
 
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.content.logistics.box.PackageEntity;
-import com.simibubi.create.content.logistics.chute.AbstractChuteBlock;
-import com.simibubi.create.content.logistics.chute.ChuteBlockEntity;
 import com.simibubi.create.content.logistics.funnel.FunnelBlockEntity;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.block.ProperWaterloggedBlock;
@@ -12,7 +10,6 @@ import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringB
 import com.simibubi.create.foundation.blockEntity.behaviour.inventory.InvManipulationBehaviour;
 import com.simibubi.create.foundation.item.ItemHelper;
 import dev.hail.create_fantasizing.block.CFABlocks;
-import net.createmod.catnip.data.Iterate;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
@@ -48,7 +45,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-public class TransporterBlock extends Block implements IWrenchable, IBE<TransporterEntity>, ProperWaterloggedBlock {
+public class TransporterBlock extends Block implements IBE<TransporterEntity>, IWrenchable, ProperWaterloggedBlock {
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -61,6 +58,7 @@ public class TransporterBlock extends Block implements IWrenchable, IBE<Transpor
                 .setValue(WATERLOGGED, false));
     }
     @Override
+    @SuppressWarnings("deprecation")
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
         super.neighborChanged(state, level, pos, block, fromPos, isMoving);
         if (level.isClientSide)
@@ -69,10 +67,12 @@ public class TransporterBlock extends Block implements IWrenchable, IBE<Transpor
             level.scheduleTick(pos, this, 1);
     }
     @Override
+    @SuppressWarnings("deprecation")
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
         IBE.onRemove(state, world, pos, newState);
     }
     @Override
+    @SuppressWarnings("deprecation")
     public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource r) {
         boolean previouslyPowered = state.getValue(POWERED);
         if (previouslyPowered != worldIn.hasNeighborSignal(pos))
@@ -92,15 +92,18 @@ public class TransporterBlock extends Block implements IWrenchable, IBE<Transpor
     }
 
     @Override
-    protected @NotNull FluidState getFluidState(BlockState pState) {
+    @SuppressWarnings("deprecation")
+    public @NotNull FluidState getFluidState(BlockState pState) {
         return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
     }
     @Override
+    @SuppressWarnings("deprecation")
     public BlockState updateShape(BlockState pState, Direction pDirection, BlockState pNeighborState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pNeighborPos) {
         updateWater(pLevel, pState, pCurrentPos);
         return pState;
     }
     @Override
+    @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         switch(state.getValue(FACING)){
             case NORTH, SOUTH -> { return Block.box(2, 2, 0, 14, 14, 16);}
@@ -123,6 +126,7 @@ public class TransporterBlock extends Block implements IWrenchable, IBE<Transpor
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
         if (worldIn.isClientSide)
             return;
@@ -175,10 +179,12 @@ public class TransporterBlock extends Block implements IWrenchable, IBE<Transpor
     }
 
     @Override
-    protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
+    @SuppressWarnings("deprecation")
+    public boolean isPathfindable(BlockState state, BlockGetter blockGetter, BlockPos blockPos, PathComputationType pathComputationType) {
         return false;
     }
     @Override
+    @SuppressWarnings("deprecation")
     public BlockState rotate(BlockState state, Rotation rot) {
         return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
     }
@@ -188,4 +194,8 @@ public class TransporterBlock extends Block implements IWrenchable, IBE<Transpor
         return state.rotate(mirrorIn.getRotation(state.getValue(FACING)));
     }
 
+    @Override
+    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+        return getBlockEntityType().create(blockPos, blockState);
+    }
 }
