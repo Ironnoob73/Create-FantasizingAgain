@@ -4,7 +4,7 @@
   "category": "tool",
   "key": {
     "#": {
-      "tag": "c:plates/obsidian"
+      "tag": "forge:plates/obsidian"
     },
     "*": {
       "item": "create:precision_mechanism"
@@ -19,7 +19,7 @@
       "item": "create:andesite_alloy"
     },
     "B": {
-      "tag": "c:ingots/brass"
+      "tag": "forge:ingots/brass"
     }
   },
   "pattern": [
@@ -28,6 +28,6 @@
   ],
   "result": {
     "count": 1,
-    "id": "create_fantasizing:block_placer"
+    "item": "create_fantasizing:block_placer"
   }
 }

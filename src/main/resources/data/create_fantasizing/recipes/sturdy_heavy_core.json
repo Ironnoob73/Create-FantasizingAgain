@@ -1,0 +1,16 @@
+{
+  "type": "create:deploying",
+  "ingredients": [
+    {
+      "tag": "forge:plates/obsidian"
+    },
+    {
+      "item": "minecraft:netherite_ingot"
+    }
+  ],
+  "results": [
+    {
+      "item": "create_fantasizing:sturdy_heavy_core"
+    }
+  ]
+}

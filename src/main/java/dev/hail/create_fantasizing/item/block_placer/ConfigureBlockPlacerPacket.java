@@ -3,6 +3,7 @@ package dev.hail.create_fantasizing.item.block_placer;
 import com.simibubi.create.content.equipment.zapper.ConfigureZapperPacket;
 import com.simibubi.create.content.equipment.zapper.PlacementPatterns;
 import com.simibubi.create.content.equipment.zapper.terrainzapper.PlacementOptions;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 
@@ -24,6 +25,27 @@ public class ConfigureBlockPlacerPacket extends ConfigureZapperPacket {
         this.brushParamZ = brushParamZ;
         this.tool = tool;
         this.placement = placement;
+    }
+
+    public ConfigureBlockPlacerPacket(FriendlyByteBuf buffer) {
+        super(buffer);
+        brush = buffer.readEnum(BlockPlacerBrushes.class);
+        brushParamX = buffer.readVarInt();
+        brushParamY = buffer.readVarInt();
+        brushParamZ = buffer.readVarInt();
+        tool = buffer.readEnum(BlockPlacerTools.class);
+        placement = buffer.readEnum(PlacementOptions.class);
+    }
+
+    @Override
+    public void write(FriendlyByteBuf buffer) {
+        super.write(buffer);
+        buffer.writeEnum(brush);
+        buffer.writeVarInt(brushParamX);
+        buffer.writeVarInt(brushParamY);
+        buffer.writeVarInt(brushParamZ);
+        buffer.writeEnum(tool);
+        buffer.writeEnum(placement);
     }
 
     @Override

@@ -32,7 +32,7 @@ public class TreeCutterItem extends AxeItem {
     protected Level level;
     protected BlockPos worldPosition;
     public TreeCutterItem(Properties properties) {
-        super(STURDY,9,-9,properties);
+        super(STURDY,0,-3,properties);
     }
     public static final Tier STURDY = new Tier() {
         @Override public int getUses() {return 2048;}

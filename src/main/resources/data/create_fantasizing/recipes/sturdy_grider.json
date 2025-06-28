@@ -3,8 +3,6 @@
   "ingredient": {
     "item": "create:railway_casing"
   },
-  "result": {
-    "count": 8,
-    "id": "create_fantasizing:sturdy_girder"
-  }
+  "count": 8,
+  "result": "create_fantasizing:sturdy_girder"
 }

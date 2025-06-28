@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "C": {
-      "tag": "c:gems/prismarine"
+      "tag": "forge:gems/prismarine"
     },
     "S": {
       "item": "minecraft:prismarine_shard"
@@ -16,6 +16,6 @@
   ],
   "result": {
     "count": 1,
-    "id": "create_fantasizing:prismarine_fan_blades"
+    "item": "create_fantasizing:prismarine_fan_blades"
   }
 }

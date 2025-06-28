@@ -7,6 +7,7 @@ import com.simibubi.create.foundation.gui.AllGuiTextures;
 import com.simibubi.create.foundation.gui.AllIcons;
 import com.simibubi.create.foundation.gui.widget.*;
 import com.simibubi.create.foundation.utility.CreateLang;
+import dev.hail.create_fantasizing.event.CFAPackets;
 import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
@@ -256,4 +257,10 @@ public class BlockPlacerScreen extends ZapperScreen {
         return new ConfigureBlockPlacerPacket(hand, currentPattern, currentBrush, brushParamX, brushParamY, brushParamZ, currentTool, currentPlacement);
     }
 
+    @Override
+    public void removed() {
+        ConfigureZapperPacket packet = getConfigurationPacket();
+        packet.configureZapper(zapper);
+        CFAPackets.getChannel().sendToServer(packet);
+    }
 }

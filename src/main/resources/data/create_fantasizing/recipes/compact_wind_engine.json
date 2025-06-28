@@ -6,7 +6,7 @@
   "loops": 128,
   "results": [
     {
-      "id": "create_fantasizing:compact_wind_engine"
+      "item": "create_fantasizing:compact_wind_engine"
     }
   ],
   "sequence": [
@@ -24,7 +24,7 @@
       ],
       "results": [
         {
-          "id": "create_fantasizing:incomplete_compact_wind_engine"
+          "item": "create_fantasizing:incomplete_compact_wind_engine"
         }
       ]
     },
@@ -36,18 +36,36 @@
         },
         [
           {
-            "item": "minecraft:wind_charge"
+            "item": "minecraft:snowball"
           }
         ]
       ],
       "results": [
         {
-          "id": "create_fantasizing:incomplete_compact_wind_engine"
+          "item": "create_fantasizing:incomplete_compact_wind_engine"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:incomplete_compact_wind_engine"
+        },
+        [
+          {
+            "item": "minecraft:blaze_powder"
+          }
+        ]
+      ],
+      "results": [
+        {
+          "item": "create_fantasizing:incomplete_compact_wind_engine"
         }
       ]
     }
   ],
-  "transitional_item": {
-    "id": "create_fantasizing:incomplete_compact_wind_engine"
+  "transitionalItem": {
+    "item": "create_fantasizing:incomplete_compact_wind_engine"
   }
 }

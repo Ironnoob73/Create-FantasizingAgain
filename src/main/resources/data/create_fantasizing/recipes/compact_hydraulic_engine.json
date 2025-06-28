@@ -6,7 +6,7 @@
   "loops": 128,
   "results": [
     {
-      "id": "create_fantasizing:compact_hydraulic_engine"
+      "item": "create_fantasizing:compact_hydraulic_engine"
     }
   ],
   "sequence": [
@@ -24,7 +24,7 @@
       ],
       "results": [
         {
-          "id": "create_fantasizing:incomplete_compact_hydraulic_engine"
+          "item": "create_fantasizing:incomplete_compact_hydraulic_engine"
         }
       ]
     },
@@ -42,12 +42,12 @@
       ],
       "results": [
         {
-          "id": "create_fantasizing:incomplete_compact_hydraulic_engine"
+          "item": "create_fantasizing:incomplete_compact_hydraulic_engine"
         }
       ]
     }
   ],
-  "transitional_item": {
-    "id": "create_fantasizing:incomplete_compact_hydraulic_engine"
+  "transitionalItem": {
+    "item": "create_fantasizing:incomplete_compact_hydraulic_engine"
   }
 }

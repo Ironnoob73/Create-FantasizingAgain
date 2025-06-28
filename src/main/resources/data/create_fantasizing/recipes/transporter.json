@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "create:electron_tube"
+    },
+    "A": {
+      "tag": "forge:ingots/brass"
+    },
+    "S": {
+      "item": "minecraft:snowball"
+    },
+    "B": {
+      "item": "minecraft:blaze_powder"
+    }
+  },
+  "pattern": ["ES","BA"],
+  "result": {
+    "item": "create_fantasizing:transporter"
+  },
+  "show_notification": true
+}
