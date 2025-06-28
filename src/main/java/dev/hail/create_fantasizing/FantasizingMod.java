@@ -3,6 +3,7 @@ package dev.hail.create_fantasizing;
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import dev.hail.create_fantasizing.block.CFABlocks;
+import dev.hail.create_fantasizing.event.CFAPackets;
 import dev.hail.create_fantasizing.item.CFAItems;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -15,6 +16,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
 @Mod(FantasizingMod.MOD_ID)
@@ -25,8 +27,10 @@ public class FantasizingMod
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MOD_ID)
             .defaultCreativeTab((ResourceKey<CreativeModeTab>) null);
 
-    public FantasizingMod(IEventBus modEventBus)
-    {
+    @SuppressWarnings("removal")
+    public FantasizingMod() {
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
         REGISTRATE.registerEventListeners(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
@@ -35,6 +39,8 @@ public class FantasizingMod
         CFABlocks.init();
         CFAItems.init();
         CFACreativeTab.init(modEventBus);
+
+        CFAPackets.registerPackets();
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
