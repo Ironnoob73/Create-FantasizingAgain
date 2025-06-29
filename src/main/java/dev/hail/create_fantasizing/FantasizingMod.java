@@ -1,8 +1,10 @@
 package dev.hail.create_fantasizing;
 
 import com.mojang.logging.LogUtils;
+import com.simibubi.create.CreateClient;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import dev.hail.create_fantasizing.block.CFABlocks;
+import dev.hail.create_fantasizing.block.transporter.TransporterEntity;
 import dev.hail.create_fantasizing.event.CFAPackets;
 import dev.hail.create_fantasizing.item.CFAItems;
 import net.minecraft.resources.ResourceKey;
@@ -13,6 +15,7 @@ import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -34,20 +37,18 @@ public class FantasizingMod
         REGISTRATE.registerEventListeners(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
-        modEventBus.addListener(this::registerCapabilities);
         REGISTRATE.setCreativeTab(CFACreativeTab.TAB);
         CFABlocks.init();
         CFAItems.init();
         CFACreativeTab.init(modEventBus);
 
         CFAPackets.registerPackets();
+
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> new CFAClient(modEventBus));
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
-    }
-    private void registerCapabilities(RegisterCapabilitiesEvent event) {
-        //TransporterEntity.registerCapabilities(event);
     }
 
     @SubscribeEvent

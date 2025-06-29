@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ConnectedSturdyGirderModel extends CTModel {
-    protected static final ModelProperty<ConnectedSturdyGirderModel.ConnectionData> CONNECTION_PROPERTY = new ModelProperty<>();
+    protected static final ModelProperty<ConnectionData> CONNECTION_PROPERTY = new ModelProperty<>();
     public ConnectedSturdyGirderModel(BakedModel originalModel) {
         super(originalModel, new SturdyGirderCTBehavior());
     }
@@ -28,7 +28,7 @@ public class ConnectedSturdyGirderModel extends CTModel {
     protected ModelData.Builder gatherModelData(ModelData.Builder builder, BlockAndTintGetter world, BlockPos pos, BlockState state,
                                                 ModelData blockEntityData) {
         super.gatherModelData(builder, world, pos, state, blockEntityData);
-        ConnectedSturdyGirderModel.ConnectionData connectionData = new ConnectedSturdyGirderModel.ConnectionData();
+        ConnectionData connectionData = new ConnectionData();
         for (Direction d : Iterate.horizontalDirections)
             connectionData.setConnected(d, GirderBlock.isConnected(world, pos, state, d));
         return builder.with(CONNECTION_PROPERTY, connectionData);
@@ -40,7 +40,7 @@ public class ConnectedSturdyGirderModel extends CTModel {
         if (side != null || !extraData.has(CONNECTION_PROPERTY))
             return superQuads;
         List<BakedQuad> quads = new ArrayList<>(superQuads);
-        ConnectedSturdyGirderModel.ConnectionData data = extraData.get(CONNECTION_PROPERTY);
+        ConnectionData data = extraData.get(CONNECTION_PROPERTY);
         for (Direction d : Iterate.horizontalDirections)
             if (data.isConnected(d))
                 quads.addAll(CFAPartialModels.STURDY_METAL_GIRDER_BRACKETS.get(d)

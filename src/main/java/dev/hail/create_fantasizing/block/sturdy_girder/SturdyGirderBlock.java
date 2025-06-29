@@ -32,7 +32,6 @@ public class SturdyGirderBlock extends GirderBlock {
         super(properties);
     }
     @Override
-    @SuppressWarnings("deprecation")
     public @NotNull InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         ItemStack stack = player.getItemInHand(hand);
         if (AllBlocks.SHAFT.isIn(stack)) {

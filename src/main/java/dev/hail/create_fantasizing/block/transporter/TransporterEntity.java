@@ -22,11 +22,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -35,26 +36,26 @@ import java.util.function.Predicate;
 public class TransporterEntity extends SmartBlockEntity{
     ItemStack item;
     TransporterItemHandler itemHandler;
+    LazyOptional<IItemHandler> lazyHandler;
     boolean canPickUpItems;
 
     private FilteringBehaviour filtering;
     private VersionedInventoryTrackerBehaviour invVersionTracker;
     LerpedFloat flap;
-    //private final EnumMap<Direction, BlockCapabilityCache<IItemHandler, @Nullable Direction>> capCaches = new EnumMap<>(Direction.class);
 
     public TransporterEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         item = ItemStack.EMPTY;
         itemHandler = new TransporterItemHandler(this);
+        lazyHandler = LazyOptional.of(() -> itemHandler);
         canPickUpItems = false;
         flap = createChasingFlap();
     }
-    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-        event.register(
-                ForgeCapabilities.ITEM_HANDLER,
-                CFABlocks.TRANSPORTER_ENTITY.get(),
-                (be, context) -> be.ITEM_HANDLER
-        );
+    @Override
+    public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+        if (cap == ForgeCapabilities.ITEM_HANDLER)
+            return lazyHandler.cast();
+        return super.getCapability(cap, side);
     }
     @Override
     public void tick() {
