@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -48,13 +49,13 @@ public class TransporterEntity extends SmartBlockEntity{
         canPickUpItems = false;
         flap = createChasingFlap();
     }
-    /*public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.register(
                 ForgeCapabilities.ITEM_HANDLER,
                 CFABlocks.TRANSPORTER_ENTITY.get(),
                 (be, context) -> be.ITEM_HANDLER
         );
-    }*/
+    }
     @Override
     public void tick() {
         super.tick();

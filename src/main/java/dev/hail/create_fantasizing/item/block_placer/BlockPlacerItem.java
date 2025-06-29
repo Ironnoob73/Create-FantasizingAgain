@@ -11,6 +11,7 @@ import com.simibubi.create.content.equipment.zapper.terrainzapper.PlacementOptio
 import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
 import com.simibubi.create.foundation.utility.BlockHelper;
 import com.simibubi.create.foundation.utility.CreateLang;
+import dev.hail.create_fantasizing.FantasizingMod;
 import net.createmod.catnip.gui.ScreenOpener;
 import net.createmod.catnip.nbt.NBTHelper;
 import net.createmod.catnip.platform.CatnipServices;
@@ -27,6 +28,8 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -155,8 +158,8 @@ public class BlockPlacerItem extends ZapperItem {
             if (stateToUse != null) {
                 invAmount = BlockPlacerTools.calculateItemsInInventory(stateToUse.getBlock(), true, player);
                 int selSize = activateCalculation(pLevel, player, pStack, stateToUse, raytrace);
-                if (!nbt.contains("block_amount") || (nbt.getInt("block_amount") != invAmount)) nbt.putInt("block_amount", invAmount);
-                if (!nbt.contains("place_size") || (nbt.getInt("place_size") != selSize)) nbt.putInt("place_size", selSize);
+                if (!nbt.contains("Amount") || (nbt.getInt("Amount") != invAmount)) nbt.putInt("Amount", invAmount);
+                if (!nbt.contains("Size") || (nbt.getInt("Size") != selSize)) nbt.putInt("Size", selSize);
             }
         }
     }
@@ -210,7 +213,7 @@ public class BlockPlacerItem extends ZapperItem {
                 ShootableGadgetItemMethods.applyCooldown(player, item, hand, this::isZapper, Math.max(cooldown, 5));
                 ShootableGadgetItemMethods.sendPackets(player, b -> new ZapperBeamPacket(barrelPos, raytrace.getLocation(), hand, b));
                 return new InteractionResultHolder<>(InteractionResult.SUCCESS, item);
-            }  else return super.use(level, player, hand);
+            } else return super.use(level, player, hand);
         }
     }
     public float sizeMultiplier(BlockPos params, BPBrush brush) {
@@ -248,5 +251,11 @@ public class BlockPlacerItem extends ZapperItem {
         nbt.put(SHAPER_BRUSH_PARAMS, NbtUtils.writeBlockPos(new BlockPos(brushParamX, brushParamY, brushParamZ)));
         NBTHelper.writeEnum(nbt, SHAPER_TOOL, tool);
         NBTHelper.writeEnum(nbt, SHAPER_PLACEMENT, placement);
+    }
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        if (enchantment == Enchantments.SILK_TOUCH || enchantment == Enchantments.BLOCK_FORTUNE)
+            return true;
+        return super.canApplyAtEnchantingTable(stack, enchantment);
     }
 }
