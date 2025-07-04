@@ -13,5 +13,10 @@
   "block.create_fantasizing.transporter": "运输器",
   "item.create_fantasizing.prismarine_fan_blades": "海晶扇叶",
   "item.create_fantasizing.sturdy_conduit": "坚固潮涌核心",
-  "item.create_fantasizing.sturdy_heavy_core": "坚固沉重核心"
+  "item.create_fantasizing.sturdy_heavy_core": "坚固沉重核心",
+
+  "create_fantasizing.configuration.hydraulic_engine_stress_provide": "水力引擎应力提供",
+  "create_fantasizing.configuration.hydraulic_engine_stress_provide.tooltip": "\u00A7e需要重新进入存档",
+  "create_fantasizing.configuration.wind_engine_stress_provide": "风力引擎应力提供",
+  "create_fantasizing.configuration.wind_engine_stress_provide.tooltip": "\u00A7e需要重新进入存档"
 }

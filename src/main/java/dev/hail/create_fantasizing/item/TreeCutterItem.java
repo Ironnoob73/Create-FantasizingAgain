@@ -50,7 +50,7 @@ public class TreeCutterItem extends AxeItem {
     }
     @Override
     public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity miningEntity) {
-        if(state.is(BlockTags.LOGS)){
+        if(state.is(BlockTags.LOGS) && !miningEntity.isCrouching()){
             this.level = level;
             this.breakingPos = pos;
             this.worldPosition = pos;

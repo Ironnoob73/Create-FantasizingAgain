@@ -13,11 +13,15 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.client.gui.ConfigurationScreen;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import org.slf4j.Logger;
 
@@ -46,6 +50,7 @@ public class FantasizingMod
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
+        ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.SERVER, CFAConfig.SPEC_S);
     }
     private void registerCapabilities(RegisterCapabilitiesEvent event) {
         TransporterEntity.registerCapabilities(event);
@@ -62,6 +67,7 @@ public class FantasizingMod
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {
+            ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> ConfigurationScreen::new);
         }
     }
     public static ResourceLocation resourceLocation(String path) {

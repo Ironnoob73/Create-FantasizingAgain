@@ -17,6 +17,7 @@ import net.createmod.catnip.gui.ScreenOpener;
 import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -25,6 +26,8 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -63,6 +66,12 @@ public class BlockPlacerItem extends ZapperItem {
     }
     public boolean isEnchantable(@NotNull ItemStack itemstack) {
         return true;
+    }
+    @Override
+    public boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
+        if (enchantment.is(Enchantments.FLAME) || enchantment.is(Enchantments.POWER) || enchantment.is(Enchantments.PUNCH))
+            return false;
+        return super.supportsEnchantment(stack, enchantment);
     }
     @Override
     @SuppressWarnings("deprecation")
@@ -144,7 +153,8 @@ public class BlockPlacerItem extends ZapperItem {
 
             int invAmount;
             if (stateToUse != null) {
-                invAmount = BlockPlacerTools.calculateItemsInInventory(stateToUse.getBlock(), true, player);
+                invAmount = BlockPlacerTools.calculateItemsInInventory(stateToUse.getBlock(), true, player,
+                        pStack.getEnchantmentLevel(pLevel.holderOrThrow(Enchantments.INFINITY)) >= 1);
                 int selSize = activateCalculation(pLevel, player, pStack, stateToUse, raytrace);
                 if (!pStack.has(CFADataComponents.BLOCK_AMOUNT) || (pStack.get(CFADataComponents.BLOCK_AMOUNT) != invAmount))
                     pStack.set(CFADataComponents.BLOCK_AMOUNT, invAmount);
