@@ -46,6 +46,7 @@ public class FantasizingMod
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
+        ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.SERVER, CFAConfig.SPEC_S);
     }
 
     @SubscribeEvent
@@ -59,6 +60,7 @@ public class FantasizingMod
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {
+            ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> ConfigurationScreen::new);
         }
     }
     public static ResourceLocation resourceLocation(String path) {

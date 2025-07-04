@@ -73,6 +73,12 @@ public class BlockPlacerItem extends ZapperItem {
         return true;
     }
     @Override
+    public boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
+        if (enchantment.is(Enchantments.FLAME) || enchantment.is(Enchantments.POWER) || enchantment.is(Enchantments.PUNCH))
+            return false;
+        return super.supportsEnchantment(stack, enchantment);
+    }
+    @Override
     @SuppressWarnings("deprecation")
     public int getEnchantmentValue() {
         return 1;
@@ -156,7 +162,8 @@ public class BlockPlacerItem extends ZapperItem {
 
             int invAmount;
             if (stateToUse != null) {
-                invAmount = BlockPlacerTools.calculateItemsInInventory(stateToUse.getBlock(), true, player);
+                invAmount = BlockPlacerTools.calculateItemsInInventory(stateToUse.getBlock(), true, player,
+                        pStack.getEnchantmentLevel(pLevel.holderOrThrow(Enchantments.INFINITY)) >= 1);
                 int selSize = activateCalculation(pLevel, player, pStack, stateToUse, raytrace);
                 if (!nbt.contains("Amount") || (nbt.getInt("Amount") != invAmount)) nbt.putInt("Amount", invAmount);
                 if (!nbt.contains("Size") || (nbt.getInt("Size") != selSize)) nbt.putInt("Size", selSize);

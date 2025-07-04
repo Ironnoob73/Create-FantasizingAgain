@@ -159,7 +159,8 @@ public enum BlockPlacerTools implements StringRepresentable {
         Block paintBlock = paintState.getBlock();
         boolean creative = player.isCreative();
         if (!creative && !paintState.isAir() && !hasItemInInventory(paintBlock, player)) return;
-        if (!creative && !paintState.isAir()) calculateItemsInInventory(paintBlock, false, player);
+        if (!creative && !paintState.isAir()) calculateItemsInInventory(paintBlock, false, player,
+                stack.getEnchantmentLevel(pLevel.holderOrThrow(Enchantments.INFINITY)) >= 1);
 
         dropResources(replaceState, pLevel, replacePos, replaceState.hasBlockEntity() ? pLevel.getBlockEntity(replacePos) : null, player, stack);
         paintBlock.setPlacedBy(pLevel, replacePos, paintState, player, stack);
@@ -181,11 +182,12 @@ public enum BlockPlacerTools implements StringRepresentable {
         return false;
     }
 
-    public static int calculateItemsInInventory(Block paintBlock, boolean calculate, Player player) {
+    public static int calculateItemsInInventory(Block paintBlock, boolean calculate, Player player, boolean generator) {
         int amount = 0;
         var inv = player.getInventory();
         int size = inv.getContainerSize();
-        for (int slot = 0; slot < size; slot++) {
+        if (paintBlock.defaultBlockState().is(CFATags.RENEWABLE_BLOCKS) && generator) amount = size * 128;
+        else for (int slot = 0; slot < size; slot++) {
             var item = inv.getItem(slot);
             if (item.isEmpty())
                 continue;
