@@ -5,6 +5,7 @@ import com.simibubi.create.foundation.data.CreateRegistrate;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import dev.hail.create_fantasizing.event.CFAPackets;
 import dev.hail.create_fantasizing.item.CFAItems;
+import net.createmod.catnip.config.ui.BaseConfigScreen;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
@@ -13,7 +14,9 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -31,6 +34,8 @@ public class FantasizingMod
     public FantasizingMod() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, CFAConfig.SPEC_S);
+
         REGISTRATE.registerEventListeners(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
@@ -46,7 +51,6 @@ public class FantasizingMod
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
-        ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.SERVER, CFAConfig.SPEC_S);
     }
 
     @SubscribeEvent
@@ -60,7 +64,9 @@ public class FantasizingMod
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {
-            ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> ConfigurationScreen::new);
+            BaseConfigScreen.setDefaultActionFor(MOD_ID, screen -> screen
+                    .withButtonLabels(null, null, "Gameplay Settings")
+                    .withSpecs(null, null, CFAConfig.SPEC_S));
         }
     }
     public static ResourceLocation resourceLocation(String path) {

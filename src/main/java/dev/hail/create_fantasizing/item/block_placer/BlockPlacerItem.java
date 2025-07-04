@@ -11,7 +11,6 @@ import com.simibubi.create.content.equipment.zapper.terrainzapper.PlacementOptio
 import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
 import com.simibubi.create.foundation.utility.BlockHelper;
 import com.simibubi.create.foundation.utility.CreateLang;
-import dev.hail.create_fantasizing.FantasizingMod;
 import net.createmod.catnip.gui.ScreenOpener;
 import net.createmod.catnip.nbt.NBTHelper;
 import net.createmod.catnip.platform.CatnipServices;
@@ -73,10 +72,10 @@ public class BlockPlacerItem extends ZapperItem {
         return true;
     }
     @Override
-    public boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
-        if (enchantment.is(Enchantments.FLAME) || enchantment.is(Enchantments.POWER) || enchantment.is(Enchantments.PUNCH))
-            return false;
-        return super.supportsEnchantment(stack, enchantment);
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        if (enchantment == Enchantments.SILK_TOUCH || enchantment == Enchantments.BLOCK_FORTUNE || enchantment == Enchantments.INFINITY_ARROWS)
+            return true;
+        return super.canApplyAtEnchantingTable(stack, enchantment);
     }
     @Override
     @SuppressWarnings("deprecation")
@@ -163,7 +162,7 @@ public class BlockPlacerItem extends ZapperItem {
             int invAmount;
             if (stateToUse != null) {
                 invAmount = BlockPlacerTools.calculateItemsInInventory(stateToUse.getBlock(), true, player,
-                        pStack.getEnchantmentLevel(pLevel.holderOrThrow(Enchantments.INFINITY)) >= 1);
+                        pStack.getEnchantmentLevel(Enchantments.INFINITY_ARROWS) >= 1);
                 int selSize = activateCalculation(pLevel, player, pStack, stateToUse, raytrace);
                 if (!nbt.contains("Amount") || (nbt.getInt("Amount") != invAmount)) nbt.putInt("Amount", invAmount);
                 if (!nbt.contains("Size") || (nbt.getInt("Size") != selSize)) nbt.putInt("Size", selSize);
@@ -258,11 +257,5 @@ public class BlockPlacerItem extends ZapperItem {
         nbt.put(SHAPER_BRUSH_PARAMS, NbtUtils.writeBlockPos(new BlockPos(brushParamX, brushParamY, brushParamZ)));
         NBTHelper.writeEnum(nbt, SHAPER_TOOL, tool);
         NBTHelper.writeEnum(nbt, SHAPER_PLACEMENT, placement);
-    }
-    @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        if (enchantment == Enchantments.SILK_TOUCH || enchantment == Enchantments.BLOCK_FORTUNE)
-            return true;
-        return super.canApplyAtEnchantingTable(stack, enchantment);
     }
 }

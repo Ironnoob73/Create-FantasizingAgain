@@ -4,6 +4,7 @@ import com.simibubi.create.AllTags;
 import com.simibubi.create.content.equipment.zapper.PlacementPatterns;
 import com.simibubi.create.content.equipment.zapper.ZapperItem;
 import com.simibubi.create.foundation.gui.AllIcons;
+import dev.hail.create_fantasizing.data.CFATags;
 import net.createmod.catnip.lang.Lang;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
@@ -160,7 +161,7 @@ public enum BlockPlacerTools implements StringRepresentable {
         boolean creative = player.isCreative();
         if (!creative && !paintState.isAir() && !hasItemInInventory(paintBlock, player)) return;
         if (!creative && !paintState.isAir()) calculateItemsInInventory(paintBlock, false, player,
-                stack.getEnchantmentLevel(pLevel.holderOrThrow(Enchantments.INFINITY)) >= 1);
+                stack.getEnchantmentLevel(Enchantments.INFINITY_ARROWS) >= 1);
 
         dropResources(replaceState, pLevel, replacePos, replaceState.hasBlockEntity() ? pLevel.getBlockEntity(replacePos) : null, player, stack);
         paintBlock.setPlacedBy(pLevel, replacePos, paintState, player, stack);

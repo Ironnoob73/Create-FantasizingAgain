@@ -1,19 +1,19 @@
 package dev.hail.create_fantasizing;
 
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.event.config.ModConfigEvent;
-import net.neoforged.neoforge.common.ModConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 
-@EventBusSubscriber(modid = FantasizingMod.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CFAConfig {
-    private static final ModConfigSpec.Builder BUILDER_S = new ModConfigSpec.Builder();
+    private static final ForgeConfigSpec.Builder BUILDER_S = new ForgeConfigSpec.Builder();
 
-    private static final ModConfigSpec.DoubleValue HYDRAULIC_ENGINE_STRESS_PROVIDE = BUILDER_S
+    private static final ForgeConfigSpec.DoubleValue HYDRAULIC_ENGINE_STRESS_PROVIDE = BUILDER_S
             .defineInRange("hydraulic_engine_stress_provide", 8192, 0, Double.MAX_VALUE);
-    private static final ModConfigSpec.DoubleValue WIND_ENGINE_STRESS_PROVIDE = BUILDER_S
+    private static final ForgeConfigSpec.DoubleValue WIND_ENGINE_STRESS_PROVIDE = BUILDER_S
             .defineInRange("wind_engine_stress_provide", 8192, 0, Double.MAX_VALUE);
-    static final ModConfigSpec SPEC_S = BUILDER_S.build();
+    static final ForgeConfigSpec SPEC_S = BUILDER_S.build();
 
     public static double hydraulicEngineStressProvide;
     public static double windEngineStressProvide;

@@ -1,11 +1,5 @@
 package dev.hail.create_fantasizing.item.block_placer;
 
-import com.mojang.serialization.Codec;
-import io.netty.buffer.ByteBuf;
-import net.createmod.catnip.lang.Lang;
-import net.minecraft.util.StringRepresentable;
-import org.jetbrains.annotations.NotNull;
-
 public enum BlockPlacerBrushes {
     Cuboid(new BPCuboidBrush()),
     Sphere(new BPSphereBrush()),
