@@ -13,10 +13,13 @@ public class CFAConfig {
             .defineInRange("hydraulic_engine_stress_provide", 8192, 0, Double.MAX_VALUE);
     private static final ForgeConfigSpec.DoubleValue WIND_ENGINE_STRESS_PROVIDE = BUILDER_S
             .defineInRange("wind_engine_stress_provide", 8192, 0, Double.MAX_VALUE);
+    private static final ForgeConfigSpec.DoubleValue BLOCK_PLACER_POWER = BUILDER_S
+            .defineInRange("block_placer_power", 50, 0, Double.MAX_VALUE);
     static final ForgeConfigSpec SPEC_S = BUILDER_S.build();
 
     public static double hydraulicEngineStressProvide;
     public static double windEngineStressProvide;
+    public static double blockPlacerPower;
 
     @SubscribeEvent
     static void onLoad(final ModConfigEvent.Loading event)
@@ -24,6 +27,7 @@ public class CFAConfig {
         if (event.getConfig().getSpec() == SPEC_S) {
             hydraulicEngineStressProvide = HYDRAULIC_ENGINE_STRESS_PROVIDE.get();
             windEngineStressProvide = WIND_ENGINE_STRESS_PROVIDE.get();
+            blockPlacerPower = BLOCK_PLACER_POWER.get();
         }
     }
 }
