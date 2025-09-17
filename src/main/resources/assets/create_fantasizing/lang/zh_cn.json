@@ -18,5 +18,7 @@
   "create_fantasizing.configuration.hydraulic_engine_stress_provide": "水力引擎应力提供",
   "create_fantasizing.configuration.hydraulic_engine_stress_provide.tooltip": "\u00A7e需要重新进入存档",
   "create_fantasizing.configuration.wind_engine_stress_provide": "风力引擎应力提供",
-  "create_fantasizing.configuration.wind_engine_stress_provide.tooltip": "\u00A7e需要重新进入存档"
+  "create_fantasizing.configuration.wind_engine_stress_provide.tooltip": "\u00A7e需要重新进入存档",
+  "create_fantasizing.configuration.block_placer_power": "方块放置器威力",
+  "create_fantasizing.configuration.block_placer_power.tooltip": "\u00A7e需要重新进入存档"
 }

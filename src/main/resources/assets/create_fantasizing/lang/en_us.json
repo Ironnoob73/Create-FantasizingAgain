@@ -18,5 +18,7 @@
   "create_fantasizing.configuration.hydraulic_engine_stress_provide": "Hydraulic Engine Stress provide",
   "create_fantasizing.configuration.hydraulic_engine_stress_provide.tooltip": "\u00A7eNeed to re-enter the world",
   "create_fantasizing.configuration.wind_engine_stress_provide": "Wind Engine Stress provide",
-  "create_fantasizing.configuration.wind_engine_stress_provide.tooltip": "\u00A7eNeed to re-enter the world"
+  "create_fantasizing.configuration.wind_engine_stress_provide.tooltip": "\u00A7eNeed to re-enter the world",
+  "create_fantasizing.configuration.block_placer_power": "Block Placer's Power",
+  "create_fantasizing.configuration.block_placer_power.tooltip": "\u00A7eNeed to re-enter the world"
 }

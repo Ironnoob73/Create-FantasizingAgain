@@ -5,6 +5,7 @@ import com.simibubi.create.AllTags;
 import com.simibubi.create.content.equipment.zapper.PlacementPatterns;
 import com.simibubi.create.content.equipment.zapper.ZapperItem;
 import com.simibubi.create.foundation.gui.AllIcons;
+import dev.hail.create_fantasizing.CFAConfig;
 import dev.hail.create_fantasizing.data.CFATags;
 import io.netty.buffer.ByteBuf;
 import net.createmod.catnip.codecs.stream.CatnipStreamCodecBuilders;
@@ -212,10 +213,11 @@ public enum BlockPlacerTools implements StringRepresentable {
     public static boolean blacklist(BlockState toBlacklist) {
         return toBlacklist.is(AllTags.AllBlockTags.NON_MOVABLE.tag) || AllTags.AllBlockTags.SAFE_NBT.matches(toBlacklist) || toBlacklist.is(UNBREAKABLE_TAG);
     }
+    @SuppressWarnings("deprecation")
     public static int meetRequirements(Level pLevel, BlockState paintState, BlockPos replacePos, BlockState replaceState) {
         if (paintState == replaceState)
             return 8;
-        if (replaceState.getBlock().defaultDestroyTime() > 50 && !replaceState.isAir())
+        if (replaceState.getBlock().defaultDestroyTime() > CFAConfig.blockPlacerPower && !replaceState.isAir() && !replaceState.liquid())
             return 6;
         if (blacklist(replaceState))
             return 4;
