@@ -99,6 +99,7 @@ public class BlockPlacerItem extends ZapperItem {
 
         BPBrush brush = stack.getOrDefault(CFADataComponents.SHAPER_BRUSH, BlockPlacerBrushes.Cuboid).get();
         BlockPos params = stack.get(AllDataComponents.SHAPER_BRUSH_PARAMS);
+        boolean destroyMode = Boolean.TRUE.equals(stack.get(CFADataComponents.DESTROY_MODE));
         float multiplier = sizeMultiplier(params, brush);
         PlacementOptions option = stack.getOrDefault(AllDataComponents.SHAPER_PLACEMENT_OPTIONS, PlacementOptions.Merged);
         BlockPlacerTools tool = stack.getOrDefault(CFADataComponents.SHAPER_TOOL, BlockPlacerTools.Fill);
@@ -243,11 +244,14 @@ public class BlockPlacerItem extends ZapperItem {
         return 128;
     }
     public static void configureSettings(ItemStack stack, PlacementPatterns pattern, BlockPlacerBrushes brush,
-                                         int brushParamX, int brushParamY, int brushParamZ, BlockPlacerTools tool, PlacementOptions placement) {
+                                         int brushParamX, int brushParamY, int brushParamZ,
+                                         BlockPlacerTools tool, PlacementOptions placement, boolean destroyMode) {
         stack.set(AllDataComponents.PLACEMENT_PATTERN, pattern);
         stack.set(CFADataComponents.SHAPER_BRUSH, brush);
         stack.set(AllDataComponents.SHAPER_BRUSH_PARAMS, new BlockPos(brushParamX, brushParamY, brushParamZ));
         stack.set(CFADataComponents.SHAPER_TOOL, tool);
         stack.set(AllDataComponents.SHAPER_PLACEMENT_OPTIONS, placement);
+        stack.set(AllDataComponents.SHAPER_PLACEMENT_OPTIONS, placement);
+        stack.set(CFADataComponents.DESTROY_MODE, destroyMode);
     }
 }

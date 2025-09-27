@@ -20,6 +20,8 @@ public class CFADataComponents {
             "shaper_brush", builder -> builder.persistent(BlockPlacerBrushes.CODEC).networkSynchronized(BlockPlacerBrushes.STREAM_CODEC));
     public static final DataComponentType<BlockPlacerTools> SHAPER_TOOL = register(
             "shaper_tool", builder -> builder.persistent(BlockPlacerTools.CODEC).networkSynchronized(BlockPlacerTools.STREAM_CODEC));
+    public static final DataComponentType<Boolean> DESTROY_MODE = register(
+            "destroy_mode", builder -> builder.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
     public static final DataComponentType<Integer> BLOCK_AMOUNT = register(
             "block_amount", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
     public static final DataComponentType<Integer> PLACE_SIZE = register(
