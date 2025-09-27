@@ -104,6 +104,7 @@ public class BlockPlacerItem extends ZapperItem {
         CompoundTag tag = stack.getOrCreateTag();
         BPBrush brush = NBTHelper.readEnum(tag, SHAPER_BRUSH, BlockPlacerBrushes.class).get();
         BlockPos params = NbtUtils.readBlockPos(tag.getCompound(SHAPER_BRUSH_PARAMS));
+        boolean destroyMode = Boolean.TRUE.equals(stack.get(CFADataComponents.DESTROY_MODE));
         float multiplier = sizeMultiplier(params, brush);
         PlacementOptions option = NBTHelper.readEnum(tag, SHAPER_PLACEMENT, PlacementOptions.class);
         BlockPlacerTools tool = NBTHelper.readEnum(tag, SHAPER_TOOL, BlockPlacerTools.class);
@@ -257,5 +258,6 @@ public class BlockPlacerItem extends ZapperItem {
         nbt.put(SHAPER_BRUSH_PARAMS, NbtUtils.writeBlockPos(new BlockPos(brushParamX, brushParamY, brushParamZ)));
         NBTHelper.writeEnum(nbt, SHAPER_TOOL, tool);
         NBTHelper.writeEnum(nbt, SHAPER_PLACEMENT, placement);
+        stack.set(CFADataComponents.DESTROY_MODE, destroyMode);
     }
 }

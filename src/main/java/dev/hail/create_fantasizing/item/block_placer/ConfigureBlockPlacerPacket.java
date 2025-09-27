@@ -14,10 +14,11 @@ public class ConfigureBlockPlacerPacket extends ConfigureZapperPacket {
     private final int brushParamZ;
     private final BlockPlacerTools tool;
     private final PlacementOptions placement;
+    private final boolean destroyMode;
 
     public ConfigureBlockPlacerPacket(InteractionHand hand, PlacementPatterns pattern, BlockPlacerBrushes brush,
                                       int brushParamX, int brushParamY, int brushParamZ,
-                                      BlockPlacerTools tool, PlacementOptions placement) {
+                                      BlockPlacerTools tool, PlacementOptions placement, boolean currentDestroyMode) {
         super(hand, pattern);
         this.brush = brush;
         this.brushParamX = brushParamX;
@@ -25,6 +26,7 @@ public class ConfigureBlockPlacerPacket extends ConfigureZapperPacket {
         this.brushParamZ = brushParamZ;
         this.tool = tool;
         this.placement = placement;
+        this.destroyMode = currentDestroyMode;
     }
 
     public ConfigureBlockPlacerPacket(FriendlyByteBuf buffer) {
@@ -50,6 +52,6 @@ public class ConfigureBlockPlacerPacket extends ConfigureZapperPacket {
 
     @Override
     public void configureZapper(ItemStack stack) {
-        BlockPlacerItem.configureSettings(stack, pattern, brush, brushParamX, brushParamY, brushParamZ, tool, placement);
+        BlockPlacerItem.configureSettings(stack, pattern, brush, brushParamX, brushParamY, brushParamZ, tool, placement, destroyMode);
     }
 }
