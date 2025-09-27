@@ -3,12 +3,15 @@ package dev.hail.create_fantasizing.item.block_placer;
 import com.simibubi.create.AllDataComponents;
 import com.simibubi.create.content.equipment.zapper.ConfigureZapperPacket;
 import com.simibubi.create.content.equipment.zapper.ZapperScreen;
-import com.simibubi.create.content.equipment.zapper.terrainzapper.*;
+import com.simibubi.create.content.equipment.zapper.terrainzapper.PlacementOptions;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 import com.simibubi.create.foundation.gui.AllIcons;
 import com.simibubi.create.foundation.gui.widget.*;
 import com.simibubi.create.foundation.utility.CreateLang;
+import dev.hail.create_fantasizing.CFAGuiTextures;
+import dev.hail.create_fantasizing.FantasizingMod;
 import dev.hail.create_fantasizing.data.CFADataComponents;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.CommonComponents;
@@ -16,17 +19,23 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.VarHandle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class BlockPlacerScreen extends ZapperScreen {
 
+    protected CFAGuiTextures background;
     protected final Component placementSection = CreateLang.translateDirect("gui.terrainzapper.placement");
     protected final Component toolSection = CreateLang.translateDirect("gui.terrainzapper.tool");
+    protected Integer loreIndex = 0;
     protected final List<Component> brushOptions =
             CreateLang.translatedOptions("gui.terrainzapper.brush", "cuboid", "sphere", "cylinder", "surface", "cluster");
 
     protected List<IconButton> toolButtons;
+    protected List<IconButton> destroyButtons;
     protected List<IconButton> placementButtons;
 
     protected ScrollInput brushInput;
@@ -43,10 +52,29 @@ public class BlockPlacerScreen extends ZapperScreen {
     protected boolean currentFollowDiagonals;
     protected boolean currentAcrossMaterials;
     protected BlockPlacerTools currentTool;
+    protected boolean currentDestroyMode;
     protected PlacementOptions currentPlacement;
+
+    private static final VarHandle HANDLE = acquireVarHandle();
+
+    private static VarHandle acquireVarHandle() {
+        try {
+            MethodHandles.Lookup lookup = MethodHandles.lookup();
+            MethodHandles.Lookup promotedLookup = MethodHandles.privateLookupIn(ZapperScreen.class, lookup);
+            return promotedLookup.findVarHandle(
+                ZapperScreen.class,
+                "confirmButton",
+                IconButton.class
+            );
+        } catch (NoSuchFieldException | IllegalAccessException e){
+            throw new RuntimeException(e);
+        }
+    }
+
 
     public BlockPlacerScreen(ItemStack zapper, InteractionHand hand) {
         super(AllGuiTextures.TERRAINZAPPER, zapper, hand);
+        this.background = CFAGuiTextures.BLOCK_PLACER;
         fontColor = 0x767676;
         title = zapper.getHoverName();
 
@@ -69,10 +97,14 @@ public class BlockPlacerScreen extends ZapperScreen {
 
     @Override
     protected void init() {
+        loreIndex = new Random().nextInt(5);
+
         super.init();
 
         int x = guiLeft;
         int y = guiTop;
+
+        //removeWidgets((IconButton)HANDLE.get());
 
         brushLabel = new Label(x + 61, y + 25, CommonComponents.EMPTY).withShadow();
         brushInput = new SelectionScrollInput(x + 56, y + 20, 77, 18).forOptions(brushOptions)
@@ -89,6 +121,18 @@ public class BlockPlacerScreen extends ZapperScreen {
         addRenderableWidget(brushInput);
 
         initBrushParams(x, y);
+    }
+
+    @Override
+    protected void renderWindow(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+        int x = guiLeft;
+        int y = guiTop;
+
+        background.render(graphics, x, y);
+        drawOnBackground(graphics, x, y);
+
+        renderBlock(graphics, x, y);
+        renderZapper(graphics, x, y);
     }
 
     protected void initBrushParams(int x, int y) {
@@ -204,6 +248,35 @@ public class BlockPlacerScreen extends ZapperScreen {
 
         addRenderableWidgets(toolButtons);
 
+        // Destroy Mode
+
+        if (destroyButtons != null)
+            removeWidgets(destroyButtons);
+
+        destroyButtons = new ArrayList<>(1);
+
+        IconButton dropButton = new IconButton(x + 7, y + 117, CFAGuiTextures.DROP_BUTTON);
+        dropButton.withCallback(() -> {
+            destroyButtons.forEach(b -> b.green = false);
+            dropButton.green = true;
+            currentDestroyMode = false;
+        });
+        dropButton.setToolTip(Component.translatable(FantasizingMod.MOD_ID + ".gui.block_placer.destroy_mode.drop"));
+        destroyButtons.add(dropButton);
+
+        IconButton voidButton = new IconButton(x + 25, y + 117, CFAGuiTextures.VOID_BUTTON);
+        voidButton.withCallback(() -> {
+            destroyButtons.forEach(b -> b.green = false);
+            voidButton.green = true;
+            currentDestroyMode = true;
+        });
+        voidButton.setToolTip(Component.translatable(FantasizingMod.MOD_ID + ".gui.block_placer.destroy_mode.void"));
+        destroyButtons.add(voidButton);
+
+        destroyButtons.get(currentDestroyMode ? 0 : 1).green = true;
+
+        addRenderableWidgets(destroyButtons);
+
         // Placement Options
 
         if (placementButtons != null)
@@ -239,8 +312,16 @@ public class BlockPlacerScreen extends ZapperScreen {
             AllGuiTextures.TERRAINZAPPER_INACTIVE_PARAM.render(graphics, x + 56 + 20 * index, y + 40);
 
         graphics.drawString(font, toolSection, x + 7, y + 69, fontColor, false);
+        graphics.drawString(font,
+                Component.translatable(FantasizingMod.MOD_ID + ".gui.block_placer.destroy_mode"),
+                x + 7, y + 107, fontColor, false);
         if (currentBrush.hasPlacementOptions())
             graphics.drawString(font, placementSection, x + 136, y + 69, fontColor, false);
+        for (int i = 0; i <= 2; i++){
+            graphics.drawString(font,
+                    Component.translatable(FantasizingMod.MOD_ID + ".gui.block_placer.lore." + loreIndex + "." + i).withStyle(ChatFormatting.ITALIC),
+                    x + 80, y + 107 + ( i * 10 ), fontColor, false);
+        }
     }
 
     @Override
