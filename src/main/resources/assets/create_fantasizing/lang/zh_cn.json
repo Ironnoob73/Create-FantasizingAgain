@@ -15,6 +15,10 @@
   "item.create_fantasizing.sturdy_conduit": "坚固潮涌核心",
   "item.create_fantasizing.sturdy_heavy_core": "坚固沉重核心",
 
+  "create_fantasizing.gui.block_placer.destroy_mode": "破坏模式",
+  "create_fantasizing.gui.block_placer.destroy_mode.drop": "掉落至玩家",
+  "create_fantasizing.gui.block_placer.destroy_mode.void": "归于虚空",
+
   "create_fantasizing.configuration.hydraulic_engine_stress_provide": "水力引擎应力提供",
   "create_fantasizing.configuration.hydraulic_engine_stress_provide.tooltip": "\u00A7e需要重新进入存档",
   "create_fantasizing.configuration.wind_engine_stress_provide": "风力引擎应力提供",
