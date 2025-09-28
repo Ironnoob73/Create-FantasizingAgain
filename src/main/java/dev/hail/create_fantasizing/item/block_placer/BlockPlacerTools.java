@@ -221,7 +221,7 @@ public enum BlockPlacerTools implements StringRepresentable {
     }
 
     public static void dropResources(BlockState pState, Level pLevel, BlockPos pPos, @Nullable BlockEntity pBlockEntity, @Nullable Entity pEntity, ItemStack pTool) {
-        if (pLevel instanceof ServerLevel serverLevel && Boolean.TRUE.equals(pTool.getComponents().get(CFADataComponents.DESTROY_MODE))) {
+        if (pLevel instanceof ServerLevel serverLevel && !Boolean.TRUE.equals(pTool.getComponents().get(CFADataComponents.DESTROY_MODE))) {
             BlockPos dropPos;
             if (pEntity != null) dropPos = pEntity.getOnPos().above();
             else dropPos = pPos;
