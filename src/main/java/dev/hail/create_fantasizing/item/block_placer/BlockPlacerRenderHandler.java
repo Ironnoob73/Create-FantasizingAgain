@@ -6,6 +6,7 @@ import com.simibubi.create.content.equipment.zapper.terrainzapper.Brush;
 import com.simibubi.create.content.equipment.zapper.terrainzapper.PlacementOptions;
 import com.simibubi.create.content.equipment.zapper.terrainzapper.TerrainBrushes;
 import com.simibubi.create.content.equipment.zapper.terrainzapper.TerrainTools;
+import dev.hail.create_fantasizing.data.CFADataComponents;
 import dev.hail.create_fantasizing.item.CFAItems;
 import net.createmod.catnip.outliner.Outliner;
 import net.minecraft.client.Minecraft;
@@ -65,9 +66,9 @@ public class BlockPlacerRenderHandler {
             return;
         }
 
-        Brush brush = zapper.getOrDefault(AllDataComponents.SHAPER_BRUSH, TerrainBrushes.Cuboid).get();
+        BPBrush brush = zapper.getOrDefault(CFADataComponents.SHAPER_BRUSH, BlockPlacerBrushes.Cuboid).get();
         PlacementOptions placement = zapper.getOrDefault(AllDataComponents.SHAPER_PLACEMENT_OPTIONS, PlacementOptions.Merged);
-        TerrainTools tool = zapper.getOrDefault(AllDataComponents.SHAPER_TOOL, TerrainTools.Fill);
+        BlockPlacerTools tool = zapper.getOrDefault(CFADataComponents.SHAPER_TOOL, BlockPlacerTools.Fill);
         BlockPos params = zapper.get(AllDataComponents.SHAPER_BRUSH_PARAMS);
         brush.set(params.getX(), params.getY(), params.getZ());
 
