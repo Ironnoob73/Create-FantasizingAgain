@@ -165,7 +165,7 @@ public class BlockPlacerScreen extends ZapperScreen {
         }
 
         if (currentBrush.hasConnectivityOptions()) {
-            int x1 = x + 7 + 4 * 18;
+            int x1 = x + 100;
             int y1 = y + 79;
             followDiagonalsIndicator = new Indicator(x1, y1 - 6, CommonComponents.EMPTY);
             followDiagonals = new IconButton(x1, y1, AllIcons.I_FOLLOW_DIAGONAL);
