@@ -2,6 +2,9 @@ package dev.hail.create_fantasizing;
 
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.simibubi.create.foundation.item.ItemDescription;
+import com.simibubi.create.foundation.item.KineticStats;
+import com.simibubi.create.foundation.item.TooltipModifier;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import dev.hail.create_fantasizing.event.CFAPackets;
 import dev.hail.create_fantasizing.item.CFAItems;
@@ -28,7 +31,11 @@ public class FantasizingMod
     public static final String MOD_ID = "create_fantasizing";
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MOD_ID)
-            .defaultCreativeTab((ResourceKey<CreativeModeTab>) null);
+            .defaultCreativeTab((ResourceKey<CreativeModeTab>) null)
+            .setTooltipModifierFactory(item ->
+                    new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE)
+                            .andThen(TooltipModifier.mapNull(KineticStats.create(item)))
+            );
 
     @SuppressWarnings("removal")
     public FantasizingMod() {
