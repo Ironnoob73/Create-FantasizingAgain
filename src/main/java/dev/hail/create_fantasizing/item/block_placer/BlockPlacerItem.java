@@ -60,6 +60,7 @@ public class BlockPlacerItem extends ZapperItem {
     static final String SHAPER_BRUSH = "Brush"; //ENUM
     static final String SHAPER_TOOL = "Tool"; //ENUM
     static final String SHAPER_PLACEMENT = "Placement"; //ENUM
+    static final String DESTROY_MODE = "DestroyMode";
     public BlockPlacerItem(Properties properties) {
         super(properties);
     }
@@ -104,7 +105,7 @@ public class BlockPlacerItem extends ZapperItem {
         CompoundTag tag = stack.getOrCreateTag();
         BPBrush brush = NBTHelper.readEnum(tag, SHAPER_BRUSH, BlockPlacerBrushes.class).get();
         BlockPos params = NbtUtils.readBlockPos(tag.getCompound(SHAPER_BRUSH_PARAMS));
-        boolean destroyMode = Boolean.TRUE.equals(stack.get(CFADataComponents.DESTROY_MODE));
+        boolean destroyMode = tag.getBoolean(DESTROY_MODE);
         float multiplier = sizeMultiplier(params, brush);
         PlacementOptions option = NBTHelper.readEnum(tag, SHAPER_PLACEMENT, PlacementOptions.class);
         BlockPlacerTools tool = NBTHelper.readEnum(tag, SHAPER_TOOL, BlockPlacerTools.class);
@@ -251,13 +252,14 @@ public class BlockPlacerItem extends ZapperItem {
         return 128;
     }
     public static void configureSettings(ItemStack stack, PlacementPatterns pattern, BlockPlacerBrushes brush,
-                                         int brushParamX, int brushParamY, int brushParamZ, BlockPlacerTools tool, PlacementOptions placement) {
+                                         int brushParamX, int brushParamY, int brushParamZ,
+                                         BlockPlacerTools tool, PlacementOptions placement, boolean destroyMode) {
         ZapperItem.configureSettings(stack, pattern);
         CompoundTag nbt = stack.getOrCreateTag();
         NBTHelper.writeEnum(nbt, SHAPER_BRUSH, brush);
         nbt.put(SHAPER_BRUSH_PARAMS, NbtUtils.writeBlockPos(new BlockPos(brushParamX, brushParamY, brushParamZ)));
         NBTHelper.writeEnum(nbt, SHAPER_TOOL, tool);
         NBTHelper.writeEnum(nbt, SHAPER_PLACEMENT, placement);
-        stack.set(CFADataComponents.DESTROY_MODE, destroyMode);
+        nbt.putBoolean(DESTROY_MODE,destroyMode);
     }
 }

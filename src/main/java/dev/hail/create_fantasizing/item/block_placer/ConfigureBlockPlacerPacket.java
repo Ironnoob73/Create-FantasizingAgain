@@ -37,6 +37,7 @@ public class ConfigureBlockPlacerPacket extends ConfigureZapperPacket {
         brushParamZ = buffer.readVarInt();
         tool = buffer.readEnum(BlockPlacerTools.class);
         placement = buffer.readEnum(PlacementOptions.class);
+        destroyMode = buffer.readBoolean();
     }
 
     @Override
@@ -48,6 +49,7 @@ public class ConfigureBlockPlacerPacket extends ConfigureZapperPacket {
         buffer.writeVarInt(brushParamZ);
         buffer.writeEnum(tool);
         buffer.writeEnum(placement);
+        buffer.writeBoolean(destroyMode);
     }
 
     @Override

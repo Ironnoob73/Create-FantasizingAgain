@@ -9,7 +9,8 @@ import com.simibubi.create.foundation.gui.widget.*;
 import com.simibubi.create.foundation.utility.CreateLang;
 import dev.hail.create_fantasizing.CFAGuiTextures;
 import dev.hail.create_fantasizing.FantasizingMod;
-import dev.hail.create_fantasizing.data.CFADataComponents;
+import dev.hail.create_fantasizing.event.CFAPackets;
+import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -60,9 +61,9 @@ public class BlockPlacerScreen extends ZapperScreen {
         title = zapper.getHoverName();
 
         CompoundTag nbt = zapper.getOrCreateTag();
-        currentBrush = NBTHelper.readEnum(nbt, "Brush", BlockPlacerBrushes.class);
-        if (nbt.contains("BrushParams", Tag.TAG_COMPOUND)) {
-            BlockPos paramsData = NbtUtils.readBlockPos(nbt.getCompound("BrushParams"));
+        currentBrush = NBTHelper.readEnum(nbt, BlockPlacerItem.SHAPER_BRUSH, BlockPlacerBrushes.class);
+        if (nbt.contains(BlockPlacerItem.SHAPER_BRUSH_PARAMS, Tag.TAG_COMPOUND)) {
+            BlockPos paramsData = NbtUtils.readBlockPos(nbt.getCompound(BlockPlacerItem.SHAPER_BRUSH_PARAMS));
             currentBrushParams[0] = paramsData.getX();
             currentBrushParams[1] = paramsData.getY();
             currentBrushParams[2] = paramsData.getZ();
@@ -73,9 +74,9 @@ public class BlockPlacerScreen extends ZapperScreen {
                 currentAcrossMaterials = true;
             }
         }
-        currentTool = NBTHelper.readEnum(nbt, "Tool", BlockPlacerTools.class);
-        currentPlacement = NBTHelper.readEnum(nbt, "Placement", PlacementOptions.class);
-        currentDestroyMode = zapper.getOrDefault(CFADataComponents.DESTROY_MODE, true);
+        currentTool = NBTHelper.readEnum(nbt, BlockPlacerItem.SHAPER_TOOL, BlockPlacerTools.class);
+        currentPlacement = NBTHelper.readEnum(nbt, BlockPlacerItem.SHAPER_PLACEMENT, PlacementOptions.class);
+        currentDestroyMode = nbt.getBoolean(BlockPlacerItem.DESTROY_MODE);
     }
 
     @Override
