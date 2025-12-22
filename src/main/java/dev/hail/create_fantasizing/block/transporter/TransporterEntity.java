@@ -1,5 +1,6 @@
 package dev.hail.create_fantasizing.block.transporter;
 
+import com.simibubi.create.content.kinetics.belt.BeltHelper;
 import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
 import com.simibubi.create.content.logistics.chute.ChuteBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
@@ -40,6 +41,7 @@ public class TransporterEntity extends SmartBlockEntity{
     boolean canPickUpItems;
 
     private FilteringBehaviour filtering;
+    private InvManipulationBehaviour invManipulation;
     private VersionedInventoryTrackerBehaviour invVersionTracker;
     LerpedFloat flap;
     private final EnumMap<Direction, BlockCapabilityCache<IItemHandler, @Nullable Direction>> capCaches = new EnumMap<>(Direction.class);
@@ -121,6 +123,13 @@ public class TransporterEntity extends SmartBlockEntity{
         item = stack;
         invVersionTracker.reset();
     }
+
+    public int getAmountToExtract() {
+        int amountToExtract = invManipulation.getAmountFromFilter();
+        if (!filtering.isActive())
+            amountToExtract = 1;
+        return amountToExtract;
+    }
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
         InvManipulationBehaviour invManipulation = new InvManipulationBehaviour(this, (w, p, s) -> new BlockFace(p, s.getValue(TransporterBlock.FACING).getOpposite()));
@@ -129,6 +138,7 @@ public class TransporterEntity extends SmartBlockEntity{
         behaviours.add(invVersionTracker = new VersionedInventoryTrackerBehaviour(this));
 
         filtering = new FilteringBehaviour(this, new TransporterFilterSlotPositioning());
+        filtering.showCountWhen(this::supportsAmountOnFilter);
         filtering.withCallback($ -> invVersionTracker.reset());
         behaviours.add(filtering);
 
@@ -136,6 +146,10 @@ public class TransporterEntity extends SmartBlockEntity{
         behaviours.add(invVersionTracker = new VersionedInventoryTrackerBehaviour(this));
     }
 
+    private boolean supportsAmountOnFilter() {
+        BlockState blockState = getBlockState();
+        return blockState.getBlock() instanceof TransporterBlock;
+    }
     protected boolean canAcceptItem(ItemStack stack) {
         return item.isEmpty() && canActivate() && filtering.test(stack);
     }
@@ -143,8 +157,9 @@ public class TransporterEntity extends SmartBlockEntity{
         BlockState blockState = getBlockState();
         return blockState.hasProperty(TransporterBlock.POWERED) && !blockState.getValue(TransporterBlock.POWERED);
     }
+
     protected int getExtractionAmount() {
-        return filtering.isCountVisible() && !filtering.anyAmount() ? filtering.getAmount() : 64;
+        return filtering.isCountVisible() && !filtering.anyAmount() ? filtering.getAmount() : getAmountToExtract();
     }
     protected ItemHelper.ExtractionCountMode getExtractionMode() {
         return filtering.isCountVisible() && !filtering.anyAmount() && !filtering.upTo ? ItemHelper.ExtractionCountMode.EXACTLY

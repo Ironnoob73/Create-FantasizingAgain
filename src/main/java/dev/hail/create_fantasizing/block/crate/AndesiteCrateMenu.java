@@ -1,7 +1,5 @@
 package dev.hail.create_fantasizing.block.crate;
 
-import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import com.simibubi.create.foundation.blockEntity.behaviour.animatedContainer.AnimatedContainerBehaviour;
 import com.simibubi.create.foundation.gui.menu.MenuBase;
 import dev.hail.create_fantasizing.block.CFAMenus;
 import net.minecraft.client.Minecraft;
@@ -16,6 +14,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.items.SlotItemHandler;
 
+import java.util.Objects;
+
 public class AndesiteCrateMenu extends MenuBase<AndesiteCrateEntity> {
     public AndesiteCrateEntity be;
     public Inventory playerInventory;
@@ -24,11 +24,14 @@ public class AndesiteCrateMenu extends MenuBase<AndesiteCrateEntity> {
     public AndesiteCrateMenu(MenuType<?> type, int id, Inventory inv, FriendlyByteBuf extraData) {
         super(type, id, inv, extraData);
         ClientLevel world = Minecraft.getInstance().level;
-        BlockEntity blockEntity = world.getBlockEntity(extraData.readBlockPos());
+        BlockEntity blockEntity = null;
+        if (world != null) {
+            blockEntity = world.getBlockEntity(extraData.readBlockPos());
+        }
         this.playerInventory = inv;
         if (blockEntity instanceof AndesiteCrateEntity) {
             this.be = (AndesiteCrateEntity) blockEntity;
-            this.be.handleUpdateTag(extraData.readNbt());
+            this.be.handleUpdateTag(Objects.requireNonNull(extraData.readNbt()));
             init();
         }
     }
@@ -40,8 +43,8 @@ public class AndesiteCrateMenu extends MenuBase<AndesiteCrateEntity> {
         init();
     }
 
-    public static AndesiteCrateMenu create(int id, Inventory inv, AndesiteCrateEntity te) {
-        return new AndesiteCrateMenu(CFAMenus.CRATE.get(), id, inv, te);
+    public static AndesiteCrateMenu create(int id, Inventory inv, AndesiteCrateEntity be) {
+        return new AndesiteCrateMenu(CFAMenus.CRATE.get(), id, inv, be);
     }
 
     private void init() {
@@ -73,7 +76,10 @@ public class AndesiteCrateMenu extends MenuBase<AndesiteCrateEntity> {
     protected AndesiteCrateEntity createOnClient(FriendlyByteBuf extraData) {
         BlockPos readBlockPos = extraData.readBlockPos();
         ClientLevel world = Minecraft.getInstance().level;
-        BlockEntity blockEntity = world.getBlockEntity(readBlockPos);
+        BlockEntity blockEntity = null;
+        if (world != null) {
+            blockEntity = world.getBlockEntity(readBlockPos);
+        }
         if (blockEntity instanceof AndesiteCrateEntity ppbe)
             return ppbe;
         return null;
@@ -113,15 +119,15 @@ public class AndesiteCrateMenu extends MenuBase<AndesiteCrateEntity> {
     @Override
     protected void saveData(AndesiteCrateEntity contentHolder) {}
 
-    @Override
+    /*@Override
     public void removed(Player playerIn) {
         super.removed(playerIn);
         if (!playerIn.level().isClientSide)
             BlockEntityBehaviour.get(contentHolder, AnimatedContainerBehaviour.TYPE)
                     .stopOpen(playerIn);
-    }
-    @Override
+    }*/
+    /*@Override
     public boolean stillValid(Player player) {
         return be != null && be.canPlayerUse(player);
-    }
+    }*/
 }
