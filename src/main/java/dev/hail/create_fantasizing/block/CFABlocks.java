@@ -10,6 +10,8 @@ import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import dev.hail.create_fantasizing.block.compat_engine.*;
+import dev.hail.create_fantasizing.block.crate.AndesiteCrateBlock;
+import dev.hail.create_fantasizing.block.crate.AndesiteCrateEntity;
 import dev.hail.create_fantasizing.block.transporter.TransporterBlock;
 import dev.hail.create_fantasizing.block.transporter.TransporterEntity;
 import dev.hail.create_fantasizing.block.transporter.TransporterRenderer;
@@ -84,6 +86,16 @@ public class CFABlocks {
             .blockEntity("transporter", TransporterEntity::new)
             .validBlocks(TRANSPORTER)
             .renderer(() -> TransporterRenderer::new)
+            .register();
+
+    public static final BlockEntry<AndesiteCrateBlock> ANDESITE_CRATE = REGISTRATE.block("andesite_crate", AndesiteCrateBlock::new)
+            .initialProperties(SharedProperties::wooden)
+            .properties(p -> p.mapColor(MapColor.PODZOL))
+            .simpleItem()
+            .register();
+    public static final BlockEntityEntry<AndesiteCrateEntity> ANDESITE_CRATE_ENTITY = REGISTRATE
+            .blockEntity("andesite_crate", AndesiteCrateEntity::new)
+            .validBlocks(TRANSPORTER)
             .register();
 
     public static void init() {}

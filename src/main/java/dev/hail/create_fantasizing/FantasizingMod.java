@@ -6,9 +6,11 @@ import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
 import dev.hail.create_fantasizing.block.CFABlocks;
+import dev.hail.create_fantasizing.block.CFAMenus;
 import dev.hail.create_fantasizing.event.CFAPackets;
 import dev.hail.create_fantasizing.item.CFAItems;
 import net.createmod.catnip.config.ui.BaseConfigScreen;
+import net.createmod.catnip.lang.FontHelper;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
@@ -52,6 +54,7 @@ public class FantasizingMod
         CFACreativeTab.init(modEventBus);
 
         CFAPackets.registerPackets();
+        CFAMenus.register();
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> new CFAClient(modEventBus));
     }
