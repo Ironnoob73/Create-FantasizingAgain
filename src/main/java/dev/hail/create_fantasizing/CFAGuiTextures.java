@@ -9,8 +9,10 @@ import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 public enum CFAGuiTextures implements ScreenElement, TextureSheetSegment {
-    BLOCK_PLACER("block_placer", 234, 103)
-    ;
+    BLOCK_PLACER("block_placer", 234, 103),
+    CRATE("crate.png", 124, 127),
+    DOUBLE_CRATE("crate.png", 0, 127, 196, 127),
+    CRATE_LOCKED_SLOT("crate.png", 125, 109, 18, 18);
     public final ResourceLocation location;
     private final int width;
     private final int height;

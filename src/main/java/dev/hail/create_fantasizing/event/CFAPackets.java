@@ -13,6 +13,7 @@ import java.util.Locale;
 
 public enum CFAPackets implements BasePacketPayload.PacketTypeProvider {
     CONFIGURE_BLOCK_PLACER(ConfigureBlockPlacerPacket.class, ConfigureBlockPlacerPacket.STREAM_CODEC);
+    CONFIGURE_CREATE(ConfigureCreatePacket.class, ConfigureCreatePacket::new, PLAY_TO_SERVER);
 
     private final CatnipPacketRegistry.PacketType<?> type;
     <T extends BasePacketPayload> CFAPackets(Class<T> clazz, StreamCodec<? super RegistryFriendlyByteBuf, T> codec) {

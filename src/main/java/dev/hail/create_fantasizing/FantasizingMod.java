@@ -54,6 +54,7 @@ public class FantasizingMod
 
         CFADataComponents.register(modEventBus);
         CFAPackets.register();
+        CFAMenus.register();
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
