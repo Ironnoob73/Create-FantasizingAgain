@@ -15,7 +15,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -168,7 +167,7 @@ public class AndesiteCrateEntity extends AbstractCrateEntity implements MenuProv
 
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing) {
-        if (capability == ForgeCapabilities.ITEM_HANDLER) {
+        if ( isItemHandlerCap(capability)) {
             AndesiteCrateEntity mainCrate = getMainCrate();
             if (mainCrate != null && mainCrate.invHandler != null && mainCrate.invHandler.isPresent())
                 return mainCrate.invHandler.cast();

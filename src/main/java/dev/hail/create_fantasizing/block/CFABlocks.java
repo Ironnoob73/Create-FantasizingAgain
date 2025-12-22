@@ -95,7 +95,7 @@ public class CFABlocks {
             .register();
     public static final BlockEntityEntry<AndesiteCrateEntity> ANDESITE_CRATE_ENTITY = REGISTRATE
             .blockEntity("andesite_crate", AndesiteCrateEntity::new)
-            .validBlocks(TRANSPORTER)
+            .validBlocks(ANDESITE_CRATE)
             .register();
 
     public static void init() {}

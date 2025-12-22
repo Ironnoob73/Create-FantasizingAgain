@@ -5,6 +5,7 @@ import com.simibubi.create.foundation.item.ItemHelper;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -14,6 +15,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -69,17 +72,17 @@ public class AndesiteCrateBlock extends AbstractCrateBlock implements IBE<Andesi
     public @NotNull InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn,
                                           BlockHitResult hit) {
 
-        if (worldIn.isClientSide) {
+        if (player.isCrouching())
+            return InteractionResult.PASS;
+
+        if (player instanceof FakePlayer)
+            return InteractionResult.PASS;
+        if (worldIn.isClientSide)
             return InteractionResult.SUCCESS;
-        } else {
-            BlockEntity be = worldIn.getBlockEntity(pos);
-            if (be instanceof AndesiteCrateEntity) {
-                AndesiteCrateEntity fbe = (AndesiteCrateEntity) be;
-                fbe = fbe.getMainCrate();
-                //NetworkHooks.openGui((ServerPlayer) player, fbe, fbe::sendToContainer);
-            }
-            return InteractionResult.SUCCESS;
-        }
+
+        withBlockEntityDo(worldIn, pos,
+                crate -> NetworkHooks.openScreen((ServerPlayer) player, crate, crate::sendToMenu));
+        return InteractionResult.SUCCESS;
     }
 
     public static void splitCrate(Level world, BlockPos pos) {
@@ -99,8 +102,8 @@ public class AndesiteCrateBlock extends AbstractCrateBlock implements IBE<Andesi
     @Override
     @SuppressWarnings("deprecation")
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean isMoving) {
-        IBE.onRemove(pState, pLevel, pPos, pNewState);
-
+        if (pState.hasBlockEntity() && (!pNewState.hasBlockEntity() || !(pNewState.getBlock() instanceof AndesiteCrateBlock)))
+            pLevel.removeBlockEntity(pPos);
     }
 
     @Override
