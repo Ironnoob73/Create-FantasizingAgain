@@ -20,6 +20,9 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@ParametersAreNonnullByDefault
 public class AndesiteCrateEntity extends AbstractCrateEntity implements MenuProvider {
 
     public class Inv extends ItemStackHandler {
@@ -156,7 +159,7 @@ public class AndesiteCrateEntity extends AbstractCrateEntity implements MenuProv
 
     @Override
     public @NotNull Component getDisplayName() {
-        return Component.translatable("gui.adjustable_crate.title");
+        return Component.translatable("block.create_fantasizing.andesite_crate");
     }
 
     /*@Override
@@ -166,7 +169,7 @@ public class AndesiteCrateEntity extends AbstractCrateEntity implements MenuProv
     }*/
 
     @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction facing) {
+    public <T> @NotNull LazyOptional<T> getCapability(Capability<T> capability, Direction facing) {
         if ( isItemHandlerCap(capability)) {
             AndesiteCrateEntity mainCrate = getMainCrate();
             if (mainCrate != null && mainCrate.invHandler != null && mainCrate.invHandler.isPresent())

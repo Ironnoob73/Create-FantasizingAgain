@@ -22,6 +22,7 @@
   "item.create_fantasizing.block_placer.not_enough_blocks": "没有足够的方块！",
   "block.create_fantasizing.transporter": "运输器",
   "block.create_fantasizing.transporter.tooltip.summary":"将物品从一个容器_转移_到另一个容器。不能从另一个运输器抽取物品！",
+  "block.create_fantasizing.andesite_crate": "安山板条箱",
   "item.create_fantasizing.prismarine_fan_blades": "海晶扇叶",
   "item.create_fantasizing.sturdy_conduit": "坚固潮涌核心",
   "item.create_fantasizing.sturdy_heavy_core": "坚固沉重核心",
