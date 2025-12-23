@@ -112,7 +112,7 @@ public class AndesiteCrateScreen extends AbstractSimiContainerScreen<AndesiteCra
         int y = YShift;
 
         background.render(ms, x, y);
-        ms.drawString(font, title, x + (background.getWidth() - font.width(title)) / 2, y + 3, 0x3D3C48, false);
+        ms.drawString(font, title, x + (background.getWidth() - font.width(title)) / 2 - 4, y + 3, 0x3D3C48, false);
     }
     @Override
     public void removed() {

@@ -1,5 +1,6 @@
 package dev.hail.create_fantasizing;
 
+import com.simibubi.create.AllItems;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import dev.hail.create_fantasizing.item.CFAItems;
 import net.minecraft.core.registries.Registries;
@@ -22,10 +23,14 @@ public class CFACreativeTab {
                 output.accept(CFAItems.TREE_CUTTER.get());
                 output.accept(CFAItems.BLOCK_PLACER.get());
                 output.accept(CFABlocks.TRANSPORTER.get());
+                output.accept(CFABlocks.ANDESITE_CRATE.get());
                 output.accept(CFAItems.PRISMARINE_FAN_BLADES.get());
                 output.accept(CFAItems.STURDY_CONDUIT.get());
-                output.accept(CFAItems.STURDY_HEAVY_CORE.get());})
-            .build());
+                output.accept(CFAItems.STURDY_HEAVY_CORE.get());
+                output.accept(AllItems.CHROMATIC_COMPOUND.get());
+                output.accept(AllItems.REFINED_RADIANCE.get());
+                output.accept(AllItems.SHADOW_STEEL.get());
+            }).build());
 
     public static void init(IEventBus modEventBus) {
         CREATIVE_MODE_TABS.register(modEventBus);

@@ -27,7 +27,7 @@ import static dev.hail.create_fantasizing.FantasizingMod.REGISTRATE;
 public class CFABlocks {
     public static final BlockEntry<CompactHydraulicEngineBlock> COMPACT_HYDRAULIC_ENGINE =
             REGISTRATE.block("compact_hydraulic_engine", CompactHydraulicEngineBlock::new)
-                    .onRegister((block) -> BlockStressValues.CAPACITIES.register(block, ()-> (double) hydraulicEngineStressProvide /16))
+                    .onRegister((block) -> BlockStressValues.CAPACITIES.register(block, ()-> hydraulicEngineStressProvide /16f))
                     .initialProperties(SharedProperties::stone)
                     .properties(p -> p.mapColor(MapColor.COLOR_BLUE).forceSolidOn())
                     .blockstate(new CompactEngineBlock.CompactHydraulicEngineGenerator()::generate)
@@ -41,7 +41,7 @@ public class CFABlocks {
             .register();
     public static final BlockEntry<CompactWindEngineBlock> COMPACT_WIND_ENGINE =
             REGISTRATE.block("compact_wind_engine", CompactWindEngineBlock::new)
-                    .onRegister((block) -> BlockStressValues.CAPACITIES.register(block, ()-> (double) windEngineStressProvide /16))
+                    .onRegister((block) -> BlockStressValues.CAPACITIES.register(block, ()-> windEngineStressProvide /16f))
                     .initialProperties(SharedProperties::stone)
                     .properties(p -> p.mapColor(MapColor.COLOR_BLUE).forceSolidOn())
                     .blockstate(new CompactEngineBlock.CompactHydraulicEngineGenerator()::generate)

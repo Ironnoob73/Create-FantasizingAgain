@@ -1,11 +1,8 @@
 package dev.hail.create_fantasizing.block.transporter;
 
-import com.simibubi.create.content.kinetics.belt.BeltHelper;
 import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
 import com.simibubi.create.content.logistics.chute.ChuteBlockEntity;
 import com.simibubi.create.content.logistics.chute.SmartChuteBlockEntity;
-import com.simibubi.create.content.logistics.funnel.BeltFunnelBlock;
-import com.simibubi.create.content.logistics.funnel.FunnelBlock;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringBehaviour;

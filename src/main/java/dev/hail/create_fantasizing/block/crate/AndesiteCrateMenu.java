@@ -51,7 +51,7 @@ public class AndesiteCrateMenu extends MenuBase<AndesiteCrateEntity> {
             moveItemStackTo(stack, crateSize, slots.size(), false);
             contentHolder.inventory.onContentsChanged(index);
         } else
-            moveItemStackTo(stack, 0, crateSize - 1, false);
+            moveItemStackTo(stack, 0, crateSize, false);
 
         return ItemStack.EMPTY;
     }
