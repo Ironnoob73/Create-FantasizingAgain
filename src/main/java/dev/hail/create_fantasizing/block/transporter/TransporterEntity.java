@@ -1,6 +1,5 @@
 package dev.hail.create_fantasizing.block.transporter;
 
-import com.simibubi.create.content.kinetics.belt.BeltHelper;
 import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
 import com.simibubi.create.content.logistics.chute.ChuteBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
