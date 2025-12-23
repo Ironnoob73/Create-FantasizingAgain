@@ -142,7 +142,7 @@ public class TransporterBlock extends Block implements IWrenchable, IBE<Transpor
                 .choose(diff.x, diff.y, diff.z);
         if (projectedDiff < 0 == (direction.getAxisDirection() == Direction.AxisDirection.POSITIVE))
             return;
-        float yOffset = direction == Direction.UP ? 0.25f : direction == Direction.DOWN ? -0.5f : -0.5f;
+        float yOffset = direction == Direction.UP ? 0.25f : -0.5f;
         if (!PackageEntity.centerPackage(entityIn, openPos.add(0, yOffset, 0)))
             return;
 

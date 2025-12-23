@@ -22,11 +22,13 @@
   "item.create_fantasizing.block_placer.not_enough_blocks": "Not holding enough blocks!",
   "block.create_fantasizing.transporter": "Transporter",
   "block.create_fantasizing.transporter.tooltip.summary":"_Transfer_ items from one container to another. Can't extract items from another Transporter!",
+  "block.create_fantasizing.andesite_crate": "Andesite Crate",
   "item.create_fantasizing.prismarine_fan_blades": "Prismarine Fan Blades",
   "item.create_fantasizing.sturdy_conduit": "Sturdy Conduit",
   "item.create_fantasizing.sturdy_heavy_core": "Sturdy Heavy Core",
 
   "create_fantasizing.gui.block_placer.destroy_mode": "Destroy Dropping Items",
+  "create_fantasizing.gui.andesite_crate.storage_space": "Storage Space",
 
   "create_fantasizing.configuration.hydraulic_engine_stress_provide": "Hydraulic Engine Stress provide",
   "create_fantasizing.configuration.hydraulic_engine_stress_provide.tooltip": "\u00A7eNeed to re-enter the world",

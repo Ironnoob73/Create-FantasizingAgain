@@ -2,6 +2,7 @@ package dev.hail.create_fantasizing.block.crate;
 
 import com.simibubi.create.content.logistics.crate.CrateBlock;
 import com.simibubi.create.content.logistics.crate.CrateBlockEntity;
+import dev.hail.create_fantasizing.FantasizingMod;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -14,6 +15,7 @@ public class AbstractCrateEntity extends CrateBlockEntity {
     }
 
     public boolean isDoubleCrate() {
+        FantasizingMod.LOGGER.debug(getBlockState().getValue(AbstractCrateBlock.DOUBLE).toString());
         return getBlockState().getValue(AbstractCrateBlock.DOUBLE);
     }
 

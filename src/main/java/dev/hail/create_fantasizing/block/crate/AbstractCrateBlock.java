@@ -11,7 +11,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@ParametersAreNonnullByDefault
 public abstract class AbstractCrateBlock extends CrateBlock {
 
     public static final BooleanProperty DOUBLE = BooleanProperty.create("double");
@@ -22,8 +26,9 @@ public abstract class AbstractCrateBlock extends CrateBlock {
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn,
-                                  BlockPos currentPos, BlockPos facingPos) {
+    @SuppressWarnings("deprecation")
+    public @NotNull BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn,
+                                           BlockPos currentPos, BlockPos facingPos) {
 
         boolean isDouble = stateIn.getValue(DOUBLE);
         Direction blockFacing = stateIn.getValue(FACING);
