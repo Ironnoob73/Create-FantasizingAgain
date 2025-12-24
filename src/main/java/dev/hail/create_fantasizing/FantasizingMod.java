@@ -6,6 +6,7 @@ import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
 import dev.hail.create_fantasizing.block.CFABlocks;
+import dev.hail.create_fantasizing.block.CFAMenus;
 import dev.hail.create_fantasizing.block.transporter.TransporterEntity;
 import dev.hail.create_fantasizing.data.CFADataComponents;
 import dev.hail.create_fantasizing.event.CFAPackets;

@@ -1,7 +1,7 @@
 package dev.hail.create_fantasizing.block.crate;
 
+import com.simibubi.create.foundation.utility.ResetableLazy;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -9,8 +9,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -23,7 +21,7 @@ public class AndesiteCrateEntity extends AbstractCrateEntity implements MenuProv
         allowedAmount = 1024;
         itemCount = 10;
         inventory = new Inv();
-        invHandler = LazyOptional.of(() -> inventory);
+        invHandler = ResetableLazy.of(() -> inventory);
     }
 
     @Override
@@ -36,13 +34,13 @@ public class AndesiteCrateEntity extends AbstractCrateEntity implements MenuProv
         return Component.translatable("block.create_fantasizing.andesite_crate");
     }
 
-    @Override
-    public <T> @NotNull LazyOptional<T> getCapability(Capability<T> capability, Direction facing) {
+    /*@Override
+    public <T> @NotNull Lazy<T> getCapability(Capability<T> capability, Direction facing) {
         if ( isItemHandlerCap(capability)) {
             AbstractCrateEntity mainCrate = getMainCrate();
             if (mainCrate != null && mainCrate.invHandler != null && mainCrate.invHandler.isPresent())
                 return mainCrate.invHandler.cast();
         }
         return super.getCapability(capability, facing);
-    }
+    }*/
 }

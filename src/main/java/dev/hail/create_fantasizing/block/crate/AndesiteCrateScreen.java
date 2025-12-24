@@ -1,22 +1,20 @@
 package dev.hail.create_fantasizing.block.crate;
 
 import com.google.common.collect.ImmutableList;
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
 import com.simibubi.create.foundation.gui.widget.Label;
 import com.simibubi.create.foundation.gui.widget.ScrollInput;
-import com.simibubi.create.foundation.utility.CreateLang;
 import dev.hail.create_fantasizing.CFAGuiTextures;
 import dev.hail.create_fantasizing.block.CFABlocks;
-import dev.hail.create_fantasizing.event.CFAPackets;
 import net.createmod.catnip.gui.element.GuiGameElement;
+import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -116,7 +114,7 @@ public class AndesiteCrateScreen extends AbstractSimiContainerScreen<AndesiteCra
     }
     @Override
     public void removed() {
-        CFAPackets.getChannel().sendToServer(new ConfigureCreatePacket(menu.contentHolder.getBlockPos(), allowedItems.getState()));
+        CatnipServices.NETWORK.sendToServer(new ConfigureCreatePacket(menu.contentHolder.getBlockPos(), allowedItems.getState()));
         super.removed();
     }
 
@@ -132,7 +130,7 @@ public class AndesiteCrateScreen extends AbstractSimiContainerScreen<AndesiteCra
 
         if (lastModification >= 15) {
             lastModification = -1;
-            CFAPackets.getChannel().sendToServer(new ConfigureCreatePacket(menu.contentHolder.getBlockPos(), allowedItems.getState()));
+            CatnipServices.NETWORK.sendToServer(new ConfigureCreatePacket(menu.contentHolder.getBlockPos(), allowedItems.getState()));
         }
 
         if (menu.doubleCrate != menu.contentHolder.isDoubleCrate())

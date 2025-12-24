@@ -1,23 +1,23 @@
 package dev.hail.create_fantasizing.block.crate;
 
 import com.simibubi.create.content.logistics.crate.CrateBlockEntity;
+import com.simibubi.create.foundation.utility.ResetableLazy;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractCrateEntity extends CrateBlockEntity {
     public int invSize;
     public int allowedAmount;
-    public class Inv extends ItemStackHandler {
+    public class Inv extends net.neoforged.neoforge.items.ItemStackHandler {
         public Inv() {
             super(invSize);
         }
@@ -51,7 +51,7 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity {
     }
     public AbstractCrateEntity.Inv inventory;
     public int itemCount;
-    protected LazyOptional<IItemHandler> invHandler;
+    protected ResetableLazy<IItemHandler> invHandler;
     public AbstractCrateEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
@@ -109,24 +109,24 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity {
         }
         allowedAmount = Math.min(1024, allowedAmount);
 
-        invHandler.invalidate();
-        invHandler = LazyOptional.of(() -> inventory);
-        other.invHandler.invalidate();
-        other.invHandler = LazyOptional.of(() -> other.inventory);
+        //invHandler.invalidate();
+        invHandler = ResetableLazy.of(() -> inventory);
+        //other.invHandler.invalidate();
+        other.invHandler = ResetableLazy.of(() -> other.inventory);
     }
 
     @Override
-    public void write(CompoundTag compound, boolean clientPacket) {
+    public void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
         compound.putBoolean("Main", !isSecondaryCrate());
         compound.putInt("AllowedAmount", allowedAmount);
-        compound.put("Inventory", inventory.serializeNBT());
-        super.write(compound, clientPacket);
+        compound.put("Inventory", inventory.serializeNBT(registries));
+        super.write(compound, registries, clientPacket);
     }
 
     @Override
-    protected void read(CompoundTag compound, boolean clientPacket) {
+    protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
         allowedAmount = compound.getInt("AllowedAmount");
-        inventory.deserializeNBT(compound.getCompound("Inventory"));
-        super.read(compound, clientPacket);
+        inventory.deserializeNBT(registries, compound.getCompound("Inventory"));
+        super.read(compound, registries, clientPacket);
     }
 }
