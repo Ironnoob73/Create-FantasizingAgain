@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -29,11 +30,16 @@ public class AndesiteCrateEntity extends AbstractCrateEntity implements MenuProv
         event.registerBlockEntity(
                 Capabilities.ItemHandler.BLOCK,
                 CFABlocks.ANDESITE_CRATE_ENTITY.get(),
-                (be, context) -> be.inventory);
+                (be, context) -> {
+                    be.initCapability();
+                    if (be.itemCapability == null)
+                        return null;
+                    return be.itemCapability.getCapability();
+                });
     }
     @Override
-    public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-        return AndesiteCrateMenu.create(id, inventory, this);
+    public @Nullable AbstractContainerMenu createMenu(int i, net.minecraft.world.entity.player.Inventory inventory, Player player) {
+        return AndesiteCrateMenu.create(i, inventory, this);
     }
 
     @Override

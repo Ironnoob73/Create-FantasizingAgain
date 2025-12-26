@@ -34,7 +34,6 @@ public class CrateMountedStorage extends SimpleMountedStorage {
 
     @Override
     public void unmount(Level level, BlockState state, BlockPos pos, @Nullable BlockEntity be) {
-        // the capability will include both sides of chests, but mounted storage is 1:1
         if (be instanceof Container container && this.getSlots() == container.getContainerSize()) {
             ItemHelper.copyContents(this, new InvWrapper(container));
         }
@@ -48,7 +47,6 @@ public class CrateMountedStorage extends SimpleMountedStorage {
             return this;
 
         Direction facing = state.getValue(AbstractCrateBlock.FACING);
-        //Direction connectedDirection = AbstractCrateBlock.getConnectedDirection(state);
         BlockPos otherHalfPos = info.pos().relative(facing);
 
         MountedItemStorage otherHalf = this.getOtherHalf(contraption, otherHalfPos, state.getBlock(), facing, type);
