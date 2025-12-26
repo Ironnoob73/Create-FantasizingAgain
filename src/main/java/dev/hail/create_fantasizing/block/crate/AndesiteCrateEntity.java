@@ -3,6 +3,7 @@ package dev.hail.create_fantasizing.block.crate;
 import com.simibubi.create.foundation.utility.ResetableLazy;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -13,6 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -30,11 +32,16 @@ public class AndesiteCrateEntity extends AbstractCrateEntity implements MenuProv
         event.registerBlockEntity(
                 Capabilities.ItemHandler.BLOCK,
                 CFABlocks.ANDESITE_CRATE_ENTITY.get(),
-                (be, context) -> be.inventory);
+                (be, context) -> {
+                    be.initCapability();
+                    if (be.itemCapability == null)
+                        return null;
+                    return be.itemCapability.getCapability();
+                });
     }
     @Override
-    public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
-        return AndesiteCrateMenu.create(id, inventory, this);
+    public @Nullable AbstractContainerMenu createMenu(int i, net.minecraft.world.entity.player.Inventory inventory, Player player) {
+        return AndesiteCrateMenu.create(i, inventory, this);
     }
 
     @Override

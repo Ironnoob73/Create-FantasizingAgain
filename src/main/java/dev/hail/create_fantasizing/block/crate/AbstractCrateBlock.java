@@ -1,8 +1,11 @@
 package dev.hail.create_fantasizing.block.crate;
 
 import com.simibubi.create.AllShapes;
+import com.simibubi.create.api.connectivity.ConnectivityHandler;
 import com.simibubi.create.content.logistics.crate.CrateBlock;
+import com.simibubi.create.content.logistics.vault.ItemVaultBlockEntity;
 import com.simibubi.create.foundation.block.IBE;
+import com.simibubi.create.foundation.item.ItemHelper;
 import net.createmod.catnip.data.Iterate;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
@@ -140,7 +143,13 @@ public abstract class AbstractCrateBlock extends CrateBlock {
 
     @Override
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean isMoving) {
-        IBE.onRemove(state, world, pos, newState);
+        if (state.hasBlockEntity() && (state.getBlock() != newState.getBlock() || !newState.hasBlockEntity())) {
+            BlockEntity be = world.getBlockEntity(pos);
+            if (!(be instanceof AbstractCrateEntity crateEntity))
+                return;
+            world.removeBlockEntity(pos);
+            ConnectivityHandler.splitMulti(crateEntity);
+        }
     }
     @Override
     public List<ItemStack> getDrops(BlockState blockState, LootParams.Builder builder) {
