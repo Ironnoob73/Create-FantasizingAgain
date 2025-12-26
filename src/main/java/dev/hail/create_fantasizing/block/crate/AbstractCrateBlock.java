@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -20,8 +21,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @ParametersAreNonnullByDefault
 public abstract class AbstractCrateBlock extends CrateBlock {
@@ -80,12 +80,7 @@ public abstract class AbstractCrateBlock extends CrateBlock {
     }
 
     public void onMerge(AbstractCrateEntity be, AbstractCrateEntity other){
-        for (int slot = 0; slot < other.inventory.getSlots()/2; slot++) {
-            be.inventory.setStackInSlot(slot + be.invSize/2, other.inventory.getStackInSlot(slot));
-            other.inventory.setStackInSlot(slot, ItemStack.EMPTY);
-        }
         be.allowedAmount += other.allowedAmount;
-        other.invHandler.invalidate();
     }
 
 
@@ -133,13 +128,29 @@ public abstract class AbstractCrateBlock extends CrateBlock {
     public @NotNull List<ItemStack> getDrops(BlockState blockState, LootParams.Builder builder) {
         BlockEntity blockentity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
         if (blockentity instanceof AbstractCrateEntity abstractCrateEntity) {
-            abstractCrateEntity.onSplit();
             ItemStack itemstack = new ItemStack(blockState.getBlock());
-            //CompoundTag compoundTag = abstractCrateEntity.getUpdateTag().copy();
-            //compoundTag.remove("Main");
-            //abstractCrateEntity.handleUpdateTag(compoundTag);
-            abstractCrateEntity.saveToItem(itemstack);
-            return Collections.singletonList(itemstack);
+            if (abstractCrateEntity.getLevel() != null) {
+                abstractCrateEntity.saveToItem(itemstack, abstractCrateEntity.getLevel().registryAccess());
+                CompoundTag copiedComp = Objects.requireNonNull(itemstack.get(DataComponents.BLOCK_ENTITY_DATA)).copyTag();
+                Tag crate_inv = copiedComp.getCompound("Inventory").get("Items");
+                if (crate_inv instanceof ListTag && !((ListTag) crate_inv).isEmpty()) {
+                    List<ItemStack> dropList = new ArrayList<>(List.of());
+                    Iterator<Tag> iterator = ((ListTag) crate_inv).iterator();
+                    while (iterator.hasNext()){
+                        ItemStack stack = ItemStack.parseOptional(abstractCrateEntity.getLevel().registryAccess(), (CompoundTag) iterator.next());
+                        if (stack.get(DataComponents.BLOCK_ENTITY_DATA) != null ||
+                                stack.get(DataComponents.CONTAINER) != null) {
+                            dropList.add(stack);
+                            iterator.remove();
+                        }
+                    }
+                    copiedComp.getCompound("Inventory").put("Items", crate_inv);
+                    copiedComp.putInt("AllowedAmount", Math.min(1024, copiedComp.getInt("AllowedAmount")));
+                    itemstack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(copiedComp));
+                    dropList.add(itemstack);
+                    return dropList;
+                }
+            }
         }
         return super.getDrops(blockState, builder);
     }

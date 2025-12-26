@@ -34,9 +34,12 @@ public class AndesiteCrateMenu extends MenuBase<AndesiteCrateEntity> {
     protected AndesiteCrateEntity createOnClient(FriendlyByteBuf extraData) {
         BlockPos readBlockPos = extraData.readBlockPos();
         ClientLevel world = Minecraft.getInstance().level;
-        BlockEntity blockEntity = world.getBlockEntity(readBlockPos);
-        if (blockEntity instanceof AndesiteCrateEntity ppbe)
-            return ppbe;
+        BlockEntity blockEntity = null;
+        if (world != null) {
+            blockEntity = world.getBlockEntity(readBlockPos);
+        }
+        if (blockEntity instanceof AndesiteCrateEntity andesiteCrateEntity)
+            return andesiteCrateEntity;
         return null;
     }
     @Override
@@ -65,7 +68,9 @@ public class AndesiteCrateMenu extends MenuBase<AndesiteCrateEntity> {
         int maxCol = doubleCrate ? 8 : 4;
         for (int row = 0; row < 4; ++row) {
             for (int col = 0; col < maxCol; ++col) {
-                this.addSlot(new SlotItemHandler(contentHolder.inventory, col + row * maxCol, x + col * 18, row * 18 - 12));
+                this.addSlot(
+                        new SlotItemHandler(col + row * maxCol < 16 ? contentHolder.inventory : contentHolder.getOtherCrate().inventory,
+                                col + row * maxCol - (col + row * maxCol < 16 ? 0 : 16), x + col * 18, row * 18 - 12));
             }
         }
 
