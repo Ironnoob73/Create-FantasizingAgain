@@ -35,8 +35,8 @@ import java.util.*;
 public abstract class AbstractCrateBlock extends CrateBlock {
 
     public static final BooleanProperty DOUBLE = BooleanProperty.create("double");
-    public AbstractCrateBlock(Properties p_i48415_1_) {
-        super(p_i48415_1_);
+    public AbstractCrateBlock(Properties properties) {
+        super(properties);
         registerDefaultState(defaultBlockState().setValue(FACING, Direction.UP)
                 .setValue(DOUBLE, false));
     }

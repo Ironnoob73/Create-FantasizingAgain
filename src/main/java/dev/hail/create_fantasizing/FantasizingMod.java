@@ -7,6 +7,7 @@ import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import dev.hail.create_fantasizing.block.CFAMenus;
+import dev.hail.create_fantasizing.block.CFAMountedStorageTypes;
 import dev.hail.create_fantasizing.block.crate.AndesiteCrateEntity;
 import dev.hail.create_fantasizing.block.transporter.TransporterEntity;
 import dev.hail.create_fantasizing.data.CFADataComponents;
@@ -57,6 +58,7 @@ public class FantasizingMod
         CFADataComponents.register(modEventBus);
         CFAPackets.register();
         CFAMenus.register();
+        CFAMountedStorageTypes.register();
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
