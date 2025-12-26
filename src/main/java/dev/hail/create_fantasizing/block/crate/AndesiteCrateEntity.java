@@ -25,7 +25,12 @@ public class AndesiteCrateEntity extends AbstractCrateEntity implements MenuProv
         inventory = new Inv();
         invHandler = LazyOptional.of(() -> inventory);
     }
-
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                CFABlocks.ANDESITE_CRATE_ENTITY.get(),
+                (be, context) -> be.inventory);
+    }
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
         return AndesiteCrateMenu.create(id, inventory, this);

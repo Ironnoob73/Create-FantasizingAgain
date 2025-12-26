@@ -61,6 +61,11 @@ public class FantasizingMod
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
+        ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.SERVER, CFAConfig.SPEC_S);
+    }
+    private void registerCapabilities(RegisterCapabilitiesEvent event) {
+        TransporterEntity.registerCapabilities(event);
+        AndesiteCrateEntity.registerCapabilities(event);
     }
 
     @SubscribeEvent
