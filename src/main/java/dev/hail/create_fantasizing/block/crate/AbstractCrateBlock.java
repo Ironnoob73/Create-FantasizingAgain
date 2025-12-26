@@ -1,8 +1,10 @@
 package dev.hail.create_fantasizing.block.crate;
 
+import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.logistics.crate.CrateBlock;
 import com.simibubi.create.foundation.block.IBE;
 import net.createmod.catnip.data.Iterate;
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
@@ -12,6 +14,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -21,11 +24,13 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.*;
 
+@MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public abstract class AbstractCrateBlock extends CrateBlock {
 
@@ -37,7 +42,21 @@ public abstract class AbstractCrateBlock extends CrateBlock {
     }
 
     @Override
-    public @NotNull BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn,
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+        if(state.getValue(DOUBLE)){
+            switch (state.getValue(FACING)){
+                case SOUTH -> { return Block.box(1, 0, 1, 15, 14, 16);}
+                case NORTH -> { return Block.box(1, 0, 0, 15, 14, 15);}
+                case WEST -> { return Block.box(0, 0, 1, 15, 14, 15);}
+                case EAST -> { return Block.box(1, 0, 1, 16, 14, 15);}
+                case UP -> { return Block.box(1, 0, 1, 15, 16, 15);}
+            }
+        }
+        return AllShapes.CRATE_BLOCK_SHAPE;
+    }
+
+    @Override
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn,
                                            BlockPos currentPos, BlockPos facingPos) {
 
         boolean isDouble = stateIn.getValue(DOUBLE);
@@ -124,7 +143,7 @@ public abstract class AbstractCrateBlock extends CrateBlock {
         IBE.onRemove(state, world, pos, newState);
     }
     @Override
-    public @NotNull List<ItemStack> getDrops(BlockState blockState, LootParams.Builder builder) {
+    public List<ItemStack> getDrops(BlockState blockState, LootParams.Builder builder) {
         BlockEntity blockentity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
         if (blockentity instanceof AbstractCrateEntity abstractCrateEntity) {
             ItemStack itemstack = new ItemStack(blockState.getBlock());
