@@ -17,7 +17,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 public class AndesiteCrateEntity extends AbstractCrateEntity implements MenuProvider {
     public AndesiteCrateEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
-        invSize = 32;
+        invSize = 16;
         allowedAmount = 1024;
         itemCount = 10;
         inventory = new Inv();
@@ -33,14 +33,4 @@ public class AndesiteCrateEntity extends AbstractCrateEntity implements MenuProv
     public @NotNull Component getDisplayName() {
         return Component.translatable("block.create_fantasizing.andesite_crate");
     }
-
-    /*@Override
-    public <T> @NotNull Lazy<T> getCapability(Capability<T> capability, Direction facing) {
-        if ( isItemHandlerCap(capability)) {
-            AbstractCrateEntity mainCrate = getMainCrate();
-            if (mainCrate != null && mainCrate.invHandler != null && mainCrate.invHandler.isPresent())
-                return mainCrate.invHandler.cast();
-        }
-        return super.getCapability(capability, facing);
-    }*/
 }

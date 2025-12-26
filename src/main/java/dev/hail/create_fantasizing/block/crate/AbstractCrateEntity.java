@@ -101,23 +101,17 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity {
         }
 
         other.allowedAmount = Math.max(1, allowedAmount - 1024);
-        for (int slot = 0; slot < other.inventory.getSlots(); slot++)
-            other.inventory.setStackInSlot(slot, ItemStack.EMPTY);
-        for (int slot = 16; slot < inventory.getSlots(); slot++) {
-            other.inventory.setStackInSlot(slot - invSize/2, inventory.getStackInSlot(slot));
-            inventory.setStackInSlot(slot, ItemStack.EMPTY);
-        }
         allowedAmount = Math.min(1024, allowedAmount);
+    }
 
-        //invHandler.invalidate();
-        invHandler = ResetableLazy.of(() -> inventory);
-        //other.invHandler.invalidate();
-        other.invHandler = ResetableLazy.of(() -> other.inventory);
+    @Override
+    public void destroy() {
+        super.destroy();
+        onSplit();
     }
 
     @Override
     public void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
-        compound.putBoolean("Main", !isSecondaryCrate());
         compound.putInt("AllowedAmount", allowedAmount);
         compound.put("Inventory", inventory.serializeNBT(registries));
         super.write(compound, registries, clientPacket);
