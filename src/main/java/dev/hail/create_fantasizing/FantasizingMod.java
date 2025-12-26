@@ -55,8 +55,7 @@ public class FantasizingMod
 
         CFAPackets.registerPackets();
         CFAMenus.register();
-
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> new CFAClient(modEventBus));
+        CFAMountedStorageTypes.register();
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)

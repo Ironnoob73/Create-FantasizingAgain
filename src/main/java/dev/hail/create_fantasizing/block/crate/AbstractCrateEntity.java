@@ -5,7 +5,6 @@ import dev.hail.create_fantasizing.block.CFABlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -14,7 +13,6 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractCrateEntity extends CrateBlockEntity {
     public int invSize;
@@ -51,7 +49,7 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity {
             }
         }
 
-        @Override
+        /*@Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate){
             if (isSecondaryCrate()){
                 ItemStack result = getMainCrate().inventory.insertItem(slot,stack,simulate);
@@ -62,7 +60,7 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity {
                 }
             }
             return super.insertItem(slot,stack,simulate);
-        }
+        }*/
     }
     public AbstractCrateEntity.Inv inventory;
     public int itemCount;
