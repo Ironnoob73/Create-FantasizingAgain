@@ -58,7 +58,7 @@ public class FantasizingMod
         CFADataComponents.register(modEventBus);
         CFAPackets.register();
         CFAMenus.register();
-        CFAMountedStorageTypes.register();// It didn't work...
+        CFAMountedStorageTypes.register();
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
