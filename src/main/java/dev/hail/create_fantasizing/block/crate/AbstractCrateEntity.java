@@ -25,16 +25,16 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity {
 
         @Override
         public int getSlotLimit(int slot) {
-            if (slot < allowedAmount / 64)
+            if (slot < (allowedAmount - (isSecondaryCrate() ? 1024 : 0)) / 64)
                 return super.getSlotLimit(slot);
-            else if (slot == allowedAmount / 64)
-                return allowedAmount % 64;
+            else if (slot == (allowedAmount - (isSecondaryCrate() ? 1024 : 0)) / 64)
+                return (allowedAmount - (isSecondaryCrate() ? 1024 : 0)) % 64;
             return 0;
         }
 
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            if (slot > allowedAmount / 64)
+            if (slot > (allowedAmount - (isSecondaryCrate() ? 1024 : 0)) / 64)
                 return false;
             return super.isItemValid(slot, stack);
         }
@@ -68,7 +68,8 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity {
     }
 
     void initCapability() {
-        if (itemCapability != null && itemCapability.getCapability() != null)
+        if (itemCapability != null && itemCapability.getCapability() != null
+                && (getOtherCrate() == null || (getOtherCrate().itemCapability != null && getOtherCrate().itemCapability.getCapability() != null)))
             return;
         if (isSecondaryCrate()) {
             AbstractCrateEntity mainCrate = getMainCrate();

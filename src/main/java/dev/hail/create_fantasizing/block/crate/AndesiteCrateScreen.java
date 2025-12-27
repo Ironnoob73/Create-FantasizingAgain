@@ -85,7 +85,7 @@ public class AndesiteCrateScreen extends AbstractSimiContainerScreen<AndesiteCra
         int x = leftPos + textureXShift;
         int y = YShift;
 
-        String itemCount = String.valueOf(menu.contentHolder.itemCount);
+        String itemCount = String.valueOf(menu.contentHolder.itemCount + (menu.doubleCrate ? menu.contentHolder.getOtherCrate().itemCount : 0));
         ms.drawString(font, itemCount, x + itemLabelOffset - 13 - font.width(itemCount), y + 108, 0x4B3A22, false);
 
         for (int slot = 0; slot < (menu.doubleCrate ? 32 : 16); slot++) {

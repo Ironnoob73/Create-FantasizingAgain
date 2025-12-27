@@ -2,6 +2,7 @@ package dev.hail.create_fantasizing.block.crate;
 
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.logistics.crate.CrateBlock;
+import com.simibubi.create.foundation.item.ItemHelper;
 import net.createmod.catnip.data.Iterate;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
@@ -98,6 +99,7 @@ public abstract class AbstractCrateBlock extends CrateBlock {
 
     public void onMerge(AbstractCrateEntity be, AbstractCrateEntity other){
         be.allowedAmount += other.allowedAmount;
+        be.initCapability();
     }
 
 
@@ -144,8 +146,9 @@ public abstract class AbstractCrateBlock extends CrateBlock {
                 return;
             crateEntity.invalidateCapabilities();
             world.removeBlockEntity(pos);
-            //ConnectivityHandler.splitMulti(crateEntity);
         }
+        //if (state.hasBlockEntity() && (!newState.hasBlockEntity() || !(newState.getBlock() instanceof AbstractCrateBlock)))
+        //    world.removeBlockEntity(pos);
     }
     @Override
     public List<ItemStack> getDrops(BlockState blockState, LootParams.Builder builder) {
@@ -162,7 +165,7 @@ public abstract class AbstractCrateBlock extends CrateBlock {
                     while (iterator.hasNext()){
                         ItemStack stack = ItemStack.parseOptional(abstractCrateEntity.getLevel().registryAccess(), (CompoundTag) iterator.next());
                         if (stack.get(DataComponents.BLOCK_ENTITY_DATA) != null ||
-                                stack.get(DataComponents.CONTAINER) != null) {
+                                stack.get(DataComponents.CONTAINER) != null ) {
                             dropList.add(stack);
                             iterator.remove();
                         }
@@ -176,5 +179,20 @@ public abstract class AbstractCrateBlock extends CrateBlock {
             }
         }
         return super.getDrops(blockState, builder);
+    }
+
+    @Override
+    public boolean hasAnalogOutputSignal(BlockState state) {
+        return true;
+    }
+
+    @Override
+    public int getAnalogOutputSignal(BlockState blockState, Level worldIn, BlockPos pos) {
+        BlockEntity be = worldIn.getBlockEntity(pos);
+        if (be instanceof AbstractCrateEntity) {
+            AbstractCrateEntity flexCrateBlockEntity = ((AbstractCrateEntity) be).getMainCrate();
+            return ItemHelper.calcRedstoneFromInventory(flexCrateBlockEntity.inventory);
+        }
+        return 0;
     }
 }

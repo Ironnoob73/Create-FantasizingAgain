@@ -66,28 +66,4 @@ public class AndesiteCrateBlock extends AbstractCrateBlock implements IBE<Andesi
         world.setBlockAndUpdate(pos, state.setValue(DOUBLE, false));
         world.setBlockAndUpdate(crateBe.getOtherCrate().getBlockPos(), state.setValue(DOUBLE, false));
     }
-
-    @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean isMoving) {
-        super.onRemove(pState,pLevel,pPos,pNewState,isMoving);
-        if (pState.hasBlockEntity() && (!pNewState.hasBlockEntity() || !(pNewState.getBlock() instanceof AndesiteCrateBlock)))
-            pLevel.removeBlockEntity(pPos);
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean hasAnalogOutputSignal(BlockState state) {
-        return true;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public int getAnalogOutputSignal(BlockState blockState, Level worldIn, BlockPos pos) {
-        BlockEntity be = worldIn.getBlockEntity(pos);
-        if (be instanceof AndesiteCrateEntity) {
-            AndesiteCrateEntity flexCrateBlockEntity = (AndesiteCrateEntity) ((AndesiteCrateEntity) be).getMainCrate();
-            return ItemHelper.calcRedstoneFromInventory(flexCrateBlockEntity.inventory);
-        }
-        return 0;
-    }
 }
