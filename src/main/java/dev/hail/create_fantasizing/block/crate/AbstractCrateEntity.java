@@ -1,14 +1,10 @@
 package dev.hail.create_fantasizing.block.crate;
 
-import com.simibubi.create.api.connectivity.ConnectivityHandler;
-import com.simibubi.create.api.packager.InventoryIdentifier;
 import com.simibubi.create.content.logistics.crate.CrateBlockEntity;
 import dev.hail.create_fantasizing.block.CFABlocks;
-import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -18,9 +14,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
-public abstract class AbstractCrateEntity extends CrateBlockEntity implements IMultiBlockEntityContainer.Inventory {
+public abstract class AbstractCrateEntity extends CrateBlockEntity {
     public int invSize;
     public int allowedAmount;
     protected ICapabilityProvider<IItemHandler> itemCapability = null;
@@ -59,43 +53,25 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements IM
     public AbstractCrateEntity.Inv inventory;
     public int itemCount;
     protected ResetableLazy<IItemHandler> invHandler;
-    protected BlockPos controller;
-
-    protected BlockPos lastKnownPos;
-    protected boolean updateConnectivity;
 
     public AbstractCrateEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
-    }
-
-    protected void updateConnectivity() {
-        updateConnectivity = false;
-        if (level != null && level.isClientSide()) return;
-        if (!isController())
-            return;
-        ConnectivityHandler.formMulti(this);
     }
 
     @Override
     public void tick() {
         super.tick();
 
-        if (lastKnownPos == null)
-            lastKnownPos = getBlockPos();
-        else if (!lastKnownPos.equals(worldPosition) && worldPosition != null) {
-            onPositionChanged();
-            return;
+        if(isSecondaryCrate()){
+            allowedAmount = getMainCrate().allowedAmount;
         }
-
-        if (updateConnectivity)
-            updateConnectivity();
     }
 
     void initCapability() {
         if (itemCapability != null && itemCapability.getCapability() != null)
             return;
-        if (!isController()) {
-            AbstractCrateEntity mainCrate = getControllerBE();
+        if (isSecondaryCrate()) {
+            AbstractCrateEntity mainCrate = getMainCrate();
             if (mainCrate == null)
                 return;
             mainCrate.initCapability();
@@ -128,16 +104,6 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements IM
         return isDoubleCrate() && getFacing().getAxisDirection() == Direction.AxisDirection.NEGATIVE;
     }
 
-    @Override
-    public boolean isController() {
-        return !isSecondaryCrate();
-    }
-
-    private void onPositionChanged() {
-        removeController(true);
-        lastKnownPos = worldPosition;
-    }
-
     public Direction getFacing() {
         return getBlockState().getValue(AbstractCrateBlock.FACING);
     }
@@ -161,62 +127,6 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements IM
         return this;
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public AbstractCrateEntity getControllerBE() {
-        if (isController())
-            return this;
-        BlockEntity blockEntity = null;
-        if (level != null) {
-            if(this.controller != null){
-                blockEntity = level.getBlockEntity(this.controller);
-            }else{
-                blockEntity = getMainCrate();
-            }
-        }
-        if (blockEntity instanceof AbstractCrateEntity)
-            return (AbstractCrateEntity) blockEntity;
-        return null;
-    }
-
-    public void removeController(boolean keepContents) {
-        if (level != null && level.isClientSide()) return;
-        //updateConnectivity = true;
-        controller = null;
-        //radius = 1;
-        //length = 1;
-
-        BlockState state = getBlockState();
-        if (CFABlocks.ANDESITE_CRATE.has(state)) {
-            state = state.setValue(AbstractCrateBlock.DOUBLE, false);
-            if (getLevel() != null) {
-                getLevel().setBlock(worldPosition, state, 22);
-            }
-        }
-
-        itemCapability = null;
-        invalidateCapabilities();
-        setChanged();
-        sendData();
-    }
-
-    @Override
-    public void setController(BlockPos controller) {
-        if (level != null && level.isClientSide && !isVirtual()) return;
-        if (controller.equals(this.controller))
-            return;
-        this.controller = controller;
-        itemCapability = null;
-        invalidateCapabilities();
-        setChanged();
-        sendData();
-    }
-
-    @Override
-    public BlockPos getController() {
-        return isController() ? worldPosition : controller;
-    }
-
     public void onSplit() {
         AbstractCrateEntity other = getOtherCrate();
         if (other == null)
@@ -234,18 +144,13 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements IM
     public void destroy() {
         super.destroy();
         onSplit();
-        itemCapability = null;
+        invalidateCapabilities();
     }
 
     @Override
     public void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
         compound.putInt("AllowedAmount", allowedAmount);
         compound.put("Inventory", inventory.serializeNBT(registries));
-
-        if (lastKnownPos != null)
-            compound.put("LastKnownPos", NbtUtils.writeBlockPos(lastKnownPos));
-        if (!isController() && controller != null)
-            compound.put("Controller", NbtUtils.writeBlockPos(controller));
 
         super.write(compound, registries, clientPacket);
     }
@@ -255,84 +160,6 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements IM
         allowedAmount = compound.getInt("AllowedAmount");
         inventory.deserializeNBT(registries, compound.getCompound("Inventory"));
 
-        lastKnownPos = null;
-        if (compound.contains("LastKnownPos"))
-            lastKnownPos = NBTHelper.readBlockPos(compound, "LastKnownPos");
-
-        controller = null;
-        if (compound.contains("Controller"))
-            controller = NBTHelper.readBlockPos(compound, "Controller");
-
         super.read(compound, registries, clientPacket);
     }
-
-    public ItemStackHandler getInventoryOfBlock() {
-        return inventory;
-    }
-
-    public void applyInventoryToBlock(ItemStackHandler handler) {
-        for (int i = 0; i < inventory.getSlots(); i++)
-            inventory.setStackInSlot(i, i < handler.getSlots() ? handler.getStackInSlot(i) : ItemStack.EMPTY);
-    }
-
-    @Override
-    public boolean hasInventory() { return true; }
-
-    // Other
-    @Override
-    public BlockPos getLastKnownPos() {
-        return lastKnownPos;
-    }
-
-    @Override
-    public void preventConnectivityUpdate() {
-        updateConnectivity = false;
-    }
-
-    @Override
-    public void notifyMultiUpdated() {
-        BlockState state = this.getBlockState();
-        if (CFABlocks.ANDESITE_CRATE.has(state)) { // safety
-            level.setBlock(getBlockPos(), state.setValue(AbstractCrateBlock.DOUBLE, isDoubleCrate()), 6);
-        }
-        itemCapability = null;
-        invalidateCapabilities();
-        setChanged();
-    }
-
-    @Override
-    public Direction.Axis getMainConnectionAxis() {
-        return null;
-    }
-
-    @Override
-    public int getMaxLength(Direction.Axis longAxis, int width) {
-        return 2;
-    }
-
-    @Override
-    public int getMaxWidth() {
-        return 1;
-    }
-
-    @Override
-    public int getHeight() {
-        return 1;
-    }
-
-    @Override
-    public void setHeight(int height) {
-
-    }
-
-    @Override
-    public int getWidth() {
-        return 1;
-    }
-
-    @Override
-    public void setWidth(int width) {
-
-    }
-
 }

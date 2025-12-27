@@ -1,11 +1,7 @@
 package dev.hail.create_fantasizing.block.crate;
 
 import com.simibubi.create.AllShapes;
-import com.simibubi.create.api.connectivity.ConnectivityHandler;
 import com.simibubi.create.content.logistics.crate.CrateBlock;
-import com.simibubi.create.content.logistics.vault.ItemVaultBlockEntity;
-import com.simibubi.create.foundation.block.IBE;
-import com.simibubi.create.foundation.item.ItemHelper;
 import net.createmod.catnip.data.Iterate;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
@@ -146,8 +142,9 @@ public abstract class AbstractCrateBlock extends CrateBlock {
             BlockEntity be = world.getBlockEntity(pos);
             if (!(be instanceof AbstractCrateEntity crateEntity))
                 return;
+            crateEntity.invalidateCapabilities();
             world.removeBlockEntity(pos);
-            ConnectivityHandler.splitMulti(crateEntity);
+            //ConnectivityHandler.splitMulti(crateEntity);
         }
     }
     @Override
