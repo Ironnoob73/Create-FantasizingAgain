@@ -1,13 +1,11 @@
 package dev.hail.create_fantasizing.block.crate;
 
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.api.connectivity.ConnectivityHandler;
 import com.simibubi.create.content.logistics.crate.CrateBlock;
 import com.simibubi.create.content.logistics.vault.ItemVaultBlockEntity;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.item.ItemHelper;
-import dev.hail.create_fantasizing.block.CFABlocks;
 import net.createmod.catnip.data.Iterate;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
@@ -16,10 +14,6 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -33,13 +27,9 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.util.FakePlayer;
-import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.*;
 
@@ -108,13 +98,12 @@ public abstract class AbstractCrateBlock extends CrateBlock {
             } else {
                 onMerge(other, be);
             }
+
         }
     }
 
     public void onMerge(AbstractCrateEntity be, AbstractCrateEntity other){
-        int finalAmount = Math.min(2048, be.allowedAmount + other.allowedAmount);
-        be.allowedAmount = finalAmount;
-        other.allowedAmount = finalAmount;
+        be.allowedAmount += other.allowedAmount;
     }
 
 
@@ -161,8 +150,6 @@ public abstract class AbstractCrateBlock extends CrateBlock {
             world.removeBlockEntity(pos);
             ConnectivityHandler.splitMulti(crateEntity);
         }
-        if (state.hasBlockEntity() && (!newState.hasBlockEntity() || !(newState.getBlock() instanceof AbstractCrateBlock)))
-            world.removeBlockEntity(pos);
     }
     @Override
     public List<ItemStack> getDrops(BlockState blockState, LootParams.Builder builder) {
@@ -193,45 +180,5 @@ public abstract class AbstractCrateBlock extends CrateBlock {
             }
         }
         return super.getDrops(blockState, builder);
-    }
-
-    @Override
-    public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn,
-                                                    BlockHitResult hit) {
-        if (player.isCrouching())
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-
-        if (player instanceof FakePlayer)
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-        return ItemInteractionResult.SUCCESS;
-    }
-
-    public static void splitCrate(Level world, BlockPos pos) {
-        BlockState state = world.getBlockState(pos);
-        if (!CFABlocks.ANDESITE_CRATE.has(state))
-            return;
-        if (!state.getValue(DOUBLE))
-            return;
-        BlockEntity be = world.getBlockEntity(pos);
-        if (!(be instanceof AndesiteCrateEntity crateBe))
-            return;
-        crateBe.onSplit();
-        world.setBlockAndUpdate(pos, state.setValue(DOUBLE, false));
-        world.setBlockAndUpdate(crateBe.getOtherCrate().getBlockPos(), state.setValue(DOUBLE, false));
-    }
-
-    @Override
-    public boolean hasAnalogOutputSignal(BlockState state) {
-        return true;
-    }
-
-    @Override
-    public int getAnalogOutputSignal(BlockState blockState, Level worldIn, BlockPos pos) {
-        BlockEntity be = worldIn.getBlockEntity(pos);
-        if (be instanceof AndesiteCrateEntity) {
-            AndesiteCrateEntity flexCrateBlockEntity = (AndesiteCrateEntity) ((AndesiteCrateEntity) be).getMainCrate();
-            return ItemHelper.calcRedstoneFromInventory(flexCrateBlockEntity.inventory);
-        }
-        return 0;
     }
 }

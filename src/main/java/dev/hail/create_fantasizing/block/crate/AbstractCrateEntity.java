@@ -1,10 +1,15 @@
 package dev.hail.create_fantasizing.block.crate;
 
+import com.simibubi.create.api.connectivity.ConnectivityHandler;
 import com.simibubi.create.api.packager.InventoryIdentifier;
 import com.simibubi.create.content.logistics.crate.CrateBlockEntity;
+import com.simibubi.create.content.logistics.vault.ItemVaultBlock;
 import com.simibubi.create.foundation.ICapabilityProvider;
 import com.simibubi.create.foundation.blockEntity.IMultiBlockEntityContainer;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import com.simibubi.create.foundation.blockEntity.behaviour.inventory.VersionedInventoryWrapper;
 import com.simibubi.create.foundation.utility.ResetableLazy;
+import dev.hail.create_fantasizing.block.CFABlocks;
 import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,7 +22,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public abstract class AbstractCrateEntity extends CrateBlockEntity implements IMultiBlockEntityContainer.Inventory {
     public int invSize;
@@ -56,7 +64,6 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements IM
         }
     }
     public AbstractCrateEntity.Inv inventory;
-    protected InventoryIdentifier invId;
     public int itemCount;
     protected ResetableLazy<IItemHandler> invHandler;
     protected BlockPos controller;
@@ -73,7 +80,7 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements IM
         if (level != null && level.isClientSide()) return;
         if (!isController())
             return;
-        //ConnectivityHandler.formMulti(this);
+        ConnectivityHandler.formMulti(this);
     }
 
     @Override
@@ -82,7 +89,7 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements IM
 
         if (lastKnownPos == null)
             lastKnownPos = getBlockPos();
-        else if (!lastKnownPos.equals(worldPosition)) {
+        else if (!lastKnownPos.equals(worldPosition) && worldPosition != null) {
             onPositionChanged();
             return;
         }
@@ -91,36 +98,29 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements IM
             updateConnectivity();
     }
 
-    public void initCapability() {
+    void initCapability() {
         if (itemCapability != null && itemCapability.getCapability() != null)
             return;
         if (!isController()) {
-            AbstractCrateEntity controllerBE = getControllerBE();
-            if (controllerBE == null)
+            AbstractCrateEntity mainCrate = getControllerBE();
+            if (mainCrate == null)
                 return;
-            controllerBE.initCapability();
+            mainCrate.initCapability();
             itemCapability = ICapabilityProvider.of(() -> {
-                if (controllerBE.isRemoved())
+                if (mainCrate.isRemoved())
                     return null;
-                if (controllerBE.itemCapability == null)
+                if (mainCrate.itemCapability == null)
                     return null;
-                return controllerBE.itemCapability.getCapability();
+                return mainCrate.itemCapability.getCapability();
             });
-            invId = controllerBE.invId;
+            return;
         }
-    }
 
-    @Override
-    public void notifyMultiUpdated() {
-        BlockState state = this.getBlockState();
-        if (isCrate(state)) { // safety
-            if (level != null) {
-                level.setBlock(getBlockPos(), state.setValue(AbstractCrateBlock.DOUBLE, isDoubleCrate()), 6);
-            }
+        if(getOtherCrate() != null){
+            itemCapability = ICapabilityProvider.of(new VersionedInventoryWrapper(new CombinedInvWrapper(inventory, getOtherCrate().inventory)));
+        }else{
+            itemCapability = ICapabilityProvider.of(new VersionedInventoryWrapper(new CombinedInvWrapper(inventory)));
         }
-        itemCapability = null;
-        invalidateCapabilities();
-        setChanged();
     }
 
     public boolean isDoubleCrate() {
@@ -151,7 +151,7 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements IM
 
 
     public AbstractCrateEntity getOtherCrate() {
-        if (!isCrate(getBlockState()))
+        if (!CFABlocks.ANDESITE_CRATE.has(getBlockState()))
             return null;
         BlockEntity blockEntity = null;
         if (level != null) {
@@ -188,13 +188,13 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements IM
 
     public void removeController(boolean keepContents) {
         if (level != null && level.isClientSide()) return;
-        updateConnectivity = true;
+        //updateConnectivity = true;
         controller = null;
         //radius = 1;
         //length = 1;
 
         BlockState state = getBlockState();
-        if (isCrate(state)) {
+        if (CFABlocks.ANDESITE_CRATE.has(state)) {
             state = state.setValue(AbstractCrateBlock.DOUBLE, false);
             if (getLevel() != null) {
                 getLevel().setBlock(worldPosition, state, 22);
@@ -242,7 +242,6 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements IM
         super.destroy();
         onSplit();
         itemCapability = null;
-        invalidateCapabilities();
     }
 
     @Override
@@ -298,6 +297,17 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements IM
     }
 
     @Override
+    public void notifyMultiUpdated() {
+        BlockState state = this.getBlockState();
+        if (CFABlocks.ANDESITE_CRATE.has(state)) { // safety
+            level.setBlock(getBlockPos(), state.setValue(AbstractCrateBlock.DOUBLE, isDoubleCrate()), 6);
+        }
+        itemCapability = null;
+        invalidateCapabilities();
+        setChanged();
+    }
+
+    @Override
     public Direction.Axis getMainConnectionAxis() {
         return null;
     }
@@ -332,7 +342,4 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements IM
 
     }
 
-    public boolean isCrate(BlockState state) {
-        return false;
-    }
 }
