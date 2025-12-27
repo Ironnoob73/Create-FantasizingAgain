@@ -5,11 +5,9 @@ import com.simibubi.create.api.contraption.storage.item.MountedItemStorage;
 import com.simibubi.create.api.contraption.storage.item.MountedItemStorageType;
 import com.simibubi.create.api.contraption.storage.item.simple.SimpleMountedStorage;
 import com.simibubi.create.content.contraptions.Contraption;
-import com.simibubi.create.foundation.item.ItemHelper;
 import dev.hail.create_fantasizing.block.CFAMountedStorageTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.Container;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -18,7 +16,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import org.jetbrains.annotations.Nullable;
 
 public class CrateMountedStorage extends SimpleMountedStorage {
@@ -34,8 +31,8 @@ public class CrateMountedStorage extends SimpleMountedStorage {
 
     @Override
     public void unmount(Level level, BlockState state, BlockPos pos, @Nullable BlockEntity be) {
-        if (be instanceof Container container && this.getSlots() == container.getContainerSize()) {
-            ItemHelper.copyContents(this, new InvWrapper(container));
+        if (be instanceof AbstractCrateEntity crate) {
+            crate.applyInventoryToBlock(this.wrapped);
         }
     }
 
@@ -76,5 +73,8 @@ public class CrateMountedStorage extends SimpleMountedStorage {
         return facing == thisFacing && type == thisType
                 ? contraption.getStorage().getMountedItems().storages.get(localPos)
                 : null;
+    }
+    public static CrateMountedStorage fromCrate(AbstractCrateEntity crate) {
+        return new CrateMountedStorage(copyToItemStackHandler(crate.getInventoryOfBlock()));
     }
 }

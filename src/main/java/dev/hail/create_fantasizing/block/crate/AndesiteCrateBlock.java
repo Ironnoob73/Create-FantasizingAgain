@@ -1,7 +1,6 @@
 package dev.hail.create_fantasizing.block.crate;
 
 import com.simibubi.create.foundation.block.IBE;
-import com.simibubi.create.foundation.item.ItemHelper;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -50,7 +49,7 @@ public class AndesiteCrateBlock extends AbstractCrateBlock implements IBE<Andesi
         return ItemInteractionResult.SUCCESS;
     }
 
-    public static void splitCrate(Level world, BlockPos pos) {
+    /*public static void splitCrate(Level world, BlockPos pos) {
         BlockState state = world.getBlockState(pos);
         if (!CFABlocks.ANDESITE_CRATE.has(state))
             return;
@@ -62,5 +61,5 @@ public class AndesiteCrateBlock extends AbstractCrateBlock implements IBE<Andesi
         crateBe.onSplit();
         world.setBlockAndUpdate(pos, state.setValue(DOUBLE, false));
         world.setBlockAndUpdate(crateBe.getOtherCrate().getBlockPos(), state.setValue(DOUBLE, false));
-    }
+    }*/
 }

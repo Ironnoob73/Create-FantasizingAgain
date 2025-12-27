@@ -11,6 +11,8 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -18,6 +20,8 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -63,6 +67,7 @@ public abstract class AbstractCrateBlock extends CrateBlock {
         Direction blockFacing = stateIn.getValue(FACING);
         boolean isFacingOther = facingState.getBlock() == this && facingState.getValue(DOUBLE)
                 && facingState.getValue(FACING) == facing.getOpposite();
+        boolean isNowFacingOther = facingState.getBlock() == this && facingState.getValue(FACING) == blockFacing.getOpposite();
 
         if (!isDouble) {
             if (!isFacingOther)
@@ -73,7 +78,7 @@ public abstract class AbstractCrateBlock extends CrateBlock {
 
         if (facing != blockFacing)
             return stateIn;
-        if (!isFacingOther)
+        if (!isFacingOther && !isNowFacingOther)
             return stateIn.setValue(DOUBLE, false);
 
         return stateIn;
@@ -95,7 +100,6 @@ public abstract class AbstractCrateBlock extends CrateBlock {
             } else {
                 onMerge(other, be);
             }
-
         }
     }
 
@@ -148,8 +152,6 @@ public abstract class AbstractCrateBlock extends CrateBlock {
             crateEntity.invalidateCapabilities();
             world.removeBlockEntity(pos);
         }
-        //if (state.hasBlockEntity() && (!newState.hasBlockEntity() || !(newState.getBlock() instanceof AbstractCrateBlock)))
-        //    world.removeBlockEntity(pos);
     }
     @Override
     public List<ItemStack> getDrops(BlockState blockState, LootParams.Builder builder) {

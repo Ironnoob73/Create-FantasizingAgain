@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
 import org.jetbrains.annotations.NotNull;
 
@@ -68,6 +69,15 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity {
         if(isSecondaryCrate()){
             allowedAmount = getMainCrate().allowedAmount;
         }
+    }
+
+    // Mounted storage
+    public ItemStackHandler getInventoryOfBlock() {
+        return inventory;
+    }
+    public void applyInventoryToBlock(ItemStackHandler handler) {
+        for (int i = 0; i < inventory.getSlots(); i++)
+            inventory.setStackInSlot(i, i < handler.getSlots() ? handler.getStackInSlot(i) : ItemStack.EMPTY);
     }
 
     void initCapability() {
