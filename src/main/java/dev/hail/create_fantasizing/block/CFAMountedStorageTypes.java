@@ -8,7 +8,8 @@ import dev.hail.create_fantasizing.data.CFATags;
 import static dev.hail.create_fantasizing.FantasizingMod.REGISTRATE;
 
 public class CFAMountedStorageTypes {
-    public static final RegistryEntry<MountedItemStorageType<?>, CrateMountedStorageType> CRATE = REGISTRATE.mountedItemStorage("crate", CrateMountedStorageType::new)
+    public static final RegistryEntry<MountedItemStorageType<?>, CrateMountedStorageType> CRATE =
+            REGISTRATE.mountedItemStorage("crate", CrateMountedStorageType::new)
             .associateBlockTag(CFATags.CRATE_MOUNTED_STORAGE)
             .register();
 

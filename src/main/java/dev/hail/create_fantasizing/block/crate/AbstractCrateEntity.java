@@ -67,6 +67,15 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity {
         }
     }
 
+    // Mounted storage
+    public ItemStackHandler getInventoryOfBlock() {
+        return inventory;
+    }
+    public void applyInventoryToBlock(ItemStackHandler handler) {
+        for (int i = 0; i < inventory.getSlots(); i++)
+            inventory.setStackInSlot(i, i < handler.getSlots() ? handler.getStackInSlot(i) : ItemStack.EMPTY);
+    }
+
     void initCapability() {
         if (itemCapability != null && itemCapability.getCapability() != null
                 && (getOtherCrate() == null || (getOtherCrate().itemCapability != null && getOtherCrate().itemCapability.getCapability() != null)))
