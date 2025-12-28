@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -31,16 +31,16 @@ import java.util.*;
 @ParametersAreNonnullByDefault
 public abstract class AbstractCrateBlock extends CrateBlock {
 
-    public static final BooleanProperty DOUBLE = BooleanProperty.create("double");
+    public static final EnumProperty<CrateType> CRATE_TYPE = EnumProperty.create("crate_type", CrateType.class);
     public AbstractCrateBlock(Properties properties) {
         super(properties);
         registerDefaultState(defaultBlockState().setValue(FACING, Direction.UP)
-                .setValue(DOUBLE, false));
+                .setValue(CRATE_TYPE, AbstractCrateBlock.CrateType.SINGLE));
     }
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-        if(state.getValue(DOUBLE)){
+        if(state.getValue(CRATE_TYPE) != CrateType.SINGLE){
             switch (state.getValue(FACING)){
                 case SOUTH -> { return Block.box(1, 0, 1, 15, 14, 16);}
                 case NORTH -> { return Block.box(1, 0, 0, 15, 14, 15);}
@@ -56,23 +56,23 @@ public abstract class AbstractCrateBlock extends CrateBlock {
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn,
                                            BlockPos currentPos, BlockPos facingPos) {
 
-        boolean isDouble = stateIn.getValue(DOUBLE);
+        boolean isDouble = stateIn.getValue(CRATE_TYPE).isDouble();
         Direction blockFacing = stateIn.getValue(FACING);
-        boolean isFacingOther = facingState.getBlock() == this && facingState.getValue(DOUBLE)
+        boolean isFacingOther = facingState.getBlock() == this && facingState.getValue(CRATE_TYPE).isDouble()
                 && facingState.getValue(FACING) == facing.getOpposite();
         boolean isNowFacingOther = facingState.getBlock() == this && facingState.getValue(FACING) == blockFacing.getOpposite();
 
         if (!isDouble) {
             if (!isFacingOther)
                 return stateIn;
-            return stateIn.setValue(DOUBLE, true)
+            return stateIn.setValue(CRATE_TYPE, getMainOrSecond(stateIn, facingState))
                     .setValue(FACING, facing);
         }
 
         if (facing != blockFacing)
             return stateIn;
         if (!isFacingOther && !isNowFacingOther)
-            return stateIn.setValue(DOUBLE, false);
+            return stateIn.setValue(CRATE_TYPE, CrateType.SINGLE);
 
         return stateIn;
     }
@@ -80,7 +80,7 @@ public abstract class AbstractCrateBlock extends CrateBlock {
     @Override
     @SuppressWarnings("deprecation")
     public void onPlace(BlockState state, Level worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
-        if (oldState.getBlock() != state.getBlock() && state.hasBlockEntity() && state.getValue(DOUBLE)) {
+        if (oldState.getBlock() != state.getBlock() && state.hasBlockEntity() && state.getValue(CRATE_TYPE).isDouble()) {
             BlockEntity blockEntity = worldIn.getBlockEntity(pos);
             if (!(blockEntity instanceof AbstractCrateEntity be))
                 return;
@@ -89,7 +89,7 @@ public abstract class AbstractCrateBlock extends CrateBlock {
             if (other == null)
                 return;
 
-            if (state.getValue(FACING).getAxisDirection() == Direction.AxisDirection.POSITIVE) {
+            if (state.getValue(CRATE_TYPE) == CrateType.MAIN) {
                 onMerge(be, other);
             } else {
                 onMerge(other, be);
@@ -99,7 +99,10 @@ public abstract class AbstractCrateBlock extends CrateBlock {
 
     public void onMerge(AbstractCrateEntity be, AbstractCrateEntity other){
         be.inventory.allowedAmount += other.inventory.allowedAmount;
-        be.initCapability();
+        be.invalidateCapabilities();
+        if (other.hasCustomName()){
+            be.setCustomName(Objects.requireNonNull(other.getCustomName()));
+        }
     }
 
 
@@ -112,18 +115,18 @@ public abstract class AbstractCrateBlock extends CrateBlock {
                 .isShiftKeyDown()) {
             for (Direction d : Iterate.directions) {
                 BlockState state = world.getBlockState(pos.relative(d));
-                if (state.getBlock() == this && !state.getValue(DOUBLE))
+                if (state.getBlock() == this && !state.getValue(CRATE_TYPE).isDouble())
                     return defaultBlockState().setValue(FACING, d)
-                            .setValue(DOUBLE, true);
+                            .setValue(CRATE_TYPE, getMainOrSecond(state, defaultBlockState()));
             }
         }
 
         Direction placedOnFace = context.getClickedFace()
                 .getOpposite();
         BlockState state = world.getBlockState(pos.relative(placedOnFace));
-        if (state.getBlock() == this && !state.getValue(DOUBLE))
+        if (state.getBlock() == this && !state.getValue(CRATE_TYPE).isDouble())
             return defaultBlockState().setValue(FACING, placedOnFace)
-                    .setValue(DOUBLE, true);
+                    .setValue(CRATE_TYPE, getMainOrSecond(state, defaultBlockState()));
         return defaultBlockState();
     }
 
@@ -134,7 +137,7 @@ public abstract class AbstractCrateBlock extends CrateBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder.add(DOUBLE));
+        super.createBlockStateDefinition(builder.add(CRATE_TYPE));
     }
 
     @Override
@@ -171,6 +174,9 @@ public abstract class AbstractCrateBlock extends CrateBlock {
                     copiedComp.getCompound("Inventory").put("Items", crate_inv);
                     copiedComp.putInt("AllowedAmount", Math.min(1024, copiedComp.getInt("AllowedAmount")));
                     itemstack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(copiedComp));
+                    if (abstractCrateEntity.hasCustomName()){
+                        itemstack.set(DataComponents.CUSTOM_NAME, Component.empty().append(blockState.getBlock().getName()).append(" - ").append(Objects.requireNonNull(abstractCrateEntity.getCustomName())));
+                    }
                     dropList.add(itemstack);
                     return dropList;
                 }
@@ -192,5 +198,44 @@ public abstract class AbstractCrateBlock extends CrateBlock {
             return ItemHelper.calcRedstoneFromInventory(flexCrateBlockEntity.inventory);
         }
         return 0;
+    }
+
+    public enum CrateType implements StringRepresentable {
+        SINGLE("single"),
+        MAIN("main"),
+        SECOND("second");
+
+        private final String name;
+
+        CrateType(String name) {
+            this.name = name;
+        }
+
+        public String getSerializedName() {
+            return this.name;
+        }
+
+        public CrateType getOpposite() {
+            CrateType var10000;
+            switch (this.ordinal()) {
+                case 0 -> var10000 = SINGLE;
+                case 1 -> var10000 = SECOND;
+                case 2 -> var10000 = MAIN;
+                default -> throw new MatchException(null, null);
+            }
+
+            return var10000;
+        }
+
+        public boolean isDouble(){
+            return this.ordinal() != 0;
+        }
+    }
+
+    public CrateType getMainOrSecond(BlockState state, BlockState otherState){
+        return otherState.getValue(CRATE_TYPE).isDouble()
+                ? otherState.getValue(CRATE_TYPE).getOpposite()
+                : state.getValue(FACING).getAxisDirection() == Direction.AxisDirection.POSITIVE
+                ? CrateType.MAIN : CrateType.SECOND;
     }
 }

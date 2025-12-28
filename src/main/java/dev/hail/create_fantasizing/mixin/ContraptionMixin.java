@@ -23,8 +23,8 @@ public class ContraptionMixin {
             shift = At.Shift.AFTER))
     private void injected(Level world, Direction forcedDirection, Queue<BlockPos> frontier, Set<BlockPos> visited,
                           CallbackInfoReturnable<Boolean> cir, @Local(name = "pos") BlockPos pos, @Local(name = "state") BlockState state) {
-        if (state.hasProperty(AbstractCrateBlock.DOUBLE) && state.hasProperty(AbstractCrateBlock.FACING)
-                && state.getValue(AbstractCrateBlock.DOUBLE)) {
+        if (state.hasProperty(AbstractCrateBlock.CRATE_TYPE) && state.hasProperty(AbstractCrateBlock.FACING)
+                && state.getValue(AbstractCrateBlock.CRATE_TYPE).isDouble()) {
             Direction offset = state.getValue(AbstractCrateBlock.FACING);
             BlockPos attached = pos.relative(offset);
             if (!visited.contains(attached))

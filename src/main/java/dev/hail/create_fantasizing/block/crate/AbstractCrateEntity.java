@@ -19,7 +19,6 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Objects;
 
 public abstract class AbstractCrateEntity extends CrateBlockEntity implements Nameable, IHaveHoveringInformation {
     public String customName;
@@ -36,7 +35,7 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements Na
     public void tick() {
         super.tick();
 
-        if(isSecondaryCrate()){
+        if(isSecondaryCrate() && getMainCrate() != null){
             inventory.allowedAmount = getMainCrate().inventory.allowedAmount;
             customName = getMainCrate().customName;
         }else if(customName != null && customName.isEmpty()){
@@ -51,6 +50,7 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements Na
     public void applyInventoryToBlock(CrateInventory handler) {
         for (int i = 0; i < inventory.getSlots(); i++)
             inventory.setStackInSlot(i, i < handler.getSlots() ? handler.getStackInSlot(i) : ItemStack.EMPTY);
+        inventory.allowedAmount = handler.allowedAmount;
     }
 
     void initCapability() {
@@ -82,7 +82,7 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements Na
     }
 
     public boolean isDoubleCrate() {
-        return getBlockState().getValue(AbstractCrateBlock.DOUBLE);
+        return getBlockState().getValue(AbstractCrateBlock.CRATE_TYPE).isDouble();
     }
 
     public boolean isSecondaryCrate() {
@@ -90,7 +90,7 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements Na
             return false;
         if (!(getBlockState().getBlock() instanceof AbstractCrateBlock))
             return false;
-        return isDoubleCrate() && getFacing().getAxisDirection() == Direction.AxisDirection.NEGATIVE;
+        return isDoubleCrate() && getBlockState().getValue(AbstractCrateBlock.CRATE_TYPE) == AbstractCrateBlock.CrateType.SECOND;
     }
 
     public Direction getFacing() {
@@ -154,12 +154,6 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements Na
             this.customName = compound.getString("CustomName");
 
         super.read(compound, registries, clientPacket);
-    }
-
-    protected void swapContents(){
-        CrateInventory contents = inventory;
-        inventory = getMainCrate().inventory;
-        getMainCrate().inventory = contents;
     }
 
     public void setCustomName(Component customName) {
