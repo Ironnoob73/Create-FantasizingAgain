@@ -18,11 +18,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
 public class AndesiteCrateEntity extends AbstractCrateEntity implements MenuProvider {
     public AndesiteCrateEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
-        invSize = 16;
-        allowedAmount = 1024;
-        itemCount = 10;
-        inventory = new Inv();
-        invHandler = LazyOptional.of(() -> inventory);
+        inventory = new CrateInventory(this, 16);
+        inventory.allowedAmount = 1024;
+        invHandler = ResetableLazy.of(() -> inventory);
     }
 
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {

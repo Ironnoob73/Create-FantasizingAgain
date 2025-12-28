@@ -10,9 +10,10 @@ import org.jetbrains.annotations.NotNull;
 
 public enum CFAGuiTextures implements ScreenElement, TextureSheetSegment {
     BLOCK_PLACER("block_placer", 234, 103),
-    CRATE("crate", 124, 127),
-    DOUBLE_CRATE("crate", 0, 127, 196, 127),
-    CRATE_LOCKED_SLOT("crate", 125, 109, 18, 18);
+    ANDESITE_CRATE("andesite_crate", 124, 127),
+    ANDESITE_DOUBLE_CRATE("andesite_crate", 0, 127, 196, 127),
+    ANDESITE_EDIT("andesite_crate", 124, 0, 9, 9),
+    CRATE_LOCKED_SLOT("andesite_crate", 125, 109, 18, 18);
     public final ResourceLocation location;
     private final int width;
     private final int height;

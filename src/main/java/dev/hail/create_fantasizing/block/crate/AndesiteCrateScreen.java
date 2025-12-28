@@ -11,6 +11,7 @@ import dev.hail.create_fantasizing.block.CFABlocks;
 import dev.hail.create_fantasizing.event.CFAPackets;
 import net.createmod.catnip.gui.element.GuiGameElement;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -21,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static com.simibubi.create.foundation.gui.AllGuiTextures.PLAYER_INVENTORY;
 
@@ -29,6 +31,7 @@ public class AndesiteCrateScreen extends AbstractSimiContainerScreen<AndesiteCra
 
     protected CFAGuiTextures background;
     private List<Rect2i> extraAreas = Collections.emptyList();
+    private EditBox nameBox;
     private ScrollInput allowedItems;
     private int lastModification;
     private int itemLabelOffset;
@@ -44,7 +47,7 @@ public class AndesiteCrateScreen extends AbstractSimiContainerScreen<AndesiteCra
     public AndesiteCrateScreen(AndesiteCrateMenu container, Inventory inv, Component title) {
         super(container, inv, title);
         lastModification = -1;
-        background = container.doubleCrate ? CFAGuiTextures.DOUBLE_CRATE : CFAGuiTextures.CRATE;
+        background = container.doubleCrate ? CFAGuiTextures.ANDESITE_DOUBLE_CRATE : CFAGuiTextures.ANDESITE_CRATE;
     }
 
     @Override
@@ -61,13 +64,27 @@ public class AndesiteCrateScreen extends AbstractSimiContainerScreen<AndesiteCra
 
         int x = leftPos + textureXShift;
         int y = YShift;
-
+        
+        Consumer<String> onTextChanged;
+        onTextChanged = s -> nameBox.setX(nameBoxX(s, nameBox));
+        nameBox = new EditBox(new NoShadowFontWrapper(font), x + 23, y + 3, background.getWidth(), 10,
+                Component.empty());
+        nameBox.setBordered(false);
+        nameBox.setMaxLength(25);
+        nameBox.setTextColor(0x3D3C48);
+        nameBox.setValue(menu.contentHolder.customName);
+        nameBox.setFocused(false);
+        nameBox.mouseClicked(0, 0, 0);
+        nameBox.setResponder(onTextChanged);
+        nameBox.setX(nameBoxX(nameBox.getValue(), nameBox));
+        addRenderableWidget(nameBox);
+        
         Label allowedItemsLabel = new Label(x + itemLabelOffset + 4, y + 108, Component.empty()).colored(0xFFFFFF).withShadow();
         allowedItems = new ScrollInput(x + itemLabelOffset, y + 104, 41, 16).titled(storageSpace.plainCopy())
                 .withRange(1, (menu.doubleCrate ? 2049 : 1025))
                 .writingTo(allowedItemsLabel)
                 .withShiftStep(64)
-                .setState(menu.contentHolder.allowedAmount)
+                .setState(menu.contentHolder.inventory.allowedAmount)
                 .calling(s -> lastModification = 0);
         allowedItems.onChanged();
         addRenderableWidget(allowedItemsLabel);
@@ -76,6 +93,10 @@ public class AndesiteCrateScreen extends AbstractSimiContainerScreen<AndesiteCra
         extraAreas = ImmutableList.of(
                 new Rect2i(x + background.getWidth(), y + background.getHeight() - 56 + itemYShift, 80, 80)
         );
+    }
+    
+    private int nameBoxX(String s, EditBox nameBox) {
+        return getGuiLeft() + textureXShift + (background.getWidth() - (Math.min(font.width(s), nameBox.getWidth()) + 10)) / 2;
     }
 
     @Override
@@ -112,11 +133,35 @@ public class AndesiteCrateScreen extends AbstractSimiContainerScreen<AndesiteCra
         int y = YShift;
 
         background.render(ms, x, y);
-        ms.drawString(font, title, x + (background.getWidth() - font.width(title)) / 2 - 4, y + 3, 0x3D3C48, false);
+
+        String text = nameBox.getValue();
+        if (!nameBox.isFocused()) {
+            if (nameBox.getValue()
+                    .isEmpty()) {
+                text = renderedItem.getHoverName()
+                        .getString();
+                ms.drawString(font, text, nameBoxX(text, nameBox), y + 3, 0x3D3C48, false);
+            }
+            CFAGuiTextures.ANDESITE_EDIT.render(ms, nameBoxX(text, nameBox) + font.width(text) + 5, y + 2);
+        }
     }
+
+    @Override
+    public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
+        boolean hitEnter = getFocused() instanceof EditBox
+                && (pKeyCode == InputConstants.KEY_RETURN || pKeyCode == InputConstants.KEY_NUMPADENTER);
+
+        if (hitEnter && nameBox.isFocused()) {
+            nameBox.setFocused(false);
+            return true;
+        }
+
+        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
+    }
+
     @Override
     public void removed() {
-        CFAPackets.getChannel().sendToServer(new ConfigureCreatePacket(menu.contentHolder.getBlockPos(), allowedItems.getState()));
+        CatnipServices.NETWORK.sendToServer(new ConfigureCreatePacket(menu.contentHolder.getBlockPos(), allowedItems.getState(), nameBox.getValue()));
         super.removed();
     }
 
@@ -132,7 +177,7 @@ public class AndesiteCrateScreen extends AbstractSimiContainerScreen<AndesiteCra
 
         if (lastModification >= 15) {
             lastModification = -1;
-            CFAPackets.getChannel().sendToServer(new ConfigureCreatePacket(menu.contentHolder.getBlockPos(), allowedItems.getState()));
+            CatnipServices.NETWORK.sendToServer(new ConfigureCreatePacket(menu.contentHolder.getBlockPos(), allowedItems.getState(), nameBox.getValue()));
         }
 
         if (menu.doubleCrate != menu.contentHolder.isDoubleCrate())

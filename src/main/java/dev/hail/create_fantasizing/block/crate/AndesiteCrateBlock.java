@@ -9,7 +9,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -51,18 +50,4 @@ public class AndesiteCrateBlock extends AbstractCrateBlock implements IBE<Andesi
                 crate -> NetworkHooks.openScreen((ServerPlayer) player, (MenuProvider) crate.getMainCrate(), crate.getMainCrate()::sendToMenu));
         return InteractionResult.SUCCESS;
     }
-
-    /*public static void splitCrate(Level world, BlockPos pos) {
-        BlockState state = world.getBlockState(pos);
-        if (!CFABlocks.ANDESITE_CRATE.has(state))
-            return;
-        if (!state.getValue(DOUBLE))
-            return;
-        BlockEntity be = world.getBlockEntity(pos);
-        if (!(be instanceof AndesiteCrateEntity crateBe))
-            return;
-        crateBe.onSplit();
-        world.setBlockAndUpdate(pos, state.setValue(DOUBLE, false));
-        world.setBlockAndUpdate(crateBe.getOtherCrate().getBlockPos(), state.setValue(DOUBLE, false));
-    }*/
 }

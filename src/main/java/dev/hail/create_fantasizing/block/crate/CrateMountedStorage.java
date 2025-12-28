@@ -3,7 +3,7 @@ package dev.hail.create_fantasizing.block.crate;
 import com.mojang.serialization.MapCodec;
 import com.simibubi.create.api.contraption.storage.item.MountedItemStorage;
 import com.simibubi.create.api.contraption.storage.item.MountedItemStorageType;
-import com.simibubi.create.api.contraption.storage.item.simple.SimpleMountedStorage;
+import com.simibubi.create.api.contraption.storage.item.WrapperMountedItemStorage;
 import com.simibubi.create.content.contraptions.Contraption;
 import dev.hail.create_fantasizing.block.CFAMountedStorageTypes;
 import net.minecraft.core.BlockPos;
@@ -13,19 +13,20 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
 import org.jetbrains.annotations.Nullable;
 
-public class CrateMountedStorage extends SimpleMountedStorage {
-    public static final MapCodec<CrateMountedStorage> CODEC = SimpleMountedStorage.codec(CrateMountedStorage::new);
+public class CrateMountedStorage extends WrapperMountedItemStorage<CrateInventory> {
+    public static final MapCodec<CrateMountedStorage> CODEC = CrateInventory.CODEC.xmap(
+            CrateMountedStorage::new, storage -> storage.wrapped
+    ).fieldOf("value");
 
-    protected CrateMountedStorage(MountedItemStorageType<?> type, IItemHandler handler) {
+    protected CrateMountedStorage(MountedItemStorageType<?> type, CrateInventory handler) {
         super(type, handler);
     }
 
-    public CrateMountedStorage(IItemHandler handler) {
+    public CrateMountedStorage(CrateInventory handler) {
         this(CFAMountedStorageTypes.CRATE.get(), handler);
     }
 
@@ -75,6 +76,6 @@ public class CrateMountedStorage extends SimpleMountedStorage {
                 : null;
     }
     public static CrateMountedStorage fromCrate(AbstractCrateEntity crate) {
-        return new CrateMountedStorage(copyToItemStackHandler(crate.getInventoryOfBlock()));
+        return new CrateMountedStorage(crate.getInventoryOfBlock());
     }
 }
