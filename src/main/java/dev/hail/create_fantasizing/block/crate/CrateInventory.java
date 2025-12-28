@@ -12,20 +12,15 @@ import org.jetbrains.annotations.Nullable;
 public class CrateInventory extends ItemStackHandler {
     public static final Codec<CrateInventory> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ItemSlots.maxSizeCodec(Integer.MAX_VALUE).fieldOf("items").forGetter(ItemSlots::fromHandler),
-            ExtraCodecs.NON_NEGATIVE_INT.fieldOf("allowedAmount").forGetter(inv->inv.allowedAmount),
-            Codec.BOOL.fieldOf("main").forGetter(inv->inv.crateEntity.isSecondaryCrate())
+            ExtraCodecs.NON_NEGATIVE_INT.fieldOf("allowedAmount").forGetter(inv->inv.allowedAmount)
     ).apply(instance, CrateInventory::deserialize));
 
     public int allowedAmount;
-    public boolean main;
     private final AbstractCrateEntity crateEntity;
 
     public CrateInventory(@Nullable AbstractCrateEntity be, int size) {
         super(size);
         this.crateEntity = be;
-        if (be != null) {
-            this.main = !be.isSecondaryCrate();
-        }
     }
 
     @Override
@@ -49,7 +44,6 @@ public class CrateInventory extends ItemStackHandler {
         notifyUpdate();
         super.onContentsChanged(slot);
         if (crateEntity != null) {
-            this.main = !crateEntity.isSecondaryCrate();
             crateEntity.setChanged();
             crateEntity.itemCount = 0;
             for (int i = 0; i < getSlots(); i++) {
@@ -58,9 +52,10 @@ public class CrateInventory extends ItemStackHandler {
         }
     }
 
-    private boolean isMain(){
-        main = !crateEntity.isSecondaryCrate();
-        return main;
+    boolean isMain(){
+        if (crateEntity != null)
+            return !crateEntity.isSecondaryCrate();
+        return false;
     }
 
     private void notifyUpdate() {
@@ -68,10 +63,10 @@ public class CrateInventory extends ItemStackHandler {
             crateEntity.notifyUpdate();
     }
 
-    private static CrateInventory deserialize(ItemSlots slots, int allowedAmount, boolean main) {
+    private static CrateInventory deserialize(ItemSlots slots, int allowedAmount) {
         CrateInventory inventory = new CrateInventory(null, slots.getSize());
         slots.forEach(inventory::setStackInSlot);
-        inventory.main = main;
+        inventory.allowedAmount = allowedAmount;
         return inventory;
     }
 }

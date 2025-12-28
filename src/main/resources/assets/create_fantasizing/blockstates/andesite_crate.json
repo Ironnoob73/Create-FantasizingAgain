@@ -1,42 +1,32 @@
 {
-  "variants": {
-    "double=false,facing=down": {
-      "model": "create_fantasizing:block/crate/andesite/single"
+  "multipart": [
+    {
+      "when": {"crate_type": "single"},
+      "apply": {"model": "create_fantasizing:block/crate/andesite/single"}
     },
-    "double=true,facing=down": {
-      "model": "create_fantasizing:block/crate/andesite/top"
+    {
+      "when": {"crate_type": "!single", "facing": "down"},
+      "apply": {"model": "create_fantasizing:block/crate/andesite/top"}
     },
-    "double=false,facing=up": {
-      "model": "create_fantasizing:block/crate/andesite/single"
+    {
+      "when": {"crate_type": "!single", "facing": "up"},
+      "apply": {"model": "create_fantasizing:block/crate/andesite/bottom"}
     },
-    "double=true,facing=up": {
-      "model": "create_fantasizing:block/crate/andesite/bottom"
+    {
+      "when": {"crate_type": "!single", "facing": "north"},
+      "apply": {"model": "create_fantasizing:block/crate/andesite/right"}
     },
-    "double=false,facing=north": {
-      "model": "create_fantasizing:block/crate/andesite/single"
+    {
+      "when": {"crate_type": "!single", "facing": "south"},
+      "apply": {"model": "create_fantasizing:block/crate/andesite/left"}
     },
-    "double=true,facing=north": {
-      "model": "create_fantasizing:block/crate/andesite/right"
+    {
+      "when": {"crate_type": "!single", "facing": "west"},
+      "apply": {"model": "create_fantasizing:block/crate/andesite/left", "y": 90}
     },
-    "double=false,facing=south": {
-      "model": "create_fantasizing:block/crate/andesite/single"
-    },
-    "double=true,facing=south": {
-      "model": "create_fantasizing:block/crate/andesite/left"
-    },
-    "double=false,facing=west": {
-      "model": "create_fantasizing:block/crate/andesite/single"
-    },
-    "double=true,facing=west": {
-      "model": "create_fantasizing:block/crate/andesite/left",
-      "y": 90
-    },
-    "double=false,facing=east": {
-      "model": "create_fantasizing:block/crate/andesite/single"
-    },
-    "double=true,facing=east": {
-      "model": "create_fantasizing:block/crate/andesite/right",
-      "y": 90
+    {
+      "when": {"crate_type": "!single", "facing": "east"},
+      "apply": {"model": "create_fantasizing:block/crate/andesite/right", "y": 90}
     }
-  }
+  ]
 }

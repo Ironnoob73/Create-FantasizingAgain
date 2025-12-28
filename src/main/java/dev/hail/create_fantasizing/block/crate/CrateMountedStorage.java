@@ -32,22 +32,21 @@ public class CrateMountedStorage extends WrapperMountedItemStorage<CrateInventor
 
     @Override
     public void unmount(Level level, BlockState state, BlockPos pos, @Nullable BlockEntity be) {
-        if (be instanceof AbstractCrateEntity crate) {
+        if (be instanceof AbstractCrateEntity crate)
             crate.applyInventoryToBlock(this.wrapped);
-        }
     }
 
     @Override
     protected IItemHandlerModifiable getHandlerForMenu(StructureTemplate.StructureBlockInfo info, Contraption contraption) {
         BlockState state = info.state();
-        boolean type = state.getValue(AbstractCrateBlock.DOUBLE);
+        boolean type = state.getValue(AbstractCrateBlock.CRATE_TYPE).isDouble();
         if (!type)
             return this;
 
         Direction facing = state.getValue(AbstractCrateBlock.FACING);
         BlockPos otherHalfPos = info.pos().relative(facing);
 
-        MountedItemStorage otherHalf = this.getOtherHalf(contraption, otherHalfPos, state.getBlock(), facing, type);
+        MountedItemStorage otherHalf = this.getOtherHalf(contraption, otherHalfPos, state.getBlock(), facing);
         if (otherHalf == null)
             return this;
 
@@ -59,8 +58,7 @@ public class CrateMountedStorage extends WrapperMountedItemStorage<CrateInventor
     }
 
     @Nullable
-    protected MountedItemStorage getOtherHalf(Contraption contraption, BlockPos localPos, Block block,
-                                              Direction thisFacing, Boolean thisType) {
+    protected MountedItemStorage getOtherHalf(Contraption contraption, BlockPos localPos, Block block, Direction thisFacing) {
         StructureTemplate.StructureBlockInfo info = contraption.getBlocks().get(localPos);
         if (info == null)
             return null;
@@ -69,9 +67,9 @@ public class CrateMountedStorage extends WrapperMountedItemStorage<CrateInventor
             return null;
 
         Direction facing = state.getValue(AbstractCrateBlock.FACING);
-        Boolean type = state.getValue(AbstractCrateBlock.DOUBLE);
+        boolean type = state.getValue(AbstractCrateBlock.CRATE_TYPE).isDouble();
 
-        return facing == thisFacing && type == thisType
+        return facing == thisFacing && type
                 ? contraption.getStorage().getMountedItems().storages.get(localPos)
                 : null;
     }
