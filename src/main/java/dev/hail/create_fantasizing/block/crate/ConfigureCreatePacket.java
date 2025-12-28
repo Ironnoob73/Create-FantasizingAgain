@@ -12,29 +12,23 @@ public class ConfigureCreatePacket extends BlockEntityConfigurationPacket<Abstra
     public static final StreamCodec<ByteBuf, ConfigureCreatePacket> STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC, p -> p.pos,
             ByteBufCodecs.VAR_INT, packet -> packet.maxItems,
+            ByteBufCodecs.STRING_UTF8, packet -> packet.customName,
             ConfigureCreatePacket::new
     );
 
     private final int maxItems;
+    private final String customName;
 
-    public ConfigureCreatePacket(BlockPos pos, int newMaxItems) {
+    public ConfigureCreatePacket(BlockPos pos, int newMaxItems, String customName) {
         super(pos);
         this.maxItems = newMaxItems;
+        this.customName = customName;
     }
-
-    /*@Override
-    protected void writeSettings(FriendlyByteBuf buffer) {
-        buffer.writeInt(maxItems);
-    }
-
-    @Override
-    protected void readSettings(FriendlyByteBuf buffer) {
-        maxItems = buffer.readInt();
-    }*/
 
     @Override
     protected void applySettings(ServerPlayer player, AbstractCrateEntity be) {
-        be.allowedAmount = maxItems;
+        be.inventory.allowedAmount = maxItems;
+        be.customName = customName;
     }
 
     @Override

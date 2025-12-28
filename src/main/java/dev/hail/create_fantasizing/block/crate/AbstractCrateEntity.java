@@ -1,14 +1,20 @@
 package dev.hail.create_fantasizing.block.crate;
 
+import com.simibubi.create.api.equipment.goggles.IHaveHoveringInformation;
 import com.simibubi.create.content.logistics.crate.CrateBlockEntity;
 import com.simibubi.create.foundation.ICapabilityProvider;
 import com.simibubi.create.foundation.blockEntity.behaviour.inventory.VersionedInventoryWrapper;
+import com.simibubi.create.foundation.utility.CreateLang;
 import com.simibubi.create.foundation.utility.ResetableLazy;
+import dev.hail.create_fantasizing.FantasizingMod;
 import dev.hail.create_fantasizing.block.CFABlocks;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.Nameable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -18,43 +24,13 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class AbstractCrateEntity extends CrateBlockEntity {
-    public int invSize;
-    public int allowedAmount;
+import java.util.List;
+import java.util.Objects;
+
+public abstract class AbstractCrateEntity extends CrateBlockEntity implements Nameable, IHaveHoveringInformation {
+    public String customName;
     protected ICapabilityProvider<IItemHandler> itemCapability = null;
-    public class Inv extends net.neoforged.neoforge.items.ItemStackHandler {
-        public Inv() {
-            super(invSize);
-        }
-
-        @Override
-        public int getSlotLimit(int slot) {
-            if (slot < (allowedAmount - (isSecondaryCrate() ? 1024 : 0)) / 64)
-                return super.getSlotLimit(slot);
-            else if (slot == (allowedAmount - (isSecondaryCrate() ? 1024 : 0)) / 64)
-                return (allowedAmount - (isSecondaryCrate() ? 1024 : 0)) % 64;
-            return 0;
-        }
-
-        @Override
-        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            if (slot > (allowedAmount - (isSecondaryCrate() ? 1024 : 0)) / 64)
-                return false;
-            return super.isItemValid(slot, stack);
-        }
-
-        @Override
-        protected void onContentsChanged(int slot) {
-            super.onContentsChanged(slot);
-            setChanged();
-
-            itemCount = 0;
-            for (int i = 0; i < getSlots(); i++) {
-                itemCount += getStackInSlot(i).getCount();
-            }
-        }
-    }
-    public AbstractCrateEntity.Inv inventory;
+    public CrateInventory inventory;
     public int itemCount;
     protected ResetableLazy<IItemHandler> invHandler;
 
@@ -67,23 +43,28 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity {
         super.tick();
 
         if(isSecondaryCrate()){
-            allowedAmount = getMainCrate().allowedAmount;
+            inventory.allowedAmount = getMainCrate().inventory.allowedAmount;
+            customName = getMainCrate().customName;
+        }else if(customName != null && customName.isEmpty()){
+            customName = null;
         }
     }
 
     // Mounted storage
-    public ItemStackHandler getInventoryOfBlock() {
+    public CrateInventory getInventoryOfBlock() {
         return inventory;
     }
-    public void applyInventoryToBlock(ItemStackHandler handler) {
+    public void applyInventoryToBlock(CrateInventory handler) {
         for (int i = 0; i < inventory.getSlots(); i++)
             inventory.setStackInSlot(i, i < handler.getSlots() ? handler.getStackInSlot(i) : ItemStack.EMPTY);
     }
 
     void initCapability() {
         if (itemCapability != null && itemCapability.getCapability() != null
-                && (getOtherCrate() == null || (getOtherCrate().itemCapability != null && getOtherCrate().itemCapability.getCapability() != null)))
-            return;
+                && (getOtherCrate() == null || (getOtherCrate().itemCapability != null && getOtherCrate().itemCapability.getCapability() != null))){
+            if (isDoubleCrate() && itemCapability.getCapability().getSlots() == inventory.getSlots() * 2)
+                return;
+        }
         if (isSecondaryCrate()) {
             AbstractCrateEntity mainCrate = getMainCrate();
             if (mainCrate == null)
@@ -150,8 +131,8 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity {
             return;
         }
 
-        other.allowedAmount = Math.max(1, allowedAmount - 1024);
-        allowedAmount = Math.min(1024, allowedAmount);
+        other.inventory.allowedAmount = Math.max(1, inventory.allowedAmount - 1024);
+        inventory.allowedAmount = Math.min(1024, inventory.allowedAmount);
     }
 
     @Override
@@ -163,17 +144,55 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity {
 
     @Override
     public void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
-        compound.putInt("AllowedAmount", allowedAmount);
+        compound.putInt("AllowedAmount", inventory.allowedAmount);
         compound.put("Inventory", inventory.serializeNBT(registries));
+        if (customName != null)
+            compound.putString("CustomName", customName);
 
         super.write(compound, registries, clientPacket);
     }
 
     @Override
     protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
-        allowedAmount = compound.getInt("AllowedAmount");
+        inventory.allowedAmount = compound.getInt("AllowedAmount");
         inventory.deserializeNBT(registries, compound.getCompound("Inventory"));
+        if (compound.contains("CustomName", 8))
+            this.customName = compound.getString("CustomName");
 
         super.read(compound, registries, clientPacket);
+    }
+
+    protected void swapContents(){
+        CrateInventory contents = inventory;
+        inventory = getMainCrate().inventory;
+        getMainCrate().inventory = contents;
+    }
+
+    public void setCustomName(Component customName) {
+        this.customName = customName.getString();
+    }
+
+    @Override
+    public Component getCustomName() {
+        return Component.literal(customName);
+    }
+
+    @Override
+    public boolean hasCustomName() {
+        return customName != null;
+    }
+
+    @Override
+    public @NotNull Component getName() {
+        return Component.literal(customName);
+    }
+
+    @Override
+    public boolean addToTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+        if (hasCustomName()){
+            CreateLang.text(getName().getString()).style(ChatFormatting.WHITE).forGoggles(tooltip);
+            return true;
+        }
+        return false;
     }
 }

@@ -1,5 +1,6 @@
 package dev.hail.create_fantasizing.block.crate;
 
+import com.simibubi.create.api.contraption.storage.item.MountedItemStorageType;
 import com.simibubi.create.api.contraption.storage.item.simple.SimpleMountedStorageType;
 import com.simibubi.create.content.logistics.vault.ItemVaultBlockEntity;
 import com.simibubi.create.content.logistics.vault.ItemVaultMountedStorage;
@@ -12,19 +13,11 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import org.jetbrains.annotations.Nullable;
 
-public class CrateMountedStorageType extends SimpleMountedStorageType<CrateMountedStorage> {
+import java.util.Optional;
+
+public class CrateMountedStorageType extends MountedItemStorageType<CrateMountedStorage> {
     public CrateMountedStorageType() {
         super(CrateMountedStorage.CODEC);
-    }
-
-    @Override
-    protected IItemHandler getHandler(Level level, BlockEntity be) {
-        return be instanceof Container container ? new InvWrapper(container) : null;
-    }
-
-    @Override
-    protected CrateMountedStorage createStorage(IItemHandler handler) {
-        return new CrateMountedStorage(handler);
     }
 
     @Override
