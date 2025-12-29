@@ -72,7 +72,9 @@ public class AndesiteCrateScreen extends AbstractSimiContainerScreen<AndesiteCra
         nameBox.setBordered(false);
         nameBox.setMaxLength(25);
         nameBox.setTextColor(0x3D3C48);
-        nameBox.setValue(menu.contentHolder.customName);
+        if (menu.contentHolder != null) {
+            nameBox.setValue(menu.contentHolder.customName);
+        }
         nameBox.setFocused(false);
         nameBox.mouseClicked(0, 0, 0);
         nameBox.setResponder(onTextChanged);
@@ -106,7 +108,7 @@ public class AndesiteCrateScreen extends AbstractSimiContainerScreen<AndesiteCra
         int x = leftPos + textureXShift;
         int y = YShift;
 
-        String itemCount = String.valueOf(menu.contentHolder.itemCount + (menu.doubleCrate ? menu.contentHolder.getOtherCrate().itemCount : 0));
+        String itemCount = String.valueOf(menu.contentHolder.inventory.itemCount + (menu.doubleCrate ? menu.contentHolder.getOtherCrate().inventory.itemCount : 0));
         ms.drawString(font, itemCount, x + itemLabelOffset - 13 - font.width(itemCount), y + 108, 0x4B3A22, false);
 
         for (int slot = 0; slot < (menu.doubleCrate ? 32 : 16); slot++) {

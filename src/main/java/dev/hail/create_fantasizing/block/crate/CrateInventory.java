@@ -16,7 +16,8 @@ public class CrateInventory extends ItemStackHandler {
     ).apply(instance, CrateInventory::deserialize));
 
     public int allowedAmount;
-    private final AbstractCrateEntity crateEntity;
+    public int itemCount;
+    public AbstractCrateEntity crateEntity;
 
     public CrateInventory(@Nullable AbstractCrateEntity be, int size) {
         super(size);
@@ -45,9 +46,9 @@ public class CrateInventory extends ItemStackHandler {
         super.onContentsChanged(slot);
         if (crateEntity != null) {
             crateEntity.setChanged();
-            crateEntity.itemCount = 0;
+            itemCount = 0;
             for (int i = 0; i < getSlots(); i++) {
-                crateEntity.itemCount += getStackInSlot(i).getCount();
+                itemCount += getStackInSlot(i).getCount();
             }
         }
     }

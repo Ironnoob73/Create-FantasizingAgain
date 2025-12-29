@@ -238,7 +238,7 @@ public abstract class AbstractCrateBlock extends CrateBlock {
     public CrateType getMainOrSecond(BlockState state, BlockState otherState){
         return otherState.getValue(CRATE_TYPE).isDouble()
                 ? otherState.getValue(CRATE_TYPE).getOpposite()
-                : state.getValue(FACING).getAxisDirection() == Direction.AxisDirection.POSITIVE
+                : state.getValue(FACING).getAxisDirection() == Direction.AxisDirection.NEGATIVE
                 ? CrateType.MAIN : CrateType.SECOND;
     }
 }
