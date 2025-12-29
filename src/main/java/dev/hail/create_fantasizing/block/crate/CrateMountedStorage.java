@@ -40,6 +40,7 @@ public class CrateMountedStorage extends WrapperMountedItemStorage<CrateInventor
     protected IItemHandlerModifiable getHandlerForMenu(StructureTemplate.StructureBlockInfo info, Contraption contraption) {
         BlockState state = info.state();
         boolean type = state.getValue(AbstractCrateBlock.CRATE_TYPE).isDouble();
+        this.wrapped.crateEntity = (AbstractCrateEntity) contraption.presentBlockEntities.get(info.pos());
         if (!type)
             return this;
 
@@ -58,7 +59,7 @@ public class CrateMountedStorage extends WrapperMountedItemStorage<CrateInventor
     }
 
     @Nullable
-    protected MountedItemStorage getOtherHalf(Contraption contraption, BlockPos localPos, Block block, Direction thisFacing) {
+    protected CrateMountedStorage getOtherHalf(Contraption contraption, BlockPos localPos, Block block, Direction thisFacing) {
         StructureTemplate.StructureBlockInfo info = contraption.getBlocks().get(localPos);
         if (info == null)
             return null;
@@ -70,7 +71,7 @@ public class CrateMountedStorage extends WrapperMountedItemStorage<CrateInventor
         boolean type = state.getValue(AbstractCrateBlock.CRATE_TYPE).isDouble();
 
         return facing == thisFacing && type
-                ? contraption.getStorage().getMountedItems().storages.get(localPos)
+                ? (CrateMountedStorage) contraption.getStorage().getMountedItems().storages.get(localPos)
                 : null;
     }
     public static CrateMountedStorage fromCrate(AbstractCrateEntity crate) {

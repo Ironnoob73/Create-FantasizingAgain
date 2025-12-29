@@ -27,7 +27,6 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements Na
     public String customName;
     protected LazyOptional<IItemHandler> itemCapability = null;
     public CrateInventory inventory;
-    public int itemCount;
     protected ResetableLazy<IItemHandler> invHandler;
 
     public AbstractCrateEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
