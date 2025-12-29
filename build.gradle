@@ -14,6 +14,7 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id "org.spongepowered.mixin" version "0.7.+"
 }
 
 apply plugin: 'org.spongepowered.mixin'
@@ -101,14 +102,14 @@ tasks.named('processResources', ProcessResources).configure {
     ]
     inputs.properties replaceProperties
 
-    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+    filesMatching(['META-INF/mods.toml', "create_fantasizing.mixins.json", 'pack.mcmeta']) {
         expand replaceProperties + [project: project]
     }
 }
 
 mixin {
-    disableTargetExport = true
-    disableTargetValidator = true
+    add sourceSets.main, 'create_fantasizing.refmap.json'
+    config 'create_fantasizing.mixins.json'
 }
 
 tasks.named('jar', Jar).configure {

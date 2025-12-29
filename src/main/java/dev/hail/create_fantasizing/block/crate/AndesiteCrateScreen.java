@@ -1,11 +1,11 @@
 package dev.hail.create_fantasizing.block.crate;
 
 import com.google.common.collect.ImmutableList;
-import com.simibubi.create.AllBlocks;
+import com.mojang.blaze3d.platform.InputConstants;
+import com.simibubi.create.content.trains.station.NoShadowFontWrapper;
 import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
 import com.simibubi.create.foundation.gui.widget.Label;
 import com.simibubi.create.foundation.gui.widget.ScrollInput;
-import com.simibubi.create.foundation.utility.CreateLang;
 import dev.hail.create_fantasizing.CFAGuiTextures;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import dev.hail.create_fantasizing.event.CFAPackets;
@@ -161,7 +161,7 @@ public class AndesiteCrateScreen extends AbstractSimiContainerScreen<AndesiteCra
 
     @Override
     public void removed() {
-        CatnipServices.NETWORK.sendToServer(new ConfigureCreatePacket(menu.contentHolder.getBlockPos(), allowedItems.getState(), nameBox.getValue()));
+        CFAPackets.getChannel().sendToServer(new ConfigureCreatePacket(menu.contentHolder.getBlockPos(), allowedItems.getState(), nameBox.getValue()));
         super.removed();
     }
 
@@ -177,7 +177,7 @@ public class AndesiteCrateScreen extends AbstractSimiContainerScreen<AndesiteCra
 
         if (lastModification >= 15) {
             lastModification = -1;
-            CatnipServices.NETWORK.sendToServer(new ConfigureCreatePacket(menu.contentHolder.getBlockPos(), allowedItems.getState(), nameBox.getValue()));
+            CFAPackets.getChannel().sendToServer(new ConfigureCreatePacket(menu.contentHolder.getBlockPos(), allowedItems.getState(), nameBox.getValue()));
         }
 
         if (menu.doubleCrate != menu.contentHolder.isDoubleCrate())

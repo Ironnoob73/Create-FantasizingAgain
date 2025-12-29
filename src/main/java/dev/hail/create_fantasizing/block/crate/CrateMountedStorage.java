@@ -1,6 +1,6 @@
 package dev.hail.create_fantasizing.block.crate;
 
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import com.simibubi.create.api.contraption.storage.item.MountedItemStorage;
 import com.simibubi.create.api.contraption.storage.item.MountedItemStorageType;
 import com.simibubi.create.api.contraption.storage.item.WrapperMountedItemStorage;
@@ -13,14 +13,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import net.neoforged.neoforge.items.IItemHandlerModifiable;
-import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
+import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import org.jetbrains.annotations.Nullable;
 
 public class CrateMountedStorage extends WrapperMountedItemStorage<CrateInventory> {
-    public static final MapCodec<CrateMountedStorage> CODEC = CrateInventory.CODEC.xmap(
+    public static final Codec<CrateMountedStorage> CODEC = CrateInventory.CODEC.xmap(
             CrateMountedStorage::new, storage -> storage.wrapped
-    ).fieldOf("value");
+    );
 
     protected CrateMountedStorage(MountedItemStorageType<?> type, CrateInventory handler) {
         super(type, handler);

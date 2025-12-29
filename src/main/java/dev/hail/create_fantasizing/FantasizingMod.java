@@ -7,6 +7,7 @@ import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import dev.hail.create_fantasizing.block.CFAMenus;
+import dev.hail.create_fantasizing.block.CFAMountedStorageTypes;
 import dev.hail.create_fantasizing.event.CFAPackets;
 import dev.hail.create_fantasizing.item.CFAItems;
 import net.createmod.catnip.config.ui.BaseConfigScreen;
@@ -18,7 +19,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -58,14 +58,7 @@ public class FantasizingMod
         CFAMountedStorageTypes.register();
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event)
-    {
-        ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.SERVER, CFAConfig.SPEC_S);
-    }
-    private void registerCapabilities(RegisterCapabilitiesEvent event) {
-        TransporterEntity.registerCapabilities(event);
-        AndesiteCrateEntity.registerCapabilities(event);
-    }
+    private void commonSetup(final FMLCommonSetupEvent event) {}
 
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event)

@@ -1,6 +1,8 @@
 package dev.hail.create_fantasizing.block.crate;
 
+import com.simibubi.create.foundation.utility.ResetableLazy;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
@@ -12,9 +14,6 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
-@ParametersAreNonnullByDefault
 public class AndesiteCrateEntity extends AbstractCrateEntity implements MenuProvider {
     public AndesiteCrateEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -23,19 +22,19 @@ public class AndesiteCrateEntity extends AbstractCrateEntity implements MenuProv
         invHandler = ResetableLazy.of(() -> inventory);
     }
 
-    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-        event.registerBlockEntity(
-                Capabilities.ItemHandler.BLOCK,
-                CFABlocks.ANDESITE_CRATE_ENTITY.get(),
-                (be, context) -> {
-                    be.initCapability();
-                    if (be.itemCapability == null)
-                        return null;
-                    return be.itemCapability.getCapability();
-                });
-    }
     @Override
-    public @Nullable AbstractContainerMenu createMenu(int i, net.minecraft.world.entity.player.Inventory inventory, Player player) {
+    public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
+        if (isItemHandlerCap(cap)) {
+            initCapability();
+            if (!itemCapability.isPresent())
+                return LazyOptional.empty();
+            return itemCapability.cast();
+        }
+        return super.getCapability(cap, side);
+    }
+
+    @Override
+    public @Nullable AbstractContainerMenu createMenu(int i, net.minecraft.world.entity.player.@NotNull Inventory inventory, @NotNull Player player) {
         return AndesiteCrateMenu.create(i, inventory, this);
     }
 

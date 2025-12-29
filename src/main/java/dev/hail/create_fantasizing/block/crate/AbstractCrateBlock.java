@@ -8,8 +8,11 @@ import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -53,6 +56,7 @@ public abstract class AbstractCrateBlock extends CrateBlock {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn,
                                            BlockPos currentPos, BlockPos facingPos) {
 
@@ -99,7 +103,8 @@ public abstract class AbstractCrateBlock extends CrateBlock {
 
     public void onMerge(AbstractCrateEntity be, AbstractCrateEntity other){
         be.inventory.allowedAmount += other.inventory.allowedAmount;
-        be.invalidateCapabilities();
+        if(be.itemCapability != null)
+            be.itemCapability.invalidate();
         if (other.hasCustomName()){
             be.setCustomName(Objects.requireNonNull(other.getCustomName()));
         }
@@ -147,38 +152,43 @@ public abstract class AbstractCrateBlock extends CrateBlock {
             BlockEntity be = world.getBlockEntity(pos);
             if (!(be instanceof AbstractCrateEntity crateEntity))
                 return;
-            crateEntity.invalidateCapabilities();
+            crateEntity.itemCapability.invalidate();
             world.removeBlockEntity(pos);
         }
     }
     @Override
+    @SuppressWarnings("deprecation")
     public List<ItemStack> getDrops(BlockState blockState, LootParams.Builder builder) {
         BlockEntity blockentity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
         if (blockentity instanceof AbstractCrateEntity abstractCrateEntity) {
             ItemStack itemstack = new ItemStack(blockState.getBlock());
             if (abstractCrateEntity.getLevel() != null) {
-                abstractCrateEntity.saveToItem(itemstack, abstractCrateEntity.getLevel().registryAccess());
-                CompoundTag copiedComp = Objects.requireNonNull(itemstack.get(DataComponents.BLOCK_ENTITY_DATA)).copyTag();
-                Tag crate_inv = copiedComp.getCompound("Inventory").get("Items");
-                if (crate_inv instanceof ListTag && !((ListTag) crate_inv).isEmpty()) {
-                    List<ItemStack> dropList = new ArrayList<>(List.of());
-                    Iterator<Tag> iterator = ((ListTag) crate_inv).iterator();
-                    while (iterator.hasNext()){
-                        ItemStack stack = ItemStack.parseOptional(abstractCrateEntity.getLevel().registryAccess(), (CompoundTag) iterator.next());
-                        if (stack.get(DataComponents.BLOCK_ENTITY_DATA) != null ||
-                                stack.get(DataComponents.CONTAINER) != null ) {
-                            dropList.add(stack);
-                            iterator.remove();
+                abstractCrateEntity.saveToItem(itemstack);
+                CompoundTag copiedComp;
+                if (itemstack.getTag() != null) {
+                    copiedComp = Objects.requireNonNull(itemstack.getTag().getCompound("BlockEntityTag")).copy();
+                    Tag crate_inv = copiedComp.getCompound("Inventory").get("Items");
+                    if (crate_inv instanceof ListTag && !((ListTag) crate_inv).isEmpty()) {
+                        List<ItemStack> dropList = new ArrayList<>(List.of());
+                        Iterator<Tag> iterator = ((ListTag) crate_inv).iterator();
+                        while (iterator.hasNext()){
+                            ItemStack stack = ItemStack.of((CompoundTag) iterator.next());
+                            if (stack.getTag() != null &&
+                                    (!stack.getTag().getCompound("BlockEntityTag").isEmpty() ||
+                                    !stack.getTag().getCompound("Inventory").isEmpty())) {
+                                dropList.add(stack);
+                                iterator.remove();
+                            }
                         }
+                        copiedComp.getCompound("Inventory").put("Items", crate_inv);
+                        copiedComp.putInt("AllowedAmount", Math.min(1024, copiedComp.getInt("AllowedAmount")));
+                        itemstack.getTag().put("BlockEntityTag", copiedComp);
+                        if (abstractCrateEntity.hasCustomName()){
+                            itemstack.setHoverName(Component.empty().append(blockState.getBlock().getName()).append(" - ").append(Objects.requireNonNull(abstractCrateEntity.getCustomName())));
+                        }
+                        dropList.add(itemstack);
+                        return dropList;
                     }
-                    copiedComp.getCompound("Inventory").put("Items", crate_inv);
-                    copiedComp.putInt("AllowedAmount", Math.min(1024, copiedComp.getInt("AllowedAmount")));
-                    itemstack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(copiedComp));
-                    if (abstractCrateEntity.hasCustomName()){
-                        itemstack.set(DataComponents.CUSTOM_NAME, Component.empty().append(blockState.getBlock().getName()).append(" - ").append(Objects.requireNonNull(abstractCrateEntity.getCustomName())));
-                    }
-                    dropList.add(itemstack);
-                    return dropList;
                 }
             }
         }
@@ -186,11 +196,13 @@ public abstract class AbstractCrateBlock extends CrateBlock {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public boolean hasAnalogOutputSignal(BlockState state) {
         return true;
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public int getAnalogOutputSignal(BlockState blockState, Level worldIn, BlockPos pos) {
         BlockEntity be = worldIn.getBlockEntity(pos);
         if (be instanceof AbstractCrateEntity) {
@@ -221,7 +233,7 @@ public abstract class AbstractCrateBlock extends CrateBlock {
                 case 0 -> var10000 = SINGLE;
                 case 1 -> var10000 = SECOND;
                 case 2 -> var10000 = MAIN;
-                default -> throw new MatchException(null, null);
+                default -> throw new IncompatibleClassChangeError();
             }
 
             return var10000;

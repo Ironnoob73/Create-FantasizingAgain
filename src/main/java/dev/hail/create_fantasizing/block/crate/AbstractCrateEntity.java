@@ -2,6 +2,10 @@ package dev.hail.create_fantasizing.block.crate;
 
 import com.simibubi.create.api.equipment.goggles.IHaveHoveringInformation;
 import com.simibubi.create.content.logistics.crate.CrateBlockEntity;
+import com.simibubi.create.foundation.blockEntity.behaviour.inventory.VersionedInventoryWrapper;
+import com.simibubi.create.foundation.utility.CreateLang;
+import com.simibubi.create.foundation.utility.ResetableLazy;
+import com.simibubi.create.foundation.utility.SameSizeCombinedInvWrapper;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -15,14 +19,13 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public abstract class AbstractCrateEntity extends CrateBlockEntity implements Nameable, IHaveHoveringInformation {
     public String customName;
-    protected ICapabilityProvider<IItemHandler> itemCapability = null;
+    protected LazyOptional<IItemHandler> itemCapability = null;
     public CrateInventory inventory;
     public int itemCount;
     protected ResetableLazy<IItemHandler> invHandler;
@@ -54,9 +57,9 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements Na
     }
 
     void initCapability() {
-        if (itemCapability != null && itemCapability.getCapability() != null
-                && (getOtherCrate() == null || (getOtherCrate().itemCapability != null && getOtherCrate().itemCapability.getCapability() != null))){
-            if (isDoubleCrate() && itemCapability.getCapability().getSlots() == inventory.getSlots() * 2)
+        if (itemCapability != null && itemCapability.isPresent()
+                && (getOtherCrate() == null || (getOtherCrate().itemCapability != null && getOtherCrate().itemCapability.isPresent()))){
+            if (isDoubleCrate() && itemCapability.resolve().isPresent() && itemCapability.resolve().get().getSlots() == inventory.getSlots() * 2)
                 return;
         }
         if (isSecondaryCrate()) {
@@ -64,21 +67,22 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements Na
             if (mainCrate == null)
                 return;
             mainCrate.initCapability();
-            itemCapability = ICapabilityProvider.of(() -> {
-                if (mainCrate.isRemoved())
-                    return null;
-                if (mainCrate.itemCapability == null)
-                    return null;
-                return mainCrate.itemCapability.getCapability();
-            });
+            if (mainCrate.isRemoved())
+                itemCapability = LazyOptional.empty();
+            else if (!mainCrate.itemCapability.isPresent())
+                itemCapability = LazyOptional.empty();
+            else
+                itemCapability = mainCrate.itemCapability.cast();
             return;
         }
 
+        IItemHandler itemHandler;
         if(getOtherCrate() != null){
-            itemCapability = ICapabilityProvider.of(new VersionedInventoryWrapper(new CombinedInvWrapper(inventory, getOtherCrate().inventory)));
+            itemHandler = new VersionedInventoryWrapper(SameSizeCombinedInvWrapper.create(inventory, getOtherCrate().inventory));
         }else{
-            itemCapability = ICapabilityProvider.of(new VersionedInventoryWrapper(new CombinedInvWrapper(inventory)));
+            itemHandler = new VersionedInventoryWrapper(SameSizeCombinedInvWrapper.create(inventory));
         }
+        itemCapability = LazyOptional.of(() -> itemHandler);
     }
 
     public boolean isDoubleCrate() {
@@ -133,27 +137,27 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements Na
     public void destroy() {
         super.destroy();
         onSplit();
-        invalidateCapabilities();
+        itemCapability.invalidate();
     }
 
     @Override
-    public void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
+    public void write(CompoundTag compound, boolean clientPacket) {
         compound.putInt("AllowedAmount", inventory.allowedAmount);
-        compound.put("Inventory", inventory.serializeNBT(registries));
+        compound.put("Inventory", inventory.serializeNBT());
         if (customName != null)
             compound.putString("CustomName", customName);
 
-        super.write(compound, registries, clientPacket);
+        super.write(compound, clientPacket);
     }
 
     @Override
-    protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
+    protected void read(CompoundTag compound, boolean clientPacket) {
         inventory.allowedAmount = compound.getInt("AllowedAmount");
-        inventory.deserializeNBT(registries, compound.getCompound("Inventory"));
+        inventory.deserializeNBT(compound.getCompound("Inventory"));
         if (compound.contains("CustomName", 8))
             this.customName = compound.getString("CustomName");
 
-        super.read(compound, registries, clientPacket);
+        super.read(compound, clientPacket);
     }
 
     public void setCustomName(Component customName) {

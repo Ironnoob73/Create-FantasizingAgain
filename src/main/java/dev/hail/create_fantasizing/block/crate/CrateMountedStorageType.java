@@ -16,7 +16,7 @@ public class CrateMountedStorageType extends MountedItemStorageType<CrateMounted
     @Nullable
     public CrateMountedStorage mount(Level level, BlockState state, BlockPos pos, @Nullable BlockEntity be) {
         if (be != null) {
-            be.invalidateCapabilities();
+            be.invalidateCaps();
         }
         return be instanceof AbstractCrateEntity crate ? CrateMountedStorage.fromCrate(crate) : null;
     }
