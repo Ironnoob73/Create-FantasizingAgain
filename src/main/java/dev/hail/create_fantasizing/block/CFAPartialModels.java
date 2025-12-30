@@ -14,6 +14,9 @@ public class CFAPartialModels {
     public static final PartialModel COMPACT_WIND_ENGINE_CORE = block("compact_wind_engine_core");
 
     public static final PartialModel PHANTOM_SHAFT = block("phantom_shaft");
+    public static final PartialModel PHANTOM_COGWHEEL = block("phantom_cogwheel");
+    public static final PartialModel PHANTOM_COGWHEEL_SHAFT = block("phantom_cogwheel_shaft");
+    public static final PartialModel PHANTOM_LARGE_COGWHEEL_SHAFTLESS = block("phantom_large_cogwheel_shaftless");
 
     public static final Map<Direction, PartialModel> STURDY_METAL_GIRDER_BRACKETS = new EnumMap<>(Direction.class);
     static {

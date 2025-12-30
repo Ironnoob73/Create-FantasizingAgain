@@ -1,0 +1,10 @@
+{
+	"parent": "create:block/large_cogwheel",
+    "textures": {
+      "0": "create_fantasizing:block/phantom_cogwheel_axis",
+      "3": "create_fantasizing:block/phantom_shaft_top",
+      "4": "create_fantasizing:block/phantom_large_cogwheel",
+      "particle": "create_fantasizing:block/phantom_shaft"
+    },
+    "render_type": "minecraft:translucent"
+}

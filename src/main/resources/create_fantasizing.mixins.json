@@ -7,7 +7,8 @@
   ],
   "mixins": [
     "ContraptionMixin",
-    "ShaftBlockMixin"
+    "ShaftBlockMixin",
+    "CogwheelBlockMixin"
   ],
   "injectors": {
     "defaultRequire": 1
