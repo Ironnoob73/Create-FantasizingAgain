@@ -107,7 +107,7 @@ public class SturdyGirderWrenchBehavior {
         if (directions.isEmpty())
             return null;
 
-        Direction dir = directions.get(0);
+        Direction dir = directions.getFirst();
         return validDirections.stream()
                 .filter(pair -> pair.getFirst() == dir)
                 .findFirst()

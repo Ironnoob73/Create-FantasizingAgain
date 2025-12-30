@@ -5,6 +5,10 @@ import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.OrientedRotatingVisual;
 import com.simibubi.create.content.kinetics.base.ShaftRenderer;
 import com.simibubi.create.content.kinetics.base.SingleAxisRotatingVisual;
+import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntity;
+import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntityRenderer;
+import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockModel;
+import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
@@ -12,6 +16,8 @@ import com.tterrag.registrate.util.entry.BlockEntry;
 import dev.hail.create_fantasizing.block.compat_engine.*;
 import dev.hail.create_fantasizing.block.crate.AndesiteCrateBlock;
 import dev.hail.create_fantasizing.block.crate.AndesiteCrateEntity;
+import dev.hail.create_fantasizing.block.phantom_shaft.PhantomShaft;
+import dev.hail.create_fantasizing.block.phantom_shaft.PhantomShaftVisual;
 import dev.hail.create_fantasizing.block.transporter.TransporterBlock;
 import dev.hail.create_fantasizing.block.transporter.TransporterEntity;
 import dev.hail.create_fantasizing.block.transporter.TransporterRenderer;
@@ -96,6 +102,20 @@ public class CFABlocks {
     public static final BlockEntityEntry<AndesiteCrateEntity> ANDESITE_CRATE_ENTITY = REGISTRATE
             .blockEntity("andesite_crate", AndesiteCrateEntity::new)
             .validBlocks(ANDESITE_CRATE)
+            .register();
+
+    public static final BlockEntry<PhantomShaft> PHANTOM_SHAFT = REGISTRATE.block("phantom_shaft", PhantomShaft::new)
+            .initialProperties(SharedProperties::stone)
+            .properties(p -> p.mapColor(MapColor.QUARTZ).noCollission())
+            .blockstate(BlockStateGen.axisBlockProvider(false))
+            .onRegister(CreateRegistrate.blockModel(() -> BracketedKineticBlockModel::new))
+            .simpleItem()
+            .register();
+    public static final BlockEntityEntry<BracketedKineticBlockEntity> PHANTOM_SHAFT_ENTITY = REGISTRATE
+            .blockEntity("phantom_shaft", BracketedKineticBlockEntity::new)
+            .visual(() -> PhantomShaftVisual::create, false)
+            .validBlocks(CFABlocks.PHANTOM_SHAFT)
+            .renderer(() -> BracketedKineticBlockEntityRenderer::new)
             .register();
 
     public static void init() {}

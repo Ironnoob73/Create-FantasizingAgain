@@ -56,7 +56,7 @@ public class BPSphereBrush extends BPShapedBrush {
 
     @Override
     List<BlockPos> getIncludedPositions() {
-        return cachedBrushes.get(Integer.valueOf(param0));
+        return cachedBrushes.get(param0);
     }
 
 }
