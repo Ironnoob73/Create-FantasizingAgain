@@ -6,7 +6,8 @@
   "client": [
   ],
   "mixins": [
-    "ContraptionMixin"
+    "ContraptionMixin",
+    "ShaftBlockMixin"
   ],
   "injectors": {
     "defaultRequire": 1

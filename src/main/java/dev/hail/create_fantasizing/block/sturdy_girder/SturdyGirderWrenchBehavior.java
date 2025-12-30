@@ -1,7 +1,6 @@
 package dev.hail.create_fantasizing.block.sturdy_girder;
 
 import com.simibubi.create.AllItems;
-import com.simibubi.create.content.decoration.girder.GirderWrenchBehavior;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import net.createmod.catnip.data.Iterate;
 import net.createmod.catnip.data.Pair;
@@ -108,7 +107,7 @@ public class SturdyGirderWrenchBehavior {
         if (directions.isEmpty())
             return null;
 
-        Direction dir = directions.get(0);
+        Direction dir = directions.getFirst();
         return validDirections.stream()
                 .filter(pair -> pair.getFirst() == dir)
                 .findFirst()

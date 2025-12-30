@@ -24,6 +24,7 @@ public class CFACreativeTab {
                 output.accept(CFAItems.BLOCK_PLACER.get());
                 output.accept(CFABlocks.TRANSPORTER.get());
                 output.accept(CFABlocks.ANDESITE_CRATE.get());
+                output.accept(CFABlocks.PHANTOM_SHAFT.get());
                 output.accept(CFAItems.PRISMARINE_FAN_BLADES.get());
                 output.accept(CFAItems.STURDY_CONDUIT.get());
                 output.accept(CFAItems.STURDY_HEAVY_CORE.get());
