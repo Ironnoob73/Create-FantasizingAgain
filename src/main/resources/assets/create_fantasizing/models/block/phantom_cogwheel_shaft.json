@@ -1,0 +1,9 @@
+{
+	"parent": "create:block/cogwheel_shaft",
+    "textures": {
+      "0": "create_fantasizing:block/phantom_shaft_top",
+      "1": "create_fantasizing:block/phantom_cogwheel_axis",
+      "particle": "create_fantasizing:block/phantom_shaft"
+    },
+    "render_type": "minecraft:translucent"
+}

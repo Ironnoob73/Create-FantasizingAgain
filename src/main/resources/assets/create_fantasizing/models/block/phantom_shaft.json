@@ -1,9 +1,9 @@
 {
 	"parent": "create:block/shaft",
     "textures": {
-		"particle": "create_fantasizing:block/phantom_shaft",
-        "0": "create_fantasizing:block/phantom_shaft",
-        "1": "create_fantasizing:block/phantom_shaft_top"
+      "particle": "create_fantasizing:block/phantom_shaft",
+      "0": "create_fantasizing:block/phantom_shaft",
+      "1": "create_fantasizing:block/phantom_shaft_top"
     },
     "render_type": "minecraft:translucent"
 }
