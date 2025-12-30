@@ -6,6 +6,8 @@
     "create_fantasizing:sturdy_girder_encased_shaft",
     "create_fantasizing:transporter",
     "create_fantasizing:andesite_crate",
-    "create_fantasizing:phantom_shaft"
+    "create_fantasizing:phantom_shaft",
+    "create_fantasizing:phantom_cogwheel",
+    "create_fantasizing:phantom_large_cogwheel"
   ]
 }
