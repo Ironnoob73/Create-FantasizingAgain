@@ -11,13 +11,11 @@ import net.minecraft.client.gui.screens.inventory.MenuAccess;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 
 public class CFAMenus {
-    public static final MenuEntry<AndesiteCrateMenu> CRATE = register("crate", AndesiteCrateMenu::new, () -> AndesiteCrateScreen::new);
+    public static final MenuEntry<AndesiteCrateMenu> ANDESITE_CRATE = register("andesite_crate", AndesiteCrateMenu::new, () -> AndesiteCrateScreen::new);
 
     private static <C extends AbstractContainerMenu, S extends Screen & MenuAccess<C>> MenuEntry<C> register(
             String name, MenuBuilder.ForgeMenuFactory<C> factory, NonNullSupplier<MenuBuilder.ScreenFactory<C, S>> screenFactory) {
-        return FantasizingMod.REGISTRATE
-                .menu(name, factory, screenFactory)
-                .register();
+        return FantasizingMod.REGISTRATE.menu(name, factory, screenFactory).register();
     }
     public static void register() {
     }

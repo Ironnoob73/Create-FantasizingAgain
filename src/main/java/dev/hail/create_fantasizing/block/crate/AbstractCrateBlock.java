@@ -102,7 +102,6 @@ public abstract class AbstractCrateBlock extends CrateBlock {
     }
 
     public void onMerge(AbstractCrateEntity be, AbstractCrateEntity other){
-        be.inventory.allowedAmount += other.inventory.allowedAmount;
         be.invalidateCapabilities();
         if (other.hasCustomName()){
             be.setCustomName(Objects.requireNonNull(other.getCustomName()));

@@ -6,9 +6,10 @@ import com.simibubi.create.foundation.item.ItemSlots;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.ItemStackHandler;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@ParametersAreNonnullByDefault
 public class CrateInventory extends ItemStackHandler {
     public static final Codec<CrateInventory> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ItemSlots.maxSizeCodec(Integer.MAX_VALUE).fieldOf("items").forGetter(ItemSlots::fromHandler),
@@ -19,23 +20,23 @@ public class CrateInventory extends ItemStackHandler {
     public int itemCount;
     public AbstractCrateEntity crateEntity;
 
-    public CrateInventory(@Nullable AbstractCrateEntity be, int size) {
+    public CrateInventory(AbstractCrateEntity be, int size) {
         super(size);
         this.crateEntity = be;
     }
 
     @Override
     public int getSlotLimit(int slot) {
-        if (slot < (allowedAmount - (isMain() ? 0 : 1024)) / 64)
+        if (slot < allowedAmount / 64)
             return super.getSlotLimit(slot);
-        else if (slot == (allowedAmount - (isMain() ? 0 : 1024)) / 64)
-            return (allowedAmount - (isMain() ? 0 : 1024)) % 64;
+        else if (slot == allowedAmount / 64)
+            return allowedAmount % 64;
         return 0;
     }
 
     @Override
-    public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-        if (slot > (allowedAmount - (isMain() ? 0 : 1024)) / 64)
+    public boolean isItemValid(int slot, ItemStack stack) {
+        if (slot > allowedAmount / 64)
             return false;
         return super.isItemValid(slot, stack);
     }

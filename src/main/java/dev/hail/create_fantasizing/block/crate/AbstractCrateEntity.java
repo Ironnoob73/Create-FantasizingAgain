@@ -39,11 +39,22 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements Na
         super.tick();
 
         if(isSecondaryCrate() && getMainCrate() != null){
-            inventory.allowedAmount = getMainCrate().inventory.allowedAmount;
+            //inventory.allowedAmount = getMainCrate().inventory.allowedAmount;
             customName = getMainCrate().customName;
         }else if(customName != null && customName.isEmpty()){
             customName = null;
         }
+    }
+
+    public int getOverallAllowedAmount(){
+        if(isDoubleCrate()){
+            if(isSecondaryCrate()){
+                return inventory.allowedAmount + getMainCrate().inventory.allowedAmount;
+            }else{
+                return inventory.allowedAmount + getOtherCrate().inventory.allowedAmount;
+            }
+        }
+        return inventory.allowedAmount;
     }
 
     // Mounted storage
@@ -53,7 +64,7 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements Na
     public void applyInventoryToBlock(CrateInventory handler) {
         for (int i = 0; i < inventory.getSlots(); i++)
             inventory.setStackInSlot(i, i < handler.getSlots() ? handler.getStackInSlot(i) : ItemStack.EMPTY);
-        inventory.allowedAmount = handler.allowedAmount;
+        //allowedAmount = handler.crateEntity.allowedAmount;
     }
 
     void initCapability() {
@@ -125,11 +136,7 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements Na
             return;
         if (other == getMainCrate()) {
             other.onSplit();
-            return;
         }
-
-        other.inventory.allowedAmount = Math.max(1, inventory.allowedAmount - 1024);
-        inventory.allowedAmount = Math.min(1024, inventory.allowedAmount);
     }
 
     @Override

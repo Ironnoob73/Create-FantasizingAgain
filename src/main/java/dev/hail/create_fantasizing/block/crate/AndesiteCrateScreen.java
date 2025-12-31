@@ -42,7 +42,7 @@ public class AndesiteCrateScreen extends AbstractSimiContainerScreen<AndesiteCra
     private int itemYShift;
 
     private final ItemStack renderedItem = CFABlocks.ANDESITE_CRATE.asStack();
-    private final Component storageSpace = Component.translatable("create_fantasizing.gui.andesite_crate.storage_space");
+    private final Component storageSpace = Component.translatable("create_fantasizing.gui.crate.storage_space");
 
     public AndesiteCrateScreen(AndesiteCrateMenu container, Inventory inv, Component title) {
         super(container, inv, title);
@@ -86,7 +86,7 @@ public class AndesiteCrateScreen extends AbstractSimiContainerScreen<AndesiteCra
                 .withRange(1, (menu.doubleCrate ? 2049 : 1025))
                 .writingTo(allowedItemsLabel)
                 .withShiftStep(64)
-                .setState(menu.contentHolder.inventory.allowedAmount)
+                .setState(menu.contentHolder.getOverallAllowedAmount())
                 .calling(s -> lastModification = 0);
         allowedItems.onChanged();
         addRenderableWidget(allowedItemsLabel);
@@ -117,7 +117,7 @@ public class AndesiteCrateScreen extends AbstractSimiContainerScreen<AndesiteCra
             int slotsPerRow = (menu.doubleCrate ? 8 : 4);
             int slotX = x + 22 + (slot % slotsPerRow) * 18;
             int slotY = y + 19 + (slot / slotsPerRow) * 18;
-            CFAGuiTextures.CRATE_LOCKED_SLOT.render(ms, slotX, slotY);
+            CFAGuiTextures.ANDESITE_CRATE_LOCKED_SLOT.render(ms, slotX, slotY);
         }
 
         GuiGameElement.of(renderedItem)

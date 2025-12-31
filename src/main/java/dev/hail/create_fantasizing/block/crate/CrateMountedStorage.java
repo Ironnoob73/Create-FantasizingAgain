@@ -65,7 +65,7 @@ public class CrateMountedStorage extends WrapperMountedItemStorage<CrateInventor
     }
 
     protected MenuProvider createMenuProvider(Component name, AbstractCrateEntity blockEntity) {
-        MenuConstructor constructor = (id, inv, player) -> new AndesiteCrateMenu(CFAMenus.CRATE.get(), id, inv, (AndesiteCrateEntity) blockEntity);
+        MenuConstructor constructor = (id, inv, player) -> new AndesiteCrateMenu(CFAMenus.ANDESITE_CRATE.get(), id, inv, (AndesiteCrateEntity) blockEntity);
         return new SimpleMenuProvider(constructor, name);
     }
 

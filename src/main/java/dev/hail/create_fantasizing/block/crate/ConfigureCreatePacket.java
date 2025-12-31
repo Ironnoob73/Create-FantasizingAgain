@@ -27,8 +27,19 @@ public class ConfigureCreatePacket extends BlockEntityConfigurationPacket<Abstra
 
     @Override
     protected void applySettings(ServerPlayer player, AbstractCrateEntity be) {
-        be.inventory.allowedAmount = maxItems;
+        if (be.isDoubleCrate()){
+            if (be.isSecondaryCrate()){
+                be.inventory.allowedAmount = Math.max(0, maxItems-1024);
+                be.getOtherCrate().inventory.allowedAmount = Math.min(maxItems, 1024);
+            } else{
+                be.inventory.allowedAmount = Math.min(maxItems, 1024);
+                be.getOtherCrate().inventory.allowedAmount = Math.max(0, maxItems-1024);
+            }
+            be.getOtherCrate().notifyUpdate();
+        } else
+            be.inventory.allowedAmount = maxItems;
         be.customName = customName;
+        be.notifyUpdate();
     }
 
     @Override

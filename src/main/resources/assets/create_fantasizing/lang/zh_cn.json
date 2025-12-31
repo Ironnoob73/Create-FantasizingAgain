@@ -34,7 +34,7 @@
   "item.create_fantasizing.sturdy_heavy_core": "坚固沉重核心",
 
   "create_fantasizing.gui.block_placer.destroy_mode": "销毁掉落物",
-  "create_fantasizing.gui.andesite_crate.storage_space": "储存空间",
+  "create_fantasizing.gui.crate.storage_space": "储存空间",
 
   "create_fantasizing.configuration.hydraulic_engine_stress_provide": "水力引擎应力提供",
   "create_fantasizing.configuration.hydraulic_engine_stress_provide.tooltip": "\u00A7e需要重新进入存档",
