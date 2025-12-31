@@ -27,7 +27,7 @@ public class AndesiteCrateMenu extends MenuBase<AndesiteCrateEntity> {
     }
 
     public static AndesiteCrateMenu create(int id, Inventory inv, AndesiteCrateEntity be) {
-        return new AndesiteCrateMenu(CFAMenus.CRATE.get(), id, inv, be);
+        return new AndesiteCrateMenu(CFAMenus.ANDESITE_CRATE.get(), id, inv, be);
     }
 
     @Override
