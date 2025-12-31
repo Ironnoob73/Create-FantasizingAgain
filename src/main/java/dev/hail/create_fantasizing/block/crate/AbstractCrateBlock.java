@@ -13,6 +13,10 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -26,8 +30,11 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.common.util.FakePlayer;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.*;
@@ -108,6 +115,18 @@ public abstract class AbstractCrateBlock extends CrateBlock {
         }
     }
 
+    @Override
+    public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn,
+                                                    BlockHitResult hit) {
+        if (player.isCrouching())
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+
+        if (player instanceof FakePlayer)
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        if (worldIn.isClientSide)
+            return ItemInteractionResult.SUCCESS;
+        return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+    }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
@@ -197,6 +216,8 @@ public abstract class AbstractCrateBlock extends CrateBlock {
         BlockEntity be = worldIn.getBlockEntity(pos);
         if (be instanceof AbstractCrateEntity) {
             AbstractCrateEntity flexCrateBlockEntity = ((AbstractCrateEntity) be).getMainCrate();
+            if (flexCrateBlockEntity.itemCapability.getCapability() != null)
+                return ItemHelper.calcRedstoneFromInventory(flexCrateBlockEntity.itemCapability.getCapability());
             return ItemHelper.calcRedstoneFromInventory(flexCrateBlockEntity.inventory);
         }
         return 0;

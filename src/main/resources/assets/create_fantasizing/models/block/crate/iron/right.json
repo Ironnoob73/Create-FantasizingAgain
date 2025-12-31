@@ -1,0 +1,8 @@
+{
+  "parent": "create:block/crate/right",
+  "textures": {
+    "crate": "create_fantasizing:block/iron_crate",
+    "side": "create_fantasizing:block/iron_crate_side",
+    "casing": "create:block/vault/vault_front_small"
+  }
+}

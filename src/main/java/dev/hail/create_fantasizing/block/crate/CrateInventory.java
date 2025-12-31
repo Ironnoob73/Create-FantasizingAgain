@@ -43,15 +43,15 @@ public class CrateInventory extends ItemStackHandler {
 
     @Override
     protected void onContentsChanged(int slot) {
-        notifyUpdate();
         super.onContentsChanged(slot);
         if (crateEntity != null) {
             crateEntity.setChanged();
             itemCount = 0;
             for (int i = 0; i < getSlots(); i++) {
-                itemCount += getStackInSlot(i).getCount();
+                itemCount += Math.min(getStackInSlot(i).getCount(), getSlotLimit(i));
             }
         }
+        notifyUpdate(true);
     }
 
     boolean isMain(){
@@ -60,9 +60,15 @@ public class CrateInventory extends ItemStackHandler {
         return false;
     }
 
-    private void notifyUpdate() {
-        if (crateEntity != null)
+    private void notifyUpdate(Boolean first) {
+        if (crateEntity != null){
             crateEntity.notifyUpdate();
+            if (crateEntity.getLevel() != null) {
+                crateEntity.getLevel().updateNeighbourForOutputSignal(crateEntity.getBlockPos(), crateEntity.getBlockState().getBlock());
+            }
+            if (first && crateEntity.isDoubleCrate())
+                crateEntity.getOtherCrate().inventory.notifyUpdate(false);
+        }
     }
 
     private static CrateInventory deserialize(ItemSlots slots, int allowedAmount) {

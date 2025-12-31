@@ -23,6 +23,8 @@
   "block.create_fantasizing.transporter": "Transporter",
   "block.create_fantasizing.transporter.tooltip.summary":"_Transfer_ items from one container to another. Can't extract items from another Transporter!",
   "block.create_fantasizing.andesite_crate": "Andesite Crate",
+  "block.create_fantasizing.iron_crate": "Iron Crate",
+  "block.create_fantasizing.brass_crate": "Brass Crate",
   "block.create_fantasizing.phantom_shaft": "Phantom Shaft",
   "block.create_fantasizing.phantom_shaft.tooltip.summary":"Right-click a _Shaft_ using a _Phantom Membrane_ to convert it into this block. It will still pass stress without collision. Removing it with a _Wrench_ will restore it to a _Shaft_.",
   "block.create_fantasizing.phantom_cogwheel": "Phantom Cogwheel",

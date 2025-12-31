@@ -39,7 +39,6 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -89,7 +88,7 @@ public class TransporterBlock extends Block implements IWrenchable, IBE<Transpor
     }
 
     @Override
-    protected @NotNull FluidState getFluidState(BlockState pState) {
+    protected FluidState getFluidState(BlockState pState) {
         return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
     }
     @Override

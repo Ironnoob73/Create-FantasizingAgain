@@ -12,21 +12,17 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.common.util.FakePlayer;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 public class AndesiteCrateBlock extends AbstractCrateBlock implements IBE<AndesiteCrateEntity> {
-
     public AndesiteCrateBlock(Properties properties) {super(properties);}
-
     @Override
     public Class<AndesiteCrateEntity> getBlockEntityClass() {
         return AndesiteCrateEntity.class;
     }
-
     @Override
     public BlockEntityType<? extends AndesiteCrateEntity> getBlockEntityType() {
         return CFABlocks.ANDESITE_CRATE_ENTITY.get();
@@ -35,15 +31,7 @@ public class AndesiteCrateBlock extends AbstractCrateBlock implements IBE<Andesi
     @Override
     public @NotNull ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn,
                                                     BlockHitResult hit) {
-
-        if (player.isCrouching())
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-
-        if (player instanceof FakePlayer)
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-        if (worldIn.isClientSide)
-            return ItemInteractionResult.SUCCESS;
-
+        super.useItemOn(stack,state,worldIn,pos,player,handIn,hit);
         withBlockEntityDo(worldIn, pos, crate -> player.openMenu((MenuProvider) crate.getMainCrate(), crate.getMainCrate()::sendToMenu));
         return ItemInteractionResult.SUCCESS;
     }

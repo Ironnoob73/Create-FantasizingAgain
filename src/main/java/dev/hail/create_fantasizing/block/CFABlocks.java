@@ -12,8 +12,7 @@ import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import dev.hail.create_fantasizing.block.compat_engine.*;
-import dev.hail.create_fantasizing.block.crate.AndesiteCrateBlock;
-import dev.hail.create_fantasizing.block.crate.AndesiteCrateEntity;
+import dev.hail.create_fantasizing.block.crate.*;
 import dev.hail.create_fantasizing.block.phantom_shaft.PhantomCogwheel;
 import dev.hail.create_fantasizing.block.phantom_shaft.PhantomShaft;
 import dev.hail.create_fantasizing.block.phantom_shaft.PhantomShaftVisual;
@@ -95,12 +94,30 @@ public class CFABlocks {
 
     public static final BlockEntry<AndesiteCrateBlock> ANDESITE_CRATE = REGISTRATE.block("andesite_crate", AndesiteCrateBlock::new)
             .initialProperties(SharedProperties::wooden)
-            .properties(p -> p.mapColor(MapColor.PODZOL))
+            .properties(p -> p.mapColor(MapColor.PODZOL).explosionResistance(1200))
             .simpleItem()
             .register();
     public static final BlockEntityEntry<AndesiteCrateEntity> ANDESITE_CRATE_ENTITY = REGISTRATE
             .blockEntity("andesite_crate", AndesiteCrateEntity::new)
             .validBlocks(ANDESITE_CRATE)
+            .register();
+    public static final BlockEntry<IronCrateBlock> IRON_CRATE = REGISTRATE.block("iron_crate", IronCrateBlock::new)
+            .initialProperties(SharedProperties::softMetal)
+            .properties(p -> p.mapColor(MapColor.TERRACOTTA_BLUE).sound(SoundType.NETHERITE_BLOCK).explosionResistance(1200))
+            .simpleItem()
+            .register();
+    public static final BlockEntityEntry<IronCrateEntity> IRON_CRATE_ENTITY = REGISTRATE
+            .blockEntity("iron_crate", IronCrateEntity::new)
+            .validBlocks(IRON_CRATE)
+            .register();
+    public static final BlockEntry<BrassCrateBlock> BRASS_CRATE = REGISTRATE.block("brass_crate", BrassCrateBlock::new)
+            .initialProperties(SharedProperties::copperMetal)
+            .properties(p -> p.mapColor(MapColor.TERRACOTTA_BROWN).explosionResistance(1200))
+            .simpleItem()
+            .register();
+    public static final BlockEntityEntry<BrassCrateEntity> BRASS_CRATE_ENTITY = REGISTRATE
+            .blockEntity("brass_crate", BrassCrateEntity::new)
+            .validBlocks(BRASS_CRATE)
             .register();
 
     public static final BlockEntry<PhantomShaft> PHANTOM_SHAFT = REGISTRATE.block("phantom_shaft", PhantomShaft::new)
