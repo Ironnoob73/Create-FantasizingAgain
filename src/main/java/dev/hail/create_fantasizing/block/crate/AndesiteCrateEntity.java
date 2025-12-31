@@ -42,4 +42,12 @@ public class AndesiteCrateEntity extends AbstractCrateEntity implements MenuProv
     public @NotNull Component getDisplayName() {
         return Component.translatable("block.create_fantasizing.andesite_crate");
     }
+
+    @Override
+    public AbstractCrateEntity getOtherCrate(){
+        if (!CFABlocks.ANDESITE_CRATE.has(getBlockState()))
+            return null;
+        else
+            return super.getOtherCrate();
+    }
 }

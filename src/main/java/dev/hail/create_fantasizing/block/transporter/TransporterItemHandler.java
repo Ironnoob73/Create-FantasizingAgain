@@ -4,9 +4,13 @@ import com.simibubi.create.foundation.item.ItemHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class TransporterItemHandler implements IItemHandler {
 
-    private TransporterEntity blockEntity;
+    private final TransporterEntity blockEntity;
 
     public TransporterItemHandler(TransporterEntity be) {
         this.blockEntity = be;

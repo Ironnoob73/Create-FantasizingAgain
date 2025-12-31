@@ -38,7 +38,6 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements Na
         super.tick();
 
         if(isSecondaryCrate() && getMainCrate() != null){
-            //inventory.allowedAmount = getMainCrate().inventory.allowedAmount;
             customName = getMainCrate().customName;
         }else if(customName != null && customName.isEmpty()){
             customName = null;
@@ -63,15 +62,9 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements Na
     public void applyInventoryToBlock(CrateInventory handler) {
         for (int i = 0; i < inventory.getSlots(); i++)
             inventory.setStackInSlot(i, i < handler.getSlots() ? handler.getStackInSlot(i) : ItemStack.EMPTY);
-        //allowedAmount = handler.crateEntity.allowedAmount;
     }
 
     void initCapability() {
-        if (itemCapability != null && itemCapability.isPresent()
-                && (getOtherCrate() == null || (getOtherCrate().itemCapability != null && getOtherCrate().itemCapability.isPresent()))){
-            if (isDoubleCrate() && itemCapability.resolve().isPresent() && itemCapability.resolve().get().getSlots() == inventory.getSlots() * 2)
-                return;
-        }
         if (isSecondaryCrate()) {
             AbstractCrateEntity mainCrate = getMainCrate();
             if (mainCrate == null)
@@ -111,10 +104,7 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements Na
         return getBlockState().getValue(AbstractCrateBlock.FACING);
     }
 
-
     public AbstractCrateEntity getOtherCrate() {
-        if (!CFABlocks.ANDESITE_CRATE.has(getBlockState()))
-            return null;
         BlockEntity blockEntity = null;
         if (level != null) {
             blockEntity = level.getBlockEntity(worldPosition.relative(getFacing()));

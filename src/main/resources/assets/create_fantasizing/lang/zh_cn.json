@@ -23,6 +23,8 @@
   "block.create_fantasizing.transporter": "运输器",
   "block.create_fantasizing.transporter.tooltip.summary":"将物品从一个容器_转移_到另一个容器。不能从另一个运输器抽取物品！",
   "block.create_fantasizing.andesite_crate": "安山板条箱",
+  "block.create_fantasizing.iron_crate": "铁板条箱",
+  "block.create_fantasizing.brass_crate": "黄铜板条箱",
   "block.create_fantasizing.phantom_shaft": "幽灵传动杆",
   "block.create_fantasizing.phantom_shaft.tooltip.summary":"使用_幻翼膜_右击_传动杆_转换为此方块。没有碰撞的同时依旧可以传动。使用_扳手_拆除时将还原为_传动杆_。",
   "block.create_fantasizing.phantom_cogwheel": "幽灵齿轮",

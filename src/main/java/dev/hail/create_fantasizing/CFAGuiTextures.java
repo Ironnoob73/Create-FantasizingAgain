@@ -19,7 +19,13 @@ public enum CFAGuiTextures implements ScreenElement, TextureSheetSegment {
     IRON_CRATE("iron_crate", 124, 127),
     IRON_DOUBLE_CRATE("iron_crate", 0, 127, 214, 127),
     IRON_EDIT("iron_crate", 124, 0, 9, 9),
-    IRON_CRATE_LOCKED_SLOT("iron_crate", 125, 109, 18, 18);
+    IRON_CRATE_LOCKED_SLOT("iron_crate", 125, 109, 18, 18),
+
+    BRASS_CRATE_UPSIDE("brass_crate", 188, 191),
+    BRASS_CRATE_DOWNSIDE("brass_crate", 0, 19, 196, 108),
+    BRASS_EDIT("brass_crate", 196, 0, 9, 9),
+    BRASS_CRATE_LOCKED_SLOT("brass_crate", 197, 109, 18, 18);
+
     public final ResourceLocation location;
     private final int width;
     private final int height;

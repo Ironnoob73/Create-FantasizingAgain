@@ -20,34 +20,21 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 public class AndesiteCrateBlock extends AbstractCrateBlock implements IBE<AndesiteCrateEntity> {
-
     public AndesiteCrateBlock(Properties properties) {super(properties);}
-
     @Override
     public Class<AndesiteCrateEntity> getBlockEntityClass() {
         return AndesiteCrateEntity.class;
     }
-
     @Override
     public BlockEntityType<? extends AndesiteCrateEntity> getBlockEntityType() {
         return CFABlocks.ANDESITE_CRATE_ENTITY.get();
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public @NotNull InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn,
-                                          BlockHitResult hit) {
-
-        if (player.isCrouching())
-            return InteractionResult.PASS;
-
-        if (player instanceof FakePlayer)
-            return InteractionResult.PASS;
-        if (worldIn.isClientSide)
-            return InteractionResult.SUCCESS;
-
-        withBlockEntityDo(worldIn, pos,
-                crate -> NetworkHooks.openScreen((ServerPlayer) player, (MenuProvider) crate.getMainCrate(), crate.getMainCrate()::sendToMenu));
-        return InteractionResult.SUCCESS;
+    public @NotNull ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn,
+                                                    BlockHitResult hit) {
+        super.useItemOn(stack,state,worldIn,pos,player,handIn,hit);
+        withBlockEntityDo(worldIn, pos, crate -> player.openMenu((MenuProvider) crate.getMainCrate(), crate.getMainCrate()::sendToMenu));
+        return ItemInteractionResult.SUCCESS;
     }
 }

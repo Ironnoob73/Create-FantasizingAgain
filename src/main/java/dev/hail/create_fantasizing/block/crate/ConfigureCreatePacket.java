@@ -35,11 +35,11 @@ public class ConfigureCreatePacket extends BlockEntityConfigurationPacket<Abstra
     protected void applySettings(AbstractCrateEntity be) {
         if (be.isDoubleCrate()){
             if (be.isSecondaryCrate()){
-                be.inventory.allowedAmount = Math.max(0, maxItems-1024);
-                be.getOtherCrate().inventory.allowedAmount = Math.min(maxItems, 1024);
+                be.inventory.allowedAmount = Math.max(0, maxItems - be.inventory.getSlots() * 64);
+                be.getOtherCrate().inventory.allowedAmount = Math.min(maxItems, be.inventory.getSlots() * 64);
             } else{
-                be.inventory.allowedAmount = Math.min(maxItems, 1024);
-                be.getOtherCrate().inventory.allowedAmount = Math.max(0, maxItems-1024);
+                be.inventory.allowedAmount = Math.min(maxItems, be.inventory.getSlots() * 64);
+                be.getOtherCrate().inventory.allowedAmount = Math.max(0, maxItems - be.inventory.getSlots() * 64);
             }
             be.getOtherCrate().notifyUpdate();
         } else

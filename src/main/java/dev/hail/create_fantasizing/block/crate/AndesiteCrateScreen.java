@@ -83,7 +83,7 @@ public class AndesiteCrateScreen extends AbstractSimiContainerScreen<AndesiteCra
         
         Label allowedItemsLabel = new Label(x + itemLabelOffset + 4, y + 108, Component.empty()).colored(0xFFFFFF).withShadow();
         allowedItems = new ScrollInput(x + itemLabelOffset, y + 104, 41, 16).titled(storageSpace.plainCopy())
-                .withRange(1, (menu.doubleCrate ? 2049 : 1025))
+                .withRange(0, (menu.doubleCrate ? 2049 : 1025))
                 .writingTo(allowedItemsLabel)
                 .withShiftStep(64)
                 .setState(menu.contentHolder.getOverallAllowedAmount())
