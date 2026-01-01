@@ -1,5 +1,7 @@
 {
   "values": [
-    "create_fantasizing:andesite_crate"
+    "create_fantasizing:andesite_crate",
+    "create_fantasizing:iron_crate",
+    "create_fantasizing:brass_crate"
   ]
 }

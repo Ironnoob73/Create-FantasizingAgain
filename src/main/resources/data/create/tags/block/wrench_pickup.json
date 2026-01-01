@@ -4,6 +4,8 @@
     "create_fantasizing:compact_wind_engine",
     "create_fantasizing:sturdy_girder",
     "create_fantasizing:sturdy_girder_encased_shaft",
-    "create_fantasizing:andesite_crate"
+    "create_fantasizing:andesite_crate",
+    "create_fantasizing:iron_crate",
+    "create_fantasizing:brass_crate"
   ]
 }

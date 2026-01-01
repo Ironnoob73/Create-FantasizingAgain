@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "c:ingots/brass"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    },
+    "C": {
+      "item": "minecraft:chest"
+    }
+  },
+  "pattern": [
+    "APA",
+    "PCP",
+    "APA"
+  ],
+  "result": {
+    "count": 4,
+    "id": "create_fantasizing:brass_crate"
+  }
+}
