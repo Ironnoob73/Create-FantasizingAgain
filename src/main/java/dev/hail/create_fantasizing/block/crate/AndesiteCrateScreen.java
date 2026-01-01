@@ -96,7 +96,7 @@ public class AndesiteCrateScreen extends AbstractSimiContainerScreen<AndesiteCra
                 new Rect2i(x + background.getWidth(), y + background.getHeight() - 56 + itemYShift, 80, 80)
         );
     }
-    
+
     private int nameBoxX(String s, EditBox nameBox) {
         return getGuiLeft() + textureXShift + (background.getWidth() - (Math.min(font.width(s), nameBox.getWidth()) + 10)) / 2;
     }

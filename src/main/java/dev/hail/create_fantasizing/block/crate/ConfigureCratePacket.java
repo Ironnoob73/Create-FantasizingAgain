@@ -9,7 +9,7 @@ public class ConfigureCreatePacket extends BlockEntityConfigurationPacket<Abstra
     private int maxItems;
     private String customName;
 
-    public ConfigureCreatePacket(BlockPos pos, int newMaxItems, String customName) {
+    public ConfigureCratePacket(BlockPos pos, int newMaxItems, String customName) {
         super(pos);
         this.maxItems = newMaxItems;
         this.customName = customName;

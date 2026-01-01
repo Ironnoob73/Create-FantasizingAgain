@@ -163,7 +163,7 @@ public class IronCrateScreen extends AbstractSimiContainerScreen<IronCrateMenu> 
 
     @Override
     public void removed() {
-        CatnipServices.NETWORK.sendToServer(new ConfigureCreatePacket(menu.contentHolder.getBlockPos(), allowedItems.getState(), nameBox.getValue()));
+        CatnipServices.NETWORK.sendToServer(new ConfigureCratePacket(menu.contentHolder.getBlockPos(), allowedItems.getState(), nameBox.getValue()));
         super.removed();
     }
 
@@ -179,7 +179,7 @@ public class IronCrateScreen extends AbstractSimiContainerScreen<IronCrateMenu> 
 
         if (lastModification >= 15) {
             lastModification = -1;
-            CatnipServices.NETWORK.sendToServer(new ConfigureCreatePacket(menu.contentHolder.getBlockPos(), allowedItems.getState(), nameBox.getValue()));
+            CatnipServices.NETWORK.sendToServer(new ConfigureCratePacket(menu.contentHolder.getBlockPos(), allowedItems.getState(), nameBox.getValue()));
         }
 
         if (menu.doubleCrate != menu.contentHolder.isDoubleCrate())

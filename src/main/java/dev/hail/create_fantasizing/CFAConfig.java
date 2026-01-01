@@ -17,6 +17,8 @@ public class CFAConfig {
             .defineInRange("block_placer_power", 50, 0, Double.MAX_VALUE);
     static final ForgeConfigSpec SPEC_S = BUILDER_S.build();
 
+    public static boolean foldInterface;
+
     public static double hydraulicEngineStressProvide;
     public static double windEngineStressProvide;
     public static double blockPlacerPower;
@@ -24,6 +26,9 @@ public class CFAConfig {
     @SubscribeEvent
     static void onLoad(final ModConfigEvent.Loading event)
     {
+        if (event.getConfig().getSpec() == SPEC_C) {
+            foldInterface = FOLD_INTERFACE.get();
+        }
         if (event.getConfig().getSpec() == SPEC_S) {
             hydraulicEngineStressProvide = HYDRAULIC_ENGINE_STRESS_PROVIDE.get();
             windEngineStressProvide = WIND_ENGINE_STRESS_PROVIDE.get();

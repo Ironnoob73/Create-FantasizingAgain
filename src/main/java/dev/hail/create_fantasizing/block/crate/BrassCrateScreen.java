@@ -3,15 +3,15 @@ package dev.hail.create_fantasizing.block.crate;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.simibubi.create.content.trains.station.NoShadowFontWrapper;
+import com.simibubi.create.foundation.gui.AllIcons;
 import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
+import com.simibubi.create.foundation.gui.widget.IconButton;
 import com.simibubi.create.foundation.gui.widget.Label;
 import com.simibubi.create.foundation.gui.widget.ScrollInput;
 import dev.hail.create_fantasizing.CFAGuiTextures;
-import dev.hail.create_fantasizing.FantasizingMod;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import net.createmod.catnip.gui.element.GuiGameElement;
 import net.createmod.catnip.platform.CatnipServices;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.renderer.Rect2i;
@@ -44,6 +44,10 @@ public class BrassCrateScreen extends AbstractSimiContainerScreen<BrassCrateMenu
     private int textureYShift;
     private int itemYShift;
 
+    protected IconButton foldButton;
+    protected IconButton pageUpButton;
+    protected IconButton pageDownButton;
+
     private final ItemStack renderedItem = CFABlocks.BRASS_CRATE.asStack();
     private final Component storageSpace = Component.translatable("create_fantasizing.gui.crate.storage_space");
 
@@ -56,18 +60,13 @@ public class BrassCrateScreen extends AbstractSimiContainerScreen<BrassCrateMenu
     protected void init() {
         super.init();
 
-        int appropriateHeight = Minecraft.getInstance()
-                .getWindow()
-                .getGuiScaledHeight() - 10;
-        FantasizingMod.LOGGER.debug(String.valueOf(appropriateHeight));
-
-        setWindowSize(Math.max(background0.getWidth(), PLAYER_INVENTORY.getWidth()), (menu.doubleCrate ? 128 : 200) + 4 + PLAYER_INVENTORY.getHeight());
-        setWindowOffset(menu.doubleCrate ? -2 : 0, menu.doubleCrate ? -36 : 0);
+        setWindowSize(Math.max(background0.getWidth(), PLAYER_INVENTORY.getWidth()), (menu.isFullInterface() ? 128 : 200) + 4 + PLAYER_INVENTORY.getHeight());
+        setWindowOffset(menu.isFullInterface() ? -2 : 0, menu.isFullInterface() ? -36 : 0);
         clearWidgets();
 
-        itemLabelOffset = menu.doubleCrate ? 72 : 0;
-        textureYShift = menu.doubleCrate ? -36 : 0;
-        itemYShift = menu.doubleCrate ? 72 : 0;
+        itemLabelOffset = menu.isFullInterface() ? 72 : 0;
+        textureYShift = menu.isFullInterface() ? -36 : 0;
+        itemYShift = menu.isFullInterface() ? 72 : 0;
         YShift = topPos - 32;
 
         int x = leftPos;
@@ -103,6 +102,21 @@ public class BrassCrateScreen extends AbstractSimiContainerScreen<BrassCrateMenu
         extraAreas = ImmutableList.of(
                 new Rect2i(x + background0.getWidth(), y + background0.getHeight() - 20 + itemYShift, 80, 80)
         );
+        
+        // Page
+        removeWidgets(foldButton, pageUpButton, pageDownButton);
+        if (menu.doubleCrate){
+            if(menu.isFold) {
+                foldButton = new IconButton(x + 7, y + 102, CFAGuiTextures.CRATE_INTERFACE_UNFOLD);
+                pageUpButton = new IconButton(x + 7, y + 132, AllIcons.I_MTD_LEFT);
+            } else
+                foldButton = new IconButton(x + 7, y + 174, CFAGuiTextures.CRATE_INTERFACE_FOLD);
+            foldButton.withCallback(() -> {
+                menu.isFold = !menu.isFold;
+                menu.refreshMenu();
+            });
+            addRenderableWidget(foldButton);
+        }
     }
 
     private int nameBoxX(String s, EditBox nameBox) {
@@ -135,15 +149,15 @@ public class BrassCrateScreen extends AbstractSimiContainerScreen<BrassCrateMenu
     }
     @Override
     public void renderBg(@NotNull GuiGraphics ms, float partialTicks, int mouseX, int mouseY) {
-        int invX = getLeftOfCentered(PLAYER_INVENTORY.getWidth()) - (menu.doubleCrate ? 2 : 0);
-        int invY = YShift + background0.getHeight() + (menu.doubleCrate ? 76 : 40);
+        int invX = getLeftOfCentered(PLAYER_INVENTORY.getWidth()) - (menu.isFullInterface() ? 2 : 0);
+        int invY = YShift + background0.getHeight() + (menu.isFullInterface() ? 76 : 40);
         renderPlayerInventory(ms, invX, invY);
 
         int x = leftPos - 6;
         int y = YShift + textureYShift;
 
         background0.render(ms, x, y);
-        background1.render(ms, x, y + (menu.doubleCrate ? 91 : 19));
+        background1.render(ms, x, y + (menu.isFullInterface() ? 91 : 19));
 
         String text = nameBox.getValue();
         if (!nameBox.isFocused()) {
@@ -172,7 +186,7 @@ public class BrassCrateScreen extends AbstractSimiContainerScreen<BrassCrateMenu
 
     @Override
     public void removed() {
-        CatnipServices.NETWORK.sendToServer(new ConfigureCreatePacket(menu.contentHolder.getBlockPos(), allowedItems.getState(), nameBox.getValue()));
+        CatnipServices.NETWORK.sendToServer(new ConfigureCratePacket(menu.contentHolder.getBlockPos(), allowedItems.getState(), nameBox.getValue()));
         super.removed();
     }
 
@@ -188,7 +202,7 @@ public class BrassCrateScreen extends AbstractSimiContainerScreen<BrassCrateMenu
 
         if (lastModification >= 15) {
             lastModification = -1;
-            CatnipServices.NETWORK.sendToServer(new ConfigureCreatePacket(menu.contentHolder.getBlockPos(), allowedItems.getState(), nameBox.getValue()));
+            CatnipServices.NETWORK.sendToServer(new ConfigureCratePacket(menu.contentHolder.getBlockPos(), allowedItems.getState(), nameBox.getValue()));
         }
 
         if (menu.doubleCrate != menu.contentHolder.isDoubleCrate())

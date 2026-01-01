@@ -24,7 +24,12 @@ public enum CFAGuiTextures implements ScreenElement, TextureSheetSegment {
     BRASS_CRATE_UPSIDE("brass_crate", 188, 91),
     BRASS_CRATE_DOWNSIDE("brass_crate", 0, 19, 196, 108),
     BRASS_EDIT("brass_crate", 196, 0, 9, 9),
-    BRASS_CRATE_LOCKED_SLOT("brass_crate", 197, 109, 18, 18);
+    BRASS_CRATE_LOCKED_SLOT("brass_crate", 197, 109, 18, 18),
+
+    CRATE_INTERFACE_UNFOLD("brass_crate", 208, 0, 16, 16),
+    CRATE_INTERFACE_FOLD("brass_crate", 224, 0, 16, 16),
+    CRATE_PAGE_UP("brass_crate", 208, 16, 16, 16),
+    CRATE_PAGE_DOWN("brass_crate", 224, 16, 16, 16);
 
     public final ResourceLocation location;
     private final int width;

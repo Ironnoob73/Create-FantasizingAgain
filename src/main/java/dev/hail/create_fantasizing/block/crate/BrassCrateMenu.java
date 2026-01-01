@@ -1,6 +1,7 @@
 package dev.hail.create_fantasizing.block.crate;
 
 import com.simibubi.create.foundation.gui.menu.MenuBase;
+import dev.hail.create_fantasizing.CFAConfig;
 import dev.hail.create_fantasizing.block.CFAMenus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -18,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 public class BrassCrateMenu extends MenuBase<BrassCrateEntity> {
     public boolean doubleCrate;
     public boolean isFold;
+    public int page;
 
     public BrassCrateMenu(MenuType<?> type, int id, Inventory inv, RegistryFriendlyByteBuf extraData) {
         super(type, id, inv, extraData);
@@ -50,7 +52,7 @@ public class BrassCrateMenu extends MenuBase<BrassCrateEntity> {
             return ItemStack.EMPTY;
 
         ItemStack stack = clickedSlot.getItem();
-        int crateSize = doubleCrate ? 72 : 36;
+        int crateSize = isFullInterface() ? 72 : 36;
         if (index < crateSize) {
             moveItemStackTo(stack, crateSize, slots.size(), false);
             contentHolder.inventory.onContentsChanged(index);
@@ -66,8 +68,8 @@ public class BrassCrateMenu extends MenuBase<BrassCrateEntity> {
     protected void addSlots() {
         doubleCrate = contentHolder.isDoubleCrate();
         int x = 8;
-        int maxRow = doubleCrate ? 8 : 4;
-        int colYOffset = doubleCrate ? 36 : 0;
+        int maxRow = isFullInterface() ? 8 : 4;
+        int colYOffset = isFullInterface() ? 36 : 0;
         for (int row = 0; row < maxRow; ++row) {
             for (int col = 0; col < 9; ++col) {
                 this.addSlot(
@@ -78,7 +80,7 @@ public class BrassCrateMenu extends MenuBase<BrassCrateEntity> {
 
         // player Slots
         int xOffset = 14;
-        int yOffset = doubleCrate ? 153 : 117;
+        int yOffset = isFullInterface() ? 153 : 117;
         for (int row = 0; row < 3; ++row) {
             for (int col = 0; col < 9; ++col) {
                 this.addSlot(new Slot(playerInventory, col + row * 9 + 9, xOffset + col * 18, yOffset + row * 18));
@@ -90,6 +92,15 @@ public class BrassCrateMenu extends MenuBase<BrassCrateEntity> {
         }
 
         broadcastChanges();
+    }
+
+    public boolean isFullInterface(){
+        return doubleCrate && !isFold;
+    }
+
+    public void refreshMenu(){
+        this.player.openMenu(contentHolder);
+        CFAConfig.foldInterface = isFold;
     }
 
     @Override

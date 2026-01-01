@@ -37,7 +37,7 @@ public class IronCrateEntity extends AbstractCrateEntity implements MenuProvider
                 });
     }
     @Override
-    public @Nullable AbstractContainerMenu createMenu(int i, net.minecraft.world.entity.player.Inventory inventory, Player player) {
+    public @Nullable IronCrateMenu createMenu(int i, net.minecraft.world.entity.player.Inventory inventory, Player player) {
         return IronCrateMenu.create(i, inventory, this);
     }
 
