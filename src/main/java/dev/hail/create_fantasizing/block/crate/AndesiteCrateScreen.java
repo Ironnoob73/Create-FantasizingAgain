@@ -96,7 +96,7 @@ public class AndesiteCrateScreen extends AbstractSimiContainerScreen<AndesiteCra
                 new Rect2i(x + background.getWidth(), y + background.getHeight() - 56 + itemYShift, 80, 80)
         );
     }
-    
+
     private int nameBoxX(String s, EditBox nameBox) {
         return getGuiLeft() + textureXShift + (background.getWidth() - (Math.min(font.width(s), nameBox.getWidth()) + 10)) / 2;
     }
@@ -163,7 +163,7 @@ public class AndesiteCrateScreen extends AbstractSimiContainerScreen<AndesiteCra
 
     @Override
     public void removed() {
-        CatnipServices.NETWORK.sendToServer(new ConfigureCreatePacket(menu.contentHolder.getBlockPos(), allowedItems.getState(), nameBox.getValue()));
+        CatnipServices.NETWORK.sendToServer(new ConfigureCratePacket(menu.contentHolder.getBlockPos(), allowedItems.getState(), nameBox.getValue()));
         super.removed();
     }
 
@@ -179,7 +179,7 @@ public class AndesiteCrateScreen extends AbstractSimiContainerScreen<AndesiteCra
 
         if (lastModification >= 15) {
             lastModification = -1;
-            CatnipServices.NETWORK.sendToServer(new ConfigureCreatePacket(menu.contentHolder.getBlockPos(), allowedItems.getState(), nameBox.getValue()));
+            CatnipServices.NETWORK.sendToServer(new ConfigureCratePacket(menu.contentHolder.getBlockPos(), allowedItems.getState(), nameBox.getValue()));
         }
 
         if (menu.doubleCrate != menu.contentHolder.isDoubleCrate())

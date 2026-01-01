@@ -6,7 +6,6 @@ import com.simibubi.create.foundation.ICapabilityProvider;
 import com.simibubi.create.foundation.blockEntity.behaviour.inventory.VersionedInventoryWrapper;
 import com.simibubi.create.foundation.utility.CreateLang;
 import com.simibubi.create.foundation.utility.ResetableLazy;
-import dev.hail.create_fantasizing.block.CFABlocks;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

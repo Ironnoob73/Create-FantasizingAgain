@@ -1,6 +1,8 @@
 package dev.hail.create_fantasizing.data;
 
 import com.mojang.serialization.Codec;
+import com.simibubi.create.Create;
+import com.simibubi.create.content.contraptions.minecart.capability.MinecartController;
 import dev.hail.create_fantasizing.FantasizingMod;
 import dev.hail.create_fantasizing.item.block_placer.BlockPlacerBrushes;
 import dev.hail.create_fantasizing.item.block_placer.BlockPlacerTools;
@@ -8,9 +10,12 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.jetbrains.annotations.ApiStatus;
 
+import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
 public class CFADataComponents {
@@ -26,6 +31,8 @@ public class CFADataComponents {
             "block_amount", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
     public static final DataComponentType<Integer> PLACE_SIZE = register(
             "place_size", builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.INT));
+    public static final DataComponentType<Boolean> FOLD_INTERFACE = register(
+            "fold_interface", builder -> builder.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
 
     private static <T> DataComponentType<T> register(String name, UnaryOperator<DataComponentType.Builder<T>> builder) {
         DataComponentType<T> type = builder.apply(DataComponentType.builder()).build();

@@ -37,7 +37,7 @@ public class AndesiteCrateEntity extends AbstractCrateEntity implements MenuProv
                 });
     }
     @Override
-    public @Nullable AbstractContainerMenu createMenu(int i, net.minecraft.world.entity.player.Inventory inventory, Player player) {
+    public @Nullable AndesiteCrateMenu createMenu(int i, net.minecraft.world.entity.player.Inventory inventory, Player player) {
         return AndesiteCrateMenu.create(i, inventory, this);
     }
 

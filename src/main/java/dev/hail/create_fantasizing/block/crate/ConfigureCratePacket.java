@@ -8,18 +8,18 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 
-public class ConfigureCreatePacket extends BlockEntityConfigurationPacket<AbstractCrateEntity> {
-    public static final StreamCodec<ByteBuf, ConfigureCreatePacket> STREAM_CODEC = StreamCodec.composite(
+public class ConfigureCratePacket extends BlockEntityConfigurationPacket<AbstractCrateEntity> {
+    public static final StreamCodec<ByteBuf, ConfigureCratePacket> STREAM_CODEC = StreamCodec.composite(
             BlockPos.STREAM_CODEC, p -> p.pos,
             ByteBufCodecs.VAR_INT, packet -> packet.maxItems,
             ByteBufCodecs.STRING_UTF8, packet -> packet.customName,
-            ConfigureCreatePacket::new
+            ConfigureCratePacket::new
     );
 
     private final int maxItems;
     private final String customName;
 
-    public ConfigureCreatePacket(BlockPos pos, int newMaxItems, String customName) {
+    public ConfigureCratePacket(BlockPos pos, int newMaxItems, String customName) {
         super(pos);
         this.maxItems = newMaxItems;
         this.customName = customName;

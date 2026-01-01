@@ -22,6 +22,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
@@ -46,7 +47,7 @@ public class FantasizingMod
                             .andThen(TooltipModifier.mapNull(KineticStats.create(item)))
             );
 
-    public FantasizingMod(IEventBus modEventBus)
+    public FantasizingMod(IEventBus modEventBus, ModContainer modContainer)
     {
         REGISTRATE.registerEventListeners(modEventBus);
 
@@ -61,6 +62,8 @@ public class FantasizingMod
         CFAPackets.register();
         CFAMenus.register();
         CFAMountedStorageTypes.register();
+
+        modContainer.registerConfig(ModConfig.Type.CLIENT, CFAConfig.SPEC_C);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
