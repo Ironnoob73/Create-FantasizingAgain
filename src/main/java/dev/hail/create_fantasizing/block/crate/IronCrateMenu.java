@@ -64,7 +64,7 @@ public class IronCrateMenu extends MenuBase<IronCrateEntity> {
     @Override
     protected void addSlots() {
         doubleCrate = contentHolder.isDoubleCrate();
-        int x = doubleCrate ? 14 : 44;
+        int x = doubleCrate ? -1 : 44;
         int maxCol = doubleCrate ? 10 : 5;
         for (int row = 0; row < 4; ++row) {
             for (int col = 0; col < maxCol; ++col) {

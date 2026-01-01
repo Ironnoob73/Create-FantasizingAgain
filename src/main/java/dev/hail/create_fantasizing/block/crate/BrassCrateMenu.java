@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class BrassCrateMenu extends MenuBase<BrassCrateEntity> {
     public boolean doubleCrate;
+    public boolean isFold;
 
     public BrassCrateMenu(MenuType<?> type, int id, Inventory inv, RegistryFriendlyByteBuf extraData) {
         super(type, id, inv, extraData);
@@ -49,7 +50,7 @@ public class BrassCrateMenu extends MenuBase<BrassCrateEntity> {
             return ItemStack.EMPTY;
 
         ItemStack stack = clickedSlot.getItem();
-        int crateSize = doubleCrate ? 32 : 16;
+        int crateSize = doubleCrate ? 72 : 36;
         if (index < crateSize) {
             moveItemStackTo(stack, crateSize, slots.size(), false);
             contentHolder.inventory.onContentsChanged(index);
@@ -64,19 +65,20 @@ public class BrassCrateMenu extends MenuBase<BrassCrateEntity> {
     @Override
     protected void addSlots() {
         doubleCrate = contentHolder.isDoubleCrate();
-        int x = doubleCrate ? 23 : 53;
+        int x = 8;
         int maxRow = doubleCrate ? 8 : 4;
+        int colYOffset = doubleCrate ? 36 : 0;
         for (int row = 0; row < maxRow; ++row) {
             for (int col = 0; col < 9; ++col) {
                 this.addSlot(
                         new SlotItemHandler(col + row * 9 < 36 ? contentHolder.inventory : contentHolder.getOtherCrate().inventory,
-                                col + row * 9 - (col + row * 9 < 36 ? 0 : 36), x + col * 18, row * 18 - 12));
+                                col + row * 9 - (col + row * 9 < 36 ? 0 : 36), x + col * 18, row * 18 - 12 - colYOffset));
             }
         }
 
         // player Slots
-        int xOffset = doubleCrate ? 20 : 8;
-        int yOffset = 117;
+        int xOffset = 14;
+        int yOffset = doubleCrate ? 153 : 117;
         for (int row = 0; row < 3; ++row) {
             for (int col = 0; col < 9; ++col) {
                 this.addSlot(new Slot(playerInventory, col + row * 9 + 9, xOffset + col * 18, yOffset + row * 18));

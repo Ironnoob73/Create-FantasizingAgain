@@ -64,7 +64,7 @@ public class AndesiteCrateMenu extends MenuBase<AndesiteCrateEntity> {
     @Override
     protected void addSlots() {
         doubleCrate = contentHolder.isDoubleCrate();
-        int x = doubleCrate ? 23 : 53;
+        int x = doubleCrate ? 17 : 53;
         int maxCol = doubleCrate ? 8 : 4;
         for (int row = 0; row < 4; ++row) {
             for (int col = 0; col < maxCol; ++col) {
@@ -75,7 +75,7 @@ public class AndesiteCrateMenu extends MenuBase<AndesiteCrateEntity> {
         }
 
         // player Slots
-        int xOffset = doubleCrate ? 20 : 8;
+        int xOffset = doubleCrate ? 14 : 8;
         int yOffset = 117;
         for (int row = 0; row < 3; ++row) {
             for (int col = 0; col < 9; ++col) {
