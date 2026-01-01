@@ -7,9 +7,11 @@ import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
 import com.simibubi.create.foundation.gui.widget.Label;
 import com.simibubi.create.foundation.gui.widget.ScrollInput;
 import dev.hail.create_fantasizing.CFAGuiTextures;
+import dev.hail.create_fantasizing.FantasizingMod;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import net.createmod.catnip.gui.element.GuiGameElement;
 import net.createmod.catnip.platform.CatnipServices;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.renderer.Rect2i;
@@ -39,7 +41,7 @@ public class BrassCrateScreen extends AbstractSimiContainerScreen<BrassCrateMenu
 
     private int YShift;
 
-    private int textureXShift;
+    private int textureYShift;
     private int itemYShift;
 
     private final ItemStack renderedItem = CFABlocks.BRASS_CRATE.asStack();
@@ -53,17 +55,23 @@ public class BrassCrateScreen extends AbstractSimiContainerScreen<BrassCrateMenu
     @Override
     protected void init() {
         super.init();
-        setWindowSize(Math.max(background0.getWidth(), PLAYER_INVENTORY.getWidth()), background0.getHeight() + 40 + PLAYER_INVENTORY.getHeight());
-        setWindowOffset(menu.doubleCrate ? -2 : 0, 0);
+
+        int appropriateHeight = Minecraft.getInstance()
+                .getWindow()
+                .getGuiScaledHeight() - 10;
+        FantasizingMod.LOGGER.debug(String.valueOf(appropriateHeight));
+
+        setWindowSize(Math.max(background0.getWidth(), PLAYER_INVENTORY.getWidth()), (menu.doubleCrate ? 128 : 200) + 4 + PLAYER_INVENTORY.getHeight());
+        setWindowOffset(menu.doubleCrate ? -2 : 0, menu.doubleCrate ? -36 : 0);
         clearWidgets();
 
-        itemLabelOffset = menu.doubleCrate ? 137 : 65;
-        textureXShift = menu.doubleCrate ? 0 : (imageWidth - (background0.getWidth() - 8)) / 2;
-        itemYShift = menu.doubleCrate ? 0 : -16;
+        itemLabelOffset = menu.doubleCrate ? 72 : 0;
+        textureYShift = menu.doubleCrate ? -36 : 0;
+        itemYShift = menu.doubleCrate ? 72 : 0;
         YShift = topPos - 32;
 
-        int x = leftPos + textureXShift;
-        int y = YShift;
+        int x = leftPos;
+        int y = YShift + textureYShift;
 
         Consumer<String> onTextChanged;
         onTextChanged = s -> nameBox.setX(nameBoxX(s, nameBox));
@@ -81,8 +89,8 @@ public class BrassCrateScreen extends AbstractSimiContainerScreen<BrassCrateMenu
         nameBox.setX(nameBoxX(nameBox.getValue(), nameBox));
         addRenderableWidget(nameBox);
 
-        Label allowedItemsLabel = new Label(x + itemLabelOffset + 4, y + 108, Component.empty()).colored(0xFFFFFF).withShadow();
-        allowedItems = new ScrollInput(x + itemLabelOffset, y + 104, 41, 16).titled(storageSpace.plainCopy())
+        Label allowedItemsLabel = new Label(x + 135, y + 108 + itemLabelOffset, Component.empty()).colored(0xFFFFFF).withShadow();
+        allowedItems = new ScrollInput(x + 131, y + 104 + itemLabelOffset, 41, 16).titled(storageSpace.plainCopy())
                 .withRange(0, (menu.doubleCrate ? 4609 : 2305))
                 .writingTo(allowedItemsLabel)
                 .withShiftStep(64)
@@ -98,44 +106,44 @@ public class BrassCrateScreen extends AbstractSimiContainerScreen<BrassCrateMenu
     }
 
     private int nameBoxX(String s, EditBox nameBox) {
-        return getGuiLeft() + textureXShift + (background0.getWidth() - (Math.min(font.width(s), nameBox.getWidth()) + 10)) / 2;
+        return getGuiLeft() + (background0.getWidth() - (Math.min(font.width(s), nameBox.getWidth()) + 10)) / 2;
     }
 
     @Override
     public void renderForeground(@NotNull GuiGraphics ms, int mouseX, int mouseY, float partialTicks) {
         super.renderForeground(ms, mouseX, mouseY, partialTicks);
 
-        int x = leftPos + textureXShift;
-        int y = YShift;
+        int x = leftPos - 6;
+        int y = YShift + textureYShift;
 
         String itemCount = String.valueOf(menu.contentHolder.inventory.itemCount + (menu.doubleCrate ? menu.contentHolder.getOtherCrate().inventory.itemCount : 0));
-        ms.drawString(font, itemCount, x + itemLabelOffset - 13 - font.width(itemCount), y + 108, 0x4B3A22, false);
+        ms.drawString(font, itemCount, x + 125 - font.width(itemCount), y + 108 + itemLabelOffset, 0x4B3A22, false);
 
-        for (int slot = 0; slot < (menu.doubleCrate ? 32 : 16); slot++) {
+        for (int slot = 0; slot < (menu.doubleCrate ? 72 : 36); slot++) {
             if (allowedItems.getState() > slot * 64)
                 continue;
-            int slotsPerRow = (menu.doubleCrate ? 8 : 4);
-            int slotX = x + 22 + (slot % slotsPerRow) * 18;
+            int slotsPerRow = 9;
+            int slotX = x + 13 + (slot % slotsPerRow) * 18;
             int slotY = y + 19 + (slot / slotsPerRow) * 18;
             CFAGuiTextures.BRASS_CRATE_LOCKED_SLOT.render(ms, slotX, slotY);
         }
 
         GuiGameElement.of(renderedItem)
-                .<GuiGameElement.GuiRenderBuilder>at(x + background0.getWidth(), y + background0.getHeight() - 20 + itemYShift, -200)
+                .<GuiGameElement.GuiRenderBuilder>at(x + background1.getWidth(), y + background0.getHeight() - 20 + itemYShift, -200)
                 .scale(5)
                 .render(ms);
     }
     @Override
     public void renderBg(@NotNull GuiGraphics ms, float partialTicks, int mouseX, int mouseY) {
-        int invX = getLeftOfCentered(PLAYER_INVENTORY.getWidth());
-        int invY = YShift + background0.getHeight() + 40;
+        int invX = getLeftOfCentered(PLAYER_INVENTORY.getWidth()) - (menu.doubleCrate ? 2 : 0);
+        int invY = YShift + background0.getHeight() + (menu.doubleCrate ? 76 : 40);
         renderPlayerInventory(ms, invX, invY);
 
-        int x = leftPos + textureXShift;
-        int y = YShift;
+        int x = leftPos - 6;
+        int y = YShift + textureYShift;
 
         background0.render(ms, x, y);
-        background1.render(ms, x, y + 19);
+        background1.render(ms, x, y + (menu.doubleCrate ? 91 : 19));
 
         String text = nameBox.getValue();
         if (!nameBox.isFocused()) {

@@ -58,7 +58,7 @@ public class IronCrateScreen extends AbstractSimiContainerScreen<IronCrateMenu> 
         clearWidgets();
 
         itemLabelOffset = menu.doubleCrate ? 155 : 65;
-        textureXShift = menu.doubleCrate ? 0 : (imageWidth - (background.getWidth() - 8)) / 2;
+        textureXShift = menu.doubleCrate ? -15 : (imageWidth - (background.getWidth() - 8)) / 2;
         itemYShift = menu.doubleCrate ? 0 : -16;
         YShift = topPos - 32;
 
