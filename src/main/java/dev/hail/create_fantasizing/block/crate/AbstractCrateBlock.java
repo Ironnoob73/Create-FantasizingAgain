@@ -14,7 +14,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -32,7 +31,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.util.FakePlayer;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.*;
@@ -198,7 +196,7 @@ public abstract class AbstractCrateBlock extends CrateBlock {
                             }
                         }
                         copiedComp.getCompound("Inventory").put("Items", crate_inv);
-                        copiedComp.putInt("AllowedAmount", Math.min(1024, copiedComp.getInt("AllowedAmount")));
+                        copiedComp.putInt("AllowedAmount", Math.min(abstractCrateEntity.inventory.getSlots() * 64, copiedComp.getInt("AllowedAmount")));
                         itemstack.getTag().put("BlockEntityTag", copiedComp);
                         if (abstractCrateEntity.hasCustomName()){
                             itemstack.setHoverName(Component.empty().append(blockState.getBlock().getName()).append(" - ").append(Objects.requireNonNull(abstractCrateEntity.getCustomName())));

@@ -127,9 +127,9 @@ public class AndesiteCrateScreen extends AbstractSimiContainerScreen<AndesiteCra
     }
     @Override
     public void renderBg(@NotNull GuiGraphics ms, float partialTicks, int mouseX, int mouseY) {
-        int invX = getLeftOfCentered(PLAYER_INVENTORY.getWidth());
+        int invX = getLeftOfCentered(PLAYER_INVENTORY.getWidth()) - (menu.doubleCrate ? 6 : 0);
         int invY = YShift + background.getHeight() + 4;
-        renderPlayerInventory(ms, invX - 6, invY);
+        renderPlayerInventory(ms, invX, invY);
 
         int x = leftPos + textureXShift;
         int y = YShift;

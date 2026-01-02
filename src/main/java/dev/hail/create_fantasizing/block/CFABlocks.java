@@ -119,6 +119,15 @@ public class CFABlocks {
             .blockEntity("brass_crate", BrassCrateEntity::new)
             .validBlocks(BRASS_CRATE)
             .register();
+    public static final BlockEntry<SturdyCrateBlock> STURDY_CRATE = REGISTRATE.block("sturdy_crate", SturdyCrateBlock::new)
+            .initialProperties(SharedProperties::netheriteMetal)
+            .properties(p -> p.mapColor(MapColor.TERRACOTTA_CYAN).explosionResistance(1200))
+            .simpleItem()
+            .register();
+    public static final BlockEntityEntry<SturdyCrateEntity> STURDY_CRATE_ENTITY = REGISTRATE
+            .blockEntity("sturdy_crate", SturdyCrateEntity::new)
+            .validBlocks(STURDY_CRATE)
+            .register();
 
     public static final BlockEntry<PhantomShaft> PHANTOM_SHAFT = REGISTRATE.block("phantom_shaft", PhantomShaft::new)
             .initialProperties(SharedProperties::stone)

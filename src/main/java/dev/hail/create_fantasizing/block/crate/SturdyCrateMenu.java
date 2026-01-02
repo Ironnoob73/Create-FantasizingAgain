@@ -2,6 +2,7 @@ package dev.hail.create_fantasizing.block.crate;
 
 import com.simibubi.create.foundation.gui.menu.MenuBase;
 import dev.hail.create_fantasizing.block.CFAMenus;
+import dev.hail.create_fantasizing.data.CFAAttachmentTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -15,31 +16,33 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
-public class IronCrateMenu extends MenuBase<IronCrateEntity> {
+public class SturdyCrateMenu extends MenuBase<SturdyCrateEntity> {
     public boolean doubleCrate;
+    public boolean isFold;
+    //public int page;
 
-    public IronCrateMenu(MenuType<?> type, int id, Inventory inv, RegistryFriendlyByteBuf extraData) {
+    public SturdyCrateMenu(MenuType<?> type, int id, Inventory inv, RegistryFriendlyByteBuf extraData) {
         super(type, id, inv, extraData);
     }
 
-    public IronCrateMenu(MenuType<?> type, int id, Inventory inv, IronCrateEntity be) {
+    public SturdyCrateMenu(MenuType<?> type, int id, Inventory inv, SturdyCrateEntity be) {
         super(type, id, inv, be);
     }
 
-    public static IronCrateMenu create(int id, Inventory inv, IronCrateEntity be) {
-        return new IronCrateMenu(CFAMenus.IRON_CRATE.get(), id, inv, be);
+    public static SturdyCrateMenu create(int id, Inventory inv, SturdyCrateEntity be) {
+        return new SturdyCrateMenu(CFAMenus.STURDY_CRATE.get(), id, inv, be);
     }
 
     @Override
-    protected IronCrateEntity createOnClient(RegistryFriendlyByteBuf extraData) {
+    protected SturdyCrateEntity createOnClient(RegistryFriendlyByteBuf extraData) {
         BlockPos readBlockPos = extraData.readBlockPos();
         ClientLevel world = Minecraft.getInstance().level;
         BlockEntity blockEntity = null;
         if (world != null) {
             blockEntity = world.getBlockEntity(readBlockPos);
         }
-        if (blockEntity instanceof IronCrateEntity ironCrateEntity)
-            return ironCrateEntity;
+        if (blockEntity instanceof SturdyCrateEntity sturdyCrateEntity)
+            return sturdyCrateEntity;
         return null;
     }
     @Override
@@ -49,7 +52,7 @@ public class IronCrateMenu extends MenuBase<IronCrateEntity> {
             return ItemStack.EMPTY;
 
         ItemStack stack = clickedSlot.getItem();
-        int crateSize = doubleCrate ? 40 : 20;
+        int crateSize = isFullInterface() ? 100 : 50;
         if (index < crateSize) {
             moveItemStackTo(stack, crateSize, slots.size(), false);
             contentHolder.inventory.onContentsChanged(index);
@@ -59,24 +62,30 @@ public class IronCrateMenu extends MenuBase<IronCrateEntity> {
         return ItemStack.EMPTY;
     }
     @Override
-    protected void initAndReadInventory(IronCrateEntity contentHolder) {}
+    protected void initAndReadInventory(SturdyCrateEntity contentHolder) {}
 
     @Override
     protected void addSlots() {
         doubleCrate = contentHolder.isDoubleCrate();
-        int x = doubleCrate ? -1 : 44;
-        int maxCol = doubleCrate ? 10 : 5;
-        for (int row = 0; row < 4; ++row) {
-            for (int col = 0; col < maxCol; ++col) {
+        /*if (player.hasData(CFAAttachmentTypes.FOLD_INTERFACE)){
+            player.getData(CFAAttachmentTypes.FOLD_INTERFACE);
+            isFold = player.getData(CFAAttachmentTypes.FOLD_INTERFACE);
+        }*/
+        player.setData(CFAAttachmentTypes.FOLD_INTERFACE, isFold);
+        int x = -1;
+        int maxRow = isFullInterface() ? 10 : 5;
+        int colYOffset = isFullInterface() ? 45 : 0;
+        for (int row = 0; row < maxRow; ++row) {
+            for (int col = 0; col < 10; ++col) {
                 this.addSlot(
-                        new SlotItemHandler(col + row * maxCol < 20 ? contentHolder.inventory : contentHolder.getOtherCrate().inventory,
-                                col + row * maxCol - (col + row * maxCol < 20 ? 0 : 20), x + col * 18, row * 18 - 12));
+                        new SlotItemHandler(col + row * 10 < 50 ? contentHolder.inventory : contentHolder.getOtherCrate().inventory,
+                                col + row * 10 - (col + row * 10 < 50 ? 0 : 50), x + col * 18, row * 18 - 12 - colYOffset));
             }
         }
 
         // player Slots
-        int xOffset = doubleCrate ? 22 : 8;
-        int yOffset = 117;
+        int xOffset = 23;
+        int yOffset = isFullInterface() ? 162 : 117;
         for (int row = 0; row < 3; ++row) {
             for (int col = 0; col < 9; ++col) {
                 this.addSlot(new Slot(playerInventory, col + row * 9 + 9, xOffset + col * 18, yOffset + row * 18));
@@ -90,8 +99,23 @@ public class IronCrateMenu extends MenuBase<IronCrateEntity> {
         broadcastChanges();
     }
 
+    public boolean isFullInterface(){
+        return doubleCrate && !isFold;
+    }
+
+    public void refreshMenu(){
+        this.player.closeContainer();
+        this.init(playerInventory, contentHolder);
+        this.player.openMenu(contentHolder);
+        //CFAConfig.foldInterface = isFold;
+    }
+
+    public void setPlayerInterfaceFold(boolean fold){
+        this.player.setData(CFAAttachmentTypes.FOLD_INTERFACE, fold);
+    }
+
     @Override
-    protected void saveData(IronCrateEntity contentHolder) {}
+    protected void saveData(SturdyCrateEntity contentHolder) {}
 
     @Override
     public boolean stillValid(Player player) {
