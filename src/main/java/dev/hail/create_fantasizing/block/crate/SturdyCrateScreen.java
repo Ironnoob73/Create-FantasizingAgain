@@ -119,7 +119,7 @@ public class SturdyCrateScreen extends AbstractSimiContainerScreen<SturdyCrateMe
                 foldButton = new IconButton(x - 2, y + 102, CFAGuiTextures.CRATE_INTERFACE_UNFOLD);
                 pageUpButton = new IconButton(x -2 , y + 132, AllIcons.I_MTD_LEFT);
             } else if (appropriateHeight < 300){
-                foldButton = new IconButton(x - 2, y + 174, CFAGuiTextures.CRATE_INTERFACE_FOLD);
+                foldButton = new IconButton(x - 2, y + 211, CFAGuiTextures.CRATE_INTERFACE_FOLD);
                 /*foldButton.withCallback(() -> {
                     CFAConfig.foldInterface = !menu.isFold;
                     menu.setPlayerInterfaceFold(!menu.isFold);
