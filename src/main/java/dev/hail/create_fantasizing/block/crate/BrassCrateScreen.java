@@ -8,10 +8,13 @@ import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
 import com.simibubi.create.foundation.gui.widget.IconButton;
 import com.simibubi.create.foundation.gui.widget.Label;
 import com.simibubi.create.foundation.gui.widget.ScrollInput;
+import com.simibubi.create.foundation.utility.CreateLang;
 import dev.hail.create_fantasizing.CFAGuiTextures;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import net.createmod.catnip.gui.element.GuiGameElement;
 import net.createmod.catnip.platform.CatnipServices;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.renderer.Rect2i;
@@ -20,6 +23,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import org.apache.logging.log4j.core.pattern.AbstractStyleNameConverter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -59,6 +63,11 @@ public class BrassCrateScreen extends AbstractSimiContainerScreen<BrassCrateMenu
     @Override
     protected void init() {
         super.init();
+
+        /*if (!menu.player.hasData(CFAAttachmentTypes.FOLD_INTERFACE) || menu.player.getData(CFAAttachmentTypes.FOLD_INTERFACE) != menu.isFold){
+            menu.setPlayerInterfaceFold(CFAConfig.foldInterface);
+            menu.refreshMenu();
+        }*/
 
         setWindowSize(Math.max(background0.getWidth(), PLAYER_INVENTORY.getWidth()), (menu.isFullInterface() ? 128 : 200) + 4 + PLAYER_INVENTORY.getHeight());
         setWindowOffset(menu.isFullInterface() ? -2 : 0, menu.isFullInterface() ? -36 : 0);
@@ -104,18 +113,23 @@ public class BrassCrateScreen extends AbstractSimiContainerScreen<BrassCrateMenu
         );
         
         // Page
-        removeWidgets(foldButton, pageUpButton, pageDownButton);
         if (menu.doubleCrate){
+            removeWidgets(foldButton, pageUpButton, pageDownButton);
+            int appropriateHeight = Minecraft.getInstance()
+                    .getWindow()
+                    .getGuiScaledHeight() - 10;
             if(menu.isFold) {
                 foldButton = new IconButton(x + 7, y + 102, CFAGuiTextures.CRATE_INTERFACE_UNFOLD);
                 pageUpButton = new IconButton(x + 7, y + 132, AllIcons.I_MTD_LEFT);
-            } else
+            } else if (appropriateHeight < 300){
                 foldButton = new IconButton(x + 7, y + 174, CFAGuiTextures.CRATE_INTERFACE_FOLD);
-            foldButton.withCallback(() -> {
-                menu.isFold = !menu.isFold;
-                menu.refreshMenu();
-            });
-            addRenderableWidget(foldButton);
+                /*foldButton.withCallback(() -> {
+                    CFAConfig.foldInterface = !menu.isFold;
+                    menu.setPlayerInterfaceFold(!menu.isFold);
+                    menu.refreshMenu();
+                });*/
+                addRenderableWidget(foldButton);
+            }
         }
     }
 
@@ -133,13 +147,21 @@ public class BrassCrateScreen extends AbstractSimiContainerScreen<BrassCrateMenu
         String itemCount = String.valueOf(menu.contentHolder.inventory.itemCount + (menu.doubleCrate ? menu.contentHolder.getOtherCrate().inventory.itemCount : 0));
         ms.drawString(font, itemCount, x + 125 - font.width(itemCount), y + 108 + itemLabelOffset, 0x4B3A22, false);
 
-        for (int slot = 0; slot < (menu.doubleCrate ? 72 : 36); slot++) {
+        for (int slot = 0; slot < (menu.isFullInterface() ? 72 : 36); slot++) {
             if (allowedItems.getState() > slot * 64)
                 continue;
             int slotsPerRow = 9;
             int slotX = x + 13 + (slot % slotsPerRow) * 18;
             int slotY = y + 19 + (slot / slotsPerRow) * 18;
             CFAGuiTextures.BRASS_CRATE_LOCKED_SLOT.render(ms, slotX, slotY);
+        }
+
+        if (menu.doubleCrate && foldButton != null && foldButton.isHovered()){
+            ms.renderComponentTooltip(font,
+                    List.of(Component.translatable("create_fantasizing.gui.crate.no_fold").withStyle(ChatFormatting.RED),
+                            Component.translatable("create_fantasizing.gui.crate.no_fold.0").withStyle(ChatFormatting.GRAY),
+                            Component.translatable("create_fantasizing.gui.crate.no_fold.1").withStyle(ChatFormatting.GRAY)),
+                    mouseX, mouseY);
         }
 
         GuiGameElement.of(renderedItem)

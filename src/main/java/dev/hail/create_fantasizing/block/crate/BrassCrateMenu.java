@@ -3,6 +3,7 @@ package dev.hail.create_fantasizing.block.crate;
 import com.simibubi.create.foundation.gui.menu.MenuBase;
 import dev.hail.create_fantasizing.CFAConfig;
 import dev.hail.create_fantasizing.block.CFAMenus;
+import dev.hail.create_fantasizing.data.CFAAttachmentTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -19,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 public class BrassCrateMenu extends MenuBase<BrassCrateEntity> {
     public boolean doubleCrate;
     public boolean isFold;
-    public int page;
+    //public int page;
 
     public BrassCrateMenu(MenuType<?> type, int id, Inventory inv, RegistryFriendlyByteBuf extraData) {
         super(type, id, inv, extraData);
@@ -67,11 +68,17 @@ public class BrassCrateMenu extends MenuBase<BrassCrateEntity> {
     @Override
     protected void addSlots() {
         doubleCrate = contentHolder.isDoubleCrate();
+        /*if (player.hasData(CFAAttachmentTypes.FOLD_INTERFACE)){
+            player.getData(CFAAttachmentTypes.FOLD_INTERFACE);
+            isFold = player.getData(CFAAttachmentTypes.FOLD_INTERFACE);
+        }*/
+        player.setData(CFAAttachmentTypes.FOLD_INTERFACE, isFold);
         int x = 8;
         int maxRow = isFullInterface() ? 8 : 4;
         int colYOffset = isFullInterface() ? 36 : 0;
         for (int row = 0; row < maxRow; ++row) {
             for (int col = 0; col < 9; ++col) {
+                int ind = col + row * 9;
                 this.addSlot(
                         new SlotItemHandler(col + row * 9 < 36 ? contentHolder.inventory : contentHolder.getOtherCrate().inventory,
                                 col + row * 9 - (col + row * 9 < 36 ? 0 : 36), x + col * 18, row * 18 - 12 - colYOffset));
@@ -99,8 +106,14 @@ public class BrassCrateMenu extends MenuBase<BrassCrateEntity> {
     }
 
     public void refreshMenu(){
+        this.player.closeContainer();
+        this.init(playerInventory, contentHolder);
         this.player.openMenu(contentHolder);
-        CFAConfig.foldInterface = isFold;
+        //CFAConfig.foldInterface = isFold;
+    }
+
+    public void setPlayerInterfaceFold(boolean fold){
+        this.player.setData(CFAAttachmentTypes.FOLD_INTERFACE, fold);
     }
 
     @Override
