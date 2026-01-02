@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "facing=up": {"model": "create_fantasizing:block/rose_quartz_bulb"},
+    "facing=down": {"model": "create_fantasizing:block/rose_quartz_bulb", "x": 180},
+    "facing=north": {"model": "create_fantasizing:block/rose_quartz_bulb_wall"},
+    "facing=south": {"model": "create_fantasizing:block/rose_quartz_bulb_wall", "y": 180},
+    "facing=east": {"model": "create_fantasizing:block/rose_quartz_bulb_wall", "y": 90},
+    "facing=west": {"model": "create_fantasizing:block/rose_quartz_bulb_wall", "y": -90}
+  }
+}

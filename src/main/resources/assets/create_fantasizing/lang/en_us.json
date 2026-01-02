@@ -32,6 +32,7 @@
   "block.create_fantasizing.phantom_cogwheel.tooltip.summary":"Right-click a _Cogwheel_ using a _Phantom Membrane_ to convert it into this block. It will still pass stress without collision. Removing it with a _Wrench_ will restore it to a _Cogwheel_.",
   "block.create_fantasizing.phantom_large_cogwheel": "Phantom Large Cogwheel",
   "block.create_fantasizing.phantom_large_cogwheel.tooltip.summary":"Right-click a _Large Cogwheel_ using a _Phantom Membrane_ to convert it into this block. It will still pass stress without collision. Removing it with a _Wrench_ will restore it to a _Large Cogwheel_.",
+  "block.create_fantasizing.rose_quartz_bulb": "Rose Quartz Bulb",
   "item.create_fantasizing.prismarine_fan_blades": "Prismarine Fan Blades",
   "item.create_fantasizing.sturdy_conduit": "Sturdy Conduit",
   "item.create_fantasizing.sturdy_heavy_core": "Sturdy Heavy Core",
