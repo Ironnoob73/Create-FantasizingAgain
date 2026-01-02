@@ -31,10 +31,10 @@ import java.util.function.Consumer;
 import static com.simibubi.create.foundation.gui.AllGuiTextures.PLAYER_INVENTORY;
 
 @OnlyIn(Dist.CLIENT)
-public class BrassCrateScreen extends AbstractSimiContainerScreen<BrassCrateMenu> {
+public class SturdyCrateScreen extends AbstractSimiContainerScreen<SturdyCrateMenu> {
 
-    protected CFAGuiTextures background0 = CFAGuiTextures.BRASS_CRATE_UPSIDE;
-    protected CFAGuiTextures background1 = CFAGuiTextures.BRASS_CRATE_DOWNSIDE;
+    protected CFAGuiTextures background0 = CFAGuiTextures.STURDY_CRATE_UPSIDE;
+    protected CFAGuiTextures background1 = CFAGuiTextures.STURDY_CRATE_DOWNSIDE;
     private List<Rect2i> extraAreas = Collections.emptyList();
     private EditBox nameBox;
     private ScrollInput allowedItems;
@@ -50,10 +50,10 @@ public class BrassCrateScreen extends AbstractSimiContainerScreen<BrassCrateMenu
     protected IconButton pageUpButton;
     protected IconButton pageDownButton;
 
-    private final ItemStack renderedItem = CFABlocks.BRASS_CRATE.asStack();
+    private final ItemStack renderedItem = CFABlocks.STURDY_CRATE.asStack();
     private final Component storageSpace = Component.translatable("create_fantasizing.gui.crate.storage_space");
 
-    public BrassCrateScreen(BrassCrateMenu container, Inventory inv, Component title) {
+    public SturdyCrateScreen(SturdyCrateMenu container, Inventory inv, Component title) {
         super(container, inv, title);
         lastModification = -1;
     }
@@ -70,9 +70,9 @@ public class BrassCrateScreen extends AbstractSimiContainerScreen<BrassCrateMenu
         setWindowSize(Math.max(background0.getWidth(), PLAYER_INVENTORY.getWidth()), (menu.isFullInterface() ? 128 : 200) + 4 + PLAYER_INVENTORY.getHeight());
         clearWidgets();
 
-        itemLabelOffset = menu.isFullInterface() ? 72 : 0;
-        textureYShift = menu.isFullInterface() ? -36 : 0;
-        itemYShift = menu.isFullInterface() ? 72 : 0;
+        itemLabelOffset = menu.isFullInterface() ? 90 : 0;
+        textureYShift = menu.isFullInterface() ? -45 : 0;
+        itemYShift = menu.isFullInterface() ? 81 : 0;
         YShift = topPos - 32;
 
         int x = leftPos;
@@ -80,7 +80,7 @@ public class BrassCrateScreen extends AbstractSimiContainerScreen<BrassCrateMenu
 
         Consumer<String> onTextChanged;
         onTextChanged = s -> nameBox.setX(nameBoxX(s, nameBox));
-        nameBox = new EditBox(new NoShadowFontWrapper(font), x + 23, y + 3, background0.getWidth(), 10,
+        nameBox = new EditBox(new NoShadowFontWrapper(font), x + 14, y + 3, background0.getWidth(), 10,
                 Component.empty());
         nameBox.setBordered(false);
         nameBox.setMaxLength(25);
@@ -94,9 +94,9 @@ public class BrassCrateScreen extends AbstractSimiContainerScreen<BrassCrateMenu
         nameBox.setX(nameBoxX(nameBox.getValue(), nameBox));
         addRenderableWidget(nameBox);
 
-        Label allowedItemsLabel = new Label(x + 135, y + 108 + itemLabelOffset, Component.empty()).colored(0xFFFFFF).withShadow();
-        allowedItems = new ScrollInput(x + 131, y + 104 + itemLabelOffset, 41, 16).titled(storageSpace.plainCopy())
-                .withRange(0, (menu.doubleCrate ? 4609 : 2305))
+        Label allowedItemsLabel = new Label(x + 144, y + 126 + itemLabelOffset, Component.empty()).colored(0xFFFFFF).withShadow();
+        allowedItems = new ScrollInput(x + 140, y + 122 + itemLabelOffset, 41, 16).titled(storageSpace.plainCopy())
+                .withRange(0, (menu.doubleCrate ? 6401 : 3201))
                 .writingTo(allowedItemsLabel)
                 .withShiftStep(64)
                 .setState(menu.contentHolder.getOverallAllowedAmount())
@@ -116,10 +116,10 @@ public class BrassCrateScreen extends AbstractSimiContainerScreen<BrassCrateMenu
                     .getWindow()
                     .getGuiScaledHeight() - 10;
             if(menu.isFold) {
-                foldButton = new IconButton(x + 7, y + 102, CFAGuiTextures.CRATE_INTERFACE_UNFOLD);
-                pageUpButton = new IconButton(x + 7, y + 132, AllIcons.I_MTD_LEFT);
+                foldButton = new IconButton(x - 2, y + 102, CFAGuiTextures.CRATE_INTERFACE_UNFOLD);
+                pageUpButton = new IconButton(x -2 , y + 132, AllIcons.I_MTD_LEFT);
             } else if (appropriateHeight < 300){
-                foldButton = new IconButton(x + 7, y + 174, CFAGuiTextures.CRATE_INTERFACE_FOLD);
+                foldButton = new IconButton(x - 2, y + 174, CFAGuiTextures.CRATE_INTERFACE_FOLD);
                 /*foldButton.withCallback(() -> {
                     CFAConfig.foldInterface = !menu.isFold;
                     menu.setPlayerInterfaceFold(!menu.isFold);
@@ -131,26 +131,26 @@ public class BrassCrateScreen extends AbstractSimiContainerScreen<BrassCrateMenu
     }
 
     private int nameBoxX(String s, EditBox nameBox) {
-        return getGuiLeft() + (background0.getWidth() - (Math.min(font.width(s), nameBox.getWidth()) + 10)) / 2;
+        return getGuiLeft() + (background0.getWidth() - (Math.min(font.width(s), nameBox.getWidth()) + 10)) / 2 - 9;
     }
 
     @Override
     public void renderForeground(@NotNull GuiGraphics ms, int mouseX, int mouseY, float partialTicks) {
         super.renderForeground(ms, mouseX, mouseY, partialTicks);
 
-        int x = leftPos - 6;
+        int x = leftPos - 15;
         int y = YShift + textureYShift;
 
         String itemCount = String.valueOf(menu.contentHolder.inventory.itemCount + (menu.doubleCrate ? menu.contentHolder.getOtherCrate().inventory.itemCount : 0));
-        ms.drawString(font, itemCount, x + 125 - font.width(itemCount), y + 108 + itemLabelOffset, 0x4B3A22, false);
+        ms.drawString(font, itemCount, x + 143 - font.width(itemCount), y + 126 + itemLabelOffset, 0x4B3A22, false);
 
-        for (int slot = 0; slot < (menu.isFullInterface() ? 72 : 36); slot++) {
+        for (int slot = 0; slot < (menu.isFullInterface() ? 100 : 50); slot++) {
             if (allowedItems.getState() > slot * 64)
                 continue;
-            int slotsPerRow = 9;
+            int slotsPerRow = 10;
             int slotX = x + 13 + (slot % slotsPerRow) * 18;
             int slotY = y + 19 + (slot / slotsPerRow) * 18;
-            CFAGuiTextures.BRASS_CRATE_LOCKED_SLOT.render(ms, slotX, slotY);
+            CFAGuiTextures.STURDY_CRATE_LOCKED_SLOT.render(ms, slotX, slotY);
         }
 
         if (menu.doubleCrate && foldButton != null && foldButton.isHovered()){
@@ -169,14 +169,14 @@ public class BrassCrateScreen extends AbstractSimiContainerScreen<BrassCrateMenu
     @Override
     public void renderBg(@NotNull GuiGraphics ms, float partialTicks, int mouseX, int mouseY) {
         int invX = getLeftOfCentered(PLAYER_INVENTORY.getWidth());
-        int invY = YShift + background0.getHeight() + (menu.isFullInterface() ? 76 : 40);
+        int invY = YShift + background0.getHeight() + (menu.isFullInterface() ? 67 : 22);
         renderPlayerInventory(ms, invX, invY);
 
-        int x = leftPos - 6;
+        int x = leftPos - 15;
         int y = YShift + textureYShift;
 
         background0.render(ms, x, y);
-        background1.render(ms, x, y + (menu.isFullInterface() ? 91 : 19));
+        background1.render(ms, x, y + (menu.isFullInterface() ? 109 : 19));
 
         String text = nameBox.getValue();
         if (!nameBox.isFocused()) {
@@ -213,7 +213,7 @@ public class BrassCrateScreen extends AbstractSimiContainerScreen<BrassCrateMenu
     public void containerTick() {
         super.containerTick();
 
-        if (minecraft != null && minecraft.level != null && !CFABlocks.BRASS_CRATE.has(minecraft.level.getBlockState(menu.contentHolder.getBlockPos())))
+        if (minecraft != null && minecraft.level != null && !CFABlocks.STURDY_CRATE.has(minecraft.level.getBlockState(menu.contentHolder.getBlockPos())))
             minecraft.setScreen(null);
 
         if (lastModification >= 0)

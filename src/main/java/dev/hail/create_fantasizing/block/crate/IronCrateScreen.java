@@ -127,7 +127,7 @@ public class IronCrateScreen extends AbstractSimiContainerScreen<IronCrateMenu> 
     }
     @Override
     public void renderBg(@NotNull GuiGraphics ms, float partialTicks, int mouseX, int mouseY) {
-        int invX = getLeftOfCentered(PLAYER_INVENTORY.getWidth()) - (menu.doubleCrate ? 9 : 0);
+        int invX = getLeftOfCentered(PLAYER_INVENTORY.getWidth()) - (menu.doubleCrate ? 7 : 0);
         int invY = YShift + background.getHeight() + 4;
         renderPlayerInventory(ms, invX, invY);
 

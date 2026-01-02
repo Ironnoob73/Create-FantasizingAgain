@@ -13,6 +13,7 @@ public class CFAMenus {
     public static final MenuEntry<AndesiteCrateMenu> ANDESITE_CRATE = register("andesite_crate", AndesiteCrateMenu::new, () -> AndesiteCrateScreen::new);
     public static final MenuEntry<IronCrateMenu> IRON_CRATE = register("iron_crate", IronCrateMenu::new, () -> IronCrateScreen::new);
     public static final MenuEntry<BrassCrateMenu> BRASS_CRATE = register("brass_crate", BrassCrateMenu::new, () -> BrassCrateScreen::new);
+    public static final MenuEntry<SturdyCrateMenu> STURDY_CRATE = register("sturdy_crate", SturdyCrateMenu::new, () -> SturdyCrateScreen::new);
 
     private static <C extends AbstractContainerMenu, S extends Screen & MenuAccess<C>> MenuEntry<C> register(
             String name, MenuBuilder.ForgeMenuFactory<C> factory, NonNullSupplier<MenuBuilder.ScreenFactory<C, S>> screenFactory) {

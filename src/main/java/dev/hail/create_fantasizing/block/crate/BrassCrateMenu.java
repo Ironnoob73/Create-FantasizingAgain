@@ -1,7 +1,6 @@
 package dev.hail.create_fantasizing.block.crate;
 
 import com.simibubi.create.foundation.gui.menu.MenuBase;
-import dev.hail.create_fantasizing.CFAConfig;
 import dev.hail.create_fantasizing.block.CFAMenus;
 import dev.hail.create_fantasizing.data.CFAAttachmentTypes;
 import net.minecraft.client.Minecraft;
@@ -78,7 +77,6 @@ public class BrassCrateMenu extends MenuBase<BrassCrateEntity> {
         int colYOffset = isFullInterface() ? 36 : 0;
         for (int row = 0; row < maxRow; ++row) {
             for (int col = 0; col < 9; ++col) {
-                int ind = col + row * 9;
                 this.addSlot(
                         new SlotItemHandler(col + row * 9 < 36 ? contentHolder.inventory : contentHolder.getOtherCrate().inventory,
                                 col + row * 9 - (col + row * 9 < 36 ? 0 : 36), x + col * 18, row * 18 - 12 - colYOffset));

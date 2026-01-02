@@ -16,18 +16,18 @@ import org.jetbrains.annotations.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
-public class IronCrateEntity extends AbstractCrateEntity implements MenuProvider {
-    public IronCrateEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+public class SturdyCrateEntity extends AbstractCrateEntity implements MenuProvider {
+    public SturdyCrateEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
-        inventory = new CrateInventory(this, 20);
-        inventory.allowedAmount = 1280;
+        inventory = new CrateInventory(this, 50);
+        inventory.allowedAmount = 3200;
         invHandler = ResetableLazy.of(() -> inventory);
     }
 
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(
                 Capabilities.ItemHandler.BLOCK,
-                CFABlocks.IRON_CRATE_ENTITY.get(),
+                CFABlocks.STURDY_CRATE_ENTITY.get(),
                 (be, context) -> {
                     be.initCapability();
                     if (be.itemCapability == null)
@@ -36,12 +36,20 @@ public class IronCrateEntity extends AbstractCrateEntity implements MenuProvider
                 });
     }
     @Override
-    public @Nullable IronCrateMenu createMenu(int i, net.minecraft.world.entity.player.Inventory inventory, Player player) {
-        return IronCrateMenu.create(i, inventory, this);
+    public @Nullable SturdyCrateMenu createMenu(int i, net.minecraft.world.entity.player.Inventory inventory, Player player) {
+        return SturdyCrateMenu.create(i, inventory, this);
     }
 
     @Override
     public @NotNull Component getDisplayName() {
-        return Component.translatable("block.create_fantasizing.iron_crate");
+        return Component.translatable("block.create_fantasizing.sturdy_crate");
+    }
+
+    @Override
+    public AbstractCrateEntity getOtherCrate(){
+        if (!CFABlocks.STURDY_CRATE.has(getBlockState()))
+            return null;
+        else
+            return super.getOtherCrate();
     }
 }

@@ -11,6 +11,7 @@ import dev.hail.create_fantasizing.block.CFAMountedStorageTypes;
 import dev.hail.create_fantasizing.block.crate.AndesiteCrateEntity;
 import dev.hail.create_fantasizing.block.crate.BrassCrateEntity;
 import dev.hail.create_fantasizing.block.crate.IronCrateEntity;
+import dev.hail.create_fantasizing.block.crate.SturdyCrateEntity;
 import dev.hail.create_fantasizing.block.transporter.TransporterEntity;
 import dev.hail.create_fantasizing.data.CFAAttachmentTypes;
 import dev.hail.create_fantasizing.data.CFADataComponents;
@@ -77,6 +78,7 @@ public class FantasizingMod
         AndesiteCrateEntity.registerCapabilities(event);
         IronCrateEntity.registerCapabilities(event);
         BrassCrateEntity.registerCapabilities(event);
+        SturdyCrateEntity.registerCapabilities(event);
     }
 
     @SubscribeEvent
