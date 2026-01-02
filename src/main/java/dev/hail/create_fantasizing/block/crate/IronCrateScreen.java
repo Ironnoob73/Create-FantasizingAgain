@@ -8,16 +8,16 @@ import com.simibubi.create.foundation.gui.widget.Label;
 import com.simibubi.create.foundation.gui.widget.ScrollInput;
 import dev.hail.create_fantasizing.CFAGuiTextures;
 import dev.hail.create_fantasizing.block.CFABlocks;
+import dev.hail.create_fantasizing.event.CFAPackets;
 import net.createmod.catnip.gui.element.GuiGameElement;
-import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -163,7 +163,7 @@ public class IronCrateScreen extends AbstractSimiContainerScreen<IronCrateMenu> 
 
     @Override
     public void removed() {
-        CatnipServices.NETWORK.sendToServer(new ConfigureCratePacket(menu.contentHolder.getBlockPos(), allowedItems.getState(), nameBox.getValue()));
+        CFAPackets.getChannel().sendToServer(new ConfigureCratePacket(menu.contentHolder.getBlockPos(), allowedItems.getState(), nameBox.getValue()));
         super.removed();
     }
 
@@ -179,7 +179,7 @@ public class IronCrateScreen extends AbstractSimiContainerScreen<IronCrateMenu> 
 
         if (lastModification >= 15) {
             lastModification = -1;
-            CatnipServices.NETWORK.sendToServer(new ConfigureCratePacket(menu.contentHolder.getBlockPos(), allowedItems.getState(), nameBox.getValue()));
+            CFAPackets.getChannel().sendToServer(new ConfigureCratePacket(menu.contentHolder.getBlockPos(), allowedItems.getState(), nameBox.getValue()));
         }
 
         if (menu.doubleCrate != menu.contentHolder.isDoubleCrate())

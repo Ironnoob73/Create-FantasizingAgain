@@ -1,15 +1,14 @@
 package dev.hail.create_fantasizing.block.crate;
 
 import com.simibubi.create.foundation.utility.ResetableLazy;
+import dev.hail.create_fantasizing.block.CFABlocks;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,17 +18,6 @@ public class AndesiteCrateEntity extends AbstractCrateEntity implements MenuProv
         inventory = new CrateInventory(this, 16);
         inventory.allowedAmount = 1024;
         invHandler = ResetableLazy.of(() -> inventory);
-    }
-
-    @Override
-    public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
-        if (isItemHandlerCap(cap)) {
-            initCapability();
-            if (!itemCapability.isPresent())
-                return LazyOptional.empty();
-            return itemCapability.cast();
-        }
-        return super.getCapability(cap, side);
     }
 
     @Override

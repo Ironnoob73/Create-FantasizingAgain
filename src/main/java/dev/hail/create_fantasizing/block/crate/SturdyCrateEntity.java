@@ -8,8 +8,6 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,17 +22,6 @@ public class SturdyCrateEntity extends AbstractCrateEntity implements MenuProvid
         invHandler = ResetableLazy.of(() -> inventory);
     }
 
-    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-        event.registerBlockEntity(
-                Capabilities.ItemHandler.BLOCK,
-                CFABlocks.STURDY_CRATE_ENTITY.get(),
-                (be, context) -> {
-                    be.initCapability();
-                    if (be.itemCapability == null)
-                        return null;
-                    return be.itemCapability.getCapability();
-                });
-    }
     @Override
     public @Nullable SturdyCrateMenu createMenu(int i, net.minecraft.world.entity.player.Inventory inventory, Player player) {
         return SturdyCrateMenu.create(i, inventory, this);

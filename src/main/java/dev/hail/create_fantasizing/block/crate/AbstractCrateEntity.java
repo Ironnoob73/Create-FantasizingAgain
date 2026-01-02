@@ -6,7 +6,6 @@ import com.simibubi.create.foundation.blockEntity.behaviour.inventory.VersionedI
 import com.simibubi.create.foundation.utility.CreateLang;
 import com.simibubi.create.foundation.utility.ResetableLazy;
 import com.simibubi.create.foundation.utility.SameSizeCombinedInvWrapper;
-import dev.hail.create_fantasizing.block.CFABlocks;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +31,17 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements Na
 
     public AbstractCrateEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
+    }
+
+    @Override
+    public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
+        if (isItemHandlerCap(cap)) {
+            initCapability();
+            if (!itemCapability.isPresent())
+                return LazyOptional.empty();
+            return itemCapability.cast();
+        }
+        return super.getCapability(cap, side);
     }
 
     @Override

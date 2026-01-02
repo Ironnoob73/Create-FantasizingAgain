@@ -4,7 +4,7 @@ import com.simibubi.create.foundation.networking.BlockEntityConfigurationPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 
-public class ConfigureCreatePacket extends BlockEntityConfigurationPacket<AbstractCrateEntity> {
+public class ConfigureCratePacket extends BlockEntityConfigurationPacket<AbstractCrateEntity> {
 
     private int maxItems;
     private String customName;
@@ -15,7 +15,7 @@ public class ConfigureCreatePacket extends BlockEntityConfigurationPacket<Abstra
         this.customName = customName;
     }
 
-    public ConfigureCreatePacket(FriendlyByteBuf buffer) {
+    public ConfigureCratePacket(FriendlyByteBuf buffer) {
         super(buffer);
     }
 

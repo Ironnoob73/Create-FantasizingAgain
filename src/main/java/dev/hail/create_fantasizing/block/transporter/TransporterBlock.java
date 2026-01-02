@@ -39,6 +39,7 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -92,7 +93,7 @@ public class TransporterBlock extends Block implements IBE<TransporterEntity>, I
 
     @Override
     @SuppressWarnings("deprecation")
-    public @NotNull FluidState getFluidState(BlockState pState) {
+    public FluidState getFluidState(BlockState pState) {
         return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
     }
     @Override
@@ -194,7 +195,7 @@ public class TransporterBlock extends Block implements IBE<TransporterEntity>, I
     }
 
     @Override
-    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
         return getBlockEntityType().create(blockPos, blockState);
     }
 }

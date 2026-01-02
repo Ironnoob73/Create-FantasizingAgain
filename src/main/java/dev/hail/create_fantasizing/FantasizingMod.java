@@ -56,8 +56,6 @@ public class FantasizingMod
         CFAPackets.registerPackets();
         CFAMenus.register();
         CFAMountedStorageTypes.register();
-
-        modContainer.registerConfig(ModConfig.Type.CLIENT, CFAConfig.SPEC_C);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {}

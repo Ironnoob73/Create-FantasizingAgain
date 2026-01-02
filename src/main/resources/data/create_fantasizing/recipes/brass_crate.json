@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "A": {
-      "item": "create:andesite_alloy"
+      "tag": "forge:ingots/brass"
     },
     "P": {
       "tag": "minecraft:planks"
@@ -19,6 +19,6 @@
   ],
   "result": {
     "count": 4,
-    "item": "create_fantasizing:andesite_crate"
+    "item": "create_fantasizing:brass_crate"
   }
 }

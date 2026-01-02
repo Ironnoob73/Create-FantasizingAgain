@@ -2,18 +2,17 @@ package dev.hail.create_fantasizing.block.crate;
 
 import com.simibubi.create.foundation.gui.menu.MenuBase;
 import dev.hail.create_fantasizing.block.CFAMenus;
-import dev.hail.create_fantasizing.data.CFAAttachmentTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.items.SlotItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
 public class BrassCrateMenu extends MenuBase<BrassCrateEntity> {
@@ -21,7 +20,7 @@ public class BrassCrateMenu extends MenuBase<BrassCrateEntity> {
     public boolean isFold;
     //public int page;
 
-    public BrassCrateMenu(MenuType<?> type, int id, Inventory inv, RegistryFriendlyByteBuf extraData) {
+    public BrassCrateMenu(MenuType<?> type, int id, Inventory inv, FriendlyByteBuf extraData) {
         super(type, id, inv, extraData);
     }
 
@@ -34,7 +33,7 @@ public class BrassCrateMenu extends MenuBase<BrassCrateEntity> {
     }
 
     @Override
-    protected BrassCrateEntity createOnClient(RegistryFriendlyByteBuf extraData) {
+    protected BrassCrateEntity createOnClient(FriendlyByteBuf extraData) {
         BlockPos readBlockPos = extraData.readBlockPos();
         ClientLevel world = Minecraft.getInstance().level;
         BlockEntity blockEntity = null;
@@ -71,7 +70,7 @@ public class BrassCrateMenu extends MenuBase<BrassCrateEntity> {
             player.getData(CFAAttachmentTypes.FOLD_INTERFACE);
             isFold = player.getData(CFAAttachmentTypes.FOLD_INTERFACE);
         }*/
-        player.setData(CFAAttachmentTypes.FOLD_INTERFACE, isFold);
+        //player.setData(CFAAttachmentTypes.FOLD_INTERFACE, isFold);
         int x = 8;
         int maxRow = isFullInterface() ? 8 : 4;
         int colYOffset = isFullInterface() ? 36 : 0;
@@ -111,7 +110,7 @@ public class BrassCrateMenu extends MenuBase<BrassCrateEntity> {
     }
 
     public void setPlayerInterfaceFold(boolean fold){
-        this.player.setData(CFAAttachmentTypes.FOLD_INTERFACE, fold);
+        //this.player.setData(CFAAttachmentTypes.FOLD_INTERFACE, fold);
     }
 
     @Override

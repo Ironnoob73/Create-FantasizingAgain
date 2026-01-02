@@ -1,6 +1,7 @@
 package dev.hail.create_fantasizing.block.transporter;
 
 import com.simibubi.create.foundation.item.ItemHelper;
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 

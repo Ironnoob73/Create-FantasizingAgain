@@ -163,7 +163,7 @@ public class AndesiteCrateScreen extends AbstractSimiContainerScreen<AndesiteCra
 
     @Override
     public void removed() {
-        CFAPackets.getChannel().sendToServer(new ConfigureCreatePacket(menu.contentHolder.getBlockPos(), allowedItems.getState(), nameBox.getValue()));
+        CFAPackets.getChannel().sendToServer(new ConfigureCratePacket(menu.contentHolder.getBlockPos(), allowedItems.getState(), nameBox.getValue()));
         super.removed();
     }
 
@@ -179,7 +179,7 @@ public class AndesiteCrateScreen extends AbstractSimiContainerScreen<AndesiteCra
 
         if (lastModification >= 15) {
             lastModification = -1;
-            CFAPackets.getChannel().sendToServer(new ConfigureCreatePacket(menu.contentHolder.getBlockPos(), allowedItems.getState(), nameBox.getValue()));
+            CFAPackets.getChannel().sendToServer(new ConfigureCratePacket(menu.contentHolder.getBlockPos(), allowedItems.getState(), nameBox.getValue()));
         }
 
         if (menu.doubleCrate != menu.contentHolder.isDoubleCrate())

@@ -5,20 +5,20 @@ import dev.hail.create_fantasizing.block.CFAMenus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.items.SlotItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
 public class IronCrateMenu extends MenuBase<IronCrateEntity> {
     public boolean doubleCrate;
 
-    public IronCrateMenu(MenuType<?> type, int id, Inventory inv, RegistryFriendlyByteBuf extraData) {
+    public IronCrateMenu(MenuType<?> type, int id, Inventory inv, FriendlyByteBuf extraData) {
         super(type, id, inv, extraData);
     }
 
@@ -31,7 +31,7 @@ public class IronCrateMenu extends MenuBase<IronCrateEntity> {
     }
 
     @Override
-    protected IronCrateEntity createOnClient(RegistryFriendlyByteBuf extraData) {
+    protected IronCrateEntity createOnClient(FriendlyByteBuf extraData) {
         BlockPos readBlockPos = extraData.readBlockPos();
         ClientLevel world = Minecraft.getInstance().level;
         BlockEntity blockEntity = null;

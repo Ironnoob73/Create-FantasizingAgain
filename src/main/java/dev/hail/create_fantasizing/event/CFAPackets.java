@@ -1,7 +1,7 @@
 package dev.hail.create_fantasizing.event;
 
 import com.simibubi.create.foundation.networking.SimplePacketBase;
-import dev.hail.create_fantasizing.block.crate.ConfigureCreatePacket;
+import dev.hail.create_fantasizing.block.crate.ConfigureCratePacket;
 import dev.hail.create_fantasizing.item.block_placer.ConfigureBlockPlacerPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -19,7 +19,7 @@ import static net.minecraftforge.network.NetworkDirection.PLAY_TO_SERVER;
 
 public enum CFAPackets {
     CONFIGURE_BLOCK_ZAPPER(ConfigureBlockPlacerPacket.class, ConfigureBlockPlacerPacket::new, PLAY_TO_SERVER),
-    CONFIGURE_CREATE(ConfigureCreatePacket.class, ConfigureCreatePacket::new, PLAY_TO_SERVER);
+    CONFIGURE_CREATE(ConfigureCratePacket.class, ConfigureCratePacket::new, PLAY_TO_SERVER);
 
     public static final ResourceLocation CHANNEL_NAME = resourceLocation("main");
     public static final int NETWORK_VERSION = 3;

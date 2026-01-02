@@ -31,10 +31,19 @@ public class AndesiteCrateBlock extends AbstractCrateBlock implements IBE<Andesi
     }
 
     @Override
-    public @NotNull ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn,
-                                                    BlockHitResult hit) {
-        super.useItemOn(stack,state,worldIn,pos,player,handIn,hit);
-        withBlockEntityDo(worldIn, pos, crate -> player.openMenu((MenuProvider) crate.getMainCrate(), crate.getMainCrate()::sendToMenu));
-        return ItemInteractionResult.SUCCESS;
+    @SuppressWarnings("deprecation")
+    public @NotNull InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn,
+                                          BlockHitResult hit) {
+        if (player.isCrouching())
+            return InteractionResult.PASS;
+
+        if (player instanceof FakePlayer)
+            return InteractionResult.PASS;
+        if (worldIn.isClientSide)
+            return InteractionResult.SUCCESS;
+
+        withBlockEntityDo(worldIn, pos,
+                crate -> NetworkHooks.openScreen((ServerPlayer) player, (MenuProvider) crate.getMainCrate(), crate.getMainCrate()::sendToMenu));
+        return InteractionResult.SUCCESS;
     }
 }
