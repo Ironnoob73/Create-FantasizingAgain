@@ -37,6 +37,9 @@
 
   "create_fantasizing.gui.block_placer.destroy_mode": "销毁掉落物",
   "create_fantasizing.gui.crate.storage_space": "储存空间",
+  "create_fantasizing.gui.crate.no_fold": "抱歉，不行。",
+  "create_fantasizing.gui.crate.no_fold.0": "容器界面超出了你的屏幕？",
+  "create_fantasizing.gui.crate.no_fold.1": "目前你只能通过修改界面尺寸或者放大窗口来解决这个问题。",
 
   "create_fantasizing.configuration.hydraulic_engine_stress_provide": "水力引擎应力提供",
   "create_fantasizing.configuration.hydraulic_engine_stress_provide.tooltip": "\u00A7e需要重新进入存档",

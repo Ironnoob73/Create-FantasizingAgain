@@ -12,6 +12,7 @@ import dev.hail.create_fantasizing.block.crate.AndesiteCrateEntity;
 import dev.hail.create_fantasizing.block.crate.BrassCrateEntity;
 import dev.hail.create_fantasizing.block.crate.IronCrateEntity;
 import dev.hail.create_fantasizing.block.transporter.TransporterEntity;
+import dev.hail.create_fantasizing.data.CFAAttachmentTypes;
 import dev.hail.create_fantasizing.data.CFADataComponents;
 import dev.hail.create_fantasizing.event.CFAPackets;
 import dev.hail.create_fantasizing.item.CFAItems;
@@ -59,6 +60,7 @@ public class FantasizingMod
         CFACreativeTab.init(modEventBus);
 
         CFADataComponents.register(modEventBus);
+        CFAAttachmentTypes.register(modEventBus);
         CFAPackets.register();
         CFAMenus.register();
         CFAMountedStorageTypes.register();

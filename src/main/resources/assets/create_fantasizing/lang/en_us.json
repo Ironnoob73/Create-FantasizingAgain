@@ -37,6 +37,9 @@
 
   "create_fantasizing.gui.block_placer.destroy_mode": "Destroy Dropping Items",
   "create_fantasizing.gui.crate.storage_space": "Storage Space",
+  "create_fantasizing.gui.crate.no_fold": "Sorry, but NO.",
+  "create_fantasizing.gui.crate.no_fold.0": "Is the container interface out of your screen?",
+  "create_fantasizing.gui.crate.no_fold.1": "Currently, the only solution to this issue is to resize the interface or enlarge the window.",
 
   "create_fantasizing.configuration.hydraulic_engine_stress_provide": "Hydraulic Engine Stress provide",
   "create_fantasizing.configuration.hydraulic_engine_stress_provide.tooltip": "\u00A7eNeed to re-enter the world",
