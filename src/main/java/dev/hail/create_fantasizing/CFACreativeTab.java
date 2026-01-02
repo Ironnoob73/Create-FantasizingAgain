@@ -30,6 +30,7 @@ public class CFACreativeTab {
                 output.accept(CFABlocks.PHANTOM_SHAFT.get());
                 output.accept(CFABlocks.PHANTOM_COGWHEEL.get());
                 output.accept(CFABlocks.PHANTOM_LARGE_COGWHEEL.get());
+                output.accept(CFABlocks.ROSE_QUARTZ_BULB.get());
                 output.accept(CFAItems.PRISMARINE_FAN_BLADES.get());
                 output.accept(CFAItems.STURDY_CONDUIT.get());
                 output.accept(CFAItems.STURDY_HEAVY_CORE.get());

@@ -16,15 +16,18 @@ import dev.hail.create_fantasizing.block.crate.*;
 import dev.hail.create_fantasizing.block.phantom_shaft.PhantomCogwheel;
 import dev.hail.create_fantasizing.block.phantom_shaft.PhantomShaft;
 import dev.hail.create_fantasizing.block.phantom_shaft.PhantomShaftVisual;
+import dev.hail.create_fantasizing.block.rose_quartz_blub.RoseQuartzBulb;
 import dev.hail.create_fantasizing.block.transporter.TransporterBlock;
 import dev.hail.create_fantasizing.block.transporter.TransporterEntity;
 import dev.hail.create_fantasizing.block.transporter.TransporterRenderer;
 import dev.hail.create_fantasizing.block.sturdy_girder.ConnectedSturdyGirderModel;
 import dev.hail.create_fantasizing.block.sturdy_girder.SturdyGirderBlock;
 import dev.hail.create_fantasizing.block.sturdy_girder.SturdyGirderEncasedShaftBlock;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
 
+import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static dev.hail.create_fantasizing.CFAConfig.*;
 import static dev.hail.create_fantasizing.FantasizingMod.REGISTRATE;
 
@@ -158,6 +161,12 @@ public class CFABlocks {
             .validBlocks(CFABlocks.PHANTOM_SHAFT, CFABlocks.PHANTOM_COGWHEEL, CFABlocks.PHANTOM_LARGE_COGWHEEL)
             .renderer(() -> BracketedKineticBlockEntityRenderer::new)
             .register();
+
+    public static final BlockEntry<RoseQuartzBulb> ROSE_QUARTZ_BULB = REGISTRATE.block("rose_quartz_bulb", RoseQuartzBulb::new)
+                    .initialProperties(SharedProperties::softMetal)
+                    .properties(p -> p.lightLevel($ -> 15).mapColor(DyeColor.ORANGE).forceSolidOn().noCollission().instabreak())
+                    .simpleItem()
+                    .register();
 
     public static void init() {}
 }
