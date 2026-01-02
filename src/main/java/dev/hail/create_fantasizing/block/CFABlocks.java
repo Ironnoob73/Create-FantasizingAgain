@@ -163,10 +163,9 @@ public class CFABlocks {
             .register();
 
     public static final BlockEntry<RoseQuartzBulb> ROSE_QUARTZ_BULB = REGISTRATE.block("rose_quartz_bulb", RoseQuartzBulb::new)
-                    .initialProperties(SharedProperties::softMetal)
-                    .properties(p -> p.lightLevel($ -> 15).mapColor(DyeColor.ORANGE).forceSolidOn().noCollission().instabreak())
-                    .simpleItem()
-                    .register();
+            .properties(p -> p.lightLevel($ -> 15).mapColor(DyeColor.ORANGE).strength(0.0F, 6.0F).sound(SoundType.METAL).forceSolidOn().noCollission())
+            .simpleItem()
+            .register();
 
     public static void init() {}
 }
