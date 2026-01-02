@@ -9,7 +9,7 @@
       "tag": "minecraft:planks"
     },
     "C": {
-      "item": "minecraft:chest"
+      "tag": "c:chests"
     }
   },
   "pattern": [

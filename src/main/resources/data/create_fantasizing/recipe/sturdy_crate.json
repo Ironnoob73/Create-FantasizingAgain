@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "A": {
-      "tag": "c:ingots/brass"
+      "tag": "c:plates/obsidian"
     },
     "P": {
       "tag": "minecraft:planks"
@@ -19,6 +19,6 @@
   ],
   "result": {
     "count": 4,
-    "id": "create_fantasizing:brass_crate"
+    "id": "create_fantasizing:sturdy_crate"
   }
 }
