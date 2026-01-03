@@ -1,4 +1,4 @@
-package dev.hail.create_fantasizing.block.rose_quartz_blub;
+package dev.hail.create_fantasizing.block;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.MethodsReturnNonnullByDefault;

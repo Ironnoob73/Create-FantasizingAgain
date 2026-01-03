@@ -26,5 +26,7 @@ public class CFAItems {
         return REGISTRATE.item(name, SequencedAssemblyItem::new)
                 .register();
     }
+    public static final ItemEntry<AlternativeChromaticCompoundItem> ALTERNATIVE_CHROMATIC_COMPOUND = REGISTRATE.item("alternative_chromatic_compound", AlternativeChromaticCompoundItem::new).register();
+
     public static void init(){}
 }

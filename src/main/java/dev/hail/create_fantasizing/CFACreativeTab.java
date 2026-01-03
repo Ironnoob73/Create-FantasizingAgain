@@ -34,7 +34,7 @@ public class CFACreativeTab {
                 output.accept(CFAItems.PRISMARINE_FAN_BLADES.get());
                 output.accept(CFAItems.STURDY_CONDUIT.get());
                 output.accept(CFAItems.STURDY_HEAVY_CORE.get());
-                output.accept(AllItems.CHROMATIC_COMPOUND.get());
+                output.accept(CFAItems.ALTERNATIVE_CHROMATIC_COMPOUND.get());
                 output.accept(AllItems.REFINED_RADIANCE.get());
                 output.accept(AllItems.SHADOW_STEEL.get());
             }).build());

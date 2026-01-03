@@ -17,7 +17,9 @@ import dev.hail.create_fantasizing.data.CFAAttachmentTypes;
 import dev.hail.create_fantasizing.data.CFADataComponents;
 import dev.hail.create_fantasizing.event.CFAPackets;
 import dev.hail.create_fantasizing.item.CFAItems;
+import dev.hail.create_fantasizing.ponder.CFAPonderPlugin;
 import net.createmod.catnip.lang.FontHelper;
+import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
@@ -72,6 +74,7 @@ public class FantasizingMod
     private void commonSetup(final FMLCommonSetupEvent event)
     {
         ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.SERVER, CFAConfig.SPEC_S);
+        PonderIndex.addPlugin(new CFAPonderPlugin());
     }
     private void registerCapabilities(RegisterCapabilitiesEvent event) {
         TransporterEntity.registerCapabilities(event);
