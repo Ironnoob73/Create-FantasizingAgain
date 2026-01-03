@@ -12,6 +12,7 @@ import dev.hail.create_fantasizing.event.CFAPackets;
 import dev.hail.create_fantasizing.item.CFAItems;
 import net.createmod.catnip.config.ui.BaseConfigScreen;
 import net.createmod.catnip.lang.FontHelper;
+import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
@@ -58,7 +59,9 @@ public class FantasizingMod
         CFAMountedStorageTypes.register();
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event) {}
+    private void commonSetup(final FMLCommonSetupEvent event) {
+        PonderIndex.addPlugin(new CFAPonderPlugin());
+    }
 
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event)

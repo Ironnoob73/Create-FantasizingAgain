@@ -36,12 +36,20 @@
   "item.create_fantasizing.prismarine_fan_blades": "Prismarine Fan Blades",
   "item.create_fantasizing.sturdy_conduit": "Sturdy Conduit",
   "item.create_fantasizing.sturdy_heavy_core": "Sturdy Heavy Core",
+  "item.create_fantasizing.alternative_chromatic_compound": "Alternative_chromatic_compound",
 
   "create_fantasizing.gui.block_placer.destroy_mode": "Destroy Dropping Items",
   "create_fantasizing.gui.crate.storage_space": "Storage Space",
   "create_fantasizing.gui.crate.no_fold": "Sorry, but NO.",
   "create_fantasizing.gui.crate.no_fold.0": "Is the container interface out of your screen?",
   "create_fantasizing.gui.crate.no_fold.1": "Currently, the only solution to this issue is to resize the interface or enlarge the window.",
+
+  "create_fantasizing.ponder.acc_convert.header": "Convert the Alternative Chromatic Compound to other materials.",
+  "create_fantasizing.ponder.acc_convert.text_1": "Convert the Alternative Chromatic Compound to other materials.",
+  "create_fantasizing.ponder.acc_convert.text_2": "Convert the Alternative Chromatic Compound to other materials.",
+  "create_fantasizing.ponder.acc_convert.text_3": "Convert the Alternative Chromatic Compound to other materials.",
+  "create_fantasizing.ponder.acc_convert.text_4": "Convert the Alternative Chromatic Compound to other materials.",
+  "create_fantasizing.ponder.acc_convert.text_5": "Convert the Alternative Chromatic Compound to other materials.",
 
   "create_fantasizing.configuration.hydraulic_engine_stress_provide": "Hydraulic Engine Stress provide",
   "create_fantasizing.configuration.hydraulic_engine_stress_provide.tooltip": "\u00A7eNeed to re-enter the world",

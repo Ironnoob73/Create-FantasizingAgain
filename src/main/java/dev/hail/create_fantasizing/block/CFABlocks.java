@@ -16,7 +16,6 @@ import dev.hail.create_fantasizing.block.crate.*;
 import dev.hail.create_fantasizing.block.phantom_shaft.PhantomCogwheel;
 import dev.hail.create_fantasizing.block.phantom_shaft.PhantomShaft;
 import dev.hail.create_fantasizing.block.phantom_shaft.PhantomShaftVisual;
-import dev.hail.create_fantasizing.block.rose_quartz_blub.RoseQuartzBulb;
 import dev.hail.create_fantasizing.block.transporter.TransporterBlock;
 import dev.hail.create_fantasizing.block.transporter.TransporterEntity;
 import dev.hail.create_fantasizing.block.transporter.TransporterRenderer;
