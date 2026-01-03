@@ -1,0 +1,27 @@
+{
+  "type": "create:mechanical_crafting",
+  "accept_mirrored": true,
+  "category": "tool",
+  "key": {
+    "*": {
+      "tag": "c:nether_stars"
+    },
+    "#": {
+      "item": "create:refined_radiance"
+    },
+    "@": {
+      "item": "create:shadow_steel"
+    }
+  },
+  "pattern": [
+    "  #  ",
+    " #@# ",
+    "#@*@#",
+    " #@# ",
+    "  #  "
+  ],
+  "result": {
+    "count": 2,
+    "id": "minecraft:nether_star"
+  }
+}
