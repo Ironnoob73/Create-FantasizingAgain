@@ -20,7 +20,7 @@ public class AlternativeChromaticCompoundScene {
         scene.world().showSection(util.select().layer(1), Direction.DOWN);
         scene.idle(10);
         ElementLink<EntityElement> compound0 =
-            scene.world().createItemEntity(util.vector().centerOf(util.grid().at(4, 2, 3)), util.vector().of(0, -0.5, 0.5),
+            scene.world().createItemEntity(util.vector().centerOf(util.grid().at(4, 2, 3)), util.vector().of(0, -1, 0.5),
                     new ItemStack(CFAItems.ALTERNATIVE_CHROMATIC_COMPOUND.asItem()));
         scene.overlay().showText(60)
                 .attachKeyFrame()

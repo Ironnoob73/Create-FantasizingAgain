@@ -2,6 +2,7 @@ package dev.hail.create_fantasizing.ponder;
 
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
+import dev.hail.create_fantasizing.block.CFABlocks;
 import dev.hail.create_fantasizing.item.CFAItems;
 import net.createmod.ponder.api.registration.PonderSceneRegistrationHelper;
 import net.minecraft.resources.ResourceLocation;
@@ -12,5 +13,7 @@ public class CFAPonderScenes {
 
         HELPER.forComponents(CFAItems.ALTERNATIVE_CHROMATIC_COMPOUND)
                 .addStoryBoard("alternative_chromatic_compound",AlternativeChromaticCompoundScene::convert);
+        HELPER.forComponents(CFABlocks.ANDESITE_CRATE, CFABlocks.IRON_CRATE, CFABlocks.BRASS_CRATE, CFABlocks.STURDY_CRATE)
+                .addStoryBoard("crate",CrateScene::usage);
     }
 }

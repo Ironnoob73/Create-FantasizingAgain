@@ -45,6 +45,22 @@
   "create_fantasizing.gui.crate.no_fold.1": "目前你只能通过修改界面尺寸或者放大窗口来解决这个问题。",
 
   "create_fantasizing.ponder.acc_convert.header": "将替用型异彩化合物转化为其他材料",
+  "create_fantasizing.ponder.acc_convert.text_1": "当替用型异彩化合物周围存在光源时，将缓缓转变为光辉石。",
+  "create_fantasizing.ponder.acc_convert.text_2": "周围的光源越多，转变速度越快。",
+  "create_fantasizing.ponder.acc_convert.text_3": "将其丢入激活的信标的信标柱中时，将会立即转变为光辉石。",
+  "create_fantasizing.ponder.acc_convert.text_4": "当处于接近虚空的地方时，将缓缓转变为暗影钢。",
+  "create_fantasizing.ponder.acc_convert.text_5": "坠入虚空则将直接转变为暗影钢。",
+
+  "create_fantasizing.ponder.crate_usage.header": "可调节板条箱回来了！",
+  "create_fantasizing.ponder.crate_usage.text_1": "板条箱是一种具有多种功能的容器。你可以通过调整限制其容量。",
+  "create_fantasizing.ponder.crate_usage.text_2": "在三个轴向上都可以组成大板条箱。",
+  "create_fantasizing.ponder.crate_usage.text_3": "板条箱可以被直接重命名，其自定义名称将在其被指向时显示。",
+  "create_fantasizing.ponder.crate_usage.text_4": "板条箱可以打包其中的物品。当被破坏或使用扳手拆除时...",
+  "create_fantasizing.ponder.crate_usage.text_5": "...如果内部包含物品，则会掉落一个包含物品的板条箱。",
+  "create_fantasizing.ponder.crate_usage.text_6": "但是其他容器或者具有方块实体的方块不能被打包。如果在板条箱装着这些物品时被破坏或拆除...",
+  "create_fantasizing.ponder.crate_usage.text_7": "...这些物品将会额外掉落，其余物品依旧会被打包。",
+  "create_fantasizing.ponder.crate_usage.text_8": "板条箱可以被移动结构移动，其容量限制依旧生效。（但是在移动时不能打开）",
+  "create_fantasizing.ponder.crate_usage.text_9": "不同材料制作的板条箱具有不同的最大容量。",
 
   "create_fantasizing.configuration.hydraulic_engine_stress_provide": "水力引擎应力提供",
   "create_fantasizing.configuration.hydraulic_engine_stress_provide.tooltip": "\u00A7e需要重新进入存档",
