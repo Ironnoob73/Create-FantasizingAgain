@@ -4,7 +4,6 @@ import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.kinetics.base.DirectionalKineticBlock;
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
 import dev.hail.create_fantasizing.block.CFABlocks;
-import dev.hail.create_fantasizing.item.CFAItems;
 import net.createmod.catnip.math.Pointing;
 import net.createmod.ponder.api.element.ElementLink;
 import net.createmod.ponder.api.element.EntityElement;
