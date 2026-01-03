@@ -26,7 +26,6 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
 
-import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static dev.hail.create_fantasizing.CFAConfig.*;
 import static dev.hail.create_fantasizing.FantasizingMod.REGISTRATE;
 

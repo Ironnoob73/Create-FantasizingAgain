@@ -10,6 +10,7 @@ import dev.hail.create_fantasizing.block.CFAMenus;
 import dev.hail.create_fantasizing.block.CFAMountedStorageTypes;
 import dev.hail.create_fantasizing.event.CFAPackets;
 import dev.hail.create_fantasizing.item.CFAItems;
+import dev.hail.create_fantasizing.ponder.CFAPonderPlugin;
 import net.createmod.catnip.config.ui.BaseConfigScreen;
 import net.createmod.catnip.lang.FontHelper;
 import net.createmod.ponder.foundation.PonderIndex;
@@ -20,6 +21,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -57,6 +59,8 @@ public class FantasizingMod
         CFAPackets.registerPackets();
         CFAMenus.register();
         CFAMountedStorageTypes.register();
+
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> new CFAClient(modEventBus));
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {

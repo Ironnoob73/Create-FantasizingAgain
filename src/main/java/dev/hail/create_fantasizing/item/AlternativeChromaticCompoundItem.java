@@ -1,6 +1,5 @@
 package dev.hail.create_fantasizing.item;
 
-import com.simibubi.create.AllDataComponents;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackHandlerBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
@@ -37,7 +36,8 @@ public class AlternativeChromaticCompoundItem extends Item {
     }
 
     public int getLight(ItemStack stack) {
-        return stack.getOrDefault(AllDataComponents.CHROMATIC_COMPOUND_COLLECTING_LIGHT, 0);
+        return stack.getOrCreateTag()
+                .getInt("CollectingLight");
     }
     @Override
     public boolean isBarVisible(ItemStack stack) {
@@ -84,7 +84,7 @@ public class AlternativeChromaticCompoundItem extends Item {
             world.playSound(entity, BlockPos.containing(entity.position()), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS, 1, 1);
             newEntity.getPersistentData()
                     .putBoolean("JustCreated", true);
-            itemStack.remove(AllDataComponents.CHROMATIC_COMPOUND_COLLECTING_LIGHT);
+            itemStack.removeTagKey("CollectingLight");
             world.addFreshEntity(newEntity);
 
             stack.split(1);
@@ -99,7 +99,7 @@ public class AlternativeChromaticCompoundItem extends Item {
             world.playSound(entity, BlockPos.containing(entity.position()), SoundEvents.FIREWORK_ROCKET_BLAST, SoundSource.BLOCKS, 1, 1);
             newEntity.getPersistentData()
                     .putBoolean("JustCreated", true);
-            itemStack.remove(AllDataComponents.CHROMATIC_COMPOUND_COLLECTING_LIGHT);
+            itemStack.removeTagKey("CollectingLight");
             world.addFreshEntity(newEntity);
 
             stack.split(1);
@@ -199,7 +199,8 @@ public class AlternativeChromaticCompoundItem extends Item {
 
     public void doCollectingChange(ItemStack stack, ItemEntity entity, Level world, int valueChanged){
         ItemStack newStack = stack.split(1);
-        newStack.set(AllDataComponents.CHROMATIC_COMPOUND_COLLECTING_LIGHT, getLight(newStack) + valueChanged);
+        newStack.getOrCreateTag()
+                .putInt("CollectingLight", getLight(newStack) + valueChanged);
         ItemEntity newEntity = new ItemEntity(world, entity.getX(), entity.getY(), entity.getZ(), newStack);
         newEntity.setDeltaMovement(entity.getDeltaMovement());
         newEntity.setDefaultPickUpDelay();

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "R": {
+      "item": "create:polished_rose_quartz"
+    },
+    "P": {
+      "tag": "forge:plates/copper"
+    }
+  },
+  "pattern": [
+    "R",
+    "P"
+  ],
+  "result": {
+    "count": 8,
+    "item": "create_fantasizing:rose_quartz_bulb"
+  }
+}

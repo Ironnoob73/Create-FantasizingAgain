@@ -1,0 +1,38 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "tag": "forge:dusts/obsidian"
+    },
+    {
+      "tag": "forge:dusts/obsidian"
+    },
+    {
+      "tag": "forge:dusts/obsidian"
+    },
+    {
+      "tag": "forge:dusts/glowstone"
+    },
+    {
+      "tag": "forge:dusts/glowstone"
+    },
+    {
+      "tag": "forge:dusts/prismarine"
+    },
+    {
+      "tag": "forge:dusts/prismarine"
+    },
+    {
+      "item": "minecraft:popped_chorus_fruit"
+    },
+    {
+      "item": "minecraft:popped_chorus_fruit"
+    }
+  ],
+  "results": [
+    {
+      "item": "create_fantasizing:alternative_chromatic_compound"
+    }
+  ],
+  "heatRequirement": "superheated"
+}

@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class CFAPonderScenes {
     public static void register(PonderSceneRegistrationHelper<ResourceLocation> helper) {
-        PonderSceneRegistrationHelper<ItemProviderEntry<?, ?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
+        PonderSceneRegistrationHelper<ItemProviderEntry<?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
 
         HELPER.forComponents(CFAItems.ALTERNATIVE_CHROMATIC_COMPOUND)
                 .addStoryBoard("alternative_chromatic_compound",AlternativeChromaticCompoundScene::convert);
