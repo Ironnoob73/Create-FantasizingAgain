@@ -18,6 +18,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -32,7 +33,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 @ParametersAreNonnullByDefault
 public class AlternativeChromaticCompoundItem extends Item {
     public AlternativeChromaticCompoundItem(Properties properties) {
-        super(properties);
+        super(properties.rarity(Rarity.RARE));
     }
 
     public int getLight(ItemStack stack) {
