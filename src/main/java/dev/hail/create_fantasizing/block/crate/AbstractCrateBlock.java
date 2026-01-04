@@ -108,7 +108,7 @@ public abstract class AbstractCrateBlock extends CrateBlock {
     }
 
     public void onMerge(AbstractCrateEntity be, AbstractCrateEntity other){
-        be.itemCapability.invalidate();
+        be.invalidateCaps();
         if (other.hasCustomName()){
             be.setCustomName(Objects.requireNonNull(other.getCustomName()));
         }
