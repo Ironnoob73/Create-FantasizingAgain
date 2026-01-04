@@ -74,7 +74,6 @@ public class FantasizingMod
     private void commonSetup(final FMLCommonSetupEvent event)
     {
         ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.SERVER, CFAConfig.SPEC_S);
-        PonderIndex.addPlugin(new CFAPonderPlugin());
     }
     private void registerCapabilities(RegisterCapabilitiesEvent event) {
         TransporterEntity.registerCapabilities(event);
@@ -96,6 +95,7 @@ public class FantasizingMod
         public static void onClientSetup(FMLClientSetupEvent event)
         {
             ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> ConfigurationScreen::new);
+            PonderIndex.addPlugin(new CFAPonderPlugin());
         }
     }
     public static ResourceLocation resourceLocation(String path) {
