@@ -64,7 +64,6 @@ public class FantasizingMod
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-        PonderIndex.addPlugin(new CFAPonderPlugin());
     }
 
     @SubscribeEvent
@@ -81,6 +80,7 @@ public class FantasizingMod
             BaseConfigScreen.setDefaultActionFor(MOD_ID, screen -> screen
                     .withButtonLabels(null, null, "Gameplay Settings")
                     .withSpecs(null, null, CFAConfig.SPEC_S));
+            PonderIndex.addPlugin(new CFAPonderPlugin());
         }
     }
     public static ResourceLocation resourceLocation(String path) {
