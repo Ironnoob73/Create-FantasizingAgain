@@ -3,6 +3,7 @@
   "package": "dev.hail.create_fantasizing.mixin",
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
+  "refmap": "create_fantasizing.refmap.json",
   "client": [
   ],
   "mixins": [

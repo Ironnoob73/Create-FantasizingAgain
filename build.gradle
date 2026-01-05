@@ -15,6 +15,7 @@ plugins {
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
     id "org.spongepowered.mixin" version "0.7.+"
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
 
 apply plugin: 'org.spongepowered.mixin'
@@ -30,7 +31,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
-    mappings channel: mapping_channel, version: mapping_version
+    mappings channel: 'parchment', version: '2023.09.03-1.20.1'
     copyIdeResources = true
     runs {
         configureEach {
@@ -86,8 +87,8 @@ dependencies {
     runtimeOnly fg.deobf("dev.engine-room.flywheel:flywheel-forge-${minecraft_version}:${flywheel_version}")
     implementation fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
 
-    compileOnly fg.deobf(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1"))
-    implementation fg.deobf("io.github.llamalad7:mixinextras-forge:0.4.1")
+    compileOnly fg.deobf(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.2"))
+    implementation fg.deobf("io.github.llamalad7:mixinextras-forge:0.5.2")
 
     annotationProcessor fg.deobf("org.spongepowered:mixin:${mixin_version}:processor")
 }
@@ -107,8 +108,9 @@ tasks.named('processResources', ProcessResources).configure {
     }
 }
 
+Provider<RegularFile> refmap
 mixin {
-    add sourceSets.main, 'create_fantasizing.refmap.json'
+    refmap = add(sourceSets.main, 'create_fantasizing.refmap.json')
     config 'create_fantasizing.mixins.json'
 }
 
@@ -142,4 +144,8 @@ publishing {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+    options.compilerArgs += [
+            // 配置注解处理器输出的 refmap 文件路径
+            "-AoutRefMapFile=${buildDir}/resources/main/${mod_id}.refmap.json",
+    ]
 }
