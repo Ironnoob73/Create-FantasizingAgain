@@ -155,7 +155,7 @@ public abstract class AbstractCrateBlock extends CrateBlock {
             BlockEntity be = world.getBlockEntity(pos);
             if (!(be instanceof AbstractCrateEntity crateEntity))
                 return;
-            crateEntity.itemCapability.invalidate();
+            crateEntity.invalidateCaps();
             world.removeBlockEntity(pos);
         }
     }

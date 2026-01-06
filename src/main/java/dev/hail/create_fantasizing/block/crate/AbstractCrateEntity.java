@@ -144,7 +144,7 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements Na
     public void destroy() {
         super.destroy();
         onSplit();
-        itemCapability.invalidate();
+        invalidateCaps();
     }
 
     @Override
