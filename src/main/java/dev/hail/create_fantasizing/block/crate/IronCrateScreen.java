@@ -52,15 +52,15 @@ public class IronCrateScreen extends AbstractSimiContainerScreen<IronCrateMenu> 
 
     @Override
     protected void init() {
-        super.init();
         setWindowSize(Math.max(background.getWidth(), PLAYER_INVENTORY.getWidth()), background.getHeight() + 4 + PLAYER_INVENTORY.getHeight());
-        setWindowOffset(menu.doubleCrate ? -2 : 0, 0);
+        setWindowOffset(menu.doubleCrate ? 21 : 0, 0);
+        super.init();
         clearWidgets();
 
         itemLabelOffset = menu.doubleCrate ? 155 : 65;
         textureXShift = menu.doubleCrate ? -15 : (imageWidth - (background.getWidth() - 8)) / 2;
         itemYShift = menu.doubleCrate ? 0 : -16;
-        YShift = topPos - 32;
+        YShift = topPos;
 
         int x = leftPos + textureXShift;
         int y = YShift;
@@ -127,7 +127,7 @@ public class IronCrateScreen extends AbstractSimiContainerScreen<IronCrateMenu> 
     }
     @Override
     public void renderBg(@NotNull GuiGraphics ms, float partialTicks, int mouseX, int mouseY) {
-        int invX = getLeftOfCentered(PLAYER_INVENTORY.getWidth()) - (menu.doubleCrate ? 7 : 0);
+        int invX = getLeftOfCentered(PLAYER_INVENTORY.getWidth()) + windowXOffset - (menu.doubleCrate ? 4 : 0);
         int invY = YShift + background.getHeight() + 4;
         renderPlayerInventory(ms, invX, invY);
 
