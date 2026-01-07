@@ -70,13 +70,13 @@ public class IronCrateMenu extends MenuBase<IronCrateEntity> {
             for (int col = 0; col < maxCol; ++col) {
                 this.addSlot(
                         new SlotItemHandler(col + row * maxCol < 20 ? contentHolder.inventory : contentHolder.getOtherCrate().inventory,
-                                col + row * maxCol - (col + row * maxCol < 20 ? 0 : 20), x + col * 18, row * 18 - 12));
+                                col + row * maxCol - (col + row * maxCol < 20 ? 0 : 20), x + col * 18, row * 18 + 20));
             }
         }
 
         // player Slots
-        int xOffset = doubleCrate ? 22 : 8;
-        int yOffset = 117;
+        int xOffset = doubleCrate ? 23 : 8;
+        int yOffset = 149;
         for (int row = 0; row < 3; ++row) {
             for (int col = 0; col < 9; ++col) {
                 this.addSlot(new Slot(playerInventory, col + row * 9 + 9, xOffset + col * 18, yOffset + row * 18));

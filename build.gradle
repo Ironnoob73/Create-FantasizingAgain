@@ -24,6 +24,13 @@ repositories {
     maven { url = "https://maven.createmod.net" } // Create, Ponder, Flywheel
     maven { url = "https://mvn.devos.one/snapshots" } // Registrate
     maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // ForgeConfigAPIPort
+    maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+        content {
+            includeGroup "maven.modrinth"
+        }
+    }
 }
 
 base {
@@ -101,6 +108,9 @@ dependencies {
     runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
     implementation("com.tterrag.registrate:Registrate:${registrate_version}")
 
+    runtimeOnly "maven.modrinth:inventory-profiles-next:neoforge-1.21.1-2.2.3"
+    runtimeOnly "maven.modrinth:libipn:neoforge-1.21.1-6.6.2"
+    runtimeOnly "maven.modrinth:kotlin-for-forge:5.10.0"
 }
 
 tasks.withType(ProcessResources).configureEach {
