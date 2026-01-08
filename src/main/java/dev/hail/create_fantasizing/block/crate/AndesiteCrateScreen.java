@@ -53,14 +53,14 @@ public class AndesiteCrateScreen extends AbstractSimiContainerScreen<AndesiteCra
     @Override
     protected void init() {
         setWindowSize(Math.max(background.getWidth(), PLAYER_INVENTORY.getWidth()), background.getHeight() + 4 + PLAYER_INVENTORY.getHeight());
-        setWindowOffset(menu.doubleCrate ? 4 : 0, 0);
+        setWindowOffset(menu.doubleCrate ? -4 : 0, - 7);
         super.init();
         clearWidgets();
 
         itemLabelOffset = menu.doubleCrate ? 137 : 65;
-        textureXShift = menu.doubleCrate ? 0 : (imageWidth - (background.getWidth() - 8)) / 2;
+        textureXShift = menu.doubleCrate ? 8 : (imageWidth - (background.getWidth() - 8)) / 2;
         itemYShift = menu.doubleCrate ? 0 : -16;
-        YShift = topPos;
+        YShift = topPos + 7;
 
         int x = leftPos + textureXShift;
         int y = YShift;
@@ -127,7 +127,7 @@ public class AndesiteCrateScreen extends AbstractSimiContainerScreen<AndesiteCra
     }
     @Override
     public void renderBg(@NotNull GuiGraphics ms, float partialTicks, int mouseX, int mouseY) {
-        int invX = getLeftOfCentered(PLAYER_INVENTORY.getWidth()) + windowXOffset + (menu.doubleCrate ? 2 : 0);
+        int invX = getLeftOfCentered(PLAYER_INVENTORY.getWidth()) + windowXOffset + (menu.doubleCrate ? 10 : 0);
         int invY = YShift + background.getHeight() + 4;
         renderPlayerInventory(ms, invX, invY);
 

@@ -60,22 +60,22 @@ public class SturdyCrateScreen extends AbstractSimiContainerScreen<SturdyCrateMe
 
     @Override
     protected void init() {
-        super.init();
-
         /*if (!menu.player.hasData(CFAAttachmentTypes.FOLD_INTERFACE) || menu.player.getData(CFAAttachmentTypes.FOLD_INTERFACE) != menu.isFold){
             menu.setPlayerInterfaceFold(CFAConfig.foldInterface);
             menu.refreshMenu();
         }*/
 
-        setWindowSize(Math.max(background0.getWidth(), PLAYER_INVENTORY.getWidth()), (menu.isFullInterface() ? 128 : 200) + 4 + PLAYER_INVENTORY.getHeight());
+        setWindowSize(Math.max(background0.getWidth(), PLAYER_INVENTORY.getWidth()), (menu.isFullInterface() ? 235 : 145) - 14 + PLAYER_INVENTORY.getHeight());
+        setWindowOffset(0, -7);
+        super.init();
         clearWidgets();
 
         itemLabelOffset = menu.isFullInterface() ? 90 : 0;
         textureYShift = menu.isFullInterface() ? -45 : 0;
         itemYShift = menu.isFullInterface() ? 81 : 0;
-        YShift = topPos - 32;
+        YShift = topPos + (menu.isFullInterface() ? 52 : 7);
 
-        int x = leftPos;
+        int x = leftPos + 15;
         int y = YShift + textureYShift;
 
         Consumer<String> onTextChanged;
@@ -131,14 +131,14 @@ public class SturdyCrateScreen extends AbstractSimiContainerScreen<SturdyCrateMe
     }
 
     private int nameBoxX(String s, EditBox nameBox) {
-        return getGuiLeft() + (background0.getWidth() - (Math.min(font.width(s), nameBox.getWidth()) + 10)) / 2 - 9;
+        return getGuiLeft() + (background0.getWidth() - (Math.min(font.width(s), nameBox.getWidth()) + 10)) / 2;
     }
 
     @Override
     public void renderForeground(@NotNull GuiGraphics ms, int mouseX, int mouseY, float partialTicks) {
         super.renderForeground(ms, mouseX, mouseY, partialTicks);
 
-        int x = leftPos - 15;
+        int x = leftPos;
         int y = YShift + textureYShift;
 
         String itemCount = String.valueOf(menu.contentHolder.inventory.itemCount + (menu.doubleCrate ? menu.contentHolder.getOtherCrate().inventory.itemCount : 0));
@@ -168,11 +168,11 @@ public class SturdyCrateScreen extends AbstractSimiContainerScreen<SturdyCrateMe
     }
     @Override
     public void renderBg(@NotNull GuiGraphics ms, float partialTicks, int mouseX, int mouseY) {
-        int invX = getLeftOfCentered(PLAYER_INVENTORY.getWidth());
+        int invX = getLeftOfCentered(PLAYER_INVENTORY.getWidth()) + 15;
         int invY = YShift + background0.getHeight() + (menu.isFullInterface() ? 67 : 22);
         renderPlayerInventory(ms, invX, invY);
 
-        int x = leftPos - 15;
+        int x = leftPos;
         int y = YShift + textureYShift;
 
         background0.render(ms, x, y);

@@ -72,20 +72,19 @@ public class BrassCrateMenu extends MenuBase<BrassCrateEntity> {
             isFold = player.getData(CFAAttachmentTypes.FOLD_INTERFACE);
         }*/
         player.setData(CFAAttachmentTypes.FOLD_INTERFACE, isFold);
-        int x = 8;
+        int x = 22;
         int maxRow = isFullInterface() ? 8 : 4;
-        int colYOffset = isFullInterface() ? 36 : 0;
         for (int row = 0; row < maxRow; ++row) {
             for (int col = 0; col < 9; ++col) {
                 this.addSlot(
                         new SlotItemHandler(col + row * 9 < 36 ? contentHolder.inventory : contentHolder.getOtherCrate().inventory,
-                                col + row * 9 - (col + row * 9 < 36 ? 0 : 36), x + col * 18, row * 18 - 12 - colYOffset));
+                                col + row * 9 - (col + row * 9 < 36 ? 0 : 36), x + col * 18, row * 18 + 27));
             }
         }
 
         // player Slots
-        int xOffset = 14;
-        int yOffset = isFullInterface() ? 153 : 117;
+        int xOffset = 28;
+        int yOffset = isFullInterface() ? 228 : 156;
         for (int row = 0; row < 3; ++row) {
             for (int col = 0; col < 9; ++col) {
                 this.addSlot(new Slot(playerInventory, col + row * 9 + 9, xOffset + col * 18, yOffset + row * 18));

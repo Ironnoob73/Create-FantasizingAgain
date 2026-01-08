@@ -7,6 +7,7 @@ import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
 import com.simibubi.create.foundation.gui.widget.Label;
 import com.simibubi.create.foundation.gui.widget.ScrollInput;
 import dev.hail.create_fantasizing.CFAGuiTextures;
+import dev.hail.create_fantasizing.FantasizingMod;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import net.createmod.catnip.gui.element.GuiGameElement;
 import net.createmod.catnip.platform.CatnipServices;
@@ -53,14 +54,14 @@ public class IronCrateScreen extends AbstractSimiContainerScreen<IronCrateMenu> 
     @Override
     protected void init() {
         setWindowSize(Math.max(background.getWidth(), PLAYER_INVENTORY.getWidth()), background.getHeight() + 4 + PLAYER_INVENTORY.getHeight());
-        setWindowOffset(menu.doubleCrate ? 21 : 0, 0);
+        setWindowOffset(menu.doubleCrate ? -5 : 0,  - 7);
         super.init();
         clearWidgets();
 
         itemLabelOffset = menu.doubleCrate ? 155 : 65;
-        textureXShift = menu.doubleCrate ? -15 : (imageWidth - (background.getWidth() - 8)) / 2;
+        textureXShift = menu.doubleCrate ? 9 : (imageWidth - (background.getWidth() - 8)) / 2;
         itemYShift = menu.doubleCrate ? 0 : -16;
-        YShift = topPos;
+        YShift = topPos + 7;
 
         int x = leftPos + textureXShift;
         int y = YShift;
@@ -127,7 +128,7 @@ public class IronCrateScreen extends AbstractSimiContainerScreen<IronCrateMenu> 
     }
     @Override
     public void renderBg(@NotNull GuiGraphics ms, float partialTicks, int mouseX, int mouseY) {
-        int invX = getLeftOfCentered(PLAYER_INVENTORY.getWidth()) + windowXOffset - (menu.doubleCrate ? 4 : 0);
+        int invX = getLeftOfCentered(PLAYER_INVENTORY.getWidth()) + (menu.doubleCrate ? 14 : 0);
         int invY = YShift + background.getHeight() + 4;
         renderPlayerInventory(ms, invX, invY);
 
