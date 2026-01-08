@@ -64,19 +64,19 @@ public class IronCrateMenu extends MenuBase<IronCrateEntity> {
     @Override
     protected void addSlots() {
         doubleCrate = contentHolder.isDoubleCrate();
-        int x = doubleCrate ? -1 : 44;
+        int x = doubleCrate ? 23 : 44;
         int maxCol = doubleCrate ? 10 : 5;
         for (int row = 0; row < 4; ++row) {
             for (int col = 0; col < maxCol; ++col) {
                 this.addSlot(
                         new SlotItemHandler(col + row * maxCol < 20 ? contentHolder.inventory : contentHolder.getOtherCrate().inventory,
-                                col + row * maxCol - (col + row * maxCol < 20 ? 0 : 20), x + col * 18, row * 18 + 20));
+                                col + row * maxCol - (col + row * maxCol < 20 ? 0 : 20), x + col * 18, row * 18 + 27));
             }
         }
 
         // player Slots
-        int xOffset = doubleCrate ? 23 : 8;
-        int yOffset = 149;
+        int xOffset = doubleCrate ? 46 : 8;
+        int yOffset = 156;
         for (int row = 0; row < 3; ++row) {
             for (int col = 0; col < 9; ++col) {
                 this.addSlot(new Slot(playerInventory, col + row * 9 + 9, xOffset + col * 18, yOffset + row * 18));

@@ -43,6 +43,7 @@ public class BrassCrateScreen extends AbstractSimiContainerScreen<BrassCrateMenu
 
     private int YShift;
 
+    private int textureXShift;
     private int textureYShift;
     private int itemYShift;
 
@@ -60,22 +61,23 @@ public class BrassCrateScreen extends AbstractSimiContainerScreen<BrassCrateMenu
 
     @Override
     protected void init() {
-        super.init();
-
         /*if (!menu.player.hasData(CFAAttachmentTypes.FOLD_INTERFACE) || menu.player.getData(CFAAttachmentTypes.FOLD_INTERFACE) != menu.isFold){
             menu.setPlayerInterfaceFold(CFAConfig.foldInterface);
             menu.refreshMenu();
         }*/
 
-        setWindowSize(Math.max(background0.getWidth(), PLAYER_INVENTORY.getWidth()), (menu.isFullInterface() ? 128 : 200) + 4 + PLAYER_INVENTORY.getHeight());
+        setWindowSize(Math.max(background1.getWidth(), PLAYER_INVENTORY.getWidth()), (menu.isFullInterface() ? 199 : 127) + 4 + PLAYER_INVENTORY.getHeight());
+        setWindowOffset(-4, - 7);
+        super.init();
         clearWidgets();
 
         itemLabelOffset = menu.isFullInterface() ? 72 : 0;
+        textureXShift = 8;
         textureYShift = menu.isFullInterface() ? -36 : 0;
         itemYShift = menu.isFullInterface() ? 72 : 0;
-        YShift = topPos - 32;
+        YShift = topPos + (menu.isFullInterface() ? 43 : 7);
 
-        int x = leftPos;
+        int x = leftPos + textureXShift;
         int y = YShift + textureYShift;
 
         Consumer<String> onTextChanged;
@@ -94,7 +96,7 @@ public class BrassCrateScreen extends AbstractSimiContainerScreen<BrassCrateMenu
         nameBox.setX(nameBoxX(nameBox.getValue(), nameBox));
         addRenderableWidget(nameBox);
 
-        Label allowedItemsLabel = new Label(x + 135, y + 108 + itemLabelOffset, Component.empty()).colored(0xFFFFFF).withShadow();
+        Label allowedItemsLabel = new Label(x + 133 + textureXShift, y + 108 + itemLabelOffset, Component.empty()).colored(0xFFFFFF).withShadow();
         allowedItems = new ScrollInput(x + 131, y + 104 + itemLabelOffset, 41, 16).titled(storageSpace.plainCopy())
                 .withRange(0, (menu.doubleCrate ? 4609 : 2305))
                 .writingTo(allowedItemsLabel)
@@ -131,14 +133,14 @@ public class BrassCrateScreen extends AbstractSimiContainerScreen<BrassCrateMenu
     }
 
     private int nameBoxX(String s, EditBox nameBox) {
-        return getGuiLeft() + (background0.getWidth() - (Math.min(font.width(s), nameBox.getWidth()) + 10)) / 2;
+        return getGuiLeft() + textureXShift + (background0.getWidth() - (Math.min(font.width(s), nameBox.getWidth()) + 10)) / 2;
     }
 
     @Override
     public void renderForeground(@NotNull GuiGraphics ms, int mouseX, int mouseY, float partialTicks) {
         super.renderForeground(ms, mouseX, mouseY, partialTicks);
 
-        int x = leftPos - 6;
+        int x = leftPos + textureXShift;
         int y = YShift + textureYShift;
 
         String itemCount = String.valueOf(menu.contentHolder.inventory.itemCount + (menu.doubleCrate ? menu.contentHolder.getOtherCrate().inventory.itemCount : 0));
@@ -168,11 +170,11 @@ public class BrassCrateScreen extends AbstractSimiContainerScreen<BrassCrateMenu
     }
     @Override
     public void renderBg(@NotNull GuiGraphics ms, float partialTicks, int mouseX, int mouseY) {
-        int invX = getLeftOfCentered(PLAYER_INVENTORY.getWidth());
+        int invX = getLeftOfCentered(PLAYER_INVENTORY.getWidth()) + textureXShift - 2;
         int invY = YShift + background0.getHeight() + (menu.isFullInterface() ? 76 : 40);
         renderPlayerInventory(ms, invX, invY);
 
-        int x = leftPos - 6;
+        int x = leftPos + textureXShift;
         int y = YShift + textureYShift;
 
         background0.render(ms, x, y);

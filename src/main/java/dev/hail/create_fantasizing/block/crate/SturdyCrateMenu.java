@@ -71,20 +71,19 @@ public class SturdyCrateMenu extends MenuBase<SturdyCrateEntity> {
             isFold = player.getData(CFAAttachmentTypes.FOLD_INTERFACE);
         }*/
         //player.setData(CFAAttachmentTypes.FOLD_INTERFACE, isFold);
-        int x = -1;
+        int x = 14;
         int maxRow = isFullInterface() ? 10 : 5;
-        int colYOffset = isFullInterface() ? 45 : 0;
         for (int row = 0; row < maxRow; ++row) {
             for (int col = 0; col < 10; ++col) {
                 this.addSlot(
                         new SlotItemHandler(col + row * 10 < 50 ? contentHolder.inventory : contentHolder.getOtherCrate().inventory,
-                                col + row * 10 - (col + row * 10 < 50 ? 0 : 50), x + col * 18, row * 18 - 12 - colYOffset));
+                                col + row * 10 - (col + row * 10 < 50 ? 0 : 50), x + col * 18, row * 18 + 27));
             }
         }
 
         // player Slots
-        int xOffset = 23;
-        int yOffset = isFullInterface() ? 162 : 117;
+        int xOffset = 38;
+        int yOffset = isFullInterface() ? 246 : 156;
         for (int row = 0; row < 3; ++row) {
             for (int col = 0; col < 9; ++col) {
                 this.addSlot(new Slot(playerInventory, col + row * 9 + 9, xOffset + col * 18, yOffset + row * 18));
