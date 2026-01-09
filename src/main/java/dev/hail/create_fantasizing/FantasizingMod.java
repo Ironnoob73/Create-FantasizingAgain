@@ -54,6 +54,7 @@ public class FantasizingMod
         REGISTRATE.setCreativeTab(CFACreativeTab.TAB);
         CFABlocks.init();
         CFAItems.init();
+        CFAFluids.init();
         CFACreativeTab.init(modEventBus);
 
         CFAPackets.registerPackets();
