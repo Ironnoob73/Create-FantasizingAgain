@@ -65,8 +65,19 @@ public class CrateMountedStorage extends WrapperMountedItemStorage<CrateInventor
     }
 
     protected MenuProvider createMenuProvider(Component name, AbstractCrateEntity blockEntity) {
-        MenuConstructor constructor = (id, inv, player) -> new AndesiteCrateMenu(CFAMenus.ANDESITE_CRATE.get(), id, inv, (AndesiteCrateEntity) blockEntity);
-        return new SimpleMenuProvider(constructor, name);
+        MenuConstructor constructor = null;
+        if (blockEntity instanceof AndesiteCrateEntity andesiteCrateEntity)
+            constructor = (id, inv, player) -> new AndesiteCrateMenu(CFAMenus.ANDESITE_CRATE.get(), id, inv, andesiteCrateEntity);
+        else if (blockEntity instanceof IronCrateEntity ironCrateEntity)
+            constructor = (id, inv, player) -> new IronCrateMenu(CFAMenus.IRON_CRATE.get(), id, inv, ironCrateEntity);
+        else if (blockEntity instanceof BrassCrateEntity brassCrateEntity)
+            constructor = (id, inv, player) -> new BrassCrateMenu(CFAMenus.BRASS_CRATE.get(), id, inv, brassCrateEntity);
+        else if (blockEntity instanceof SturdyCrateEntity sturdyCrateEntity)
+            constructor = (id, inv, player) -> new SturdyCrateMenu(CFAMenus.STURDY_CRATE.get(), id, inv, sturdyCrateEntity);
+        if (constructor != null) {
+            return new SimpleMenuProvider(constructor, name);
+        }
+        return null;
     }
 
     @Override

@@ -66,7 +66,7 @@ public class CrateInventory extends ItemStackHandler {
             if (crateEntity.getLevel() != null) {
                 crateEntity.getLevel().updateNeighbourForOutputSignal(crateEntity.getBlockPos(), crateEntity.getBlockState().getBlock());
             }
-            if (first && crateEntity.isDoubleCrate())
+            if (first && crateEntity.isDoubleCrate() && crateEntity.getOtherCrate() != null)
                 crateEntity.getOtherCrate().inventory.notifyUpdate(false);
         }
     }
