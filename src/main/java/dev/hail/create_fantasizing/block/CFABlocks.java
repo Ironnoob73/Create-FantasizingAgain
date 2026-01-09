@@ -1,5 +1,7 @@
 package dev.hail.create_fantasizing.block;
 
+import com.simibubi.create.AllFluids;
+import com.simibubi.create.AllTags;
 import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.OrientedRotatingVisual;
@@ -9,8 +11,10 @@ import com.simibubi.create.content.kinetics.simpleRelays.*;
 import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
+import com.simibubi.create.infrastructure.config.AllConfigs;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
+import com.tterrag.registrate.util.entry.FluidEntry;
 import dev.hail.create_fantasizing.block.compat_engine.*;
 import dev.hail.create_fantasizing.block.crate.*;
 import dev.hail.create_fantasizing.block.phantom_shaft.PhantomCogwheel;
@@ -25,6 +29,8 @@ import dev.hail.create_fantasizing.block.sturdy_girder.SturdyGirderEncasedShaftB
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static dev.hail.create_fantasizing.CFAConfig.*;
