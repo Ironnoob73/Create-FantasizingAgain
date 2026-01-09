@@ -13,6 +13,7 @@ import dev.hail.create_fantasizing.block.crate.BrassCrateEntity;
 import dev.hail.create_fantasizing.block.crate.IronCrateEntity;
 import dev.hail.create_fantasizing.block.crate.SturdyCrateEntity;
 import dev.hail.create_fantasizing.block.fluid.CFAFluids;
+import dev.hail.create_fantasizing.block.fluid.PowderSnowBucketWrapper;
 import dev.hail.create_fantasizing.block.transporter.TransporterEntity;
 import dev.hail.create_fantasizing.data.CFAAttachmentTypes;
 import dev.hail.create_fantasizing.data.CFADataComponents;
@@ -24,6 +25,7 @@ import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Items;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -34,6 +36,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
@@ -61,7 +64,8 @@ public class FantasizingMod
         REGISTRATE.setCreativeTab(CFACreativeTab.TAB);
         CFABlocks.init();
         CFAItems.init();
-        CFAFluids.init();
+        CFAFluids.FLUIDS.register(modEventBus);
+        CFAFluids.FLUID_TYPES.register(modEventBus);
         CFACreativeTab.init(modEventBus);
 
         CFADataComponents.register(modEventBus);
@@ -83,6 +87,7 @@ public class FantasizingMod
         IronCrateEntity.registerCapabilities(event);
         BrassCrateEntity.registerCapabilities(event);
         SturdyCrateEntity.registerCapabilities(event);
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new PowderSnowBucketWrapper(stack), Items.POWDER_SNOW_BUCKET);
     }
 
     @SubscribeEvent
