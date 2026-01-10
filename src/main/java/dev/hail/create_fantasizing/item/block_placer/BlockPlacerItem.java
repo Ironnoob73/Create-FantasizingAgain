@@ -99,7 +99,7 @@ public class BlockPlacerItem extends ZapperItem {
 
         BPBrush brush = stack.getOrDefault(CFADataComponents.SHAPER_BRUSH, BlockPlacerBrushes.Cuboid).get();
         BlockPos params = stack.get(AllDataComponents.SHAPER_BRUSH_PARAMS);
-        boolean destroyMode = Boolean.TRUE.equals(stack.get(CFADataComponents.DESTROY_MODE));
+        boolean destroyMode = Boolean.FALSE.equals(stack.get(CFADataComponents.DESTROY_MODE));
         float multiplier = sizeMultiplier(params, brush);
         PlacementOptions option = stack.getOrDefault(AllDataComponents.SHAPER_PLACEMENT_OPTIONS, PlacementOptions.Merged);
         BlockPlacerTools tool = stack.getOrDefault(CFADataComponents.SHAPER_TOOL, BlockPlacerTools.Fill);

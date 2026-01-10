@@ -2,10 +2,10 @@
   "itemGroup.create_fantasizing": "Create: Fantasizing Again",
 
   "block.create_fantasizing.compact_hydraulic_engine": "Compact Hydraulic Engine",
-  "block.create_fantasizing.compact_hydraulic_engine.summary": "It can generate Stress _anywhere_.",
+  "block.create_fantasizing.compact_hydraulic_engine.tooltip.summary": "It can generate Stress _anywhere_.",
   "item.create_fantasizing.incomplete_compact_hydraulic_engine": "Incomplete Compact Hydraulic Engine",
   "block.create_fantasizing.compact_wind_engine": "Compact Wind Engine",
-  "block.create_fantasizing.compact_wind_engine.summary": "It can generate Stress _anywhere_.",
+  "block.create_fantasizing.compact_wind_engine.tooltip.summary": "It can generate Stress _anywhere_.",
   "item.create_fantasizing.incomplete_compact_wind_engine": "Incomplete Compact Wind Engine",
   "block.create_fantasizing.sturdy_girder": "Sturdy Girder",
   "block.create_fantasizing.sturdy_girder_encased_shaft": "Sturdy Girder Encased Shaft",

@@ -26,6 +26,8 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -41,6 +43,7 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.fluids.RegisterCauldronFluidContentEvent;
 import org.slf4j.Logger;
 
 @Mod(FantasizingMod.MOD_ID)
@@ -60,6 +63,7 @@ public class FantasizingMod
         REGISTRATE.registerEventListeners(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::registerCauldronFluidContentEvent);
         modEventBus.addListener(this::registerCapabilities);
         REGISTRATE.setCreativeTab(CFACreativeTab.TAB);
         CFABlocks.init();
@@ -88,6 +92,10 @@ public class FantasizingMod
         BrassCrateEntity.registerCapabilities(event);
         SturdyCrateEntity.registerCapabilities(event);
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new PowderSnowBucketWrapper(stack), Items.POWDER_SNOW_BUCKET);
+    }
+
+    public void registerCauldronFluidContentEvent(RegisterCauldronFluidContentEvent event){
+        event.register(Blocks.POWDER_SNOW_CAULDRON, CFAFluids.POWDER_SNOW.get(), 1000, LayeredCauldronBlock.LEVEL);
     }
 
     @SubscribeEvent

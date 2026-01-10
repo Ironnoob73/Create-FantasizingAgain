@@ -72,7 +72,7 @@ public class BlockPlacerScreen extends ZapperScreen {
         }
         currentTool = zapper.getOrDefault(CFADataComponents.SHAPER_TOOL, BlockPlacerTools.Fill);
         currentPlacement = zapper.getOrDefault(AllDataComponents.SHAPER_PLACEMENT_OPTIONS, PlacementOptions.Merged);
-        currentDestroyMode = zapper.getOrDefault(CFADataComponents.DESTROY_MODE, true);
+        currentDestroyMode = zapper.getOrDefault(CFADataComponents.DESTROY_MODE, false);
     }
 
     @Override
