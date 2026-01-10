@@ -8,6 +8,7 @@ import com.simibubi.create.foundation.item.TooltipModifier;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import dev.hail.create_fantasizing.block.CFAMenus;
 import dev.hail.create_fantasizing.block.CFAMountedStorageTypes;
+import dev.hail.create_fantasizing.block.fluid.CFAFluids;
 import dev.hail.create_fantasizing.event.CFAPackets;
 import dev.hail.create_fantasizing.item.CFAItems;
 import dev.hail.create_fantasizing.ponder.CFAPonderPlugin;
@@ -66,10 +67,6 @@ public class FantasizingMod
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-    }
-
-    public void registerCauldronFluidContentEvent(RegisterCauldronFluidContentEvent event){
-        event.register(Blocks.POWDER_SNOW_CAULDRON, CFAFluids.POWDER_SNOW.get(), 1000, LayeredCauldronBlock.LEVEL);
     }
 
     @SubscribeEvent

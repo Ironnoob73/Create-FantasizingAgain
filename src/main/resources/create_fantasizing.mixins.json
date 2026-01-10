@@ -11,6 +11,7 @@
     "ContraptionMixin",
     "FluidDrainBehaviorMixin",
     "FluidTargetsMixin",
+    "PowderSnowBucketMixin",
     "ShaftBlockMixin"
   ],
   "injectors": {

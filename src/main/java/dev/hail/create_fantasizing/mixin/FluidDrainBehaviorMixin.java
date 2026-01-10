@@ -18,8 +18,8 @@ public class FluidDrainBehaviorMixin {
             value = "INVOKE",
             target = "Lnet/minecraft/world/level/block/state/BlockState;hasProperty(Lnet/minecraft/world/level/block/state/properties/Property;)Z",
             shift = At.Shift.AFTER))
-    private static void injected(BlockPos root, boolean simulate, CallbackInfoReturnable<Boolean> cir,
-                                 @Local(name = "blockState") BlockState blockState, @Local(name = "emptied") BlockState emptied, @Local(name = "fluid") Fluid fluid){
+    private void injected(BlockPos root, boolean simulate, CallbackInfoReturnable<Boolean> cir,
+                          @Local(name = "blockState") BlockState blockState, @Local(name = "emptied") BlockState emptied, @Local(name = "fluid") Fluid fluid){
         if (blockState.getBlock() == Blocks.POWDER_SNOW) {
             emptied = Blocks.AIR.defaultBlockState();
             fluid = CFAFluids.POWDER_SNOW.get();

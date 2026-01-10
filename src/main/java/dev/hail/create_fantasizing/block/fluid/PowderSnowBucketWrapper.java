@@ -1,8 +1,8 @@
 package dev.hail.create_fantasizing.block.fluid;
 
 import net.minecraft.world.item.*;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
 import org.jetbrains.annotations.NotNull;
 
 public class PowderSnowBucketWrapper extends FluidBucketWrapper {
@@ -11,8 +11,8 @@ public class PowderSnowBucketWrapper extends FluidBucketWrapper {
     }
     @Override
     public boolean canFillFluidType(FluidStack fluid) {
-        if (!fluid.is(CFAFluids.POWDER_SNOW.get())) {
-            return !fluid.getFluidType().getBucket(fluid).isEmpty();
+        if (fluid.getFluid() != CFAFluids.POWDER_SNOW.get()) {
+            return !fluid.getFluid().getFluidType().getBucket(fluid).isEmpty();
         } else {
             return true;
         }

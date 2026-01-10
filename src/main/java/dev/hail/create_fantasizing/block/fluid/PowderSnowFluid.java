@@ -18,8 +18,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidType;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidType;
 import org.joml.Vector3f;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -91,7 +91,7 @@ public abstract class PowderSnowFluid extends FlowingFluid {
 
     @Override
     public FluidType getFluidType() {
-        return CFAFluids.POWDER_SNOW_TYPE.value();
+        return CFAFluids.POWDER_SNOW_TYPE.get();
     }
 
     public static class Flowing extends PowderSnowFluid {
