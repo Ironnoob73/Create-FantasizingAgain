@@ -68,6 +68,10 @@ public class FantasizingMod
     private void commonSetup(final FMLCommonSetupEvent event) {
     }
 
+    public void registerCauldronFluidContentEvent(RegisterCauldronFluidContentEvent event){
+        event.register(Blocks.POWDER_SNOW_CAULDRON, CFAFluids.POWDER_SNOW.get(), 1000, LayeredCauldronBlock.LEVEL);
+    }
+
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event)
     {

@@ -7,9 +7,11 @@
   "client": [
   ],
   "mixins": [
+    "CogwheelBlockMixin",
     "ContraptionMixin",
-    "ShaftBlockMixin",
-    "CogwheelBlockMixin"
+    "FluidDrainBehaviorMixin",
+    "FluidTargetsMixin",
+    "ShaftBlockMixin"
   ],
   "injectors": {
     "defaultRequire": 1

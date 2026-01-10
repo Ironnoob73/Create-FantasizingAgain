@@ -2,10 +2,10 @@
   "itemGroup.create_fantasizing": "机械动力：又在幻想了",
 
   "block.create_fantasizing.compact_hydraulic_engine": "紧缩型水力引擎",
-  "block.create_fantasizing.compact_hydraulic_engine.summary": "放在任何地方都可以产生动力。",
+  "block.create_fantasizing.compact_hydraulic_engine.tooltip.summary": "放在_任何地方_都可以产生动力。",
   "item.create_fantasizing.incomplete_compact_hydraulic_engine": "未完成的紧缩型水力引擎",
   "block.create_fantasizing.compact_wind_engine": "紧缩型风力引擎",
-  "block.create_fantasizing.compact_wind_engine.summary": "放在任何地方都可以产生动力。",
+  "block.create_fantasizing.compact_wind_engine.tooltip.summary": "放在_任何地方_都可以产生动力。",
   "item.create_fantasizing.incomplete_compact_wind_engine": "未完成的紧缩型风力引擎",
   "block.create_fantasizing.sturdy_girder": "坚固梁",
   "block.create_fantasizing.sturdy_girder_encased_shaft": "坚固梁包住的传动杆",
