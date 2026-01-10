@@ -12,5 +12,8 @@ A mod that adds some powerful things for Create! Includes:
   ![Transporter](/src/unused/transporter.png)
 - **Crate**: A container that can be combined along three axes and has adjustable capacity! Also features several other practical functions... (Formerly an Adjustable Crate)
   ![Crate](/src/unused/crate.png)
-- Chocolate can now be drawn infinitely!
 - **Chromatic Compound**! Maybe useless, or maybe too powerful?
+
+**Other changes**:
+- Chocolate can now be drawn infinitely!
+- Powder Snow can be stored in tanks like fluid.
