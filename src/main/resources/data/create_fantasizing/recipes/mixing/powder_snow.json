@@ -1,0 +1,14 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "minecraft:snow_block"
+    }
+  ],
+  "results": [
+    {
+      "amount": 1000,
+      "fluid": "create_fantasizing:powder_snow"
+    }
+  ]
+}

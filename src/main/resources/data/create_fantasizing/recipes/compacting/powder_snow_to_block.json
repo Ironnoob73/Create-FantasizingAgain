@@ -1,0 +1,14 @@
+{
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "amount": 1000,
+      "fluidTag": "forge:powder_snow"
+    }
+  ],
+  "results": [
+    {
+      "item": "minecraft:snow_block"
+    }
+  ]
+}
