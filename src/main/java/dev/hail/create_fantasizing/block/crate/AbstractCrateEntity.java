@@ -176,7 +176,7 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements Na
 
     @Override
     public boolean addToTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        if (hasCustomName()){
+        if (hasCustomName() && customName != ""){
             CreateLang.text(getName().getString()).style(ChatFormatting.WHITE).forGoggles(tooltip);
             return true;
         }
