@@ -1,27 +1,22 @@
 package dev.hail.create_fantasizing.block.transporter;
 
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.kinetics.belt.behaviour.DirectBeltInputBehaviour;
 import com.simibubi.create.content.logistics.chute.ChuteBlockEntity;
 import com.simibubi.create.content.logistics.chute.SmartChuteBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringBehaviour;
-import com.simibubi.create.foundation.blockEntity.behaviour.inventory.InvManipulationBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.inventory.VersionedInventoryTrackerBehaviour;
 import com.simibubi.create.foundation.item.ItemHelper;
+import com.simibubi.create.foundation.utility.CreateLang;
 import dev.engine_room.flywheel.lib.visualization.VisualizationHelper;
 import dev.hail.create_fantasizing.block.CFABlocks;
-import net.createmod.catnip.animation.LerpedFloat;
-import net.createmod.catnip.math.BlockFace;
 import net.createmod.catnip.platform.CatnipServices;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.Containers;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -33,14 +28,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class TransporterEntity extends SmartBlockEntity{
+public class TransporterEntity extends SmartBlockEntity implements IHaveGoggleInformation {
     ItemStack item;
     TransporterItemHandler itemHandler;
     LazyOptional<IItemHandler> lazyHandler;
     boolean canPickUpItems;
 
     private FilteringBehaviour filtering;
-    private InvManipulationBehaviour invManipulation;
     private VersionedInventoryTrackerBehaviour invVersionTracker;
     LerpedFloat flap;
 
@@ -50,7 +44,6 @@ public class TransporterEntity extends SmartBlockEntity{
         itemHandler = new TransporterItemHandler(this);
         lazyHandler = LazyOptional.of(() -> itemHandler);
         canPickUpItems = false;
-        flap = createChasingFlap();
     }
     @Override
     public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
@@ -75,7 +68,7 @@ public class TransporterEntity extends SmartBlockEntity{
     }
 
     private void handleInput(@Nullable IItemHandler inv) {
-        if (inv == null || !canActivate() || invVersionTracker.stillWaiting(inv))
+        if (inv == null || !canActivate()/* || invVersionTracker.stillWaiting(inv)*/)
             return;
         Predicate<ItemStack> canAccept = this::canAcceptItem;
         int count = getExtractionAmount();
@@ -90,7 +83,7 @@ public class TransporterEntity extends SmartBlockEntity{
         invVersionTracker.awaitNewVersion(inv);
     }
     private void handleOutput(@Nullable IItemHandler inv) {
-        if (inv == null || !canActivate() || invVersionTracker.stillWaiting(inv))
+        if (inv == null || !canActivate()/* || invVersionTracker.stillWaiting(inv)*/)
             return;
         setItem(ItemHandlerHelper.insertItemStacked(inv, item, false));
         invVersionTracker.awaitNewVersion(inv);
@@ -109,22 +102,22 @@ public class TransporterEntity extends SmartBlockEntity{
         return be.getCapability(ForgeCapabilities.ITEM_HANDLER, side.getOpposite());
     }
 
+    @Override
+    public void initialize() {
+        super.initialize();
+        refreshBlockState();
+    }
+
     public void setItem(ItemStack stack) {
         item = stack;
         invVersionTracker.reset();
+        if (level != null && !level.isClientSide) {
+            notifyUpdate();
+        }
     }
 
-    public int getAmountToExtract() {
-        int amountToExtract = invManipulation.getAmountFromFilter();
-        if (!filtering.isActive())
-            amountToExtract = 1;
-        return amountToExtract;
-    }
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
-        InvManipulationBehaviour invManipulation = new InvManipulationBehaviour(this, (w, p, s) -> new BlockFace(p, s.getValue(TransporterBlock.FACING).getOpposite()));
-        behaviours.add(invManipulation);
-
         behaviours.add(invVersionTracker = new VersionedInventoryTrackerBehaviour(this));
 
         filtering = new FilteringBehaviour(this, new TransporterFilterSlotPositioning());
@@ -149,7 +142,7 @@ public class TransporterEntity extends SmartBlockEntity{
     }
 
     protected int getExtractionAmount() {
-        return filtering.isCountVisible() && !filtering.anyAmount() ? filtering.getAmount() : getAmountToExtract();
+        return filtering.isCountVisible() && !filtering.anyAmount() ? filtering.getAmount() : 64;
     }
     protected ItemHelper.ExtractionCountMode getExtractionMode() {
         return filtering.isCountVisible() && !filtering.anyAmount() && !filtering.upTo ? ItemHelper.ExtractionCountMode.EXACTLY
@@ -162,6 +155,13 @@ public class TransporterEntity extends SmartBlockEntity{
         if (!item.isEmpty() && level != null)
             Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), item);
         setRemoved();
+    }
+    @Override
+    public void invalidate() {
+        if (itemHandler != null)
+            invalidateCapabilities();
+        capCaches.clear();
+        super.invalidate();
     }
 
     @Override
@@ -178,10 +178,14 @@ public class TransporterEntity extends SmartBlockEntity{
             CatnipServices.PLATFORM.executeOnClientOnly(() -> () -> VisualizationHelper.queueUpdate(this));
     }
 
-    private LerpedFloat createChasingFlap() {
-        return LerpedFloat.linear()
-                .startWithValue(.25f)
-                .chase(0, .05f, LerpedFloat.Chaser.EXP);
+    public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+        if (!item.isEmpty()){
+            CreateLang.translate("tooltip.chute.contains", Component.translatable(item.getDescriptionId())
+                            .getString(), item.getCount())
+                    .style(ChatFormatting.GREEN)
+                    .forGoggles(tooltip);
+            return true;
+        }
+        return false;
     }
-
 }
