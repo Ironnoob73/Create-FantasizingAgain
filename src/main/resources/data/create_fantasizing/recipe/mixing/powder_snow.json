@@ -1,0 +1,17 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "minecraft:snow_block"
+    },
+    {
+      "item": "minecraft:wind_charge"
+    }
+  ],
+  "results": [
+    {
+      "amount": 1000,
+      "id": "create_fantasizing:powder_snow"
+    }
+  ]
+}

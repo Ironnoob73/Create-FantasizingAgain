@@ -1,0 +1,15 @@
+{
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "type": "neoforge:tag",
+      "amount": 1000,
+      "tag": "c:powder_snow"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:snow_block"
+    }
+  ]
+}
