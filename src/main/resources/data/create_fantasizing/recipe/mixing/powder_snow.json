@@ -3,9 +3,6 @@
   "ingredients": [
     {
       "item": "minecraft:snow_block"
-    },
-    {
-      "item": "minecraft:wind_charge"
     }
   ],
   "results": [
