@@ -22,6 +22,7 @@ import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Objects;
 
 public abstract class AbstractCrateEntity extends CrateBlockEntity implements Nameable, IHaveHoveringInformation {
     public String customName;
@@ -176,7 +177,7 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements Na
 
     @Override
     public boolean addToTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        if (hasCustomName() && customName != ""){
+        if (hasCustomName() && !Objects.equals(customName, "")){
             CreateLang.text(getName().getString()).style(ChatFormatting.WHITE).forGoggles(tooltip);
             return true;
         }
