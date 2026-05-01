@@ -46,7 +46,7 @@ public class CrateMountedStorage extends WrapperMountedItemStorage<CrateInventor
             crate.applyInventoryToBlock(this.wrapped);
     }
 
-    @Override
+    /*@Override
     public boolean handleInteraction(ServerPlayer player, Contraption contraption, StructureTemplate.StructureBlockInfo info) {
         ServerLevel level = player.serverLevel();
         BlockPos localPos = info.pos();
@@ -62,7 +62,7 @@ public class CrateMountedStorage extends WrapperMountedItemStorage<CrateInventor
         } else {
             return false;
         }
-    }
+    }*/
 
     protected MenuProvider createMenuProvider(Component name, AbstractCrateEntity blockEntity) {
         MenuConstructor constructor = null;
@@ -84,7 +84,7 @@ public class CrateMountedStorage extends WrapperMountedItemStorage<CrateInventor
     protected IItemHandlerModifiable getHandlerForMenu(StructureTemplate.StructureBlockInfo info, Contraption contraption) {
         BlockState state = info.state();
         boolean type = state.getValue(AbstractCrateBlock.CRATE_TYPE).isDouble();
-        this.wrapped.crateEntity = (AbstractCrateEntity) contraption.presentBlockEntities.get(info.pos());
+        //this.wrapped.crateEntity = (AbstractCrateEntity) contraption.presentBlockEntities.get(info.pos());
         if (!type)
             return this;
 

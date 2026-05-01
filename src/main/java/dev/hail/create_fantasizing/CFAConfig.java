@@ -5,7 +5,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
-@EventBusSubscriber(modid = FantasizingMod.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = FantasizingMod.MOD_ID)
 public class CFAConfig {
     private static final ModConfigSpec.Builder BUILDER_C = new ModConfigSpec.Builder();
     private static final ModConfigSpec.Builder BUILDER_S = new ModConfigSpec.Builder();

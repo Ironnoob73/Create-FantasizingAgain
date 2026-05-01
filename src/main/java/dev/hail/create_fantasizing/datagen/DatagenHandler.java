@@ -12,7 +12,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static dev.hail.create_fantasizing.FantasizingMod.MOD_ID;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, modid = MOD_ID)
+@EventBusSubscriber(modid = MOD_ID)
 public class DatagenHandler {
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
