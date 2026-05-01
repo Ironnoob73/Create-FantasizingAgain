@@ -4,6 +4,7 @@ import com.simibubi.create.api.equipment.goggles.IHaveHoveringInformation;
 import com.simibubi.create.content.logistics.crate.CrateBlockEntity;
 import com.simibubi.create.foundation.ICapabilityProvider;
 import com.simibubi.create.foundation.blockEntity.behaviour.inventory.VersionedInventoryWrapper;
+import com.simibubi.create.foundation.item.ItemHandlerWrapper;
 import com.simibubi.create.foundation.utility.CreateLang;
 import com.simibubi.create.foundation.utility.ResetableLazy;
 import net.minecraft.ChatFormatting;
@@ -82,9 +83,9 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements Na
         }
 
         if(getOtherCrate() != null){
-            itemCapability = ICapabilityProvider.of(new VersionedInventoryWrapper(new CombinedInvWrapper(inventory, getOtherCrate().inventory)));
+            itemCapability = ICapabilityProvider.of(new ItemHandlerWrapper(new CombinedInvWrapper(inventory, getOtherCrate().inventory)));
         }else{
-            itemCapability = ICapabilityProvider.of(new VersionedInventoryWrapper(new CombinedInvWrapper(inventory)));
+            itemCapability = ICapabilityProvider.of(new ItemHandlerWrapper(new CombinedInvWrapper(inventory)));
         }
     }
 
