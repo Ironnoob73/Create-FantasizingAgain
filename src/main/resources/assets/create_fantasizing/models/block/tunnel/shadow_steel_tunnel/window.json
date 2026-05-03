@@ -1,0 +1,11 @@
+{
+  "parent": "create:block/belt_tunnel/window",
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "direction": "create_fantasizing:block/tunnel/shadow_steel_tunnel_neutral",
+    "frame": "create_fantasizing:block/tunnel/shadow_steel_tunnel_frame",
+    "particle": "create:block/shadow_steel_casing",
+    "top": "create_fantasizing:block/tunnel/shadow_steel_tunnel_top_window",
+    "tunnel": "create_fantasizing:block/tunnel/shadow_steel_tunnel"
+  }
+}

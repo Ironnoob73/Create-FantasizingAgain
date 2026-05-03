@@ -1,16 +1,24 @@
 package dev.hail.create_fantasizing.block;
 
+import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllDisplaySources;
 import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.OrientedRotatingVisual;
 import com.simibubi.create.content.kinetics.base.ShaftRenderer;
 import com.simibubi.create.content.kinetics.base.SingleAxisRotatingVisual;
 import com.simibubi.create.content.kinetics.simpleRelays.*;
+import com.simibubi.create.content.logistics.tunnel.BeltTunnelBlockEntity;
+import com.simibubi.create.content.logistics.tunnel.BeltTunnelItem;
+import com.simibubi.create.content.logistics.tunnel.BeltTunnelRenderer;
+import com.simibubi.create.content.logistics.tunnel.BeltTunnelVisual;
 import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
+import dev.hail.create_fantasizing.block.chromatic_tunnel.ShadowSteelTunnelBlock;
+import dev.hail.create_fantasizing.block.chromatic_tunnel.ShadowSteelTunnelBlockEntity;
 import dev.hail.create_fantasizing.block.compat_engine.*;
 import dev.hail.create_fantasizing.block.crate.*;
 import dev.hail.create_fantasizing.block.phantom_shaft.PhantomCogwheel;
@@ -22,10 +30,12 @@ import dev.hail.create_fantasizing.block.transporter.TransporterRenderer;
 import dev.hail.create_fantasizing.block.sturdy_girder.ConnectedSturdyGirderModel;
 import dev.hail.create_fantasizing.block.sturdy_girder.SturdyGirderBlock;
 import dev.hail.create_fantasizing.block.sturdy_girder.SturdyGirderEncasedShaftBlock;
+import dev.hail.create_fantasizing.item.ChromaticTunnelItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
 
+import static com.simibubi.create.api.behaviour.display.DisplaySource.displaySource;
 import static dev.hail.create_fantasizing.CFAConfig.*;
 import static dev.hail.create_fantasizing.FantasizingMod.REGISTRATE;
 
@@ -163,6 +173,20 @@ public class CFABlocks {
     public static final BlockEntry<RoseQuartzBulb> ROSE_QUARTZ_BULB = REGISTRATE.block("rose_quartz_bulb", RoseQuartzBulb::new)
             .properties(p -> p.lightLevel($ -> 15).mapColor(DyeColor.ORANGE).strength(0.0F, 6.0F).sound(SoundType.METAL).forceSolidOn().noCollission())
             .simpleItem()
+            .register();
+
+    public static final BlockEntry<ShadowSteelTunnelBlock> SHADOW_STEEL_TUNNEL = REGISTRATE.block("shadow_steel_tunnel", ShadowSteelTunnelBlock::new)
+            .properties(p -> p.mapColor(MapColor.COLOR_BLACK))
+            .transform(displaySource(AllDisplaySources.ACCUMULATE_ITEMS))
+            .transform(displaySource(AllDisplaySources.ITEM_THROUGHPUT))
+            .item(ChromaticTunnelItem::new)
+            .build()
+            .register();
+    public static final BlockEntityEntry<ShadowSteelTunnelBlockEntity> SHADOW_STEEL_TUNNEL_ENITIY = REGISTRATE
+            .blockEntity("shadow_steel_tunnel", ShadowSteelTunnelBlockEntity::new)
+            .visual(() -> BeltTunnelVisual::new)
+            .validBlocks(SHADOW_STEEL_TUNNEL)
+            .renderer(() -> BeltTunnelRenderer::new)
             .register();
 
     public static void init() {}

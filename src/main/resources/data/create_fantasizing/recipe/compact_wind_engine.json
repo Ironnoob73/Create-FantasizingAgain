@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "create_fantasizing:sturdy_heavy_core"
   },
-  "loops": 128,
+  "loops": 32,
   "results": [
     {
       "id": "create_fantasizing:compact_wind_engine"

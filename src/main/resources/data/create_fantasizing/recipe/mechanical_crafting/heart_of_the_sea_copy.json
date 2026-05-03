@@ -1,0 +1,30 @@
+{
+  "type": "create:mechanical_crafting",
+  "accept_mirrored": true,
+  "category": "tool",
+  "key": {
+    "*": {
+      "item": "minecraft:heart_of_the_sea"
+    },
+    "#": {
+      "item": "minecraft:prismarine_shard"
+    },
+    "@": {
+      "item": "create:refined_radiance"
+    },
+    "^": {
+      "tag": "c:gems/prismarine"
+    }
+  },
+  "pattern": [
+    " ### ",
+    "#^@^#",
+    "^@*@^",
+    "#^@^#",
+    " ### "
+  ],
+  "result": {
+    "count": 2,
+    "id": "minecraft:heart_of_the_sea"
+  }
+}
