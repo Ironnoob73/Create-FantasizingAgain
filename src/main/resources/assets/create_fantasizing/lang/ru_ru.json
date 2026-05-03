@@ -84,5 +84,11 @@
   "create_fantasizing.configuration.block_placer_fortune_enabled": "Зачарование «Удача» активно",
   "create_fantasizing.configuration.block_placer_fortune_enabled.tooltip": "§eТребует повторного входа в мир",
   "create_fantasizing.configuration.block_placer_silk_touch_enabled": "Зачарование «Шёлковое касание» активно",
-  "create_fantasizing.configuration.block_placer_silk_touch_enabled.tooltip": "§eТребует повторного входа в мир"
+  "create_fantasizing.configuration.block_placer_silk_touch_enabled.tooltip": "§eТребует повторного входа в мир",
+  "create_fantasizing.configuration.block_placer_range": "Дальность укладчика блоков",
+  "create_fantasizing.configuration.block_placer_range.tooltip": "§eТребует повторного входа в мир",
+  "create_fantasizing.configuration.block_placer_cooldown": "Базовая задержка укладчика блоков",
+  "create_fantasizing.configuration.block_placer_cooldown.tooltip": "§eТребует повторного входа в мир\n§7В тиках. Итоговая задержка масштабируется с размером кисти.",
+  "create_fantasizing.configuration.block_placer_cooldown_scale": "Масштаб задержки укладчика блоков",
+  "create_fantasizing.configuration.block_placer_cooldown_scale.tooltip": "§eТребует повторного входа в мир\n§7Блоков на один дополнительный тик задержки. Меньше = длиннее задержки."
 }

@@ -32,6 +32,13 @@ public class CFAConfig {
     private static final ModConfigSpec.IntValue BLOCK_PLACER_DYNAMIC_MAX_RADIUS = BUILDER_S
             .defineInRange("block_placer_dynamic_max_radius", 10, 1, 64);
 
+    private static final ModConfigSpec.IntValue BLOCK_PLACER_RANGE = BUILDER_S
+            .defineInRange("block_placer_range", 48, 8, 128);
+    private static final ModConfigSpec.IntValue BLOCK_PLACER_COOLDOWN = BUILDER_S
+            .defineInRange("block_placer_cooldown", 2, 1, 100);
+    private static final ModConfigSpec.IntValue BLOCK_PLACER_COOLDOWN_SCALE = BUILDER_S
+            .defineInRange("block_placer_cooldown_scale", 100, 1, 10000);
+
     // Block Placer enchantment effects
     private static final ModConfigSpec.BooleanValue BLOCK_PLACER_INFINITY_ENABLED = BUILDER_S
             .define("block_placer_infinity_enabled", true);
@@ -48,6 +55,10 @@ public class CFAConfig {
     public static double hydraulicEngineStressProvide;
     public static double windEngineStressProvide;
     public static double blockPlacerPower;
+
+    public static int blockPlacerRange = 48;
+    public static int blockPlacerCooldown = 2;
+    public static int blockPlacerCooldownScale = 100;
 
     public static int blockPlacerCuboidMaxSize = 32;
     public static int blockPlacerSphereMaxRadius = 10;
@@ -69,6 +80,9 @@ public class CFAConfig {
             hydraulicEngineStressProvide = HYDRAULIC_ENGINE_STRESS_PROVIDE.get();
             windEngineStressProvide = WIND_ENGINE_STRESS_PROVIDE.get();
             blockPlacerPower = BLOCK_PLACER_POWER.get();
+            blockPlacerRange = BLOCK_PLACER_RANGE.get();
+            blockPlacerCooldown = BLOCK_PLACER_COOLDOWN.get();
+            blockPlacerCooldownScale = BLOCK_PLACER_COOLDOWN_SCALE.get();
             blockPlacerCuboidMaxSize = BLOCK_PLACER_CUBOID_MAX_SIZE.get();
             blockPlacerSphereMaxRadius = BLOCK_PLACER_SPHERE_MAX_RADIUS.get();
             blockPlacerCylinderMaxRadius = BLOCK_PLACER_CYLINDER_MAX_RADIUS.get();

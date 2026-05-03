@@ -84,5 +84,11 @@
   "create_fantasizing.configuration.block_placer_fortune_enabled": "Fortune Enchantment Enabled",
   "create_fantasizing.configuration.block_placer_fortune_enabled.tooltip": "\u00A7eNeed to re-enter the world",
   "create_fantasizing.configuration.block_placer_silk_touch_enabled": "Silk Touch Enchantment Enabled",
-  "create_fantasizing.configuration.block_placer_silk_touch_enabled.tooltip": "\u00A7eNeed to re-enter the world"
+  "create_fantasizing.configuration.block_placer_silk_touch_enabled.tooltip": "\u00A7eNeed to re-enter the world",
+  "create_fantasizing.configuration.block_placer_range": "Block Placer Range",
+  "create_fantasizing.configuration.block_placer_range.tooltip": "\u00A7eNeed to re-enter the world",
+  "create_fantasizing.configuration.block_placer_cooldown": "Block Placer Base Cooldown",
+  "create_fantasizing.configuration.block_placer_cooldown.tooltip": "\u00A7eNeed to re-enter the world\n\u00A77In ticks. Actual cooldown scales with brush size.",
+  "create_fantasizing.configuration.block_placer_cooldown_scale": "Block Placer Cooldown Scale",
+  "create_fantasizing.configuration.block_placer_cooldown_scale.tooltip": "\u00A7eNeed to re-enter the world\n\u00A77Blocks per extra tick of cooldown. Lower = longer cooldowns."
 }
