@@ -2,6 +2,7 @@ package dev.hail.create_fantasizing.item.block_placer;
 
 import com.simibubi.create.content.equipment.zapper.terrainzapper.PlacementOptions;
 import com.simibubi.create.foundation.utility.CreateLang;
+import dev.hail.create_fantasizing.CFAConfig;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,8 +18,8 @@ import java.util.stream.Collectors;
 
 public class BPCylinderBrush extends BPShapedBrush {
 
-    public static final int MAX_RADIUS = 8;
-    public static final int MAX_HEIGHT = 8;
+    public static final int MAX_RADIUS = 12;
+    public static final int MAX_HEIGHT = 12;
     private Map<Pair<Integer, Integer>, List<BlockPos>> cachedBrushes;
 
     public BPCylinderBrush() {
@@ -62,7 +63,7 @@ public class BPCylinderBrush extends BPShapedBrush {
 
     @Override
     int getMax(int paramIndex) {
-        return paramIndex == 0 ? MAX_RADIUS : MAX_HEIGHT;
+        return paramIndex == 0 ? CFAConfig.blockPlacerCylinderMaxRadius : CFAConfig.blockPlacerCylinderMaxHeight;
     }
 
     @Override

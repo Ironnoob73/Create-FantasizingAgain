@@ -29,6 +29,8 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -170,7 +172,7 @@ public enum BlockPlacerTools implements StringRepresentable {
         boolean creative = player.isCreative();
         if (!creative && !paintState.isAir() && !hasItemInInventory(paintBlock, player)) return;
         if (!creative && !paintState.isAir()) calculateItemsInInventory(paintBlock, false, player,
-                stack.getEnchantmentLevel(pLevel.holderOrThrow(Enchantments.INFINITY)) >= 1);
+                CFAConfig.blockPlacerInfinityEnabled && stack.getEnchantmentLevel(pLevel.holderOrThrow(Enchantments.INFINITY)) >= 1);
 
         dropResources(replaceState, pLevel, replacePos, replaceState.hasBlockEntity() ? pLevel.getBlockEntity(replacePos) : null, player, stack);
         paintBlock.setPlacedBy(pLevel, replacePos, paintState, player, stack);
@@ -233,12 +235,27 @@ public enum BlockPlacerTools implements StringRepresentable {
             if (pEntity != null) dropPos = pEntity.getOnPos().above();
             else dropPos = pPos;
 
-            Block.getDrops(pState, serverLevel, pPos, pBlockEntity, pEntity, pTool).forEach((p_49944_) -> popResource(pLevel, dropPos, p_49944_));
-            pState.spawnAfterBreak(serverLevel, pPos, pTool, false);
+            ItemStack effectiveTool = getToolForDrops(pTool, pLevel);
+            Block.getDrops(pState, serverLevel, pPos, pBlockEntity, pEntity, effectiveTool).forEach((p_49944_) -> popResource(pLevel, dropPos, p_49944_));
+            pState.spawnAfterBreak(serverLevel, pPos, effectiveTool, false);
 
-            int exp = pState.getExpDrop(serverLevel, pPos, pBlockEntity, pEntity, pTool);
+            int exp = pState.getExpDrop(serverLevel, pPos, pBlockEntity, pEntity, effectiveTool);
             if (exp > 0) pState.getBlock().popExperience(serverLevel, dropPos, exp);
         }
+    }
+
+    private static ItemStack getToolForDrops(ItemStack tool, Level level) {
+        if ((CFAConfig.blockPlacerFortuneEnabled && CFAConfig.blockPlacerSilkTouchEnabled) || tool.isEmpty())
+            return tool;
+        ItemStack copy = tool.copy();
+        ItemEnchantments enchantments = copy.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY);
+        ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(enchantments);
+        if (!CFAConfig.blockPlacerFortuneEnabled)
+            mutable.set(level.holderOrThrow(Enchantments.FORTUNE), 0);
+        if (!CFAConfig.blockPlacerSilkTouchEnabled)
+            mutable.set(level.holderOrThrow(Enchantments.SILK_TOUCH), 0);
+        copy.set(DataComponents.ENCHANTMENTS, mutable.toImmutable());
+        return copy;
     }
 
     static int tick = 0;

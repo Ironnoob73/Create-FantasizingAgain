@@ -5,13 +5,15 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.Vec3;
 
+import dev.hail.create_fantasizing.CFAConfig;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class BPCuboidBrush extends BPShapedBrush {
 
-    public static final int MAX_SIZE = 32;
+    public static final int MAX_SIZE = 64;
     private List<BlockPos> positions;
 
     public BPCuboidBrush() {
@@ -40,7 +42,7 @@ public class BPCuboidBrush extends BPShapedBrush {
 
     @Override
     int getMax(int paramIndex) {
-        return MAX_SIZE;
+        return CFAConfig.blockPlacerCuboidMaxSize;
     }
 
     @Override

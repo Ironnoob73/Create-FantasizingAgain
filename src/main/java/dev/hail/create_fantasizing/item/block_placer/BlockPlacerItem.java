@@ -12,6 +12,7 @@ import com.simibubi.create.content.equipment.zapper.terrainzapper.PlacementOptio
 import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
 import com.simibubi.create.foundation.utility.BlockHelper;
 import com.simibubi.create.foundation.utility.CreateLang;
+import dev.hail.create_fantasizing.CFAConfig;
 import dev.hail.create_fantasizing.data.CFADataComponents;
 import net.createmod.catnip.gui.ScreenOpener;
 import net.createmod.catnip.platform.CatnipServices;
@@ -155,7 +156,7 @@ public class BlockPlacerItem extends ZapperItem {
             int invAmount;
             if (stateToUse != null) {
                 invAmount = BlockPlacerTools.calculateItemsInInventory(stateToUse.getBlock(), true, player,
-                        pStack.getEnchantmentLevel(pLevel.holderOrThrow(Enchantments.INFINITY)) >= 1);
+                        CFAConfig.blockPlacerInfinityEnabled && pStack.getEnchantmentLevel(pLevel.holderOrThrow(Enchantments.INFINITY)) >= 1);
                 int selSize = activateCalculation(pLevel, player, pStack, stateToUse, raytrace);
                 if (!pStack.has(CFADataComponents.BLOCK_AMOUNT) || (pStack.get(CFADataComponents.BLOCK_AMOUNT) != invAmount))
                     pStack.set(CFADataComponents.BLOCK_AMOUNT, invAmount);

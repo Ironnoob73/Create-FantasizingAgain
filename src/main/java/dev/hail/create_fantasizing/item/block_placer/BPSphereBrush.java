@@ -2,6 +2,7 @@ package dev.hail.create_fantasizing.item.block_placer;
 
 import com.simibubi.create.content.equipment.zapper.terrainzapper.PlacementOptions;
 import com.simibubi.create.foundation.utility.CreateLang;
+import dev.hail.create_fantasizing.CFAConfig;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 
 public class BPSphereBrush extends BPShapedBrush {
 
-    public static final int MAX_RADIUS = 10;
+    public static final int MAX_RADIUS = 20;
     private Map<Integer, List<BlockPos>> cachedBrushes;
 
     public BPSphereBrush() {
@@ -46,7 +47,7 @@ public class BPSphereBrush extends BPShapedBrush {
 
     @Override
     int getMax(int paramIndex) {
-        return MAX_RADIUS;
+        return CFAConfig.blockPlacerSphereMaxRadius;
     }
 
     @Override
