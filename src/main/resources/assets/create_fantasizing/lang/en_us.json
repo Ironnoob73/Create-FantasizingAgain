@@ -89,6 +89,8 @@
   "create_fantasizing.configuration.block_placer.cooldown.base.tooltip": "\u00A7eNeed to re-enter the world\n\u00A77In ticks. Final cooldown = base + affected_blocks / scale",
   "create_fantasizing.configuration.block_placer.cooldown.scale": "Cooldown Scale",
   "create_fantasizing.configuration.block_placer.cooldown.scale.tooltip": "\u00A7eNeed to re-enter the world\n\u00A77Blocks per extra tick of cooldown. Lower = longer cooldowns.",
+  "create_fantasizing.configuration.block_placer.cooldown.batch_size": "Blocks Per Tick",
+  "create_fantasizing.configuration.block_placer.cooldown.batch_size.tooltip": "\u00A7eNeed to re-enter the world\n\u00A77Number of blocks placed per server tick. Lower = smoother server, slower completion.",
   "create_fantasizing.configuration.block_placer.enchantments": "Enchantments",
   "create_fantasizing.configuration.block_placer.enchantments.infinity": "Infinity Enchantment Enabled",
   "create_fantasizing.configuration.block_placer.enchantments.infinity.tooltip": "\u00A7eNeed to re-enter the world",

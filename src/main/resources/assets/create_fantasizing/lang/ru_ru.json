@@ -89,6 +89,8 @@
   "create_fantasizing.configuration.block_placer.cooldown.base.tooltip": "§eТребует повторного входа в мир\n§7В тиках. Итоговая задержка = база + блоков / масштаб",
   "create_fantasizing.configuration.block_placer.cooldown.scale": "Масштаб задержки",
   "create_fantasizing.configuration.block_placer.cooldown.scale.tooltip": "§eТребует повторного входа в мир\n§7Блоков на один дополнительный тик. Меньше = длиннее задержки.",
+  "create_fantasizing.configuration.block_placer.cooldown.batch_size": "Блоков за тик",
+  "create_fantasizing.configuration.block_placer.cooldown.batch_size.tooltip": "§eТребует повторного входа в мир\n§7Количество блоков, размещаемых за один серверный тик. Меньше = плавнее сервер, медленнее выполнение.",
   "create_fantasizing.configuration.block_placer.enchantments": "Зачарования",
   "create_fantasizing.configuration.block_placer.enchantments.infinity": "Зачарование «Бесконечность» активно",
   "create_fantasizing.configuration.block_placer.enchantments.infinity.tooltip": "§eТребует повторного входа в мир",
