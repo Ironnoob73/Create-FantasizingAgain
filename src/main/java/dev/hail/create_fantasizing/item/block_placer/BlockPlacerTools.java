@@ -45,6 +45,9 @@ import net.neoforged.neoforge.common.util.BlockSnapshot;
 import net.neoforged.neoforge.event.level.BlockEvent;
 
 import javax.annotation.Nullable;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
@@ -61,6 +64,17 @@ public enum BlockPlacerTools implements StringRepresentable {
     public static final TagKey<Block> UNBREAKABLE_TAG = TagKey.create(Registries.BLOCK, ResourceLocation.withDefaultNamespace("wither_immune"));
     public static final Codec<BlockPlacerTools> CODEC = StringRepresentable.fromValues(BlockPlacerTools::values);
     public static final StreamCodec<ByteBuf, BlockPlacerTools> STREAM_CODEC = CatnipStreamCodecBuilders.ofEnum(BlockPlacerTools.class);
+
+    private static final Random RANDOM = new Random();
+    public static final Deque<PendingOp> QUEUE = new ArrayDeque<>();
+
+    public record PendingOp(
+        Level world, BlockPlacerTools tool,
+        LinkedList<BlockPos> remaining,
+        BlockState paintedState, CompoundTag data,
+        Player player, ItemStack stack, InteractionHand hand,
+        PlacementPatterns patterns
+    ) {}
     public final String translationKey;
     public final AllIcons icon;
 
@@ -79,38 +93,33 @@ public enum BlockPlacerTools implements StringRepresentable {
 
     public void run(Level world, List<BlockPos> targetPositions, BlockState paintedState, CompoundTag data,
                     Player player, ItemStack stack, InteractionHand hand, PlacementPatterns patterns) {
+        if (!targetPositions.isEmpty())
+            QUEUE.add(new PendingOp(world, this, new LinkedList<>(targetPositions), paintedState, data, player, stack, hand, patterns));
+    }
+
+    public void runSingle(Level world, BlockPos p, BlockState paintedState, CompoundTag data,
+                          Player player, ItemStack stack, InteractionHand hand, PlacementPatterns patterns) {
         switch (this) {
-            case Clear -> {
-                for (var p : targetPositions)
-                    zapperFunction(world, Blocks.AIR.defaultBlockState(), p, world.getBlockState(p), stack, player, hand, data, patterns);
-            }
+            case Clear -> zapperFunction(world, Blocks.AIR.defaultBlockState(), p, world.getBlockState(p), stack, player, hand, data, patterns);
             case Fill -> {
-                for (var p : targetPositions) {
-                    BlockState toReplace = world.getBlockState(p);
-                    if (!isReplaceable(toReplace)) continue;
-                    zapperFunction(world, paintedState, p, toReplace, stack, player, hand, data, patterns);
-                }
+                BlockState current = world.getBlockState(p);
+                if (isReplaceable(current))
+                    zapperFunction(world, paintedState, p, current, stack, player, hand, data, patterns);
             }
             case Overlay -> {
-                for (var p : targetPositions) {
-                    BlockState toOverlay = world.getBlockState(p);
-                    if (isReplaceable(toOverlay) || (toOverlay == paintedState)) continue;
-                    p = p.above();
-                    BlockState toReplace = world.getBlockState(p);
-                    if (!isReplaceable(toReplace)) continue;
-                    zapperFunction(world, paintedState, p, toReplace, stack, player, hand, data, patterns);
+                BlockState toOverlay = world.getBlockState(p);
+                if (!isReplaceable(toOverlay) && toOverlay != paintedState) {
+                    BlockPos above = p.above();
+                    BlockState toReplace = world.getBlockState(above);
+                    if (isReplaceable(toReplace))
+                        zapperFunction(world, paintedState, above, toReplace, stack, player, hand, data, patterns);
                 }
             }
-            case Place -> {
-                for (var p : targetPositions)
-                    zapperFunction(world, paintedState, p, world.getBlockState(p), stack, player, hand, data, patterns);
-            }
+            case Place -> zapperFunction(world, paintedState, p, world.getBlockState(p), stack, player, hand, data, patterns);
             case Replace -> {
-                for (var p : targetPositions) {
-                    BlockState toReplace = world.getBlockState(p);
-                    if (isReplaceable(toReplace)) continue;
-                    zapperFunction(world, paintedState, p, toReplace, stack, player, hand, data, patterns);
-                }
+                BlockState current = world.getBlockState(p);
+                if (!isReplaceable(current))
+                    zapperFunction(world, paintedState, p, current, stack, player, hand, data, patterns);
             }
         }
     }
@@ -163,7 +172,7 @@ public enum BlockPlacerTools implements StringRepresentable {
 
     public static void zapperFunction(Level pLevel, BlockState paintState, BlockPos replacePos, BlockState replaceState,
                                       ItemStack stack, Player player, InteractionHand hand, CompoundTag data, PlacementPatterns patterns) {
-        Random r = new Random();
+        Random r = RANDOM;
         if (switch (patterns) {
             case Chance25 -> r.nextBoolean() || r.nextBoolean();
             case Chance50 -> r.nextBoolean();
@@ -192,7 +201,6 @@ public enum BlockPlacerTools implements StringRepresentable {
         dropResources(replaceState, pLevel, replacePos, replaceState.hasBlockEntity() ? pLevel.getBlockEntity(replacePos) : null, player, stack);
         paintBlock.setPlacedBy(pLevel, replacePos, paintState, player, stack);
         pLevel.gameEvent(GameEvent.BLOCK_PLACE, replacePos, GameEvent.Context.of(player, paintState));
-        pLevel.setBlock(replacePos, paintState, Block.UPDATE_CLIENTS);
         pLevel.setBlockAndUpdate(replacePos, paintState);
         ZapperItem.setBlockEntityData(pLevel, replacePos, paintState, data, player);
 

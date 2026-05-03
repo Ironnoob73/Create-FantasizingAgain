@@ -24,6 +24,7 @@ public class CFAConfig {
 
     private static final ModConfigSpec.IntValue BLOCK_PLACER_COOLDOWN;
     private static final ModConfigSpec.IntValue BLOCK_PLACER_COOLDOWN_SCALE;
+    private static final ModConfigSpec.IntValue BLOCK_PLACER_BATCH_SIZE;
 
     private static final ModConfigSpec.BooleanValue BLOCK_PLACER_INFINITY_ENABLED;
     private static final ModConfigSpec.BooleanValue BLOCK_PLACER_FORTUNE_ENABLED;
@@ -78,6 +79,10 @@ public class CFAConfig {
                 .comment("Divisor for the block-count part of the cooldown formula: affected_blocks / scale.",
                          "Lower values = longer cooldowns for large operations.")
                 .defineInRange("scale", 20, 1, 10000);
+        BLOCK_PLACER_BATCH_SIZE = BUILDER_S
+                .comment("Number of blocks the Block Placer places per server tick.",
+                         "Lower values = smoother server, slower visual completion. Higher = faster but more load per tick.")
+                .defineInRange("batch_size", 256, 1, 4096);
         BUILDER_S.pop();
 
         BUILDER_S.push("enchantments");
@@ -112,6 +117,7 @@ public class CFAConfig {
 
     public static int blockPlacerCooldown = 2;
     public static int blockPlacerCooldownScale = 20;
+    public static int blockPlacerBatchSize = 256;
 
     public static boolean blockPlacerInfinityEnabled = true;
     public static boolean blockPlacerFortuneEnabled = true;
@@ -134,6 +140,7 @@ public class CFAConfig {
 
             blockPlacerCooldown = BLOCK_PLACER_COOLDOWN.get();
             blockPlacerCooldownScale = BLOCK_PLACER_COOLDOWN_SCALE.get();
+            blockPlacerBatchSize = BLOCK_PLACER_BATCH_SIZE.get();
 
             blockPlacerInfinityEnabled = BLOCK_PLACER_INFINITY_ENABLED.get();
             blockPlacerFortuneEnabled = BLOCK_PLACER_FORTUNE_ENABLED.get();
