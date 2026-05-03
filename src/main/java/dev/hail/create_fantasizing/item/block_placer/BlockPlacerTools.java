@@ -40,6 +40,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.util.BlockSnapshot;
+import net.neoforged.neoforge.event.level.BlockEvent;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -171,6 +174,18 @@ public enum BlockPlacerTools implements StringRepresentable {
         Block paintBlock = paintState.getBlock();
         boolean creative = player.isCreative();
         if (!creative && !paintState.isAir() && !hasItemInInventory(paintBlock, player)) return;
+
+        // BreakEvent before removing any existing block
+        if (!pLevel.isClientSide() && !replaceState.isAir()) {
+            if (NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(pLevel, replacePos, replaceState, player)).isCanceled())
+                return;
+        }
+
+        // Snapshot taken before setBlock so getReplacedBlock() holds the old state for loggers
+        BlockSnapshot snapshot = (!pLevel.isClientSide() && !paintState.isAir())
+                ? BlockSnapshot.create(pLevel.dimension(), pLevel, replacePos)
+                : null;
+
         if (!creative && !paintState.isAir()) calculateItemsInInventory(paintBlock, false, player,
                 CFAConfig.blockPlacerInfinityEnabled && stack.getEnchantmentLevel(pLevel.holderOrThrow(Enchantments.INFINITY)) >= 1);
 
@@ -180,6 +195,15 @@ public enum BlockPlacerTools implements StringRepresentable {
         pLevel.setBlock(replacePos, paintState, Block.UPDATE_CLIENTS);
         pLevel.setBlockAndUpdate(replacePos, paintState);
         ZapperItem.setBlockEntityData(pLevel, replacePos, paintState, data, player);
+
+        // EntityPlaceEvent after setBlock; roll back if cancelled
+        if (snapshot != null) {
+            if (NeoForge.EVENT_BUS.post(new BlockEvent.EntityPlaceEvent(snapshot, replaceState, player)).isCanceled()) {
+                pLevel.setBlock(replacePos, replaceState, Block.UPDATE_ALL);
+                return;
+            }
+        }
+
         if (!creative) stack.hurtAndBreak(2, player, hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
     }
 
