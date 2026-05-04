@@ -37,9 +37,13 @@ public class CFAConfig {
         BUILDER_S.push("engines");
         HYDRAULIC_ENGINE_STRESS_PROVIDE = BUILDER_S
                 .comment("Stress units provided by the Hydraulic Engine")
+                .translation("create_fantasizing.configuration.engines.hydraulic_stress_provide")
+                .worldRestart()
                 .defineInRange("hydraulic_stress_provide", 8192, 0, Double.MAX_VALUE);
         WIND_ENGINE_STRESS_PROVIDE = BUILDER_S
                 .comment("Stress units provided by the Wind Engine")
+                .translation("create_fantasizing.configuration.engines.wind_stress_provide")
+                .worldRestart()
                 .defineInRange("wind_stress_provide", 8192, 0, Double.MAX_VALUE);
         BUILDER_S.pop();
 
@@ -47,26 +51,40 @@ public class CFAConfig {
 
         BLOCK_PLACER_POWER = BUILDER_S
                 .comment("Maximum hardness of blocks the Block Placer can break/replace. Blocks with higher hardness are ignored.")
+                .translation("create_fantasizing.configuration.block_placer.power")
+                .worldRestart()
                 .defineInRange("power", 50, 0, Double.MAX_VALUE);
         BLOCK_PLACER_RANGE = BUILDER_S
                 .comment("Maximum reach distance of the Block Placer in blocks")
+                .translation("create_fantasizing.configuration.block_placer.range")
+                .worldRestart()
                 .defineInRange("range", 48, 8, 128);
 
         BUILDER_S.push("brush");
         BLOCK_PLACER_CUBOID_MAX_SIZE = BUILDER_S
                 .comment("Maximum size per axis for the Cuboid brush (each axis is independent)")
+                .translation("create_fantasizing.configuration.block_placer.brush.cuboid_max_size")
+                .worldRestart()
                 .defineInRange("cuboid_max_size", 32, 1, 64);
         BLOCK_PLACER_SPHERE_MAX_RADIUS = BUILDER_S
                 .comment("Maximum radius for the Sphere brush")
+                .translation("create_fantasizing.configuration.block_placer.brush.sphere_max_radius")
+                .worldRestart()
                 .defineInRange("sphere_max_radius", 10, 1, 20);
         BLOCK_PLACER_CYLINDER_MAX_RADIUS = BUILDER_S
                 .comment("Maximum radius for the Cylinder brush")
+                .translation("create_fantasizing.configuration.block_placer.brush.cylinder_max_radius")
+                .worldRestart()
                 .defineInRange("cylinder_max_radius", 8, 1, 12);
         BLOCK_PLACER_CYLINDER_MAX_HEIGHT = BUILDER_S
                 .comment("Maximum height for the Cylinder brush")
+                .translation("create_fantasizing.configuration.block_placer.brush.cylinder_max_height")
+                .worldRestart()
                 .defineInRange("cylinder_max_height", 8, 1, 12);
         BLOCK_PLACER_DYNAMIC_MAX_RADIUS = BUILDER_S
                 .comment("Maximum radius for the Surface and Cluster brushes")
+                .translation("create_fantasizing.configuration.block_placer.brush.dynamic_max_radius")
+                .worldRestart()
                 .defineInRange("dynamic_max_radius", 10, 1, 64);
         BUILDER_S.pop();
 
@@ -74,26 +92,38 @@ public class CFAConfig {
         BLOCK_PLACER_COOLDOWN = BUILDER_S
                 .comment("Base cooldown in ticks added to every activation.",
                          "Final cooldown = base + affected_blocks / scale")
+                .translation("create_fantasizing.configuration.block_placer.cooldown.base")
+                .worldRestart()
                 .defineInRange("base", 2, 1, 100);
         BLOCK_PLACER_COOLDOWN_SCALE = BUILDER_S
                 .comment("Divisor for the block-count part of the cooldown formula: affected_blocks / scale.",
                          "Lower values = longer cooldowns for large operations.")
+                .translation("create_fantasizing.configuration.block_placer.cooldown.scale")
+                .worldRestart()
                 .defineInRange("scale", 20, 1, 10000);
         BLOCK_PLACER_BATCH_SIZE = BUILDER_S
                 .comment("Number of blocks the Block Placer places per server tick.",
                          "Lower values = smoother server, slower visual completion. Higher = faster but more load per tick.")
+                .translation("create_fantasizing.configuration.block_placer.cooldown.batch_size")
+                .worldRestart()
                 .defineInRange("batch_size", 256, 1, 4096);
         BUILDER_S.pop();
 
         BUILDER_S.push("enchantments");
         BLOCK_PLACER_INFINITY_ENABLED = BUILDER_S
                 .comment("When true, Infinity enchantment allows placing renewable blocks (e.g. Cobblestone) without consuming them")
+                .translation("create_fantasizing.configuration.block_placer.enchantments.infinity")
+                .worldRestart()
                 .define("infinity", true);
         BLOCK_PLACER_FORTUNE_ENABLED = BUILDER_S
                 .comment("When true, Fortune enchantment affects block drops when breaking blocks")
+                .translation("create_fantasizing.configuration.block_placer.enchantments.fortune")
+                .worldRestart()
                 .define("fortune", true);
         BLOCK_PLACER_SILK_TOUCH_ENABLED = BUILDER_S
                 .comment("When true, Silk Touch enchantment affects block drops when breaking blocks")
+                .translation("create_fantasizing.configuration.block_placer.enchantments.silk_touch")
+                .worldRestart()
                 .define("silk_touch", true);
         BUILDER_S.pop();
 
