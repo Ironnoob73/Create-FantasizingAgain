@@ -2,6 +2,7 @@ package dev.hail.create_fantasizing.item.block_placer;
 
 import com.simibubi.create.foundation.utility.BlockHelper;
 import com.simibubi.create.foundation.utility.CreateLang;
+import dev.hail.create_fantasizing.CFAConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -43,7 +44,7 @@ public class BPDynamicBrush extends BPBrush {
 
     @Override
     int getMax(int paramIndex) {
-        return MAX_RADIUS;
+        return CFAConfig.blockPlacerDynamicMaxRadius;
     }
 
     @Override

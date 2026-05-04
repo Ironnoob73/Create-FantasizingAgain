@@ -12,6 +12,7 @@ import com.simibubi.create.content.equipment.zapper.terrainzapper.PlacementOptio
 import com.simibubi.create.foundation.item.render.SimpleCustomRenderer;
 import com.simibubi.create.foundation.utility.BlockHelper;
 import com.simibubi.create.foundation.utility.CreateLang;
+import dev.hail.create_fantasizing.CFAConfig;
 import dev.hail.create_fantasizing.data.CFADataComponents;
 import net.createmod.catnip.gui.ScreenOpener;
 import net.createmod.catnip.platform.CatnipServices;
@@ -93,21 +94,20 @@ public class BlockPlacerItem extends ZapperItem {
     protected boolean activate(Level world, Player player, ItemStack stack, BlockState stateToUse, BlockHitResult raytrace, CompoundTag data) {
         return false;
     }
-    public float activate(Level world, Player player, ItemStack stack, BlockState stateToUse, BlockHitResult raytrace, CompoundTag data, InteractionHand hand) {
+    public int activate(Level world, Player player, ItemStack stack, BlockState stateToUse, BlockHitResult raytrace, CompoundTag data, InteractionHand hand) {
         BlockPos targetPos = raytrace.getBlockPos();
         List<BlockPos> affectedPositions = new ArrayList<>();
 
         BPBrush brush = stack.getOrDefault(CFADataComponents.SHAPER_BRUSH, BlockPlacerBrushes.Cuboid).get();
         BlockPos params = stack.get(AllDataComponents.SHAPER_BRUSH_PARAMS);
         boolean destroyMode = Boolean.TRUE.equals(stack.get(CFADataComponents.DESTROY_MODE));
-        float multiplier = sizeMultiplier(params, brush);
         PlacementOptions option = stack.getOrDefault(AllDataComponents.SHAPER_PLACEMENT_OPTIONS, PlacementOptions.Merged);
         BlockPlacerTools tool = stack.getOrDefault(CFADataComponents.SHAPER_TOOL, BlockPlacerTools.Fill);
         brush.set(params.getX(), params.getY(), params.getZ());
         targetPos = targetPos.offset(brush.getOffset(player.getLookAngle(), raytrace.getDirection(), option));
         brush.addToGlobalPositions(world, targetPos, raytrace.getDirection(), affectedPositions, tool);
         brush.redirectTool(tool).run(world, affectedPositions, stateToUse, data, player, stack, hand, applyPattern(affectedPositions, stack));
-        return multiplier;
+        return affectedPositions.size();
     }
     public int activateCalculation(Level world, Player player, ItemStack stack, BlockState stateToUse, BlockHitResult raytrace) {
         BlockPos targetPos = raytrace.getBlockPos();
@@ -155,7 +155,7 @@ public class BlockPlacerItem extends ZapperItem {
             int invAmount;
             if (stateToUse != null) {
                 invAmount = BlockPlacerTools.calculateItemsInInventory(stateToUse.getBlock(), true, player,
-                        pStack.getEnchantmentLevel(pLevel.holderOrThrow(Enchantments.INFINITY)) >= 1);
+                        CFAConfig.blockPlacerInfinityEnabled && pStack.getEnchantmentLevel(pLevel.holderOrThrow(Enchantments.INFINITY)) >= 1);
                 int selSize = activateCalculation(pLevel, player, pStack, stateToUse, raytrace);
                 if (!pStack.has(CFADataComponents.BLOCK_AMOUNT) || (pStack.get(CFADataComponents.BLOCK_AMOUNT) != invAmount))
                     pStack.set(CFADataComponents.BLOCK_AMOUNT, invAmount);
@@ -208,27 +208,13 @@ public class BlockPlacerItem extends ZapperItem {
                 player.getCooldowns().addCooldown(item.getItem(), 10);
                 return new InteractionResultHolder<>(InteractionResult.FAIL, item);
             } else if (!player.isShiftKeyDown() && items && lookingAtBlock) {
-                float multiplier = activate(level, player, item, stateToUse, raytrace, data, hand);
-                int cooldown = (int) (multiplier * getCooldownDelay(item));
+                int workSize = activate(level, player, item, stateToUse, raytrace, data, hand);
+                int cooldown = getCooldownDelay(item) + workSize / CFAConfig.blockPlacerCooldownScale;
                 ShootableGadgetItemMethods.applyCooldown(player, item, hand, this::isZapper, Math.max(cooldown, 5));
                 ShootableGadgetItemMethods.sendPackets(player, b -> new ZapperBeamPacket(barrelPos, hand, b, raytrace.getLocation()));
                 return new InteractionResultHolder<>(InteractionResult.SUCCESS, item);
             }  else return super.use(level, player, hand);
         }
-    }
-    public float sizeMultiplier(BlockPos params, BPBrush brush) {
-        float size = 16;
-        float radius = 6;
-        float radiusSize = (int) (radius * 1.25);
-        float max = 1;
-        if (brush instanceof BPCuboidBrush) max = size;
-        if (brush instanceof BPSphereBrush) max = radiusSize;
-        if (brush instanceof BPCylinderBrush) max = radius;
-        if (brush instanceof BPDynamicBrush) max = radiusSize;
-        float x = params.getX();
-        float y = params.getY();
-        float z = params.getZ();
-        return (x*y*z) / (max*max*max);
     }
     @Override
     @OnlyIn(value = Dist.CLIENT)
@@ -237,11 +223,11 @@ public class BlockPlacerItem extends ZapperItem {
     }
     @Override
     protected int getCooldownDelay(ItemStack item) {
-        return 2;
+        return CFAConfig.blockPlacerCooldown;
     }
     @Override
     protected int getZappingRange(ItemStack stack) {
-        return 128;
+        return CFAConfig.blockPlacerRange;
     }
     public static void configureSettings(ItemStack stack, PlacementPatterns pattern, BlockPlacerBrushes brush,
                                          int brushParamX, int brushParamY, int brushParamZ,

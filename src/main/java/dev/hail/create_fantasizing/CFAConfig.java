@@ -10,34 +10,141 @@ public class CFAConfig {
     private static final ModConfigSpec.Builder BUILDER_C = new ModConfigSpec.Builder();
     private static final ModConfigSpec.Builder BUILDER_S = new ModConfigSpec.Builder();
 
-    //private static final ModConfigSpec.BooleanValue FOLD_INTERFACE = BUILDER_C
-    //        .define("fold_interface", true);
+    private static final ModConfigSpec.DoubleValue HYDRAULIC_ENGINE_STRESS_PROVIDE;
+    private static final ModConfigSpec.DoubleValue WIND_ENGINE_STRESS_PROVIDE;
 
-    private static final ModConfigSpec.DoubleValue HYDRAULIC_ENGINE_STRESS_PROVIDE = BUILDER_S
-            .defineInRange("hydraulic_engine_stress_provide", 8192, 0, Double.MAX_VALUE);
-    private static final ModConfigSpec.DoubleValue WIND_ENGINE_STRESS_PROVIDE = BUILDER_S
-            .defineInRange("wind_engine_stress_provide", 8192, 0, Double.MAX_VALUE);
-    private static final ModConfigSpec.DoubleValue BLOCK_PLACER_POWER = BUILDER_S
-            .defineInRange("block_placer_power", 50, 0, Double.MAX_VALUE);
-    static final ModConfigSpec SPEC_C = BUILDER_C.build();
-    static final ModConfigSpec SPEC_S = BUILDER_S.build();
+    private static final ModConfigSpec.DoubleValue BLOCK_PLACER_POWER;
+    private static final ModConfigSpec.IntValue BLOCK_PLACER_RANGE;
 
-    //public static boolean foldInterface;
+    private static final ModConfigSpec.IntValue BLOCK_PLACER_CUBOID_MAX_SIZE;
+    private static final ModConfigSpec.IntValue BLOCK_PLACER_SPHERE_MAX_RADIUS;
+    private static final ModConfigSpec.IntValue BLOCK_PLACER_CYLINDER_MAX_RADIUS;
+    private static final ModConfigSpec.IntValue BLOCK_PLACER_CYLINDER_MAX_HEIGHT;
+    private static final ModConfigSpec.IntValue BLOCK_PLACER_DYNAMIC_MAX_RADIUS;
+
+    private static final ModConfigSpec.IntValue BLOCK_PLACER_COOLDOWN;
+    private static final ModConfigSpec.IntValue BLOCK_PLACER_COOLDOWN_SCALE;
+    private static final ModConfigSpec.IntValue BLOCK_PLACER_BATCH_SIZE;
+
+    private static final ModConfigSpec.BooleanValue BLOCK_PLACER_INFINITY_ENABLED;
+    private static final ModConfigSpec.BooleanValue BLOCK_PLACER_FORTUNE_ENABLED;
+    private static final ModConfigSpec.BooleanValue BLOCK_PLACER_SILK_TOUCH_ENABLED;
+
+    static final ModConfigSpec SPEC_C;
+    static final ModConfigSpec SPEC_S;
+
+    static {
+        BUILDER_S.push("engines");
+        HYDRAULIC_ENGINE_STRESS_PROVIDE = BUILDER_S
+                .comment("Stress units provided by the Hydraulic Engine")
+                .defineInRange("hydraulic_stress_provide", 8192, 0, Double.MAX_VALUE);
+        WIND_ENGINE_STRESS_PROVIDE = BUILDER_S
+                .comment("Stress units provided by the Wind Engine")
+                .defineInRange("wind_stress_provide", 8192, 0, Double.MAX_VALUE);
+        BUILDER_S.pop();
+
+        BUILDER_S.push("block_placer");
+
+        BLOCK_PLACER_POWER = BUILDER_S
+                .comment("Maximum hardness of blocks the Block Placer can break/replace. Blocks with higher hardness are ignored.")
+                .defineInRange("power", 50, 0, Double.MAX_VALUE);
+        BLOCK_PLACER_RANGE = BUILDER_S
+                .comment("Maximum reach distance of the Block Placer in blocks")
+                .defineInRange("range", 48, 8, 128);
+
+        BUILDER_S.push("brush");
+        BLOCK_PLACER_CUBOID_MAX_SIZE = BUILDER_S
+                .comment("Maximum size per axis for the Cuboid brush (each axis is independent)")
+                .defineInRange("cuboid_max_size", 32, 1, 64);
+        BLOCK_PLACER_SPHERE_MAX_RADIUS = BUILDER_S
+                .comment("Maximum radius for the Sphere brush")
+                .defineInRange("sphere_max_radius", 10, 1, 20);
+        BLOCK_PLACER_CYLINDER_MAX_RADIUS = BUILDER_S
+                .comment("Maximum radius for the Cylinder brush")
+                .defineInRange("cylinder_max_radius", 8, 1, 12);
+        BLOCK_PLACER_CYLINDER_MAX_HEIGHT = BUILDER_S
+                .comment("Maximum height for the Cylinder brush")
+                .defineInRange("cylinder_max_height", 8, 1, 12);
+        BLOCK_PLACER_DYNAMIC_MAX_RADIUS = BUILDER_S
+                .comment("Maximum radius for the Surface and Cluster brushes")
+                .defineInRange("dynamic_max_radius", 10, 1, 64);
+        BUILDER_S.pop();
+
+        BUILDER_S.push("cooldown");
+        BLOCK_PLACER_COOLDOWN = BUILDER_S
+                .comment("Base cooldown in ticks added to every activation.",
+                         "Final cooldown = base + affected_blocks / scale")
+                .defineInRange("base", 2, 1, 100);
+        BLOCK_PLACER_COOLDOWN_SCALE = BUILDER_S
+                .comment("Divisor for the block-count part of the cooldown formula: affected_blocks / scale.",
+                         "Lower values = longer cooldowns for large operations.")
+                .defineInRange("scale", 20, 1, 10000);
+        BLOCK_PLACER_BATCH_SIZE = BUILDER_S
+                .comment("Number of blocks the Block Placer places per server tick.",
+                         "Lower values = smoother server, slower visual completion. Higher = faster but more load per tick.")
+                .defineInRange("batch_size", 256, 1, 4096);
+        BUILDER_S.pop();
+
+        BUILDER_S.push("enchantments");
+        BLOCK_PLACER_INFINITY_ENABLED = BUILDER_S
+                .comment("When true, Infinity enchantment allows placing renewable blocks (e.g. Cobblestone) without consuming them")
+                .define("infinity", true);
+        BLOCK_PLACER_FORTUNE_ENABLED = BUILDER_S
+                .comment("When true, Fortune enchantment affects block drops when breaking blocks")
+                .define("fortune", true);
+        BLOCK_PLACER_SILK_TOUCH_ENABLED = BUILDER_S
+                .comment("When true, Silk Touch enchantment affects block drops when breaking blocks")
+                .define("silk_touch", true);
+        BUILDER_S.pop();
+
+        BUILDER_S.pop(); // block_placer
+
+        SPEC_C = BUILDER_C.build();
+        SPEC_S = BUILDER_S.build();
+    }
 
     public static double hydraulicEngineStressProvide;
     public static double windEngineStressProvide;
+
     public static double blockPlacerPower;
+    public static int blockPlacerRange = 48;
+
+    public static int blockPlacerCuboidMaxSize = 32;
+    public static int blockPlacerSphereMaxRadius = 10;
+    public static int blockPlacerCylinderMaxRadius = 8;
+    public static int blockPlacerCylinderMaxHeight = 8;
+    public static int blockPlacerDynamicMaxRadius = 10;
+
+    public static int blockPlacerCooldown = 2;
+    public static int blockPlacerCooldownScale = 20;
+    public static int blockPlacerBatchSize = 256;
+
+    public static boolean blockPlacerInfinityEnabled = true;
+    public static boolean blockPlacerFortuneEnabled = true;
+    public static boolean blockPlacerSilkTouchEnabled = true;
 
     @SubscribeEvent
-    static void onLoad(final ModConfigEvent.Loading event)
-    {
-        /*if (event.getConfig().getSpec() == SPEC_C) {
-            foldInterface = FOLD_INTERFACE.get();
-        }*/
+    static void onLoad(final ModConfigEvent.Loading event) {
         if (event.getConfig().getSpec() == SPEC_S) {
             hydraulicEngineStressProvide = HYDRAULIC_ENGINE_STRESS_PROVIDE.get();
             windEngineStressProvide = WIND_ENGINE_STRESS_PROVIDE.get();
+
             blockPlacerPower = BLOCK_PLACER_POWER.get();
+            blockPlacerRange = BLOCK_PLACER_RANGE.get();
+
+            blockPlacerCuboidMaxSize = BLOCK_PLACER_CUBOID_MAX_SIZE.get();
+            blockPlacerSphereMaxRadius = BLOCK_PLACER_SPHERE_MAX_RADIUS.get();
+            blockPlacerCylinderMaxRadius = BLOCK_PLACER_CYLINDER_MAX_RADIUS.get();
+            blockPlacerCylinderMaxHeight = BLOCK_PLACER_CYLINDER_MAX_HEIGHT.get();
+            blockPlacerDynamicMaxRadius = BLOCK_PLACER_DYNAMIC_MAX_RADIUS.get();
+
+            blockPlacerCooldown = BLOCK_PLACER_COOLDOWN.get();
+            blockPlacerCooldownScale = BLOCK_PLACER_COOLDOWN_SCALE.get();
+            blockPlacerBatchSize = BLOCK_PLACER_BATCH_SIZE.get();
+
+            blockPlacerInfinityEnabled = BLOCK_PLACER_INFINITY_ENABLED.get();
+            blockPlacerFortuneEnabled = BLOCK_PLACER_FORTUNE_ENABLED.get();
+            blockPlacerSilkTouchEnabled = BLOCK_PLACER_SILK_TOUCH_ENABLED.get();
         }
     }
 }

@@ -19,6 +19,7 @@ import dev.hail.create_fantasizing.data.CFAAttachmentTypes;
 import dev.hail.create_fantasizing.data.CFADataComponents;
 import dev.hail.create_fantasizing.event.CFAPackets;
 import dev.hail.create_fantasizing.item.CFAItems;
+import dev.hail.create_fantasizing.item.block_placer.SyncBlockPlacerLimitsPacket;
 import dev.hail.create_fantasizing.ponder.CFAPonderPlugin;
 import net.createmod.catnip.lang.FontHelper;
 import net.createmod.ponder.foundation.PonderIndex;
@@ -63,6 +64,7 @@ public class FantasizingMod
         REGISTRATE.registerEventListeners(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(SyncBlockPlacerLimitsPacket::register);
         modEventBus.addListener(this::registerCauldronFluidContentEvent);
         modEventBus.addListener(this::registerCapabilities);
         REGISTRATE.setCreativeTab(CFACreativeTab.TAB);

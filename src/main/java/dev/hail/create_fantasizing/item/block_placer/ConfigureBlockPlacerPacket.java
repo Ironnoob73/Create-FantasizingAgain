@@ -9,6 +9,7 @@ import net.createmod.catnip.codecs.stream.CatnipLargerStreamCodecs;
 import net.createmod.catnip.codecs.stream.CatnipStreamCodecs;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 
@@ -49,7 +50,11 @@ public class ConfigureBlockPlacerPacket extends ConfigureZapperPacket {
 
     @Override
     public void configureZapper(ItemStack stack) {
-        BlockPlacerItem.configureSettings(stack, pattern, brush, brushParamX, brushParamY, brushParamZ, tool, placement, destroyMode);
+        BPBrush bpBrush = brush.get();
+        int clampedX = bpBrush.amtParams > 0 ? Mth.clamp(brushParamX, bpBrush.getMin(0), bpBrush.getMax(0)) : brushParamX;
+        int clampedY = bpBrush.amtParams > 1 ? Mth.clamp(brushParamY, bpBrush.getMin(1), bpBrush.getMax(1)) : brushParamY;
+        int clampedZ = bpBrush.amtParams > 2 ? Mth.clamp(brushParamZ, bpBrush.getMin(2), bpBrush.getMax(2)) : brushParamZ;
+        BlockPlacerItem.configureSettings(stack, pattern, brush, clampedX, clampedY, clampedZ, tool, placement, destroyMode);
     }
 
     @Override
