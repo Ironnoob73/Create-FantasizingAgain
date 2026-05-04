@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "create_fantasizing:sturdy_conduit"
   },
-  "loops": 32,
+  "loops": 128,
   "results": [
     {
       "id": "create_fantasizing:compact_hydraulic_engine"

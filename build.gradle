@@ -111,8 +111,6 @@ dependencies {
     runtimeOnly "maven.modrinth:inventory-profiles-next:neoforge-1.21.1-2.2.3"
     runtimeOnly "maven.modrinth:libipn:neoforge-1.21.1-6.6.2"
     runtimeOnly "maven.modrinth:kotlin-for-forge:5.10.0"
-
-    implementation "curse.maven:create-encased-829380:7459750"
 }
 
 tasks.withType(ProcessResources).configureEach {
