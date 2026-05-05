@@ -8,6 +8,7 @@ import com.simibubi.create.foundation.item.TooltipModifier;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import dev.hail.create_fantasizing.block.CFAMenus;
 import dev.hail.create_fantasizing.block.CFAMountedStorageTypes;
+import dev.hail.create_fantasizing.block.chromatic_tunnel.ShadowSteelTunnelBlockEntity;
 import dev.hail.create_fantasizing.block.crate.AndesiteCrateEntity;
 import dev.hail.create_fantasizing.block.crate.BrassCrateEntity;
 import dev.hail.create_fantasizing.block.crate.IronCrateEntity;
@@ -17,6 +18,7 @@ import dev.hail.create_fantasizing.block.fluid.PowderSnowBucketWrapper;
 import dev.hail.create_fantasizing.block.transporter.TransporterEntity;
 import dev.hail.create_fantasizing.data.CFAAttachmentTypes;
 import dev.hail.create_fantasizing.data.CFADataComponents;
+import dev.hail.create_fantasizing.data.CFARecipeTypes;
 import dev.hail.create_fantasizing.event.CFAPackets;
 import dev.hail.create_fantasizing.item.CFAItems;
 import dev.hail.create_fantasizing.item.block_placer.SyncBlockPlacerLimitsPacket;
@@ -74,6 +76,7 @@ public class FantasizingMod
         CFAFluids.FLUID_TYPES.register(modEventBus);
         CFACreativeTab.init(modEventBus);
 
+        CFARecipeTypes.register(modEventBus);
         CFADataComponents.register(modEventBus);
         CFAAttachmentTypes.register(modEventBus);
         CFAPackets.register();
@@ -89,6 +92,7 @@ public class FantasizingMod
     }
     private void registerCapabilities(RegisterCapabilitiesEvent event) {
         TransporterEntity.registerCapabilities(event);
+        ShadowSteelTunnelBlockEntity.registerCapabilities(event);
         AndesiteCrateEntity.registerCapabilities(event);
         IronCrateEntity.registerCapabilities(event);
         BrassCrateEntity.registerCapabilities(event);

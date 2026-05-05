@@ -6,6 +6,8 @@
   "client": [
   ],
   "mixins": [
+    "BeltBlockEntityMixin",
+    "BeltTunnelInteractionHandlerMixin",
     "CogwheelBlockMixin",
     "ContraptionMixin",
     "FluidDrainBehaviorMixin",

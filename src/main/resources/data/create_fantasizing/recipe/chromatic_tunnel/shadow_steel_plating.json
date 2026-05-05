@@ -1,0 +1,18 @@
+{
+  "type": "create:shadow_plating",
+  "ingredients": [
+    {
+      "type": "neoforge:compound",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:alternative_chromatic_compound"
+        }
+      ]
+    }
+  ],
+  "results": [
+    {
+      "id": "create:shadow_steel"
+    }
+  ]
+}

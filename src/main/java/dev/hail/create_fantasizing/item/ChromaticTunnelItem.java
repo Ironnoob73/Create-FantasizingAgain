@@ -1,6 +1,5 @@
 package dev.hail.create_fantasizing.item;
 
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.kinetics.belt.BeltBlockEntity;
 import com.simibubi.create.content.kinetics.belt.BeltHelper;
 import com.simibubi.create.content.logistics.tunnel.BeltTunnelItem;
