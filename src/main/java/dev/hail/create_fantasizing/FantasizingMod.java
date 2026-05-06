@@ -8,6 +8,7 @@ import com.simibubi.create.foundation.item.TooltipModifier;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import dev.hail.create_fantasizing.block.CFAMenus;
 import dev.hail.create_fantasizing.block.CFAMountedStorageTypes;
+import dev.hail.create_fantasizing.block.chromatic_tunnel.RefinedRadianceTunnelBlockEntity;
 import dev.hail.create_fantasizing.block.chromatic_tunnel.ShadowSteelTunnelBlockEntity;
 import dev.hail.create_fantasizing.block.crate.AndesiteCrateEntity;
 import dev.hail.create_fantasizing.block.crate.BrassCrateEntity;
@@ -93,6 +94,7 @@ public class FantasizingMod
     private void registerCapabilities(RegisterCapabilitiesEvent event) {
         TransporterEntity.registerCapabilities(event);
         ShadowSteelTunnelBlockEntity.registerCapabilities(event);
+        RefinedRadianceTunnelBlockEntity.registerCapabilities(event);
         AndesiteCrateEntity.registerCapabilities(event);
         IronCrateEntity.registerCapabilities(event);
         BrassCrateEntity.registerCapabilities(event);

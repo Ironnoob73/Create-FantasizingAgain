@@ -1,6 +1,5 @@
 package dev.hail.create_fantasizing.block;
 
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllDisplaySources;
 import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
@@ -8,8 +7,6 @@ import com.simibubi.create.content.kinetics.base.OrientedRotatingVisual;
 import com.simibubi.create.content.kinetics.base.ShaftRenderer;
 import com.simibubi.create.content.kinetics.base.SingleAxisRotatingVisual;
 import com.simibubi.create.content.kinetics.simpleRelays.*;
-import com.simibubi.create.content.logistics.tunnel.BeltTunnelBlockEntity;
-import com.simibubi.create.content.logistics.tunnel.BeltTunnelItem;
 import com.simibubi.create.content.logistics.tunnel.BeltTunnelRenderer;
 import com.simibubi.create.content.logistics.tunnel.BeltTunnelVisual;
 import com.simibubi.create.foundation.data.BlockStateGen;
@@ -17,6 +14,8 @@ import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
+import dev.hail.create_fantasizing.block.chromatic_tunnel.RefinedRadianceTunnelBlock;
+import dev.hail.create_fantasizing.block.chromatic_tunnel.RefinedRadianceTunnelBlockEntity;
 import dev.hail.create_fantasizing.block.chromatic_tunnel.ShadowSteelTunnelBlock;
 import dev.hail.create_fantasizing.block.chromatic_tunnel.ShadowSteelTunnelBlockEntity;
 import dev.hail.create_fantasizing.block.compat_engine.*;
@@ -176,16 +175,29 @@ public class CFABlocks {
             .register();
 
     public static final BlockEntry<ShadowSteelTunnelBlock> SHADOW_STEEL_TUNNEL = REGISTRATE.block("shadow_steel_tunnel", ShadowSteelTunnelBlock::new)
-            .properties(p -> p.mapColor(MapColor.COLOR_BLACK))
+            .properties(p -> p.mapColor(MapColor.COLOR_BLACK).noOcclusion())
             .transform(displaySource(AllDisplaySources.ACCUMULATE_ITEMS))
             .transform(displaySource(AllDisplaySources.ITEM_THROUGHPUT))
             .item(ChromaticTunnelItem::new)
             .build()
             .register();
-    public static final BlockEntityEntry<ShadowSteelTunnelBlockEntity> SHADOW_STEEL_TUNNEL_ENITIY = REGISTRATE
+    public static final BlockEntityEntry<ShadowSteelTunnelBlockEntity> SHADOW_STEEL_TUNNEL_ENTITY = REGISTRATE
             .blockEntity("shadow_steel_tunnel", ShadowSteelTunnelBlockEntity::new)
             .visual(() -> BeltTunnelVisual::new)
             .validBlocks(SHADOW_STEEL_TUNNEL)
+            .renderer(() -> BeltTunnelRenderer::new)
+            .register();
+    public static final BlockEntry<RefinedRadianceTunnelBlock> REFINED_RADIANCE_TUNNEL = REGISTRATE.block("refined_radiance_tunnel", RefinedRadianceTunnelBlock::new)
+            .properties(p -> p.mapColor(MapColor.SNOW).noOcclusion())
+            .transform(displaySource(AllDisplaySources.ACCUMULATE_ITEMS))
+            .transform(displaySource(AllDisplaySources.ITEM_THROUGHPUT))
+            .item(ChromaticTunnelItem::new)
+            .build()
+            .register();
+    public static final BlockEntityEntry<RefinedRadianceTunnelBlockEntity> REFINED_RADIANCE_TUNNEL_ENTITY = REGISTRATE
+            .blockEntity("refined_radiance_tunnel", RefinedRadianceTunnelBlockEntity::new)
+            .visual(() -> BeltTunnelVisual::new)
+            .validBlocks(REFINED_RADIANCE_TUNNEL)
             .renderer(() -> BeltTunnelRenderer::new)
             .register();
 

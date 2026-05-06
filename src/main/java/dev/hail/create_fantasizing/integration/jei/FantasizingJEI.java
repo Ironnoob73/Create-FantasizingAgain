@@ -6,6 +6,7 @@ import com.simibubi.create.compat.jei.ToolboxColoringRecipeMaker;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import dev.hail.create_fantasizing.FantasizingMod;
 import dev.hail.create_fantasizing.block.CFABlocks;
+import dev.hail.create_fantasizing.block.chromatic_tunnel.ExposingRecipe;
 import dev.hail.create_fantasizing.block.chromatic_tunnel.ShadowPlatingRecipe;
 import dev.hail.create_fantasizing.data.CFARecipeTypes;
 import mezz.jei.api.IModPlugin;
@@ -33,7 +34,6 @@ public class FantasizingJEI implements IModPlugin {
     private static final ResourceLocation ID = FantasizingMod.resourceLocation("jei_plugin");
 
     private final List<CreateRecipeCategory<?>> allCategories = new ArrayList<>();
-    private IIngredientManager ingredientManager;
 
     private void loadCategories() {
         allCategories.clear();
@@ -41,10 +41,16 @@ public class FantasizingJEI implements IModPlugin {
         CreateRecipeCategory<?>
                 shadow_plating = builder(ShadowPlatingRecipe.class)
                 .addTypedRecipes(CFARecipeTypes.SHADOW_PLATING)
-                .catalyst(AllBlocks.MECHANICAL_PRESS::get)
+                .catalyst(CFABlocks.SHADOW_STEEL_TUNNEL::get)
                 .doubleItemIcon(CFABlocks.SHADOW_STEEL_TUNNEL.get(), AllItems.SHADOW_STEEL.get())
                 .emptyBackground(177, 70)
-                .build("shadow_plating", ShadowPlatingCategory::new);
+                .build("shadow_plating", ShadowPlatingCategory::new),
+                exposing = builder(ExposingRecipe.class)
+                .addTypedRecipes(CFARecipeTypes.EXPOSING)
+                .catalyst(CFABlocks.REFINED_RADIANCE_TUNNEL::get)
+                .doubleItemIcon(CFABlocks.REFINED_RADIANCE_TUNNEL.get(), AllItems.REFINED_RADIANCE.get())
+                .emptyBackground(177, 70)
+                .build("exposing", ExposingCategory::new);
     }
 
     private <T extends Recipe<? extends RecipeInput>> FantasizingJEI.CategoryBuilder<T> builder(Class<T> recipeClass) {
@@ -58,7 +64,7 @@ public class FantasizingJEI implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        ingredientManager = registration.getIngredientManager();
+        IIngredientManager ingredientManager = registration.getIngredientManager();
         allCategories.forEach(c -> c.registerRecipes(registration));
         registration.addRecipes(RecipeTypes.CRAFTING, ToolboxColoringRecipeMaker.createRecipes().toList());
     }

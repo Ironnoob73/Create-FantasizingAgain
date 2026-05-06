@@ -23,6 +23,7 @@
   "block.create_fantasizing.transporter": "运输器",
   "block.create_fantasizing.transporter.tooltip.summary":"将物品从一个容器_转移_到另一个容器。不能从另一个运输器抽取物品！",
   "block.create_fantasizing.shadow_steel_tunnel": "暗影钢隧道",
+  "block.create_fantasizing.refined_radiance_tunnel": "光辉石隧道",
   "block.create_fantasizing.andesite_crate": "安山板条箱",
   "block.create_fantasizing.iron_crate": "铁板条箱",
   "block.create_fantasizing.brass_crate": "黄铜板条箱",
@@ -46,6 +47,7 @@
   "create_fantasizing.gui.crate.no_fold.1": "目前你只能通过修改界面尺寸或者放大窗口来解决这个问题。",
 
   "recipe.create_fantasizing.shadow_plating.title": "镀影",
+  "recipe.create_fantasizing.exposing.title": "曝光",
 
   "create_fantasizing.ponder.acc_convert.header": "将替用型异彩化合物转化为其他材料",
   "create_fantasizing.ponder.acc_convert.text_1": "当替用型异彩化合物周围存在光源时，将缓缓转变为光辉石。",

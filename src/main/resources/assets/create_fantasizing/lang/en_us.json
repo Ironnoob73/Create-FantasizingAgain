@@ -23,6 +23,7 @@
   "block.create_fantasizing.transporter": "Transporter",
   "block.create_fantasizing.transporter.tooltip.summary":"_Transfer_ items from one container to another. Can't extract items from another Transporter!",
   "block.create_fantasizing.shadow_steel_tunnel": "Shadow Steel Tunnel",
+  "block.create_fantasizing.refined_radiance_tunnel": "Refined Radiance Tunnel",
   "block.create_fantasizing.andesite_crate": "Andesite Crate",
   "block.create_fantasizing.iron_crate": "Iron Crate",
   "block.create_fantasizing.brass_crate": "Brass Crate",
@@ -46,6 +47,7 @@
   "create_fantasizing.gui.crate.no_fold.1": "Currently, the only solution to this issue is to resize the interface or enlarge the window.",
 
   "recipe.create_fantasizing.shadow_plating.title": "Shadow Plating",
+  "recipe.create_fantasizing.exposing.title": "Exposing",
 
   "create_fantasizing.ponder.acc_convert.header": "Convert the Alternative Chromatic Compound to other materials.",
   "create_fantasizing.ponder.acc_convert.text_1": "When a light source is present near the Alternative Chromatic Compound, it will gradually transform into Refined Radiance.",

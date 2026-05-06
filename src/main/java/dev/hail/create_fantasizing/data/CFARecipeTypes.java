@@ -1,15 +1,13 @@
 package dev.hail.create_fantasizing.data;
 
 import com.mojang.serialization.Codec;
-import com.simibubi.create.AllRecipeTypes;
-import com.simibubi.create.AllTags;
-import com.simibubi.create.Create;
 import com.simibubi.create.content.kinetics.deployer.ItemApplicationRecipe;
 import com.simibubi.create.content.kinetics.deployer.ItemApplicationRecipeParams;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import com.simibubi.create.content.processing.recipe.StandardProcessingRecipe;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import dev.hail.create_fantasizing.FantasizingMod;
+import dev.hail.create_fantasizing.block.chromatic_tunnel.ExposingRecipe;
 import dev.hail.create_fantasizing.block.chromatic_tunnel.ShadowPlatingRecipe;
 import net.createmod.catnip.lang.Lang;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -30,7 +28,8 @@ import java.util.function.Supplier;
 
 public enum CFARecipeTypes implements IRecipeTypeInfo, StringRepresentable {
 
-    SHADOW_PLATING(ShadowPlatingRecipe::new);
+    SHADOW_PLATING(ShadowPlatingRecipe::new),
+    EXPOSING(ExposingRecipe::new);
 
     public final ResourceLocation id;
     public final Supplier<RecipeSerializer<?>> serializerSupplier;

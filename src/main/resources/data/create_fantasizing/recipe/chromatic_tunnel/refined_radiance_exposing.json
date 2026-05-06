@@ -1,0 +1,21 @@
+{
+  "type": "create_fantasizing:exposing",
+  "ingredients": [
+    {
+      "type": "neoforge:compound",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:alternative_chromatic_compound"
+        },
+        {
+          "item": "create:chromatic_compound"
+        }
+      ]
+    }
+  ],
+  "results": [
+    {
+      "id": "create:refined_radiance"
+    }
+  ]
+}

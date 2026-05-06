@@ -1,6 +1,6 @@
 package dev.hail.create_fantasizing.block.chromatic_tunnel;
 
-import com.simibubi.create.*;
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipe;
 import com.simibubi.create.foundation.recipe.RecipeApplier;
@@ -21,16 +21,16 @@ import net.neoforged.neoforge.items.IItemHandler;
 import java.util.List;
 import java.util.Optional;
 
-public class ShadowSteelTunnelBlockEntity extends ChromaticTunnelBlockEntity {
+public class RefinedRadianceTunnelBlockEntity extends ChromaticTunnelBlockEntity {
 
-    public ShadowSteelTunnelBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    public RefinedRadianceTunnelBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
 
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(
                 Capabilities.ItemHandler.BLOCK,
-                CFABlocks.SHADOW_STEEL_TUNNEL_ENTITY.get(),
+                CFABlocks.REFINED_RADIANCE_TUNNEL_ENTITY.get(),
                 (be, context) ->  {
                     if (be.cap == null && be.level != null) {
                         if (AllBlocks.BELT.has(be.level.getBlockState(be.worldPosition.below()))) {
@@ -50,7 +50,7 @@ public class ShadowSteelTunnelBlockEntity extends ChromaticTunnelBlockEntity {
 
     @Override
     public boolean tryProcessOnBelt(TransportedItemStack input, List<ItemStack> outputList, boolean simulate) {
-        Optional<RecipeHolder<ShadowPlatingRecipe>> recipe = getRecipe(input.stack);
+        Optional<RecipeHolder<ExposingRecipe>> recipe = getRecipe(input.stack);
         if (recipe.isEmpty())
             return false;
         if (simulate)
@@ -68,12 +68,12 @@ public class ShadowSteelTunnelBlockEntity extends ChromaticTunnelBlockEntity {
         return true;
     }
 
-    public Optional<RecipeHolder<ShadowPlatingRecipe>> getRecipe(ItemStack item) {
-        Optional<RecipeHolder<ShadowPlatingRecipe>> assemblyRecipe =
-                SequencedAssemblyRecipe.getRecipe(level, item, CFARecipeTypes.SHADOW_PLATING.getType(), ShadowPlatingRecipe.class);
+    public Optional<RecipeHolder<ExposingRecipe>> getRecipe(ItemStack item) {
+        Optional<RecipeHolder<ExposingRecipe>> assemblyRecipe =
+                SequencedAssemblyRecipe.getRecipe(level, item, CFARecipeTypes.SHADOW_PLATING.getType(), ExposingRecipe.class);
         if (assemblyRecipe.isPresent())
             return assemblyRecipe;
 
-        return CFARecipeTypes.SHADOW_PLATING.find(new SingleRecipeInput(item), level);
+        return CFARecipeTypes.EXPOSING.find(new SingleRecipeInput(item), level);
     }
 }

@@ -1,0 +1,11 @@
+{
+  "parent": "create:block/belt_tunnel/straight",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "direction": "create_fantasizing:block/tunnel/refined_radiance_tunnel_neutral",
+    "frame": "create_fantasizing:block/tunnel/refined_radiance_tunnel_frame",
+    "particle": "create:block/refined_radiance_casing",
+    "top": "create_fantasizing:block/tunnel/refined_radiance_tunnel_top",
+    "tunnel": "create_fantasizing:block/tunnel/refined_radiance_tunnel"
+  }
+}
