@@ -49,10 +49,12 @@ public class ShadowSteelTunnelBlockEntity extends ChromaticTunnelBlockEntity {
     }
 
     @Override
-    public List<ItemStack> tryProcessOnBelt(TransportedItemStack input, boolean simulate) {
+    public boolean tryProcessOnBelt(TransportedItemStack input, List<ItemStack> outputList, boolean simulate) {
         Optional<RecipeHolder<ShadowPlatingRecipe>> recipe = getRecipe(input.stack);
         if (recipe.isEmpty())
-            return null;
+            return false;
+        if (simulate)
+            return true;
         List<ItemStack> outputs = RecipeApplier.applyRecipeOn(level,
                 input.stack, recipe.get().value(), true);
 
@@ -62,9 +64,8 @@ public class ShadowSteelTunnelBlockEntity extends ChromaticTunnelBlockEntity {
             }
         }
 
-        if (!simulate)
-            input.stack = ItemStack.EMPTY;
-        return outputs;
+        outputList.addAll(outputs);
+        return true;
     }
 
     public Optional<RecipeHolder<ShadowPlatingRecipe>> getRecipe(ItemStack item) {

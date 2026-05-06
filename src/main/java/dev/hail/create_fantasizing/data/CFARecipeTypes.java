@@ -9,6 +9,7 @@ import com.simibubi.create.content.kinetics.deployer.ItemApplicationRecipeParams
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import com.simibubi.create.content.processing.recipe.StandardProcessingRecipe;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
+import dev.hail.create_fantasizing.FantasizingMod;
 import dev.hail.create_fantasizing.block.chromatic_tunnel.ShadowPlatingRecipe;
 import net.createmod.catnip.lang.Lang;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -44,7 +45,7 @@ public enum CFARecipeTypes implements IRecipeTypeInfo, StringRepresentable {
 
     CFARecipeTypes(Supplier<RecipeSerializer<?>> serializerSupplier) {
         String name = Lang.asId(name());
-        id = Create.asResource(name);
+        id = FantasizingMod.resourceLocation(name);
         this.serializerSupplier = serializerSupplier;
         serializerObject = Registers.SERIALIZER_REGISTER.register(name, serializerSupplier);
         typeObject = Registers.TYPE_REGISTER.register(name, () -> RecipeType.simple(id));
@@ -97,8 +98,8 @@ public enum CFARecipeTypes implements IRecipeTypeInfo, StringRepresentable {
     }
 
     private static class Registers {
-        private static final DeferredRegister<RecipeSerializer<?>> SERIALIZER_REGISTER = DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, Create.ID);
-        private static final DeferredRegister<RecipeType<?>> TYPE_REGISTER = DeferredRegister.create(Registries.RECIPE_TYPE, Create.ID);
+        private static final DeferredRegister<RecipeSerializer<?>> SERIALIZER_REGISTER = DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, FantasizingMod.MOD_ID);
+        private static final DeferredRegister<RecipeType<?>> TYPE_REGISTER = DeferredRegister.create(Registries.RECIPE_TYPE, FantasizingMod.MOD_ID);
     }
 
 }
