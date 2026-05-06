@@ -45,6 +45,8 @@
   "create_fantasizing.gui.crate.no_fold.0": "容器界面超出了你的屏幕？",
   "create_fantasizing.gui.crate.no_fold.1": "目前你只能通过修改界面尺寸或者放大窗口来解决这个问题。",
 
+  "recipe.create_fantasizing.shadow_plating.title": "镀影",
+
   "create_fantasizing.ponder.acc_convert.header": "将替用型异彩化合物转化为其他材料",
   "create_fantasizing.ponder.acc_convert.text_1": "当替用型异彩化合物周围存在光源时，将缓缓转变为光辉石。",
   "create_fantasizing.ponder.acc_convert.text_2": "周围的光源越多，转变速度越快。",

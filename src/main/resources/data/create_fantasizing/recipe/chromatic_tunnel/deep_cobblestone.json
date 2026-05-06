@@ -5,17 +5,14 @@
       "type": "neoforge:compound",
       "ingredients": [
         {
-          "item": "create_fantasizing:alternative_chromatic_compound"
-        },
-        {
-          "item": "create:chromatic_compound"
+          "item": "minecraft:cobblestone"
         }
       ]
     }
   ],
   "results": [
     {
-      "id": "create:shadow_steel"
+      "id": "minecraft:cobbled_deepslate"
     }
   ]
 }

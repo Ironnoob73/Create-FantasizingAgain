@@ -45,6 +45,8 @@
   "create_fantasizing.gui.crate.no_fold.0": "Is the container interface out of your screen?",
   "create_fantasizing.gui.crate.no_fold.1": "Currently, the only solution to this issue is to resize the interface or enlarge the window.",
 
+  "recipe.create_fantasizing.shadow_plating.title": "Shadow Plating",
+
   "create_fantasizing.ponder.acc_convert.header": "Convert the Alternative Chromatic Compound to other materials.",
   "create_fantasizing.ponder.acc_convert.text_1": "When a light source is present near the Alternative Chromatic Compound, it will gradually transform into Refined Radiance.",
   "create_fantasizing.ponder.acc_convert.text_2": "The more light sources there are around, the faster the transformation speed.",
