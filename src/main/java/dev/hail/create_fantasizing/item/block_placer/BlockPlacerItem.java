@@ -39,7 +39,6 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
@@ -65,7 +64,7 @@ public class BlockPlacerItem extends ZapperItem {
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(SimpleCustomRenderer.create(this, new BlockPlacerItemRenderer()));
     }
-    public boolean isEnchantable(@NotNull ItemStack itemstack) {
+    public boolean isEnchantable(ItemStack itemstack) {
         return true;
     }
     @Override

@@ -48,10 +48,18 @@ public class CrateInventory extends ItemStackHandler {
             crateEntity.setChanged();
             itemCount = 0;
             for (int i = 0; i < getSlots(); i++) {
-                itemCount += Math.min(getStackInSlot(i).getCount(), getSlotLimit(i));
+                itemCount += Math.min(getStackInSlot(i).getCount() * (64 / getStackInSlot(i).getMaxStackSize()), getSlotLimit(i));
             }
         }
         notifyUpdate(true);
+    }
+
+    public int getActuallyItemCount(){
+        int result = 0;
+        for (int i = 0; i < getSlots(); i++) {
+            result += getStackInSlot(i).getCount() * (64 / getStackInSlot(i).getMaxStackSize());
+        }
+        return result;
     }
 
     boolean isMain(){

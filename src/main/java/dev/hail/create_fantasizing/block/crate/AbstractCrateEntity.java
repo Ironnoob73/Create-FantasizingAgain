@@ -1,17 +1,20 @@
 package dev.hail.create_fantasizing.block.crate;
 
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.api.equipment.goggles.IHaveHoveringInformation;
 import com.simibubi.create.content.logistics.crate.CrateBlockEntity;
 import com.simibubi.create.foundation.ICapabilityProvider;
 import com.simibubi.create.foundation.item.ItemHandlerWrapper;
 import com.simibubi.create.foundation.utility.CreateLang;
 import com.simibubi.create.foundation.utility.ResetableLazy;
+import joptsimple.internal.Strings;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -20,11 +23,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AbstractCrateEntity extends CrateBlockEntity implements Nameable, IHaveHoveringInformation {
+public abstract class AbstractCrateEntity extends CrateBlockEntity implements Nameable, IHaveHoveringInformation, IHaveGoggleInformation {
+    private static final Logger log = LoggerFactory.getLogger(AbstractCrateEntity.class);
     public String customName;
     protected ICapabilityProvider<IItemHandler> itemCapability = null;
     public CrateInventory inventory;
@@ -182,5 +188,57 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements Na
             return true;
         }
         return false;
+    }
+    @Override
+    public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+        if (hasCustomName() && !Objects.equals(customName, ""))
+            CreateLang.text(getName().getString()).style(ChatFormatting.WHITE).forGoggles(tooltip);
+        else
+            CreateLang.text(getBlockState().getBlock().getName().getString()).style(ChatFormatting.WHITE).forGoggles(tooltip);
+
+        if (isDoubleCrate()){
+            if(isSecondaryCrate())
+                CreateLang.builder().add(getOtherCrate().componentHelper(false)).add(componentHelper(false)).forGoggles(tooltip);
+            else
+                CreateLang.builder().add(componentHelper(false)).add(getOtherCrate().componentHelper(false)).forGoggles(tooltip);
+        } else
+            CreateLang.builder().add(componentHelper(false)).forGoggles(tooltip);
+        return true;
+    }
+    private MutableComponent componentHelper(boolean useBlocksAsBars) {
+        return useBlocksAsBars ? blockComponent() : barComponent();
+    }
+    public MutableComponent blockComponent() {
+        return Component.literal("" +
+                "\u2588".repeat(inventory.itemCount) +
+                "\u2592".repeat(inventory.allowedAmount - inventory.itemCount) +
+                "\u2591".repeat(inventory.getSlots() - inventory.allowedAmount));
+    }
+    public MutableComponent barComponent() {
+        MutableComponent bar = Component.empty();
+        for (int i = 0; i < inventory.getSlots(); i++) {
+            if (i > inventory.allowedAmount / 64 || (i == inventory.allowedAmount / 64 && inventory.allowedAmount % 64 == 0)){
+                if (inventory.getStackInSlot(i).isEmpty())
+                    bar.append(bars(1, ChatFormatting.DARK_GRAY));
+                else
+                    bar.append(bars(1, ChatFormatting.RED));
+            }else{
+                if (inventory.getStackInSlot(i).isEmpty()){
+                    if (i < inventory.allowedAmount / 64)
+                        bar.append(bars(1, ChatFormatting.DARK_GREEN));
+                    else
+                        bar.append(bars(1, ChatFormatting.GRAY));
+                }
+                else if (inventory.getStackInSlot(i).getCount() >= inventory.getStackInSlot(i).getMaxStackSize())
+                    bar.append(bars(1, ChatFormatting.WHITE));
+                else
+                    bar.append(bars(1, ChatFormatting.YELLOW));
+            }
+        }
+        return bar;
+    }
+    private MutableComponent bars(int level, ChatFormatting format) {
+        return Component.literal(Strings.repeat('|', level))
+                .withStyle(format);
     }
 }
