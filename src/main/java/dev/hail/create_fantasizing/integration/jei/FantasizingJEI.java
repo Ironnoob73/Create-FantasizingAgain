@@ -1,6 +1,5 @@
 package dev.hail.create_fantasizing.integration.jei;
 
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.compat.jei.ToolboxColoringRecipeMaker;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;

@@ -3,8 +3,8 @@ package dev.hail.create_fantasizing.integration.jei;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
+import dev.hail.create_fantasizing.block.CFABlocks;
 import dev.hail.create_fantasizing.block.chromatic_tunnel.ExposingRecipe;
-import dev.hail.create_fantasizing.block.chromatic_tunnel.ShadowPlatingRecipe;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
@@ -18,7 +18,7 @@ import java.util.List;
 
 @ParametersAreNonnullByDefault
 public class ExposingCategory extends CreateRecipeCategory<ExposingRecipe> {
-    private final ExposingAnimation animation = new ExposingAnimation();
+    private final ChromaticTunnelRecipeAnimation animation = new ChromaticTunnelRecipeAnimation(CFABlocks.REFINED_RADIANCE_TUNNEL.getDefaultState());
 
     public ExposingCategory(Info<ExposingRecipe> info) {
         super(info);

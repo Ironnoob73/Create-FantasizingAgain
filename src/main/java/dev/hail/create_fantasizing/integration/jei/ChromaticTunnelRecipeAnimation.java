@@ -10,15 +10,21 @@ import com.simibubi.create.content.kinetics.belt.BeltBlock;
 import com.simibubi.create.content.kinetics.belt.BeltPart;
 import com.simibubi.create.content.kinetics.belt.BeltRenderer;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
-import dev.hail.create_fantasizing.block.CFABlocks;
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.render.CachedBuffers;
 import net.createmod.catnip.render.SpriteShiftEntry;
 import net.createmod.catnip.render.SuperByteBuffer;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.world.level.block.state.BlockState;
 
-public class ExposingAnimation extends AnimatedKinetics {
+public class ChromaticTunnelRecipeAnimation extends AnimatedKinetics {
+    BlockState blockState;
+
+    public ChromaticTunnelRecipeAnimation(BlockState blockState){
+        super();
+        this.blockState = blockState;
+    }
 
     PartialModel beltPartial = AllPartialModels.BELT_MIDDLE;
 
@@ -58,7 +64,7 @@ public class ExposingAnimation extends AnimatedKinetics {
                 .scale(24)
                 .render(guiGraphics);
 
-        blockElement(CFABlocks.REFINED_RADIANCE_TUNNEL.getDefaultState())
+        blockElement(blockState)
                 .atLocal(0, 0, 0)
                 .scale(24)
                 .render(guiGraphics);

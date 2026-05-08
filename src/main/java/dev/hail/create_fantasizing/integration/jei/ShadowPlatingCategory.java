@@ -3,6 +3,7 @@ package dev.hail.create_fantasizing.integration.jei;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import com.simibubi.create.content.processing.recipe.ProcessingOutput;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
+import dev.hail.create_fantasizing.block.CFABlocks;
 import dev.hail.create_fantasizing.block.chromatic_tunnel.ShadowPlatingRecipe;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -17,7 +18,7 @@ import java.util.List;
 
 @ParametersAreNonnullByDefault
 public class ShadowPlatingCategory extends CreateRecipeCategory<ShadowPlatingRecipe> {
-    private final ShadowPlatingAnimation animation = new ShadowPlatingAnimation();
+    private final ChromaticTunnelRecipeAnimation animation = new ChromaticTunnelRecipeAnimation(CFABlocks.SHADOW_STEEL_TUNNEL.getDefaultState());
 
     public ShadowPlatingCategory(Info<ShadowPlatingRecipe> info) {
         super(info);
