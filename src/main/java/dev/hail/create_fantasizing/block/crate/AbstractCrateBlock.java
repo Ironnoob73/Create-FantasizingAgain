@@ -1,11 +1,9 @@
 package dev.hail.create_fantasizing.block.crate;
 
-import com.google.common.collect.Lists;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.logistics.crate.CrateBlock;
 import com.simibubi.create.foundation.item.ItemHelper;
 import net.createmod.catnip.data.Iterate;
-import net.minecraft.ChatFormatting;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -14,8 +12,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.ComponentUtils;
-import net.minecraft.network.chat.Style;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
@@ -24,7 +20,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.CustomData;
-import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -204,15 +199,26 @@ public abstract class AbstractCrateBlock extends CrateBlock {
                     if (abstractCrateEntity.hasCustomName()){
                         itemstack.set(DataComponents.CUSTOM_NAME, Component.empty().append(blockState.getBlock().getName()).append(" - ").append(Objects.requireNonNull(abstractCrateEntity.getCustomName())));
                     }
-                    List<Component> loreList = new ArrayList<>();
-                    loreList.add(abstractCrateEntity.barComponent());
-                    itemstack.set(DataComponents.LORE, new ItemLore(loreList));
                     dropList.add(itemstack);
                     return dropList;
                 }
             }
         }
         return super.getDrops(blockState, builder);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+        if (stack.has(DataComponents.BLOCK_ENTITY_DATA)) {
+            CompoundTag copiedComp = Objects.requireNonNull(stack.get(DataComponents.BLOCK_ENTITY_DATA)).copyTag();
+            CompoundTag crate_inv = copiedComp.getCompound("Inventory");
+            CrateInventory crateInventory = new CrateInventory(null, 0);
+            crateInventory.deserializeNBT(Objects.requireNonNull(context.registries()), crate_inv);
+            crateInventory.allowedAmount = copiedComp.getInt("AllowedAmount");
+            tooltipComponents.add(AbstractCrateEntity.barComponent(crateInventory));
+            tooltipComponents.addAll(AbstractCrateEntity.contentList(crateInventory));
+        }
     }
 
     @Override

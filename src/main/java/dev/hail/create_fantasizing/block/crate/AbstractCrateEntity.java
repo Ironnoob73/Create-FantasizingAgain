@@ -2,6 +2,7 @@ package dev.hail.create_fantasizing.block.crate;
 
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.api.equipment.goggles.IHaveHoveringInformation;
+import com.simibubi.create.content.equipment.goggles.GogglesItem;
 import com.simibubi.create.content.logistics.crate.CrateBlockEntity;
 import com.simibubi.create.foundation.ICapabilityProvider;
 import com.simibubi.create.foundation.item.ItemHandlerWrapper;
@@ -9,6 +10,7 @@ import com.simibubi.create.foundation.utility.CreateLang;
 import com.simibubi.create.foundation.utility.ResetableLazy;
 import joptsimple.internal.Strings;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -20,12 +22,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -183,6 +187,9 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements Na
 
     @Override
     public boolean addToTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+        Minecraft mc = Minecraft.getInstance();
+        if (GogglesItem.isWearingGoggles(mc.player))
+            return false;
         if (hasCustomName() && !Objects.equals(customName, "")){
             CreateLang.text(getName().getString()).style(ChatFormatting.WHITE).forGoggles(tooltip);
             return true;
@@ -196,17 +203,20 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements Na
         else
             CreateLang.text(getBlockState().getBlock().getName().getString()).style(ChatFormatting.WHITE).forGoggles(tooltip);
 
-        if (isDoubleCrate()){
-            if(isSecondaryCrate())
-                CreateLang.builder().add(getOtherCrate().componentHelper(false)).add(componentHelper(false)).forGoggles(tooltip);
-            else
-                CreateLang.builder().add(componentHelper(false)).add(getOtherCrate().componentHelper(false)).forGoggles(tooltip);
-        } else
-            CreateLang.builder().add(componentHelper(false)).forGoggles(tooltip);
+        if (isDoubleCrate() && isSecondaryCrate())
+            CreateLang.builder().add(getOtherCrate().componentHelper(false)).forGoggles(tooltip);
+        CreateLang.builder().add(componentHelper(false)).forGoggles(tooltip);
+        if (isDoubleCrate() && !isSecondaryCrate())
+            CreateLang.builder().add(getOtherCrate().componentHelper(false)).forGoggles(tooltip);
+
+        if (itemCapability != null){
+            for (Component component: contentList(Objects.requireNonNull(itemCapability.getCapability())))
+                CreateLang.builder().add(component).forGoggles(tooltip);
+        }
         return true;
     }
     private MutableComponent componentHelper(boolean useBlocksAsBars) {
-        return useBlocksAsBars ? blockComponent() : barComponent();
+        return useBlocksAsBars ? blockComponent() : barComponent(inventory);
     }
     public MutableComponent blockComponent() {
         return Component.literal("" +
@@ -214,7 +224,7 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements Na
                 "\u2592".repeat(inventory.allowedAmount - inventory.itemCount) +
                 "\u2591".repeat(inventory.getSlots() - inventory.allowedAmount));
     }
-    public MutableComponent barComponent() {
+    public static MutableComponent barComponent(CrateInventory inventory) {
         MutableComponent bar = Component.empty();
         for (int i = 0; i < inventory.getSlots(); i++) {
             if (i > inventory.allowedAmount / 64 || (i == inventory.allowedAmount / 64 && inventory.allowedAmount % 64 == 0)){
@@ -237,8 +247,26 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements Na
         }
         return bar;
     }
-    private MutableComponent bars(int level, ChatFormatting format) {
+    private static MutableComponent bars(int level, ChatFormatting format) {
         return Component.literal(Strings.repeat('|', level))
                 .withStyle(format);
+    }
+    public static List<Component> contentList(IItemHandler itemHandler){
+        List<Component> result = new ArrayList<>();
+        int infoCount = 0;
+        ChatFormatting infoFormatting = ChatFormatting.WHITE;
+        for (int i = 0; i < itemHandler.getSlots(); i++)
+            if (itemHandler.getStackInSlot(i) != ItemStack.EMPTY){
+                infoCount ++;
+                if (infoCount >= 2)
+                    infoFormatting = ChatFormatting.GRAY;
+                if (infoCount >= 3)
+                    infoFormatting = ChatFormatting.DARK_GRAY;
+                if (infoCount <= 3)
+                    result.add(Component.translatable("container.shulkerBox.itemCount", itemHandler.getStackInSlot(i).getHoverName(), itemHandler.getStackInSlot(i).getCount()).withStyle(infoFormatting));
+            }
+        if (infoCount - 3 > 0)
+            result.add(Component.translatable("container.shulkerBox.more", infoCount - 3).withStyle(ChatFormatting.ITALIC));
+        return result;
     }
 }
