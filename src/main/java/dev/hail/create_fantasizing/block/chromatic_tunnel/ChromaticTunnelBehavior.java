@@ -2,6 +2,8 @@ package dev.hail.create_fantasizing.block.chromatic_tunnel;
 
 import com.simibubi.create.content.kinetics.belt.behaviour.BeltProcessingBehaviour;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import dev.hail.create_fantasizing.CFAConfig;
+import net.createmod.catnip.annotations.ClientOnly;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -40,7 +42,10 @@ public class ChromaticTunnelBehavior extends BeltProcessingBehaviour {
         }
     }
 
+    @ClientOnly
     protected void spawnParticles() {
+        if (CFAConfig.chromaticTunnelSilentProcessing)
+            return;
         Level level = getWorld();
         BlockPos worldPosition = getPos();
         if (level != null && level.isClientSide) {
