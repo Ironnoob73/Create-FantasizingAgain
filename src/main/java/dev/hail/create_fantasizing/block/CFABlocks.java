@@ -20,6 +20,8 @@ import dev.hail.create_fantasizing.block.chromatic_tunnel.ShadowSteelTunnelBlock
 import dev.hail.create_fantasizing.block.chromatic_tunnel.ShadowSteelTunnelBlockEntity;
 import dev.hail.create_fantasizing.block.compat_engine.*;
 import dev.hail.create_fantasizing.block.crate.*;
+import dev.hail.create_fantasizing.block.crate.fluid_barrel.CopperFluidBarrelBlock;
+import dev.hail.create_fantasizing.block.crate.fluid_barrel.CopperFluidBarrelEntity;
 import dev.hail.create_fantasizing.block.phantom_shaft.PhantomCogwheel;
 import dev.hail.create_fantasizing.block.phantom_shaft.PhantomShaft;
 import dev.hail.create_fantasizing.block.phantom_shaft.PhantomShaftVisual;
@@ -137,6 +139,16 @@ public class CFABlocks {
     public static final BlockEntityEntry<SturdyCrateEntity> STURDY_CRATE_ENTITY = REGISTRATE
             .blockEntity("sturdy_crate", SturdyCrateEntity::new)
             .validBlocks(STURDY_CRATE)
+            .register();
+
+    public static final BlockEntry<CopperFluidBarrelBlock> COPPER_FLUID_BARREL = REGISTRATE.block("copper_fluid_barrel", CopperFluidBarrelBlock::new)
+            .initialProperties(SharedProperties::wooden)
+            .properties(p -> p.mapColor(MapColor.PODZOL).explosionResistance(1200))
+            .simpleItem()
+            .register();
+    public static final BlockEntityEntry<CopperFluidBarrelEntity> COPPER_FLUID_BARREL_ENTITY = REGISTRATE
+            .blockEntity("copper_fluid_barrel", CopperFluidBarrelEntity::new)
+            .validBlocks(COPPER_FLUID_BARREL)
             .register();
 
     public static final BlockEntry<PhantomShaft> PHANTOM_SHAFT = REGISTRATE.block("phantom_shaft", PhantomShaft::new)

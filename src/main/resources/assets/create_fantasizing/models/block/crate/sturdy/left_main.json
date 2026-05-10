@@ -1,8 +1,8 @@
 {
   "parent": "create:block/crate/left",
   "textures": {
-    "crate": "create_fantasizing:block/sturdy_crate_main",
-    "side": "create_fantasizing:block/sturdy_crate_main_side",
+    "crate": "create_fantasizing:block/crate/sturdy_main",
+    "side": "create_fantasizing:block/crate/sturdy_main_side",
     "casing": "create:block/railway_casing"
   }
 }

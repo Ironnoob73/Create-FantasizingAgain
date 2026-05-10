@@ -1,0 +1,17 @@
+{
+  "multipart": [
+    {"when": {"crate_type": "single"}, "apply": {"model": "create_fantasizing:block/crate/copper/single"}},
+    {"when": {"crate_type": "main", "facing": "down"}, "apply": {"model": "create_fantasizing:block/crate/copper/top_main"}},
+    {"when": {"crate_type": "main", "facing": "up"}, "apply": {"model": "create_fantasizing:block/crate/copper/bottom_main"}},
+    {"when": {"crate_type": "main", "facing": "north"}, "apply": {"model": "create_fantasizing:block/crate/copper/right_main"}},
+    {"when": {"crate_type": "main", "facing": "south"}, "apply": {"model": "create_fantasizing:block/crate/copper/left_main"}},
+    {"when": {"crate_type": "main", "facing": "west"}, "apply": {"model": "create_fantasizing:block/crate/copper/left_main", "y": 90}},
+    {"when": {"crate_type": "main", "facing": "east"}, "apply": {"model": "create_fantasizing:block/crate/copper/right_main", "y": 90}},
+    {"when": {"crate_type": "second", "facing": "down"}, "apply": {"model": "create_fantasizing:block/crate/copper/top"}},
+    {"when": {"crate_type": "second", "facing": "up"}, "apply": {"model": "create_fantasizing:block/crate/copper/bottom"}},
+    {"when": {"crate_type": "second", "facing": "north"}, "apply": {"model": "create_fantasizing:block/crate/copper/right"}},
+    {"when": {"crate_type": "second", "facing": "south"}, "apply": {"model": "create_fantasizing:block/crate/copper/left"}},
+    {"when": {"crate_type": "second", "facing": "west"}, "apply": {"model": "create_fantasizing:block/crate/copper/left", "y": 90}},
+    {"when": {"crate_type": "second", "facing": "east"}, "apply": {"model": "create_fantasizing:block/crate/copper/right", "y": 90}}
+  ]
+}

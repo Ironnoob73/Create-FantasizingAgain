@@ -6,10 +6,8 @@ import com.simibubi.create.foundation.item.ItemSlots;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.ItemStackHandler;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
-@ParametersAreNonnullByDefault
 public class CrateInventory extends ItemStackHandler {
     public static final Codec<CrateInventory> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ItemSlots.maxSizeCodec(Integer.MAX_VALUE).fieldOf("items").forGetter(ItemSlots::fromHandler),
@@ -35,7 +33,7 @@ public class CrateInventory extends ItemStackHandler {
     }
 
     @Override
-    public boolean isItemValid(int slot, ItemStack stack) {
+    public boolean isItemValid(int slot, @NotNull ItemStack stack) {
         if (slot > allowedAmount / 64)
             return false;
         return super.isItemValid(slot, stack);
@@ -52,20 +50,6 @@ public class CrateInventory extends ItemStackHandler {
             }
         }
         notifyUpdate(true);
-    }
-
-    public int getActuallyItemCount(){
-        int result = 0;
-        for (int i = 0; i < getSlots(); i++) {
-            result += getStackInSlot(i).getCount() * (64 / getStackInSlot(i).getMaxStackSize());
-        }
-        return result;
-    }
-
-    boolean isMain(){
-        if (crateEntity != null)
-            return !crateEntity.isSecondaryCrate();
-        return false;
     }
 
     private void notifyUpdate(Boolean first) {

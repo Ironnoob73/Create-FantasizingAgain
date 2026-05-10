@@ -22,19 +22,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public abstract class AbstractCrateEntity extends CrateBlockEntity implements Nameable, IHaveHoveringInformation, IHaveGoggleInformation {
-    private static final Logger log = LoggerFactory.getLogger(AbstractCrateEntity.class);
     public String customName;
     protected ICapabilityProvider<IItemHandler> itemCapability = null;
     public CrateInventory inventory;
@@ -148,21 +144,23 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements Na
 
     @Override
     public void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
-        compound.putInt("AllowedAmount", inventory.allowedAmount);
-        compound.put("Inventory", inventory.serializeNBT(registries));
-        if (customName != null)
-            compound.putString("CustomName", customName);
-
+        if (this.inventory != null){
+            compound.putInt("AllowedAmount", inventory.allowedAmount);
+            compound.put("Inventory", inventory.serializeNBT(registries));
+            if (customName != null)
+                compound.putString("CustomName", customName);
+        }
         super.write(compound, registries, clientPacket);
     }
 
     @Override
     protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
-        inventory.allowedAmount = compound.getInt("AllowedAmount");
-        inventory.deserializeNBT(registries, compound.getCompound("Inventory"));
-        if (compound.contains("CustomName", 8))
-            this.customName = compound.getString("CustomName");
-
+        if (this.inventory != null) {
+            inventory.allowedAmount = compound.getInt("AllowedAmount");
+            inventory.deserializeNBT(registries, compound.getCompound("Inventory"));
+            if (compound.contains("CustomName", 8))
+                this.customName = compound.getString("CustomName");
+        }
         super.read(compound, registries, clientPacket);
     }
 
@@ -215,7 +213,7 @@ public abstract class AbstractCrateEntity extends CrateBlockEntity implements Na
         }
         return true;
     }
-    private MutableComponent componentHelper(boolean useBlocksAsBars) {
+    private MutableComponent componentHelper(boolean useBlocksAsBars) {// TODO
         return useBlocksAsBars ? blockComponent() : barComponent(inventory);
     }
     public MutableComponent blockComponent() {
