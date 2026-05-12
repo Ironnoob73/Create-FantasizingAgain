@@ -1,6 +1,5 @@
 package dev.hail.create_fantasizing.block.crate;
 
-import com.simibubi.create.foundation.utility.ResetableLazy;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -21,7 +20,6 @@ public class IronCrateEntity extends AbstractCrateEntity implements MenuProvider
         super(type, pos, state);
         inventory = new CrateInventory(this, 20);
         inventory.allowedAmount = 1280;
-        invHandler = ResetableLazy.of(() -> inventory);
     }
 
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {

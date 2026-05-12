@@ -1,6 +1,5 @@
 package dev.hail.create_fantasizing.block.crate;
 
-import com.simibubi.create.foundation.utility.ResetableLazy;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -21,7 +20,6 @@ public class AndesiteCrateEntity extends AbstractCrateEntity implements MenuProv
         super(type, pos, state);
         inventory = new CrateInventory(this, 16);
         inventory.allowedAmount = 1024;
-        invHandler = ResetableLazy.of(() -> inventory);
     }
 
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
@@ -43,13 +41,5 @@ public class AndesiteCrateEntity extends AbstractCrateEntity implements MenuProv
     @Override
     public @NotNull Component getDisplayName() {
         return Component.translatable("block.create_fantasizing.andesite_crate");
-    }
-
-    @Override
-    public AbstractCrateEntity getOtherCrate(){
-        if (!CFABlocks.ANDESITE_CRATE.has(getBlockState()))
-            return null;
-        else
-            return super.getOtherCrate();
     }
 }

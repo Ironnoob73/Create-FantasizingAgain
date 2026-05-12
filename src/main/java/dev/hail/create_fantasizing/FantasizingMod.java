@@ -14,6 +14,7 @@ import dev.hail.create_fantasizing.block.crate.AndesiteCrateEntity;
 import dev.hail.create_fantasizing.block.crate.BrassCrateEntity;
 import dev.hail.create_fantasizing.block.crate.IronCrateEntity;
 import dev.hail.create_fantasizing.block.crate.SturdyCrateEntity;
+import dev.hail.create_fantasizing.block.crate.fluid_barrel.CopperFluidBarrelEntity;
 import dev.hail.create_fantasizing.block.fluid.CFAFluids;
 import dev.hail.create_fantasizing.block.fluid.PowderSnowBucketWrapper;
 import dev.hail.create_fantasizing.block.transporter.TransporterEntity;
@@ -99,6 +100,7 @@ public class FantasizingMod
         IronCrateEntity.registerCapabilities(event);
         BrassCrateEntity.registerCapabilities(event);
         SturdyCrateEntity.registerCapabilities(event);
+        CopperFluidBarrelEntity.registerCapabilities(event);
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new PowderSnowBucketWrapper(stack), Items.POWDER_SNOW_BUCKET);
     }
 

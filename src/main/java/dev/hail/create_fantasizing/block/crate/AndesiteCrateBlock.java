@@ -1,6 +1,5 @@
 package dev.hail.create_fantasizing.block.crate;
 
-import com.simibubi.create.foundation.block.IBE;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -17,12 +16,9 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
-public class AndesiteCrateBlock extends AbstractCrateBlock implements IBE<AndesiteCrateEntity> {
+public class AndesiteCrateBlock extends AbstractCrateBlock {
     public AndesiteCrateBlock(Properties properties) {super(properties);}
-    @Override
-    public Class<AndesiteCrateEntity> getBlockEntityClass() {
-        return AndesiteCrateEntity.class;
-    }
+
     @Override
     public BlockEntityType<? extends AndesiteCrateEntity> getBlockEntityType() {
         return CFABlocks.ANDESITE_CRATE_ENTITY.get();

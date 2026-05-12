@@ -1,17 +1,11 @@
 package dev.hail.create_fantasizing.block.crate.fluid_barrel;
 
-import com.simibubi.create.foundation.block.IBE;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
-public class CopperFluidBarrelBlock extends AbstractFluidBarrelBlock implements IBE<CopperFluidBarrelEntity> {
+public class CopperFluidBarrelBlock extends AbstractFluidBarrelBlock {
     public CopperFluidBarrelBlock(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    public Class<CopperFluidBarrelEntity> getBlockEntityClass() {
-        return CopperFluidBarrelEntity.class;
     }
 
     @Override

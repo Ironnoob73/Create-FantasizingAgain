@@ -1,6 +1,5 @@
 package dev.hail.create_fantasizing.block.crate;
 
-import com.simibubi.create.foundation.block.IBE;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -17,12 +16,9 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
-public class IronCrateBlock extends AbstractCrateBlock implements IBE<IronCrateEntity> {
+public class IronCrateBlock extends AbstractCrateBlock{
     public IronCrateBlock(Properties properties) {super(properties);}
-    @Override
-    public Class<IronCrateEntity> getBlockEntityClass() {
-        return IronCrateEntity.class;
-    }
+
     @Override
     public BlockEntityType<? extends IronCrateEntity> getBlockEntityType() {
         return CFABlocks.IRON_CRATE_ENTITY.get();

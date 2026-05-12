@@ -2,7 +2,7 @@ package dev.hail.create_fantasizing.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.simibubi.create.content.contraptions.Contraption;
-import dev.hail.create_fantasizing.block.crate.AbstractCrateBlock;
+import dev.hail.create_fantasizing.block.crate.AbstractDoubleStorageBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
@@ -23,9 +23,9 @@ public class ContraptionMixin {
             shift = At.Shift.AFTER))
     private void injected(Level world, Direction forcedDirection, Queue<BlockPos> frontier, Set<BlockPos> visited,
                           CallbackInfoReturnable<Boolean> cir, @Local(name = "pos") BlockPos pos, @Local(name = "state") BlockState state) {
-        if (state.hasProperty(AbstractCrateBlock.CRATE_TYPE) && state.hasProperty(AbstractCrateBlock.FACING)
-                && state.getValue(AbstractCrateBlock.CRATE_TYPE).isDouble()) {
-            Direction offset = state.getValue(AbstractCrateBlock.FACING);
+        if (state.hasProperty(AbstractDoubleStorageBlock.CRATE_TYPE) && state.hasProperty(AbstractDoubleStorageBlock.FACING)
+                && state.getValue(AbstractDoubleStorageBlock.CRATE_TYPE).isDouble()) {
+            Direction offset = state.getValue(AbstractDoubleStorageBlock.FACING);
             BlockPos attached = pos.relative(offset);
             if (!visited.contains(attached))
                 frontier.add(attached);
