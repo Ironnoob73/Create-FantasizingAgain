@@ -1,23 +1,16 @@
 package dev.hail.create_fantasizing.block.crate;
 
-import com.simibubi.create.foundation.gui.menu.MenuBase;
 import dev.hail.create_fantasizing.block.CFAMenus;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
-public class IronCrateMenu extends MenuBase<IronCrateEntity> {
-    public boolean doubleCrate;
-
+public class IronCrateMenu extends AbstractDoubleStorageMenu<IronCrateEntity> {
     public IronCrateMenu(MenuType<?> type, int id, Inventory inv, RegistryFriendlyByteBuf extraData) {
         super(type, id, inv, extraData);
     }
@@ -31,25 +24,13 @@ public class IronCrateMenu extends MenuBase<IronCrateEntity> {
     }
 
     @Override
-    protected IronCrateEntity createOnClient(RegistryFriendlyByteBuf extraData) {
-        BlockPos readBlockPos = extraData.readBlockPos();
-        ClientLevel world = Minecraft.getInstance().level;
-        BlockEntity blockEntity = null;
-        if (world != null) {
-            blockEntity = world.getBlockEntity(readBlockPos);
-        }
-        if (blockEntity instanceof IronCrateEntity ironCrateEntity)
-            return ironCrateEntity;
-        return null;
-    }
-    @Override
     public @NotNull ItemStack quickMoveStack(@NotNull Player playerIn, int index) {
         Slot clickedSlot = getSlot(index);
         if (!clickedSlot.hasItem())
             return ItemStack.EMPTY;
 
         ItemStack stack = clickedSlot.getItem();
-        int crateSize = doubleCrate ? 40 : 20;
+        int crateSize = dualBlock ? 40 : 20;
         if (index < crateSize) {
             moveItemStackTo(stack, crateSize, slots.size(), false);
             contentHolder.inventory.onContentsChanged(index);
@@ -58,14 +39,12 @@ public class IronCrateMenu extends MenuBase<IronCrateEntity> {
 
         return ItemStack.EMPTY;
     }
-    @Override
-    protected void initAndReadInventory(IronCrateEntity contentHolder) {}
 
     @Override
     protected void addSlots() {
-        doubleCrate = contentHolder.isDoubleCrate();
-        int x = doubleCrate ? 23 : 44;
-        int maxCol = doubleCrate ? 10 : 5;
+        dualBlock = contentHolder.isDoubleCrate();
+        int x = dualBlock ? 23 : 44;
+        int maxCol = dualBlock ? 10 : 5;
         for (int row = 0; row < 4; ++row) {
             for (int col = 0; col < maxCol; ++col) {
                 this.addSlot(
@@ -75,7 +54,7 @@ public class IronCrateMenu extends MenuBase<IronCrateEntity> {
         }
 
         // player Slots
-        int xOffset = doubleCrate ? 46 : 8;
+        int xOffset = dualBlock ? 46 : 8;
         int yOffset = 156;
         for (int row = 0; row < 3; ++row) {
             for (int col = 0; col < 9; ++col) {
@@ -88,13 +67,5 @@ public class IronCrateMenu extends MenuBase<IronCrateEntity> {
         }
 
         broadcastChanges();
-    }
-
-    @Override
-    protected void saveData(IronCrateEntity contentHolder) {}
-
-    @Override
-    public boolean stillValid(Player player) {
-        return contentHolder != null && contentHolder.canPlayerUse(player);
     }
 }

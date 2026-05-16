@@ -1,23 +1,17 @@
 package dev.hail.create_fantasizing.block.crate;
 
-import com.simibubi.create.foundation.gui.menu.MenuBase;
 import dev.hail.create_fantasizing.block.CFAMenus;
 import dev.hail.create_fantasizing.data.CFAAttachmentTypes;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
-public class SturdyCrateMenu extends MenuBase<SturdyCrateEntity> {
-    public boolean doubleCrate;
+public class SturdyCrateMenu extends AbstractDoubleStorageMenu<SturdyCrateEntity> {
     public boolean isFold;
     //public int page;
 
@@ -34,18 +28,6 @@ public class SturdyCrateMenu extends MenuBase<SturdyCrateEntity> {
     }
 
     @Override
-    protected SturdyCrateEntity createOnClient(RegistryFriendlyByteBuf extraData) {
-        BlockPos readBlockPos = extraData.readBlockPos();
-        ClientLevel world = Minecraft.getInstance().level;
-        BlockEntity blockEntity = null;
-        if (world != null) {
-            blockEntity = world.getBlockEntity(readBlockPos);
-        }
-        if (blockEntity instanceof SturdyCrateEntity sturdyCrateEntity)
-            return sturdyCrateEntity;
-        return null;
-    }
-    @Override
     public @NotNull ItemStack quickMoveStack(@NotNull Player playerIn, int index) {
         Slot clickedSlot = getSlot(index);
         if (!clickedSlot.hasItem())
@@ -61,12 +43,10 @@ public class SturdyCrateMenu extends MenuBase<SturdyCrateEntity> {
 
         return ItemStack.EMPTY;
     }
-    @Override
-    protected void initAndReadInventory(SturdyCrateEntity contentHolder) {}
 
     @Override
     protected void addSlots() {
-        doubleCrate = contentHolder.isDoubleCrate();
+        dualBlock = contentHolder.isDoubleCrate();
         /*if (player.hasData(CFAAttachmentTypes.FOLD_INTERFACE)){
             player.getData(CFAAttachmentTypes.FOLD_INTERFACE);
             isFold = player.getData(CFAAttachmentTypes.FOLD_INTERFACE);
@@ -99,7 +79,7 @@ public class SturdyCrateMenu extends MenuBase<SturdyCrateEntity> {
     }
 
     public boolean isFullInterface(){
-        return doubleCrate && !isFold;
+        return dualBlock && !isFold;
     }
 
     public void refreshMenu(){
@@ -111,13 +91,5 @@ public class SturdyCrateMenu extends MenuBase<SturdyCrateEntity> {
 
     public void setPlayerInterfaceFold(boolean fold){
         this.player.setData(CFAAttachmentTypes.FOLD_INTERFACE, fold);
-    }
-
-    @Override
-    protected void saveData(SturdyCrateEntity contentHolder) {}
-
-    @Override
-    public boolean stillValid(Player player) {
-        return contentHolder != null && contentHolder.canPlayerUse(player);
     }
 }

@@ -1,23 +1,17 @@
 package dev.hail.create_fantasizing.block.crate;
 
-import com.simibubi.create.foundation.gui.menu.MenuBase;
 import dev.hail.create_fantasizing.block.CFAMenus;
 import dev.hail.create_fantasizing.data.CFAAttachmentTypes;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
-public class BrassCrateMenu extends MenuBase<BrassCrateEntity> {
-    public boolean doubleCrate;
+public class BrassCrateMenu extends AbstractDoubleStorageMenu<BrassCrateEntity> {
     public boolean isFold;
     //public int page;
 
@@ -33,18 +27,6 @@ public class BrassCrateMenu extends MenuBase<BrassCrateEntity> {
         return new BrassCrateMenu(CFAMenus.BRASS_CRATE.get(), id, inv, be);
     }
 
-    @Override
-    protected BrassCrateEntity createOnClient(RegistryFriendlyByteBuf extraData) {
-        BlockPos readBlockPos = extraData.readBlockPos();
-        ClientLevel world = Minecraft.getInstance().level;
-        BlockEntity blockEntity = null;
-        if (world != null) {
-            blockEntity = world.getBlockEntity(readBlockPos);
-        }
-        if (blockEntity instanceof BrassCrateEntity brassCrateEntity)
-            return brassCrateEntity;
-        return null;
-    }
     @Override
     public @NotNull ItemStack quickMoveStack(@NotNull Player playerIn, int index) {
         Slot clickedSlot = getSlot(index);
@@ -62,11 +44,8 @@ public class BrassCrateMenu extends MenuBase<BrassCrateEntity> {
         return ItemStack.EMPTY;
     }
     @Override
-    protected void initAndReadInventory(BrassCrateEntity contentHolder) {}
-
-    @Override
     protected void addSlots() {
-        doubleCrate = contentHolder.isDoubleCrate();
+        dualBlock = contentHolder.isDoubleCrate();
         /*if (player.hasData(CFAAttachmentTypes.FOLD_INTERFACE)){
             player.getData(CFAAttachmentTypes.FOLD_INTERFACE);
             isFold = player.getData(CFAAttachmentTypes.FOLD_INTERFACE);
@@ -99,7 +78,7 @@ public class BrassCrateMenu extends MenuBase<BrassCrateEntity> {
     }
 
     public boolean isFullInterface(){
-        return doubleCrate && !isFold;
+        return dualBlock && !isFold;
     }
 
     public void refreshMenu(){
@@ -111,13 +90,5 @@ public class BrassCrateMenu extends MenuBase<BrassCrateEntity> {
 
     public void setPlayerInterfaceFold(boolean fold){
         this.player.setData(CFAAttachmentTypes.FOLD_INTERFACE, fold);
-    }
-
-    @Override
-    protected void saveData(BrassCrateEntity contentHolder) {}
-
-    @Override
-    public boolean stillValid(Player player) {
-        return contentHolder != null && contentHolder.canPlayerUse(player);
     }
 }

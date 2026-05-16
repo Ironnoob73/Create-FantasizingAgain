@@ -8,6 +8,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -17,6 +21,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.BlockHitResult;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.*;
@@ -27,6 +32,14 @@ public abstract class AbstractCrateBlock extends AbstractDoubleStorageBlock {
 
     public AbstractCrateBlock(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn,
+                                           BlockHitResult hit) {
+        super.useItemOn(stack,state,worldIn,pos,player,handIn,hit);
+        withBlockEntityDo(worldIn, pos, crate -> player.openMenu(crate.getMainCrate(), crate.getMainCrate()::sendToMenu));
+        return ItemInteractionResult.SUCCESS;
     }
 
     @Override

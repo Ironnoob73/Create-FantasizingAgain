@@ -17,10 +17,9 @@ public abstract class AbstractFluidBarrelEntity extends AbstractDoubleStorageEnt
     protected ICapabilityProvider<IFluidHandler> fluidCapability = null;
     protected FluidTank tankInventory;
     protected ResetableLazy<IFluidHandler> tankHandler;
-    public AbstractFluidBarrelEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, int singleTankCapacity) {
+    public AbstractFluidBarrelEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         tankHandler = ResetableLazy.of(() -> tankInventory);
-        this.singleTankCapacity = singleTankCapacity;
         tankInventory = new FluidTank(singleTankCapacity);
     }
 

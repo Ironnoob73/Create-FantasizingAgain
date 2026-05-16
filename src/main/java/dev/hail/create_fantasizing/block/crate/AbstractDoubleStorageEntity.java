@@ -12,16 +12,19 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.Nameable;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AbstractDoubleStorageEntity extends CrateBlockEntity implements Nameable, IHaveHoveringInformation, IHaveGoggleInformation{
+public abstract class AbstractDoubleStorageEntity extends CrateBlockEntity implements Nameable, IHaveHoveringInformation, IHaveGoggleInformation, MenuProvider {
     public String customName;
 
     public AbstractDoubleStorageEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -129,5 +132,10 @@ public abstract class AbstractDoubleStorageEntity extends CrateBlockEntity imple
             return true;
         }
         return false;
+    }
+
+    @Override
+    public @NotNull Component getDisplayName() {
+        return Component.translatable(getBlockState().getBlock().getName().getString());
     }
 }
