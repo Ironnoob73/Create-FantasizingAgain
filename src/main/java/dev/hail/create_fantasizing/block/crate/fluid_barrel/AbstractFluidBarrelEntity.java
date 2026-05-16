@@ -2,15 +2,27 @@ package dev.hail.create_fantasizing.block.crate.fluid_barrel;
 
 import com.simibubi.create.foundation.ICapabilityProvider;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
+import com.simibubi.create.foundation.utility.CreateLang;
 import com.simibubi.create.foundation.utility.ResetableLazy;
 import dev.hail.create_fantasizing.block.crate.AbstractDoubleStorageEntity;
+import joptsimple.internal.Strings;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import static net.minecraft.util.Mth.ceil;
+import static net.minecraft.util.Mth.floor;
 
 public abstract class AbstractFluidBarrelEntity extends AbstractDoubleStorageEntity {
     public int singleTankCapacity;
@@ -104,5 +116,48 @@ public abstract class AbstractFluidBarrelEntity extends AbstractDoubleStorageEnt
                 getOtherCrate().sendData();
             }
         }
+    }
+
+    @Override
+    public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+        if (hasCustomName() && !Objects.equals(customName, ""))
+            CreateLang.text(getName().getString()).style(ChatFormatting.WHITE).forGoggles(tooltip);
+        else
+            CreateLang.text(getBlockState().getBlock().getName().getString()).style(ChatFormatting.WHITE).forGoggles(tooltip);
+
+        if (isDoubleCrate() && isSecondaryCrate())
+            CreateLang.builder().add(getOtherCrate().componentHelper(false)).forGoggles(tooltip);
+        else
+            CreateLang.builder().add(componentHelper(false)).forGoggles(tooltip);
+
+        if (fluidCapability != null && (!isDoubleCrate() && !tankInventory.isEmpty() || isDoubleCrate() && getMainCrate() instanceof AbstractFluidBarrelEntity mainFluidBarrel && !mainFluidBarrel.tankInventory.isEmpty())){
+            for (Component component: contentList(Objects.requireNonNull(isDoubleCrate() && getMainCrate() instanceof AbstractFluidBarrelEntity mainFluidBarrel ? mainFluidBarrel.tankInventory : tankInventory), isPlayerSneaking))
+                CreateLang.builder().add(component).forGoggles(tooltip);
+        }
+        return true;
+    }
+    private MutableComponent componentHelper(boolean useBlocksAsBars) {// TODO
+        return barComponent(tankInventory, singleTankCapacity * (isDoubleCrate()? 2 : 1));
+    }
+    public static MutableComponent barComponent(SmartFluidTank tank, int maxCapacity) {
+        MutableComponent bar = Component.empty();
+        bar.append(bars(floor(Math.min(tank.getFluidAmount() / 1000f, tank.getCapacity() / 1000f)), ChatFormatting.WHITE));
+        if (tank.getFluidAmount() % 1000 != 0 && tank.getFluidAmount() < ceil(tank.getCapacity() / 1000f) * 1000)
+            bar.append(bars(1, ChatFormatting.YELLOW));
+        bar.append(bars(floor(Math.max((tank.getCapacity() - tank.getFluidAmount())/ 1000f, 0)), ChatFormatting.DARK_GREEN));
+        if ((maxCapacity - tank.getCapacity())% 1000f != 0 && tank.getFluidAmount() < floor(tank.getCapacity() / 1000f) * 1000)
+            bar.append(bars(1, ChatFormatting.GRAY));
+        bar.append(bars(ceil(Math.max((tank.getFluidAmount() - tank.getCapacity())/ 1000f, 0)), ChatFormatting.RED));
+        bar.append(bars(floor(Math.min((maxCapacity - tank.getCapacity())/ 1000f, (maxCapacity - tank.getFluidAmount())/ 1000f)), ChatFormatting.DARK_GRAY));
+        return bar;
+    }
+    private static MutableComponent bars(int level, ChatFormatting format) {
+        return Component.literal(Strings.repeat('|', level))
+                .withStyle(format);
+    }
+    public static List<Component> contentList(SmartFluidTank tank, boolean sneaking){
+        List<Component> result = new ArrayList<>();
+        result.add(Component.translatable("container.shulkerBox.itemCount", tank.getFluid().getHoverName(), (sneaking ? tank.getFluid().getAmount() + "mB" : String.format("%.1f", tank.getFluid().getAmount() / 1000f) + "B")));
+        return result;
     }
 }
