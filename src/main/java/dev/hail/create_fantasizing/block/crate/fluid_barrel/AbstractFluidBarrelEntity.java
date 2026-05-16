@@ -1,6 +1,7 @@
 package dev.hail.create_fantasizing.block.crate.fluid_barrel;
 
 import com.simibubi.create.foundation.ICapabilityProvider;
+import com.simibubi.create.foundation.fluid.SmartFluidTank;
 import com.simibubi.create.foundation.utility.ResetableLazy;
 import dev.hail.create_fantasizing.block.crate.AbstractDoubleStorageEntity;
 import net.minecraft.core.BlockPos;
@@ -10,26 +11,17 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
 public abstract class AbstractFluidBarrelEntity extends AbstractDoubleStorageEntity {
     public int singleTankCapacity;
     public int allowedCapacity = -1;
     protected ICapabilityProvider<IFluidHandler> fluidCapability = null;
-    public FluidTank tankInventory;
+    public SmartFluidTank tankInventory;
     protected ResetableLazy<IFluidHandler> tankHandler;
     public AbstractFluidBarrelEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         tankHandler = ResetableLazy.of(() -> tankInventory);
-        tankInventory = new FluidTank(singleTankCapacity);
-    }
-
-    public int getOverallCapacity(){
-        if(isDoubleCrate() && isSecondaryCrate()) {
-            AbstractFluidBarrelEntity mainCrate = (AbstractFluidBarrelEntity) getMainCrate();
-            return mainCrate.allowedCapacity;
-        }
-        return allowedCapacity;
+        tankInventory = new SmartFluidTank(singleTankCapacity, this::onFluidStackChanged);
     }
 
     protected void initCapability() {
@@ -99,6 +91,17 @@ public abstract class AbstractFluidBarrelEntity extends AbstractDoubleStorageEnt
             else{
                 otherBarrel.tankInventory.setFluid(tankInventory.getFluid());
                 otherBarrel.tankInventory.getFluid().setAmount(Math.max(tankInventory.getFluid().getAmount() - singleTankCapacity, 0));
+            }
+        }
+    }
+
+    protected void onFluidStackChanged(FluidStack newFluidStack) {
+        if (level != null && !level.isClientSide) {
+            setChanged();
+            sendData();
+            if (isDoubleCrate()){
+                getOtherCrate().setChanged();
+                getOtherCrate().sendData();
             }
         }
     }

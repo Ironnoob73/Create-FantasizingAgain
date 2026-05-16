@@ -37,7 +37,11 @@ public enum CFAGuiTextures implements ScreenElement, TextureSheetSegment {
     CRATE_PAGE_DOWN("brass_crate", 224, 16, 16, 16),
 
     COPPER_FLUID_BARREL("copper_fluid_barrel", 196, 73),
-    COPPER_EDIT("copper_fluid_barrel", 196, 0, 9, 9);
+    COPPER_EDIT("copper_fluid_barrel", 196, 0, 9, 9),
+
+    FLUID_BARREL_BAR_END("copper_fluid_barrel", 1, 220, 1, 10),
+    FLUID_BARREL_BAR_MID("copper_fluid_barrel", 3, 220, 1, 10),
+    FLUID_BARREL_BAR_LIM("copper_fluid_barrel", 5, 220, 2, 12);
 
     public final ResourceLocation location;
     private final int width;
