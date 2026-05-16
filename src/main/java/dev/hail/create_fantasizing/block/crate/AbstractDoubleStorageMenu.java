@@ -1,6 +1,7 @@
 package dev.hail.create_fantasizing.block.crate;
 
 import com.simibubi.create.foundation.gui.menu.MenuBase;
+import dev.hail.create_fantasizing.block.crate.fluid_barrel.AbstractFluidBarrelEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -8,6 +9,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public abstract class AbstractDoubleStorageMenu<T extends AbstractDoubleStorageEntity> extends MenuBase<T> {
@@ -44,5 +46,19 @@ public abstract class AbstractDoubleStorageMenu<T extends AbstractDoubleStorageE
     @Override
     public boolean stillValid(Player player) {
         return contentHolder != null && contentHolder.canPlayerUse(player);
+    }
+
+    protected void addPlayerSlots(int xOffset, int yOffset){
+        for (int row = 0; row < 3; ++row) {
+            for (int col = 0; col < 9; ++col) {
+                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, xOffset + col * 18, yOffset + row * 18));
+            }
+        }
+
+        for (int hotbarSlot = 0; hotbarSlot < 9; ++hotbarSlot) {
+            this.addSlot(new Slot(playerInventory, hotbarSlot, xOffset + hotbarSlot * 18, yOffset + 58));
+        }
+
+        broadcastChanges();
     }
 }

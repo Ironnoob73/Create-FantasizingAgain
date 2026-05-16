@@ -5,6 +5,8 @@ import com.tterrag.registrate.util.entry.MenuEntry;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import dev.hail.create_fantasizing.FantasizingMod;
 import dev.hail.create_fantasizing.block.crate.*;
+import dev.hail.create_fantasizing.block.crate.fluid_barrel.CopperFluidBarrelMenu;
+import dev.hail.create_fantasizing.block.crate.fluid_barrel.CopperFluidBarrelScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.MenuAccess;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -14,6 +16,8 @@ public class CFAMenus {
     public static final MenuEntry<IronCrateMenu> IRON_CRATE = register("iron_crate", IronCrateMenu::new, () -> IronCrateScreen::new);
     public static final MenuEntry<BrassCrateMenu> BRASS_CRATE = register("brass_crate", BrassCrateMenu::new, () -> BrassCrateScreen::new);
     public static final MenuEntry<SturdyCrateMenu> STURDY_CRATE = register("sturdy_crate", SturdyCrateMenu::new, () -> SturdyCrateScreen::new);
+
+    public static final MenuEntry<CopperFluidBarrelMenu> COPPER_FLUID_BARREL_MENU = register("copper_fluid_barrel", CopperFluidBarrelMenu::new, () -> CopperFluidBarrelScreen::new);
 
     private static <C extends AbstractContainerMenu, S extends Screen & MenuAccess<C>> MenuEntry<C> register(
             String name, MenuBuilder.ForgeMenuFactory<C> factory, NonNullSupplier<MenuBuilder.ScreenFactory<C, S>> screenFactory) {

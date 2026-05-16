@@ -52,20 +52,7 @@ public class AndesiteCrateMenu extends AbstractDoubleStorageMenu<AndesiteCrateEn
                                 col + row * maxCol - (col + row * maxCol < 16 ? 0 : 16), x + col * 18, row * 18 + 27));
             }
         }
-
         // player Slots
-        int xOffset = dualBlock ? 28 : 8;
-        int yOffset = 156;
-        for (int row = 0; row < 3; ++row) {
-            for (int col = 0; col < 9; ++col) {
-                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, xOffset + col * 18, yOffset + row * 18));
-            }
-        }
-
-        for (int hotbarSlot = 0; hotbarSlot < 9; ++hotbarSlot) {
-            this.addSlot(new Slot(playerInventory, hotbarSlot, xOffset + hotbarSlot * 18, yOffset + 58));
-        }
-
-        broadcastChanges();
+        addPlayerSlots(dualBlock ? 28 : 8, 156);
     }
 }

@@ -31,11 +31,13 @@ public enum CFAGuiTextures implements ScreenElement, TextureSheetSegment {
     STURDY_EDIT("sturdy_crate", 214, 0, 9, 9),
     STURDY_CRATE_LOCKED_SLOT("sturdy_crate", 215, 217, 18, 18),
 
-
     CRATE_INTERFACE_UNFOLD("brass_crate", 208, 0, 16, 16),
     CRATE_INTERFACE_FOLD("brass_crate", 224, 0, 16, 16),
     CRATE_PAGE_UP("brass_crate", 208, 16, 16, 16),
-    CRATE_PAGE_DOWN("brass_crate", 224, 16, 16, 16);
+    CRATE_PAGE_DOWN("brass_crate", 224, 16, 16, 16),
+
+    COPPER_FLUID_BARREL("copper_fluid_barrel", 196, 73),
+    COPPER_EDIT("copper_fluid_barrel", 196, 0, 9, 9);
 
     public final ResourceLocation location;
     private final int width;

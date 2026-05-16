@@ -61,21 +61,8 @@ public class SturdyCrateMenu extends AbstractDoubleStorageMenu<SturdyCrateEntity
                                 col + row * 10 - (col + row * 10 < 50 ? 0 : 50), x + col * 18, row * 18 + 27));
             }
         }
-
         // player Slots
-        int xOffset = 38;
-        int yOffset = isFullInterface() ? 246 : 156;
-        for (int row = 0; row < 3; ++row) {
-            for (int col = 0; col < 9; ++col) {
-                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, xOffset + col * 18, yOffset + row * 18));
-            }
-        }
-
-        for (int hotbarSlot = 0; hotbarSlot < 9; ++hotbarSlot) {
-            this.addSlot(new Slot(playerInventory, hotbarSlot, xOffset + hotbarSlot * 18, yOffset + 58));
-        }
-
-        broadcastChanges();
+        addPlayerSlots(38, isFullInterface() ? 246 : 156);
     }
 
     public boolean isFullInterface(){

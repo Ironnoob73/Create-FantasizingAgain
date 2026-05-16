@@ -5,6 +5,8 @@ import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
 import com.simibubi.create.foundation.gui.widget.ScrollInput;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import dev.hail.create_fantasizing.CFAGuiTextures;
+import dev.hail.create_fantasizing.block.crate.fluid_barrel.AbstractFluidBarrelEntity;
+import dev.hail.create_fantasizing.block.crate.fluid_barrel.ConfigureFluidBarrelPacket;
 import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.renderer.Rect2i;
@@ -23,9 +25,9 @@ public abstract class AbstractDoubleStorageScreen<T extends AbstractDoubleStorag
     protected CFAGuiTextures backgroundSec;
     protected List<Rect2i> extraAreas = Collections.emptyList();
     protected EditBox nameBox;
-    protected ScrollInput allowedItems;
+    protected ScrollInput allowedCapacity;
     protected int lastModification;
-    protected int itemLabelOffset;
+    protected int capacityLabelOffset;
 
     protected int YShift;
 
@@ -33,7 +35,7 @@ public abstract class AbstractDoubleStorageScreen<T extends AbstractDoubleStorag
     protected int textureYShift;
     protected int itemYShift;
 
-    protected BlockEntry<? extends AbstractCrateBlock> blockEntry;
+    protected BlockEntry<? extends AbstractDoubleStorageBlock> blockEntry;
     protected ItemStack renderedItem;
     protected final Component storageSpace = Component.translatable("create_fantasizing.gui.crate.storage_space");
 
@@ -63,7 +65,7 @@ public abstract class AbstractDoubleStorageScreen<T extends AbstractDoubleStorag
 
     @Override
     public void removed() {
-        CatnipServices.NETWORK.sendToServer(new ConfigureCratePacket(storageHolder.getBlockPos(), allowedItems.getState(), nameBox.getValue()));
+        sendPacketToServer();
         super.removed();
     }
 
@@ -79,7 +81,7 @@ public abstract class AbstractDoubleStorageScreen<T extends AbstractDoubleStorag
 
         if (lastModification >= 15) {
             lastModification = -1;
-            CatnipServices.NETWORK.sendToServer(new ConfigureCratePacket(storageHolder.getBlockPos(), allowedItems.getState(), nameBox.getValue()));
+            sendPacketToServer();
         }
 
         if (menu.dualBlock != storageHolder.isDoubleCrate())
@@ -89,5 +91,12 @@ public abstract class AbstractDoubleStorageScreen<T extends AbstractDoubleStorag
     @Override
     public List<Rect2i> getExtraAreas() {
         return extraAreas;
+    }
+
+    private void sendPacketToServer(){
+        if (storageHolder instanceof AbstractCrateEntity)
+            CatnipServices.NETWORK.sendToServer(new ConfigureCratePacket(storageHolder.getBlockPos(), allowedCapacity.getState(), nameBox.getValue()));
+        else if (storageHolder instanceof AbstractFluidBarrelEntity && allowedCapacity != null)
+            CatnipServices.NETWORK.sendToServer(new ConfigureFluidBarrelPacket(storageHolder.getBlockPos(), allowedCapacity.getState(), nameBox.getValue()));
     }
 }

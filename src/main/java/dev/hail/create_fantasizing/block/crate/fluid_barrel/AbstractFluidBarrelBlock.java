@@ -29,8 +29,8 @@ public abstract class AbstractFluidBarrelBlock extends AbstractDoubleStorageBloc
     public @NotNull ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         super.useItemOn(stack,state,level,pos,player,hand,hitResult);
 
-        if (stack.getItem() instanceof BlockItem && stack.getCapability(Capabilities.FluidHandler.ITEM) == null)
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        //if (stack.getItem() instanceof BlockItem && stack.getCapability(Capabilities.FluidHandler.ITEM) == null)
+        //    return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
         return onBlockEntityUseItemOn(level, pos, be -> {
             if (!stack.isEmpty() && be instanceof AbstractFluidBarrelEntity fluidBarrelEntity) {
@@ -38,6 +38,7 @@ public abstract class AbstractFluidBarrelBlock extends AbstractDoubleStorageBloc
                 if (tryExchange.consumesAction())
                     return tryExchange;
             }
+            withBlockEntityDo(level, pos, crate -> player.openMenu(crate.getMainCrate(), crate.getMainCrate()::sendToMenu));
             return ItemInteractionResult.SUCCESS;
         });
     }

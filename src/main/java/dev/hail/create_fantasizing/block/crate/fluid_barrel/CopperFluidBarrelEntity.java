@@ -12,10 +12,14 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@ParametersAreNonnullByDefault
 public class CopperFluidBarrelEntity extends AbstractFluidBarrelEntity implements MenuProvider {
     public CopperFluidBarrelEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         singleTankCapacity = 8000;
+        allowedCapacity = 8000;
     }
 
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
@@ -32,6 +36,6 @@ public class CopperFluidBarrelEntity extends AbstractFluidBarrelEntity implement
 
     @Override
     public @Nullable AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
-        return null;
+        return CopperFluidBarrelMenu.create(i, inventory, this);
     }
 }

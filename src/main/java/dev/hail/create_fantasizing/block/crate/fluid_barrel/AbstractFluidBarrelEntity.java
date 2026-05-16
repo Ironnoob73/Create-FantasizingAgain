@@ -14,13 +14,22 @@ import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
 public abstract class AbstractFluidBarrelEntity extends AbstractDoubleStorageEntity {
     public int singleTankCapacity;
+    public int allowedCapacity = -1;
     protected ICapabilityProvider<IFluidHandler> fluidCapability = null;
-    protected FluidTank tankInventory;
+    public FluidTank tankInventory;
     protected ResetableLazy<IFluidHandler> tankHandler;
     public AbstractFluidBarrelEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         tankHandler = ResetableLazy.of(() -> tankInventory);
         tankInventory = new FluidTank(singleTankCapacity);
+    }
+
+    public int getOverallCapacity(){
+        if(isDoubleCrate() && isSecondaryCrate()) {
+            AbstractFluidBarrelEntity mainCrate = (AbstractFluidBarrelEntity) getMainCrate();
+            return mainCrate.allowedCapacity;
+        }
+        return allowedCapacity;
     }
 
     protected void initCapability() {
@@ -42,14 +51,14 @@ public abstract class AbstractFluidBarrelEntity extends AbstractDoubleStorageEnt
         if (getOtherCrate() != null){
             if (isSecondaryCrate()){
                 fluidCapability = ICapabilityProvider.of(getOtherCrate().tankInventory);
-                getOtherCrate().tankInventory.setCapacity(singleTankCapacity * 2);
+                getOtherCrate().tankInventory.setCapacity(Math.min(singleTankCapacity * 2, allowedCapacity));
             } else {
                 fluidCapability = ICapabilityProvider.of(tankInventory);
-                tankInventory.setCapacity(singleTankCapacity * 2);
+                tankInventory.setCapacity(Math.min(singleTankCapacity * 2, allowedCapacity));
             }
         } else {
             fluidCapability = ICapabilityProvider.of(tankInventory);
-            tankInventory.setCapacity(singleTankCapacity);
+            tankInventory.setCapacity(Math.min(singleTankCapacity, allowedCapacity));
         }
     }
 
@@ -65,6 +74,7 @@ public abstract class AbstractFluidBarrelEntity extends AbstractDoubleStorageEnt
         if (this.tankInventory != null && !tankInventory.isEmpty()){
             compound.put("Tank", tankInventory.getFluid().save(registries));
         }
+        compound.putInt("AllowedCapacity", allowedCapacity);
         super.write(compound, registries, clientPacket);
     }
 
@@ -73,6 +83,7 @@ public abstract class AbstractFluidBarrelEntity extends AbstractDoubleStorageEnt
         if (this.tankInventory != null) {
             tankInventory.setFluid(FluidStack.parseOptional(registries, compound.getCompound("Tank")));
         }
+        allowedCapacity = compound.getInt("AllowedCapacity");
         super.read(compound, registries, clientPacket);
     }
 

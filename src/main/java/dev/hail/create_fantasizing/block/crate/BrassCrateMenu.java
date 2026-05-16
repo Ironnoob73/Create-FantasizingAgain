@@ -60,21 +60,8 @@ public class BrassCrateMenu extends AbstractDoubleStorageMenu<BrassCrateEntity> 
                                 col + row * 9 - (col + row * 9 < 36 ? 0 : 36), x + col * 18, row * 18 + 27));
             }
         }
-
         // player Slots
-        int xOffset = 28;
-        int yOffset = isFullInterface() ? 228 : 156;
-        for (int row = 0; row < 3; ++row) {
-            for (int col = 0; col < 9; ++col) {
-                this.addSlot(new Slot(playerInventory, col + row * 9 + 9, xOffset + col * 18, yOffset + row * 18));
-            }
-        }
-
-        for (int hotbarSlot = 0; hotbarSlot < 9; ++hotbarSlot) {
-            this.addSlot(new Slot(playerInventory, hotbarSlot, xOffset + hotbarSlot * 18, yOffset + 58));
-        }
-
-        broadcastChanges();
+        addPlayerSlots(28, isFullInterface() ? 228 : 156);
     }
 
     public boolean isFullInterface(){

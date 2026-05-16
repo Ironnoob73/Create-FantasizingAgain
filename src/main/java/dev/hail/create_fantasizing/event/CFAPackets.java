@@ -3,6 +3,7 @@ package dev.hail.create_fantasizing.event;
 import com.simibubi.create.Create;
 import dev.hail.create_fantasizing.FantasizingMod;
 import dev.hail.create_fantasizing.block.crate.ConfigureCratePacket;
+import dev.hail.create_fantasizing.block.crate.fluid_barrel.ConfigureFluidBarrelPacket;
 import dev.hail.create_fantasizing.item.block_placer.ConfigureBlockPlacerPacket;
 import net.createmod.catnip.net.base.BasePacketPayload;
 import net.createmod.catnip.net.base.CatnipPacketRegistry;
@@ -14,7 +15,8 @@ import java.util.Locale;
 
 public enum CFAPackets implements BasePacketPayload.PacketTypeProvider {
     CONFIGURE_BLOCK_PLACER(ConfigureBlockPlacerPacket.class, ConfigureBlockPlacerPacket.STREAM_CODEC),
-    CONFIGURE_CREATE(ConfigureCratePacket.class, ConfigureCratePacket.STREAM_CODEC);
+    CONFIGURE_CREATE(ConfigureCratePacket.class, ConfigureCratePacket.STREAM_CODEC),
+    CONFIGURE_FLUID_BARREL(ConfigureFluidBarrelPacket.class, ConfigureFluidBarrelPacket.STREAM_CODEC);
 
     private final CatnipPacketRegistry.PacketType<?> type;
     <T extends BasePacketPayload> CFAPackets(Class<T> clazz, StreamCodec<? super RegistryFriendlyByteBuf, T> codec) {

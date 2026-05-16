@@ -37,7 +37,7 @@ public class IronCrateScreen extends AbstractDoubleStorageScreen<IronCrateMenu> 
         super.init();
         clearWidgets();
 
-        itemLabelOffset = menu.dualBlock ? 155 : 65;
+        capacityLabelOffset = menu.dualBlock ? 155 : 65;
         textureXShift = menu.dualBlock ? 9 : (imageWidth - (background.getWidth() - 8)) / 2;
         itemYShift = menu.dualBlock ? 0 : -16;
         YShift = topPos + 7;
@@ -61,16 +61,16 @@ public class IronCrateScreen extends AbstractDoubleStorageScreen<IronCrateMenu> 
         nameBox.setX(nameBoxX(nameBox.getValue(), nameBox));
         addRenderableWidget(nameBox);
 
-        Label allowedItemsLabel = new Label(x + itemLabelOffset + 4, y + 108, Component.empty()).colored(0xFFFFFF).withShadow();
-        allowedItems = new ScrollInput(x + itemLabelOffset, y + 104, 41, 16).titled(storageSpace.plainCopy())
+        Label allowedItemsLabel = new Label(x + capacityLabelOffset + 4, y + 108, Component.empty()).colored(0xFFFFFF).withShadow();
+        allowedCapacity = new ScrollInput(x + capacityLabelOffset, y + 104, 41, 16).titled(storageSpace.plainCopy())
                 .withRange(0, (menu.dualBlock ? 2561 : 1281))
                 .writingTo(allowedItemsLabel)
                 .withShiftStep(64)
                 .setState(menu.contentHolder.getOverallAllowedAmount())
                 .calling(s -> lastModification = 0);
-        allowedItems.onChanged();
+        allowedCapacity.onChanged();
         addRenderableWidget(allowedItemsLabel);
-        addRenderableWidget(allowedItems);
+        addRenderableWidget(allowedCapacity);
 
         extraAreas = ImmutableList.of(
                 new Rect2i(x + background.getWidth(), y + background.getHeight() - 56 + itemYShift, 80, 80)
@@ -85,10 +85,10 @@ public class IronCrateScreen extends AbstractDoubleStorageScreen<IronCrateMenu> 
         int y = YShift;
 
         String itemCount = String.valueOf(menu.contentHolder.inventory.itemCount + (menu.dualBlock ? menu.contentHolder.getOtherCrate().inventory.itemCount : 0));
-        ms.drawString(font, itemCount, x + itemLabelOffset - 13 - font.width(itemCount), y + 108, 0x4B3A22, false);
+        ms.drawString(font, itemCount, x + capacityLabelOffset - 13 - font.width(itemCount), y + 108, 0x4B3A22, false);
 
         for (int slot = 0; slot < (menu.dualBlock ? 40 : 20); slot++) {
-            if (allowedItems.getState() > slot * 64)
+            if (allowedCapacity.getState() > slot * 64)
                 continue;
             int slotsPerRow = (menu.dualBlock ? 10 : 5);
             int slotX = x + 13 + (slot % slotsPerRow) * 18;
