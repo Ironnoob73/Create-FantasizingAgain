@@ -24,6 +24,15 @@ public class CopperFluidBarrelEntity extends AbstractFluidBarrelEntity implement
 
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(
+                Capabilities.ItemHandler.BLOCK,
+                CFABlocks.COPPER_FLUID_BARREL_ENTITY.get(),
+                (be, context) -> {
+                    be.initCapability();
+                    if (be.itemCapability == null)
+                        return null;
+                    return be.itemCapability.getCapability();
+                });
+        event.registerBlockEntity(
                 Capabilities.FluidHandler.BLOCK,
                 CFABlocks.COPPER_FLUID_BARREL_ENTITY.get(),
                 (be, context) -> {

@@ -1,21 +1,29 @@
 package dev.hail.create_fantasizing.block.crate.fluid_barrel;
 
+import com.simibubi.create.content.fluids.transfer.GenericItemEmptying;
+import com.simibubi.create.content.fluids.transfer.GenericItemFilling;
 import com.simibubi.create.foundation.ICapabilityProvider;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
+import com.simibubi.create.foundation.item.SmartInventory;
 import com.simibubi.create.foundation.utility.CreateLang;
 import com.simibubi.create.foundation.utility.ResetableLazy;
+import dev.hail.create_fantasizing.FantasizingMod;
 import dev.hail.create_fantasizing.block.crate.AbstractDoubleStorageEntity;
 import joptsimple.internal.Strings;
+import net.createmod.catnip.data.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.items.IItemHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +38,15 @@ public abstract class AbstractFluidBarrelEntity extends AbstractDoubleStorageEnt
     protected ICapabilityProvider<IFluidHandler> fluidCapability = null;
     public SmartFluidTank tankInventory;
     protected ResetableLazy<IFluidHandler> tankHandler;
+    protected ICapabilityProvider<IItemHandler> itemCapability = null;
+    public SmartInventory bucketSlots;
+    protected ResetableLazy<IItemHandler> bucketHandler;
     public AbstractFluidBarrelEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         tankHandler = ResetableLazy.of(() -> tankInventory);
+        bucketSlots = new SmartInventory(2, this, (slot, stack) ->
+                slot == 0 && (GenericItemEmptying.canItemBeEmptied(this.getLevel(), stack) || GenericItemFilling.canItemBeFilled(this.getLevel(), stack)));
+        bucketHandler = ResetableLazy.of(() -> bucketSlots);
         tankInventory = new SmartFluidTank(singleTankCapacity, this::onFluidStackChanged);
     }
 
@@ -49,6 +63,13 @@ public abstract class AbstractFluidBarrelEntity extends AbstractDoubleStorageEnt
                     return null;
                 return mainCrate.fluidCapability.getCapability();
             });
+            itemCapability = ICapabilityProvider.of(() -> {
+                if (mainCrate.isRemoved())
+                    return null;
+                if (mainCrate.itemCapability == null)
+                    return null;
+                return mainCrate.itemCapability.getCapability();
+            });
             return;
         }
 
@@ -56,13 +77,16 @@ public abstract class AbstractFluidBarrelEntity extends AbstractDoubleStorageEnt
             if (isSecondaryCrate()){
                 fluidCapability = ICapabilityProvider.of(getOtherCrate().tankInventory);
                 getOtherCrate().tankInventory.setCapacity(Math.min(singleTankCapacity * 2, allowedCapacity));
+                itemCapability = ICapabilityProvider.of(getOtherCrate().bucketSlots);
             } else {
                 fluidCapability = ICapabilityProvider.of(tankInventory);
                 tankInventory.setCapacity(Math.min(singleTankCapacity * 2, allowedCapacity));
+                itemCapability = ICapabilityProvider.of(bucketSlots);
             }
         } else {
             fluidCapability = ICapabilityProvider.of(tankInventory);
             tankInventory.setCapacity(Math.min(singleTankCapacity, allowedCapacity));
+            itemCapability = ICapabilityProvider.of(bucketSlots);
         }
     }
 
@@ -78,6 +102,8 @@ public abstract class AbstractFluidBarrelEntity extends AbstractDoubleStorageEnt
         if (this.tankInventory != null && !tankInventory.isEmpty()){
             compound.put("Tank", tankInventory.getFluid().save(registries));
         }
+        if (this.bucketSlots != null)
+            compound.put("Buckets", bucketSlots.serializeNBT(registries));
         compound.putInt("AllowedCapacity", allowedCapacity);
         super.write(compound, registries, clientPacket);
     }
@@ -87,8 +113,58 @@ public abstract class AbstractFluidBarrelEntity extends AbstractDoubleStorageEnt
         if (this.tankInventory != null) {
             tankInventory.setFluid(FluidStack.parseOptional(registries, compound.getCompound("Tank")));
         }
+        if (this.bucketSlots != null)
+            bucketSlots.deserializeNBT(registries, compound.getCompound("Buckets"));
         allowedCapacity = compound.getInt("AllowedCapacity");
         super.read(compound, registries, clientPacket);
+    }
+
+    @Override
+    public void tick(){
+        super.tick();
+        if (!bucketSlots.isEmpty()) {
+            if (GenericItemEmptying.canItemBeEmptied(this.getLevel(), bucketSlots.getStackInSlot(0))) {
+                Pair<FluidStack, ItemStack> emptyItem = GenericItemEmptying.emptyItem(level, bucketSlots.getStackInSlot(0), true);
+                FluidStack fluidFromItem = emptyItem.getFirst();
+                if (tankInventory.fill(fluidFromItem, IFluidHandler.FluidAction.SIMULATE) != fluidFromItem.getAmount())
+                    return;
+                emptyItem = GenericItemEmptying.emptyItem(level, bucketSlots.getStackInSlot(0).copy(), false);
+                ItemStack out = emptyItem.getSecond();
+                if (bucketSlots.getStackInSlot(1).isEmpty()) {
+                    bucketSlots.getStackInSlot(0).shrink(1);
+                    bucketSlots.setStackInSlot(1, out);
+                } else {
+                    ItemStack outputCopy = bucketSlots.getStackInSlot(1).copy();
+                    if (ItemStack.isSameItemSameComponents(outputCopy, out) && outputCopy.getCount() + out.getCount() <= outputCopy.getMaxStackSize()) {
+                        bucketSlots.getStackInSlot(0).shrink(1);
+                        bucketSlots.getStackInSlot(1).setCount(outputCopy.getCount() + out.getCount());
+                    } else {
+                        return;
+                    }
+                }
+                tankInventory.fill(fluidFromItem, IFluidHandler.FluidAction.EXECUTE);
+                notifyUpdate();
+            } else if (GenericItemFilling.canItemBeFilled(this.getLevel(), bucketSlots.getStackInSlot(0))) {
+                int fillAmount = GenericItemFilling.getRequiredAmountForItem(level, bucketSlots.getStackInSlot(0), tankInventory.getFluid());
+                if (fillAmount == -1)
+                    return;
+                ItemStack out = GenericItemFilling.fillItem(level, fillAmount, bucketSlots.getStackInSlot(0).copy(), tankInventory.getFluid().copy());
+                if (bucketSlots.getStackInSlot(1).isEmpty()) {
+                    bucketSlots.getStackInSlot(0).shrink(1);
+                    bucketSlots.setStackInSlot(1, out);
+                } else {
+                    ItemStack outputCopy = bucketSlots.getStackInSlot(1).copy();
+                    if (ItemStack.isSameItemSameComponents(outputCopy, out) && outputCopy.getCount() + out.getCount() <= outputCopy.getMaxStackSize()) {
+                        bucketSlots.getStackInSlot(0).shrink(1);
+                        bucketSlots.getStackInSlot(1).setCount(outputCopy.getCount() + out.getCount());
+                    } else {
+                        return;
+                    }
+                }
+                tankInventory.drain(fillAmount, IFluidHandler.FluidAction.EXECUTE);
+                notifyUpdate();
+            }
+        }
     }
 
     @Override

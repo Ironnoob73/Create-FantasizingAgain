@@ -1,20 +1,22 @@
 package dev.hail.create_fantasizing.block.crate.fluid_barrel;
 
 import com.simibubi.create.content.fluids.tank.FluidTankBlockEntity;
-import com.simibubi.create.foundation.blockEntity.ComparatorUtil;
 import com.simibubi.create.foundation.fluid.FluidHelper;
 import dev.hail.create_fantasizing.block.crate.AbstractDoubleStorageBlock;
 import dev.hail.create_fantasizing.block.crate.AbstractDoubleStorageEntity;
 import net.createmod.catnip.annotations.ClientOnly;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -22,6 +24,8 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Objects;
+
+import static net.minecraft.util.Mth.ceil;
 
 @ParametersAreNonnullByDefault
 public abstract class AbstractFluidBarrelBlock extends AbstractDoubleStorageBlock{
@@ -51,15 +55,12 @@ public abstract class AbstractFluidBarrelBlock extends AbstractDoubleStorageBloc
     }
 
     @Override
-    public int getAnalogOutputSignal(BlockState blockState, Level worldIn, BlockPos pos) {
-        return ComparatorUtil.levelOfSmartFluidTank(worldIn, pos);
-    }
-
-    @Override
     public void onMerge(AbstractDoubleStorageEntity be, AbstractDoubleStorageEntity other){
         super.onMerge(be, other);
         if (be instanceof AbstractFluidBarrelEntity mainBarrel && other instanceof AbstractFluidBarrelEntity secondaryBarrel){
             other.invalidateCapabilities();
+            if (mainBarrel.tankInventory.getFluid().getFluid() != secondaryBarrel.tankInventory.getFluid().getFluid())
+                return;
             if (mainBarrel.tankInventory.getFluid().getFluid() == secondaryBarrel.tankInventory.getFluid().getFluid()
                     || mainBarrel.tankInventory.isEmpty() || secondaryBarrel.tankInventory.isEmpty()){
                 if (mainBarrel.tankInventory.isEmpty() && !secondaryBarrel.tankInventory.isEmpty()){
@@ -70,7 +71,24 @@ public abstract class AbstractFluidBarrelBlock extends AbstractDoubleStorageBloc
                 mainBarrel.allowedCapacity = (mainBarrel.tankInventory.isEmpty() ? mainBarrel.singleTankCapacity : mainBarrel.allowedCapacity)
                         + (secondaryBarrel.tankInventory.isEmpty() ? secondaryBarrel.singleTankCapacity : secondaryBarrel.allowedCapacity);
             }
+            for (int i = 0; i <= 1; i++)
+                if (!secondaryBarrel.bucketSlots.getStackInSlot(i).isEmpty())
+                    if (!mainBarrel.bucketSlots.getStackInSlot(i).isEmpty() && secondaryBarrel.getLevel() != null)
+                        popResource(secondaryBarrel.getLevel(), secondaryBarrel.getBlockPos(), secondaryBarrel.bucketSlots.getStackInSlot(i));
+                    else
+                        mainBarrel.bucketSlots.setStackInSlot(i, secondaryBarrel.bucketSlots.getStackInSlot(i));
         }
+    }
+
+    @Override
+    public int getAnalogOutputSignal(BlockState blockState, Level worldIn, BlockPos pos) {
+        BlockEntity be = worldIn.getBlockEntity(pos);
+        if (be instanceof AbstractFluidBarrelEntity) {
+            AbstractFluidBarrelEntity flexCrateBlockEntity = (AbstractFluidBarrelEntity) ((AbstractDoubleStorageEntity) be).getMainCrate();
+            if (!flexCrateBlockEntity.tankInventory.isEmpty())
+                return ceil(flexCrateBlockEntity.tankInventory.getFluidAmount() * 15f / (flexCrateBlockEntity.singleTankCapacity * ((flexCrateBlockEntity.isDoubleCrate() ? 2 : 1))));
+        }
+        return 0;
     }
 
     protected ItemInteractionResult tryExchange(Level worldIn, Player player, InteractionHand handIn, ItemStack heldItem,

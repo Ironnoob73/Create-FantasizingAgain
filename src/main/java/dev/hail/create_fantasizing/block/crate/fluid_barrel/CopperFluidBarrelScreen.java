@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import static com.simibubi.create.foundation.gui.AllGuiTextures.PLAYER_INVENTORY;
+import static net.minecraft.util.Mth.ceil;
 
 @OnlyIn(Dist.CLIENT)
 public class CopperFluidBarrelScreen extends AbstractDoubleStorageScreen<CopperFluidBarrelMenu> {
@@ -132,7 +133,7 @@ public class CopperFluidBarrelScreen extends AbstractDoubleStorageScreen<CopperF
 
         if (menu.contentHolder.tankInventory.getFluidAmount() > 0){
             CFAGuiTextures.FLUID_BARREL_BAR_END.render(ms, x + 90, y + 23);
-            int finalAmount = (menu.contentHolder.tankInventory.getFluidAmount() * 74) / (menu.contentHolder.singleTankCapacity * (menu.dualBlock ? 2 : 1));
+            int finalAmount = ceil((menu.contentHolder.tankInventory.getFluidAmount() * 74f) / (menu.contentHolder.singleTankCapacity * (menu.dualBlock ? 2 : 1)));
             int i = 1;
             while (i <= finalAmount){
                 CFAGuiTextures.FLUID_BARREL_BAR_MID.render(ms, x + 90 + i, y + 23);
