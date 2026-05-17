@@ -2,11 +2,9 @@ package dev.hail.create_fantasizing.block.crate;
 
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.api.equipment.goggles.IHaveHoveringInformation;
-import com.simibubi.create.content.equipment.goggles.GogglesItem;
 import com.simibubi.create.content.logistics.crate.CrateBlockEntity;
 import com.simibubi.create.foundation.utility.CreateLang;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -127,10 +125,7 @@ public abstract class AbstractDoubleStorageEntity extends CrateBlockEntity imple
 
     @Override
     public boolean addToTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        Minecraft mc = Minecraft.getInstance();
-        if (GogglesItem.isWearingGoggles(mc.player))
-            return false;
-        if (hasCustomName() && !Objects.equals(customName, "")){
+        if (hasCustomName() && !Objects.equals(customName, "")) {
             CreateLang.text(getName().getString()).style(ChatFormatting.WHITE).forGoggles(tooltip);
             return true;
         }
