@@ -19,7 +19,7 @@ public class CopperFluidBarrelEntity extends AbstractFluidBarrelEntity implement
     public CopperFluidBarrelEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         singleTankCapacity = 8000;
-        allowedCapacity = 8000;
+        tankInventory.setCapacity(8000);
     }
 
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {

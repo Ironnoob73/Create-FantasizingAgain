@@ -7,7 +7,6 @@ import com.simibubi.create.foundation.fluid.SmartFluidTank;
 import com.simibubi.create.foundation.item.SmartInventory;
 import com.simibubi.create.foundation.utility.CreateLang;
 import com.simibubi.create.foundation.utility.ResetableLazy;
-import dev.hail.create_fantasizing.FantasizingMod;
 import dev.hail.create_fantasizing.block.crate.AbstractDoubleStorageEntity;
 import joptsimple.internal.Strings;
 import net.createmod.catnip.data.Pair;
@@ -22,7 +21,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.IItemHandler;
 
 import java.util.ArrayList;
@@ -34,7 +32,6 @@ import static net.minecraft.util.Mth.floor;
 
 public abstract class AbstractFluidBarrelEntity extends AbstractDoubleStorageEntity {
     public int singleTankCapacity;
-    public int allowedCapacity = -1;
     protected ICapabilityProvider<IFluidHandler> fluidCapability = null;
     public SmartFluidTank tankInventory;
     protected ResetableLazy<IFluidHandler> tankHandler;
@@ -44,10 +41,10 @@ public abstract class AbstractFluidBarrelEntity extends AbstractDoubleStorageEnt
     public AbstractFluidBarrelEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         tankHandler = ResetableLazy.of(() -> tankInventory);
-        bucketSlots = new SmartInventory(2, this, (slot, stack) ->
-                slot == 0 && (GenericItemEmptying.canItemBeEmptied(this.getLevel(), stack) || GenericItemFilling.canItemBeFilled(this.getLevel(), stack)));
         bucketHandler = ResetableLazy.of(() -> bucketSlots);
         tankInventory = new SmartFluidTank(singleTankCapacity, this::onFluidStackChanged);
+        bucketSlots = new SmartInventory(2, this, (slot, stack) ->
+                slot == 0 && (GenericItemEmptying.canItemBeEmptied(this.getLevel(), stack) || GenericItemFilling.canItemBeFilled(this.getLevel(), stack)));
     }
 
     protected void initCapability() {
@@ -76,16 +73,16 @@ public abstract class AbstractFluidBarrelEntity extends AbstractDoubleStorageEnt
         if (getOtherCrate() != null){
             if (isSecondaryCrate()){
                 fluidCapability = ICapabilityProvider.of(getOtherCrate().tankInventory);
-                getOtherCrate().tankInventory.setCapacity(Math.min(singleTankCapacity * 2, allowedCapacity));
+                //getOtherCrate().tankInventory.setCapacity(Math.min(singleTankCapacity * 2, allowedCapacity));
                 itemCapability = ICapabilityProvider.of(getOtherCrate().bucketSlots);
             } else {
                 fluidCapability = ICapabilityProvider.of(tankInventory);
-                tankInventory.setCapacity(Math.min(singleTankCapacity * 2, allowedCapacity));
+                //tankInventory.setCapacity(Math.min(singleTankCapacity * 2, allowedCapacity));
                 itemCapability = ICapabilityProvider.of(bucketSlots);
             }
         } else {
             fluidCapability = ICapabilityProvider.of(tankInventory);
-            tankInventory.setCapacity(Math.min(singleTankCapacity, allowedCapacity));
+            //tankInventory.setCapacity(Math.min(singleTankCapacity, allowedCapacity));
             itemCapability = ICapabilityProvider.of(bucketSlots);
         }
     }
@@ -99,30 +96,34 @@ public abstract class AbstractFluidBarrelEntity extends AbstractDoubleStorageEnt
 
     @Override
     public void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
-        if (this.tankInventory != null && !tankInventory.isEmpty()){
-            compound.put("Tank", tankInventory.getFluid().save(registries));
+        if (this.tankInventory != null){
+            compound.putInt("Capacity", tankInventory.getCapacity());
+            if (!tankInventory.isEmpty())
+                compound.put("Tank", tankInventory.getFluid().save(registries));
         }
         if (this.bucketSlots != null)
             compound.put("Buckets", bucketSlots.serializeNBT(registries));
-        compound.putInt("AllowedCapacity", allowedCapacity);
         super.write(compound, registries, clientPacket);
     }
 
     @Override
     protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
         if (this.tankInventory != null) {
+            tankInventory.setCapacity(compound.getInt("Capacity"));
             tankInventory.setFluid(FluidStack.parseOptional(registries, compound.getCompound("Tank")));
         }
         if (this.bucketSlots != null)
             bucketSlots.deserializeNBT(registries, compound.getCompound("Buckets"));
-        allowedCapacity = compound.getInt("AllowedCapacity");
         super.read(compound, registries, clientPacket);
     }
 
     @Override
     public void tick(){
         super.tick();
-        if (!bucketSlots.isEmpty()) {
+        if (isSecondaryCrate() && getMainCrate() instanceof AbstractFluidBarrelEntity mainBarrel){
+            tankInventory = mainBarrel.tankInventory;
+            bucketSlots = mainBarrel.bucketSlots;
+        } else if (!bucketSlots.isEmpty()) {
             if (GenericItemEmptying.canItemBeEmptied(this.getLevel(), bucketSlots.getStackInSlot(0))) {
                 Pair<FluidStack, ItemStack> emptyItem = GenericItemEmptying.emptyItem(level, bucketSlots.getStackInSlot(0), true);
                 FluidStack fluidFromItem = emptyItem.getFirst();
@@ -174,10 +175,12 @@ public abstract class AbstractFluidBarrelEntity extends AbstractDoubleStorageEnt
             return;
         if (other instanceof AbstractFluidBarrelEntity otherBarrel) {
             otherBarrel.invalidateCapabilities();
-            if (other == getMainCrate())
-                otherBarrel.tankInventory.getFluid().setAmount(Math.min(otherBarrel.tankInventory.getFluid().getAmount(), singleTankCapacity));
+            if (isSecondaryCrate()){
+                otherBarrel.tankInventory.setCapacity(Math.min(otherBarrel.tankInventory.getCapacity(), singleTankCapacity));
+                otherBarrel.tankInventory.getFluid().setAmount(Math.min(tankInventory.getFluid().getAmount(), singleTankCapacity));
+            }
             else{
-                otherBarrel.tankInventory.setFluid(tankInventory.getFluid());
+                otherBarrel.tankInventory.setCapacity(Math.max(otherBarrel.tankInventory.getCapacity() - singleTankCapacity, 0));
                 otherBarrel.tankInventory.getFluid().setAmount(Math.max(tankInventory.getFluid().getAmount() - singleTankCapacity, 0));
             }
         }

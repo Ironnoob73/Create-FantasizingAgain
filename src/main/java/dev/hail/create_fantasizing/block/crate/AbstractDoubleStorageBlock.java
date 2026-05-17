@@ -8,6 +8,9 @@ import net.createmod.catnip.data.Iterate;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
@@ -29,6 +32,7 @@ import net.neoforged.neoforge.common.util.FakePlayer;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -86,19 +90,28 @@ public abstract class AbstractDoubleStorageBlock extends CrateBlock implements I
 
     @Override
     public void onPlace(BlockState state, Level worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
-        if (oldState.getBlock() != state.getBlock() && state.hasBlockEntity() && state.getValue(CRATE_TYPE).isDouble()) {
+        super.onPlace(state, worldIn, pos, oldState, isMoving);
+        if (oldState.getBlock() != state.getBlock() && state.hasBlockEntity()) {
             BlockEntity blockEntity = worldIn.getBlockEntity(pos);
             if (!(blockEntity instanceof AbstractDoubleStorageEntity be))
                 return;
+            be.invalidateCapabilities();
 
-            AbstractDoubleStorageEntity other = be.getOtherCrate();
-            if (other == null)
-                return;
+            if (be.components().has(DataComponents.CUSTOM_NAME) && be.customName == null){
+                MutableComponent customNameComponent = Objects.requireNonNull(be.components().get(DataComponents.CUSTOM_NAME)).copy();
+                be.customName = customNameComponent.getString();
+            }
 
-            if (state.getValue(CRATE_TYPE) == AbstractDoubleStorageBlock.CrateType.MAIN) {
-                onMerge(be, other);
-            } else {
-                onMerge(other, be);
+            if (state.getValue(CRATE_TYPE).isDouble()){
+                AbstractDoubleStorageEntity other = be.getOtherCrate();
+                if (other != null) {
+                    other.invalidateCapabilities();
+                    if (state.getValue(CRATE_TYPE) == AbstractDoubleStorageBlock.CrateType.MAIN) {
+                        onMerge(be, other);
+                    } else {
+                        onMerge(other, be);
+                    }
+                }
             }
         }
     }

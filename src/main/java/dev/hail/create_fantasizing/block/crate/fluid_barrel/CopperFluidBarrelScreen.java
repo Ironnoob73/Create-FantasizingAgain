@@ -78,7 +78,7 @@ public class CopperFluidBarrelScreen extends AbstractDoubleStorageScreen<CopperF
                 .withRange(0, (menu.dualBlock ? 16001 : 8001))
                 .writingTo(allowedCapacityLabel)
                 .withShiftStep(1000)
-                .setState(menu.contentHolder.allowedCapacity)
+                .setState(menu.contentHolder.tankInventory.getCapacity())
                 .calling(s -> lastModification = 0);
         allowedCapacity.onChanged();
         addRenderableWidget(allowedCapacityLabel);

@@ -2,27 +2,41 @@ package dev.hail.create_fantasizing.block.crate.fluid_barrel;
 
 import com.simibubi.create.content.fluids.tank.FluidTankBlockEntity;
 import com.simibubi.create.foundation.fluid.FluidHelper;
+import com.simibubi.create.foundation.fluid.SmartFluidTank;
 import dev.hail.create_fantasizing.block.crate.AbstractDoubleStorageBlock;
 import dev.hail.create_fantasizing.block.crate.AbstractDoubleStorageEntity;
 import net.createmod.catnip.annotations.ClientOnly;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 
 import static net.minecraft.util.Mth.ceil;
@@ -58,18 +72,18 @@ public abstract class AbstractFluidBarrelBlock extends AbstractDoubleStorageBloc
     public void onMerge(AbstractDoubleStorageEntity be, AbstractDoubleStorageEntity other){
         super.onMerge(be, other);
         if (be instanceof AbstractFluidBarrelEntity mainBarrel && other instanceof AbstractFluidBarrelEntity secondaryBarrel){
+            be.invalidateCapabilities();
             other.invalidateCapabilities();
-            if (mainBarrel.tankInventory.getFluid().getFluid() != secondaryBarrel.tankInventory.getFluid().getFluid())
+            if (mainBarrel.tankInventory.getFluid().getFluid() != secondaryBarrel.tankInventory.getFluid().getFluid()
+                    && !mainBarrel.tankInventory.isEmpty() && !secondaryBarrel.tankInventory.isEmpty())
                 return;
             if (mainBarrel.tankInventory.getFluid().getFluid() == secondaryBarrel.tankInventory.getFluid().getFluid()
                     || mainBarrel.tankInventory.isEmpty() || secondaryBarrel.tankInventory.isEmpty()){
                 if (mainBarrel.tankInventory.isEmpty() && !secondaryBarrel.tankInventory.isEmpty()){
                     mainBarrel.tankInventory.setFluid(secondaryBarrel.tankInventory.getFluid());
-                    secondaryBarrel.tankInventory.setFluid(FluidStack.EMPTY);
                 }
                 mainBarrel.tankInventory.getFluid().setAmount(mainBarrel.tankInventory.getFluid().getAmount() + secondaryBarrel.tankInventory.getFluid().getAmount());
-                mainBarrel.allowedCapacity = (mainBarrel.tankInventory.isEmpty() ? mainBarrel.singleTankCapacity : mainBarrel.allowedCapacity)
-                        + (secondaryBarrel.tankInventory.isEmpty() ? secondaryBarrel.singleTankCapacity : secondaryBarrel.allowedCapacity);
+                mainBarrel.tankInventory.setCapacity(mainBarrel.tankInventory.getCapacity() + secondaryBarrel.tankInventory.getCapacity());
             }
             for (int i = 0; i <= 1; i++)
                 if (!secondaryBarrel.bucketSlots.getStackInSlot(i).isEmpty())
@@ -77,6 +91,66 @@ public abstract class AbstractFluidBarrelBlock extends AbstractDoubleStorageBloc
                         popResource(secondaryBarrel.getLevel(), secondaryBarrel.getBlockPos(), secondaryBarrel.bucketSlots.getStackInSlot(i));
                     else
                         mainBarrel.bucketSlots.setStackInSlot(i, secondaryBarrel.bucketSlots.getStackInSlot(i));
+            be.setChanged();
+            other.setChanged();
+        }
+    }
+
+    @Override
+    public @NotNull List<ItemStack> getDrops(BlockState blockState, LootParams.Builder builder) {
+        BlockEntity blockentity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+        if (blockentity instanceof AbstractFluidBarrelEntity abstractFluidBarrelEntity) {
+            ItemStack itemstack = new ItemStack(blockState.getBlock());
+            if (abstractFluidBarrelEntity.getLevel() != null) {
+                abstractFluidBarrelEntity.saveToItem(itemstack, abstractFluidBarrelEntity.getLevel().registryAccess());
+                CompoundTag copiedComp = Objects.requireNonNull(itemstack.get(DataComponents.BLOCK_ENTITY_DATA)).copyTag();
+                Tag bucket_slots = copiedComp.getCompound("Buckets").get("Items");
+                if (!abstractFluidBarrelEntity.tankInventory.isEmpty() || !abstractFluidBarrelEntity.bucketSlots.isEmpty()) {
+                    if (abstractFluidBarrelEntity.isSecondaryCrate()){
+                        copiedComp.getCompound("Tank").putInt("amount", Math.max(0, copiedComp.getCompound("Tank").getInt("amount") - abstractFluidBarrelEntity.singleTankCapacity));
+                        copiedComp.putInt("Capacity", Math.max(0, copiedComp.getInt("Capacity") - abstractFluidBarrelEntity.singleTankCapacity));
+                    }
+                    else{
+                        copiedComp.getCompound("Tank").putInt("amount", Math.min(abstractFluidBarrelEntity.singleTankCapacity, copiedComp.getCompound("Tank").getInt("amount")));
+                        copiedComp.putInt("Capacity", Math.min(abstractFluidBarrelEntity.singleTankCapacity, copiedComp.getInt("Capacity")));
+                    }
+                    copiedComp.putInt("MaxCapacity", abstractFluidBarrelEntity.singleTankCapacity);
+                    List<ItemStack> dropList = new ArrayList<>(List.of());
+                    if (bucket_slots instanceof ListTag && !((ListTag) bucket_slots).isEmpty()){
+                        Iterator<Tag> iterator = ((ListTag) bucket_slots).iterator();
+                        while (iterator.hasNext()){
+                            ItemStack stack = ItemStack.parseOptional(abstractFluidBarrelEntity.getLevel().registryAccess(), (CompoundTag) iterator.next());
+                            if (abstractFluidBarrelEntity.getOtherCrate() == null){
+                                dropList.add(stack);
+                            }
+                            iterator.remove();
+                        }
+                    }
+                    if (abstractFluidBarrelEntity.hasCustomName())
+                        itemstack.set(DataComponents.CUSTOM_NAME, Component.translatable(blockState.getBlock().getDescriptionId()).setStyle(Style.EMPTY.withItalic(false)).append(" - ").append(Objects.requireNonNull(abstractFluidBarrelEntity.getCustomName()).copy().withStyle(ChatFormatting.ITALIC)));
+                    else
+                        itemstack.remove(DataComponents.CUSTOM_NAME);
+                    itemstack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(copiedComp));
+                    dropList.add(itemstack);
+                    return dropList;
+                }
+            }
+        }
+        return super.getDrops(blockState, builder);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+        if (stack.has(DataComponents.BLOCK_ENTITY_DATA)) {
+            CompoundTag copiedComp = Objects.requireNonNull(stack.get(DataComponents.BLOCK_ENTITY_DATA)).copyTag();
+            CompoundTag tank_inv = copiedComp.getCompound("Tank");
+            SmartFluidTank tankInventory = new SmartFluidTank(0, (fluidStack -> {}));
+            tankInventory.setCapacity(copiedComp.getInt("Capacity"));
+            tankInventory.setFluid(FluidStack.parseOptional(Objects.requireNonNull(context.registries()), tank_inv));
+            int maxCapacity = copiedComp.getInt("MaxCapacity");
+            tooltipComponents.add(AbstractFluidBarrelEntity.barComponent(tankInventory, maxCapacity));
+            tooltipComponents.addAll(AbstractFluidBarrelEntity.contentList(tankInventory, tooltipFlag.hasShiftDown()));
         }
     }
 

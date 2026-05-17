@@ -10,11 +10,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -35,9 +38,9 @@ public abstract class AbstractDoubleStorageEntity extends CrateBlockEntity imple
     public void tick() {
         super.tick();
 
-        if(isSecondaryCrate() && getMainCrate() != null){
+        if (isSecondaryCrate() && getMainCrate() != null) {
             customName = getMainCrate().customName;
-        }else if(customName != null && customName.isEmpty()){
+        } else if (customName != null && customName.isEmpty()) {
             customName = null;
         }
     }

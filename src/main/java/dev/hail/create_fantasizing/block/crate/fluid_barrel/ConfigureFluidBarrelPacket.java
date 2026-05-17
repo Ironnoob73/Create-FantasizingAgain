@@ -29,9 +29,9 @@ public class ConfigureFluidBarrelPacket extends BlockEntityConfigurationPacket<A
     protected void applySettings(ServerPlayer player, AbstractFluidBarrelEntity be) {
         if (be.isDoubleCrate() && be.isSecondaryCrate()){
             be.getOtherCrate().notifyUpdate();
-            be.getOtherCrate().allowedCapacity = maxCapacity;
+            be.getOtherCrate().tankInventory.setCapacity(maxCapacity);
         }
-        be.allowedCapacity = maxCapacity;
+        be.tankInventory.setCapacity(maxCapacity);
         be.customName = customName;
         be.notifyUpdate();
     }

@@ -1,6 +1,7 @@
 package dev.hail.create_fantasizing.block.crate;
 
 import com.simibubi.create.foundation.item.ItemHelper;
+import net.minecraft.ChatFormatting;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
@@ -8,6 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -64,10 +66,11 @@ public abstract class AbstractCrateBlock extends AbstractDoubleStorageBlock {
                     }
                     copiedComp.getCompound("Inventory").put("Items", crate_inv);
                     copiedComp.putInt("AllowedAmount", Math.min(abstractCrateEntity.inventory.getSlots() * 64, copiedComp.getInt("AllowedAmount")));
+                    if (abstractCrateEntity.hasCustomName())
+                        itemstack.set(DataComponents.CUSTOM_NAME, Component.translatable(blockState.getBlock().getDescriptionId()).setStyle(Style.EMPTY.withItalic(false)).append(" - ").append(Objects.requireNonNull(abstractCrateEntity.getCustomName()).copy().withStyle(ChatFormatting.ITALIC)));
+                    else
+                        itemstack.remove(DataComponents.CUSTOM_NAME);
                     itemstack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(copiedComp));
-                    if (abstractCrateEntity.hasCustomName()){
-                        itemstack.set(DataComponents.CUSTOM_NAME, Component.empty().append(blockState.getBlock().getName()).append(" - ").append(Objects.requireNonNull(abstractCrateEntity.getCustomName())));
-                    }
                     dropList.add(itemstack);
                     return dropList;
                 }
