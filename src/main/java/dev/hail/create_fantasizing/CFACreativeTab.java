@@ -28,6 +28,9 @@ public class CFACreativeTab {
                 output.accept(CFABlocks.BRASS_CRATE.get());
                 output.accept(CFABlocks.STURDY_CRATE.get());
                 output.accept(CFABlocks.COPPER_FLUID_BARREL.get());
+                output.accept(CFABlocks.ZINC_FLUID_BARREL.get());
+                output.accept(CFABlocks.GOLD_FLUID_BARREL.get());
+                output.accept(CFABlocks.DIAMOND_FLUID_BARREL.get());
                 output.accept(CFABlocks.PHANTOM_SHAFT.get());
                 output.accept(CFABlocks.PHANTOM_COGWHEEL.get());
                 output.accept(CFABlocks.PHANTOM_LARGE_COGWHEEL.get());

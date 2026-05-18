@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "A": {
-      "tag": "c:ingots/copper"
+      "tag": "c:gems/diamond"
     },
     "P": {
       "tag": "minecraft:planks"
@@ -19,6 +19,6 @@
   ],
   "result": {
     "count": 4,
-    "id": "create_fantasizing:copper_fluid_barrel"
+    "id": "create_fantasizing:diamond_fluid_barrel"
   }
 }

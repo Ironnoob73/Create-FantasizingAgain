@@ -5,8 +5,7 @@ import com.tterrag.registrate.util.entry.MenuEntry;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import dev.hail.create_fantasizing.FantasizingMod;
 import dev.hail.create_fantasizing.block.crate.*;
-import dev.hail.create_fantasizing.block.crate.fluid_barrel.CopperFluidBarrelMenu;
-import dev.hail.create_fantasizing.block.crate.fluid_barrel.CopperFluidBarrelScreen;
+import dev.hail.create_fantasizing.block.crate.fluid_barrel.*;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.MenuAccess;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -18,6 +17,9 @@ public class CFAMenus {
     public static final MenuEntry<SturdyCrateMenu> STURDY_CRATE = register("sturdy_crate", SturdyCrateMenu::new, () -> SturdyCrateScreen::new);
 
     public static final MenuEntry<CopperFluidBarrelMenu> COPPER_FLUID_BARREL_MENU = register("copper_fluid_barrel", CopperFluidBarrelMenu::new, () -> CopperFluidBarrelScreen::new);
+    public static final MenuEntry<ZincFluidBarrelMenu> ZINC_FLUID_BARREL_MENU = register("zinc_fluid_barrel", ZincFluidBarrelMenu::new, () -> ZincFluidBarrelScreen::new);
+    public static final MenuEntry<GoldFluidBarrelMenu> GOLD_FLUID_BARREL_MENU = register("gold_fluid_barrel", GoldFluidBarrelMenu::new, () -> GoldFluidBarrelScreen::new);
+    public static final MenuEntry<DiamondFluidBarrelMenu> DIAMOND_FLUID_BARREL_MENU = register("diamond_fluid_barrel", DiamondFluidBarrelMenu::new, () -> DiamondFluidBarrelScreen::new);
 
     private static <C extends AbstractContainerMenu, S extends Screen & MenuAccess<C>> MenuEntry<C> register(
             String name, MenuBuilder.ForgeMenuFactory<C> factory, NonNullSupplier<MenuBuilder.ScreenFactory<C, S>> screenFactory) {

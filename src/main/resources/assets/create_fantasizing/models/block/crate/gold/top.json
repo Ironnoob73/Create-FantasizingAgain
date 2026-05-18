@@ -1,0 +1,8 @@
+{
+  "parent": "create:block/crate/top",
+  "textures": {
+    "crate": "create_fantasizing:block/crate/gold",
+    "side": "create_fantasizing:block/crate/gold_side",
+    "casing": "minecraft:block/gold_block"
+  }
+}

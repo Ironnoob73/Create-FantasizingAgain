@@ -20,8 +20,7 @@ import dev.hail.create_fantasizing.block.chromatic_tunnel.ShadowSteelTunnelBlock
 import dev.hail.create_fantasizing.block.chromatic_tunnel.ShadowSteelTunnelBlockEntity;
 import dev.hail.create_fantasizing.block.compat_engine.*;
 import dev.hail.create_fantasizing.block.crate.*;
-import dev.hail.create_fantasizing.block.crate.fluid_barrel.CopperFluidBarrelBlock;
-import dev.hail.create_fantasizing.block.crate.fluid_barrel.CopperFluidBarrelEntity;
+import dev.hail.create_fantasizing.block.crate.fluid_barrel.*;
 import dev.hail.create_fantasizing.block.phantom_shaft.PhantomCogwheel;
 import dev.hail.create_fantasizing.block.phantom_shaft.PhantomShaft;
 import dev.hail.create_fantasizing.block.phantom_shaft.PhantomShaftVisual;
@@ -33,6 +32,7 @@ import dev.hail.create_fantasizing.block.sturdy_girder.SturdyGirderBlock;
 import dev.hail.create_fantasizing.block.sturdy_girder.SturdyGirderEncasedShaftBlock;
 import dev.hail.create_fantasizing.item.ChromaticTunnelItem;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
 
@@ -142,13 +142,40 @@ public class CFABlocks {
             .register();
 
     public static final BlockEntry<CopperFluidBarrelBlock> COPPER_FLUID_BARREL = REGISTRATE.block("copper_fluid_barrel", CopperFluidBarrelBlock::new)
-            .initialProperties(SharedProperties::wooden)
-            .properties(p -> p.mapColor(MapColor.PODZOL).explosionResistance(1200))
+            .initialProperties(SharedProperties::copperMetal)
+            .properties(p -> p.mapColor(MapColor.TERRACOTTA_ORANGE).explosionResistance(1200))
             .simpleItem()
             .register();
     public static final BlockEntityEntry<CopperFluidBarrelEntity> COPPER_FLUID_BARREL_ENTITY = REGISTRATE
             .blockEntity("copper_fluid_barrel", CopperFluidBarrelEntity::new)
             .validBlocks(COPPER_FLUID_BARREL)
+            .register();
+    public static final BlockEntry<ZincFluidBarrelBlock> ZINC_FLUID_BARREL = REGISTRATE.block("zinc_fluid_barrel", ZincFluidBarrelBlock::new)
+            .initialProperties(() -> Blocks.IRON_BLOCK)
+            .properties(p -> p.mapColor(MapColor.GLOW_LICHEN).explosionResistance(1200))
+            .simpleItem()
+            .register();
+    public static final BlockEntityEntry<ZincFluidBarrelEntity> ZINC_FLUID_BARREL_ENTITY = REGISTRATE
+            .blockEntity("zinc_fluid_barrel", ZincFluidBarrelEntity::new)
+            .validBlocks(ZINC_FLUID_BARREL)
+            .register();
+    public static final BlockEntry<GoldFluidBarrelBlock> GOLD_FLUID_BARREL = REGISTRATE.block("gold_fluid_barrel", GoldFluidBarrelBlock::new)
+            .initialProperties(() -> Blocks.GOLD_BLOCK)
+            .properties(p -> p.mapColor(MapColor.GOLD).explosionResistance(1200))
+            .simpleItem()
+            .register();
+    public static final BlockEntityEntry<GoldFluidBarrelEntity> GOLD_FLUID_BARREL_ENTITY = REGISTRATE
+            .blockEntity("gold_fluid_barrel", GoldFluidBarrelEntity::new)
+            .validBlocks(GOLD_FLUID_BARREL)
+            .register();
+    public static final BlockEntry<DiamondFluidBarrelBlock> DIAMOND_FLUID_BARREL = REGISTRATE.block("diamond_fluid_barrel", DiamondFluidBarrelBlock::new)
+            .initialProperties(() -> Blocks.DIAMOND_BLOCK)
+            .properties(p -> p.mapColor(MapColor.DIAMOND).explosionResistance(1200))
+            .simpleItem()
+            .register();
+    public static final BlockEntityEntry<DiamondFluidBarrelEntity> DIAMOND_FLUID_BARREL_ENTITY = REGISTRATE
+            .blockEntity("diamond_fluid_barrel", DiamondFluidBarrelEntity::new)
+            .validBlocks(DIAMOND_FLUID_BARREL)
             .register();
 
     public static final BlockEntry<PhantomShaft> PHANTOM_SHAFT = REGISTRATE.block("phantom_shaft", PhantomShaft::new)

@@ -1,5 +1,8 @@
 {
   "values": [
-    "create_fantasizing:copper_fluid_barrel"
+    "create_fantasizing:copper_fluid_barrel",
+    "create_fantasizing:zinc_fluid_barrel",
+    "create_fantasizing:gold_fluid_barrel",
+    "create_fantasizing:diamond_fluid_barrel"
   ]
 }

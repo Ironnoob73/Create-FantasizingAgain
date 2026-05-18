@@ -23,6 +23,7 @@ import java.util.List;
 public abstract class AbstractDoubleStorageScreen<T extends AbstractDoubleStorageMenu> extends AbstractSimiContainerScreen<T> {
     protected CFAGuiTextures background;
     protected CFAGuiTextures backgroundSec;
+    protected CFAGuiTextures editButton;
     protected List<Rect2i> extraAreas = Collections.emptyList();
     protected EditBox nameBox;
     protected ScrollInput allowedCapacity;

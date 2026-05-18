@@ -8,12 +8,12 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class CopperFluidBarrelScreen extends AbstractFluidBarrelScreen<CopperFluidBarrelMenu> {
-    public CopperFluidBarrelScreen(CopperFluidBarrelMenu container, Inventory inv, Component title) {
+public class GoldFluidBarrelScreen extends AbstractFluidBarrelScreen<GoldFluidBarrelMenu> {
+    public GoldFluidBarrelScreen(GoldFluidBarrelMenu container, Inventory inv, Component title) {
         super(container, inv, title);
-        blockEntry = CFABlocks.COPPER_FLUID_BARREL;
+        blockEntry = CFABlocks.GOLD_FLUID_BARREL;
         renderedItem = blockEntry.asStack();
-        background = CFAGuiTextures.COPPER_FLUID_BARREL;
-        editButton = CFAGuiTextures.COPPER_EDIT;
+        background = CFAGuiTextures.GOLD_FLUID_BARREL;
+        editButton = CFAGuiTextures.GOLD_EDIT;
     }
 }
