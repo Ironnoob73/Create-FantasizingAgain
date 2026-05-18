@@ -98,7 +98,7 @@ public abstract class AbstractCrateBlock extends AbstractDoubleStorageBlock {
         BlockEntity be = worldIn.getBlockEntity(pos);
         if (be instanceof AbstractCrateEntity) {
             AbstractCrateEntity flexCrateBlockEntity = (AbstractCrateEntity) ((AbstractDoubleStorageEntity) be).getMainCrate();
-            if (flexCrateBlockEntity.itemCapability.getCapability() != null)
+            if (flexCrateBlockEntity.itemCapability != null && flexCrateBlockEntity.itemCapability.getCapability() != null)
                 return ItemHelper.calcRedstoneFromInventory(flexCrateBlockEntity.itemCapability.getCapability());
             return ItemHelper.calcRedstoneFromInventory(flexCrateBlockEntity.inventory);
         }
