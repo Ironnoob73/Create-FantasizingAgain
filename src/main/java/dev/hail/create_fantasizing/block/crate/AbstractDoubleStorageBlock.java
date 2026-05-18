@@ -95,7 +95,7 @@ public abstract class AbstractDoubleStorageBlock extends CrateBlock implements I
             BlockEntity blockEntity = worldIn.getBlockEntity(pos);
             if (!(blockEntity instanceof AbstractDoubleStorageEntity be))
                 return;
-            be.invalidateCapabilities();
+            be.notifyUpdate();
 
             if (be.components().has(DataComponents.CUSTOM_NAME) && be.customName == null){
                 MutableComponent customNameComponent = Objects.requireNonNull(be.components().get(DataComponents.CUSTOM_NAME)).copy();
@@ -105,7 +105,7 @@ public abstract class AbstractDoubleStorageBlock extends CrateBlock implements I
             if (state.getValue(CRATE_TYPE).isDouble()){
                 AbstractDoubleStorageEntity other = be.getOtherCrate();
                 if (other != null) {
-                    other.invalidateCapabilities();
+                    other.notifyUpdate();
                     if (state.getValue(CRATE_TYPE) == AbstractDoubleStorageBlock.CrateType.MAIN) {
                         onMerge(be, other);
                     } else {

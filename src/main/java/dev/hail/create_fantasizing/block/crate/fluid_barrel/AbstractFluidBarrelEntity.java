@@ -188,11 +188,9 @@ public abstract class AbstractFluidBarrelEntity extends AbstractDoubleStorageEnt
 
     protected void onFluidStackChanged(FluidStack newFluidStack) {
         if (level != null && !level.isClientSide) {
-            setChanged();
-            sendData();
+            notifyUpdate();
             if (isDoubleCrate()){
-                getOtherCrate().setChanged();
-                getOtherCrate().sendData();
+                getOtherCrate().notifyUpdate();
             }
         }
     }

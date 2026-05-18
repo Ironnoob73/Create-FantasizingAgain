@@ -43,7 +43,7 @@ public class CrateInventory extends ItemStackHandler {
     protected void onContentsChanged(int slot) {
         super.onContentsChanged(slot);
         if (crateEntity != null) {
-            crateEntity.setChanged();
+            crateEntity.notifyUpdate();
             itemCount = 0;
             for (int i = 0; i < getSlots(); i++) {
                 itemCount += Math.min(getStackInSlot(i).getCount() * (64 / getStackInSlot(i).getMaxStackSize()), getSlotLimit(i));

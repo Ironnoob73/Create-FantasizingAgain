@@ -91,8 +91,8 @@ public abstract class AbstractFluidBarrelBlock extends AbstractDoubleStorageBloc
                         popResource(secondaryBarrel.getLevel(), secondaryBarrel.getBlockPos(), secondaryBarrel.bucketSlots.getStackInSlot(i));
                     else
                         mainBarrel.bucketSlots.setStackInSlot(i, secondaryBarrel.bucketSlots.getStackInSlot(i));
-            be.setChanged();
-            other.setChanged();
+            be.notifyUpdate();
+            other.notifyUpdate();
         }
     }
 
