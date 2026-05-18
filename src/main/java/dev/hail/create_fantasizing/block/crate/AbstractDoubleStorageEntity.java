@@ -29,6 +29,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Objects;
 
+import static dev.hail.create_fantasizing.block.crate.AbstractDoubleStorageBlock.CRATE_TYPE;
+
 public abstract class AbstractDoubleStorageEntity extends CrateBlockEntity implements Nameable, IHaveHoveringInformation, IHaveGoggleInformation, MenuProvider {
     public String customName;
 
@@ -48,7 +50,7 @@ public abstract class AbstractDoubleStorageEntity extends CrateBlockEntity imple
     }
 
     public boolean isDoubleCrate() {
-        return getBlockState().getValue(AbstractDoubleStorageBlock.CRATE_TYPE).isDouble();
+        return getBlockState().getValue(CRATE_TYPE).isDouble();
     }
 
     public boolean isSecondaryCrate() {
@@ -56,7 +58,7 @@ public abstract class AbstractDoubleStorageEntity extends CrateBlockEntity imple
             return false;
         if (!(getBlockState().getBlock() instanceof AbstractDoubleStorageBlock))
             return false;
-        return isDoubleCrate() && getBlockState().getValue(AbstractDoubleStorageBlock.CRATE_TYPE) == AbstractDoubleStorageBlock.CrateType.SECOND;
+        return isDoubleCrate() && getBlockState().getValue(CRATE_TYPE) == AbstractDoubleStorageBlock.CrateType.SECOND;
     }
 
     public Direction getFacing() {
@@ -80,6 +82,8 @@ public abstract class AbstractDoubleStorageEntity extends CrateBlockEntity imple
     }
 
     public void onSplit() {
+        if (this.getBlockState().getValue(CRATE_TYPE) == AbstractDoubleStorageBlock.CrateType.SINGLE)
+            return;
         AbstractDoubleStorageEntity other = getOtherCrate();
         if (other == null)
             return;

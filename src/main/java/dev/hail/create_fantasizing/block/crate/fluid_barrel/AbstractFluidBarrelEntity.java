@@ -7,12 +7,14 @@ import com.simibubi.create.foundation.fluid.SmartFluidTank;
 import com.simibubi.create.foundation.item.SmartInventory;
 import com.simibubi.create.foundation.utility.CreateLang;
 import com.simibubi.create.foundation.utility.ResetableLazy;
+import dev.hail.create_fantasizing.block.crate.AbstractDoubleStorageBlock;
 import dev.hail.create_fantasizing.block.crate.AbstractDoubleStorageEntity;
 import joptsimple.internal.Strings;
 import net.createmod.catnip.data.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -27,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static dev.hail.create_fantasizing.block.crate.AbstractDoubleStorageBlock.CRATE_TYPE;
 import static net.minecraft.util.Mth.ceil;
 import static net.minecraft.util.Mth.floor;
 
@@ -73,16 +76,13 @@ public abstract class AbstractFluidBarrelEntity extends AbstractDoubleStorageEnt
         if (getOtherCrate() != null){
             if (isSecondaryCrate()){
                 fluidCapability = ICapabilityProvider.of(getOtherCrate().tankInventory);
-                //getOtherCrate().tankInventory.setCapacity(Math.min(singleTankCapacity * 2, allowedCapacity));
                 itemCapability = ICapabilityProvider.of(getOtherCrate().bucketSlots);
             } else {
                 fluidCapability = ICapabilityProvider.of(tankInventory);
-                //tankInventory.setCapacity(Math.min(singleTankCapacity * 2, allowedCapacity));
                 itemCapability = ICapabilityProvider.of(bucketSlots);
             }
         } else {
             fluidCapability = ICapabilityProvider.of(tankInventory);
-            //tankInventory.setCapacity(Math.min(singleTankCapacity, allowedCapacity));
             itemCapability = ICapabilityProvider.of(bucketSlots);
         }
     }
@@ -170,6 +170,8 @@ public abstract class AbstractFluidBarrelEntity extends AbstractDoubleStorageEnt
 
     @Override
     public void onSplit(){
+        if (this.getBlockState().getValue(CRATE_TYPE) == AbstractDoubleStorageBlock.CrateType.SINGLE)
+            return;
         AbstractDoubleStorageEntity other = getOtherCrate();
         if (other == null)
             return;

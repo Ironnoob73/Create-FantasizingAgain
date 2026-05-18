@@ -102,7 +102,7 @@ public abstract class AbstractDoubleStorageBlock extends CrateBlock implements I
                 be.customName = customNameComponent.getString();
             }
 
-            if (state.getValue(CRATE_TYPE).isDouble()){
+            if (state.getValue(CRATE_TYPE).isDouble() && !isMoving /* Fix MountStorage unmount capacity issue By Deepseek V4*/ ){
                 AbstractDoubleStorageEntity other = be.getOtherCrate();
                 if (other != null) {
                     other.notifyUpdate();

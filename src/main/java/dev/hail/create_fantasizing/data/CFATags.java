@@ -12,6 +12,8 @@ public class CFATags {
 
     public static final TagKey<Block> CRATE_MOUNTED_STORAGE = TagKey.create(Registries.BLOCK,
             FantasizingMod.resourceLocation("crate_mounted_storage"));
+    public static final TagKey<Block> FLUID_BARREL_MOUNTED_STORAGE = TagKey.create(Registries.BLOCK,
+            FantasizingMod.resourceLocation("fluid_barrel_mounted_storage"));
 
     public static final TagKey<Fluid> POWDER_SNOW = TagKey.create(Registries.FLUID,
             FantasizingMod.resourceLocation("powder_snow"));

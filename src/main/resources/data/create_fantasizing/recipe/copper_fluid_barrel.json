@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:copper_ingot"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    },
+    "C": {
+      "tag": "c:barrels"
+    }
+  },
+  "pattern": [
+    "APA",
+    "PCP",
+    "APA"
+  ],
+  "result": {
+    "count": 4,
+    "id": "create_fantasizing:copper_fluid_barrel"
+  }
+}
