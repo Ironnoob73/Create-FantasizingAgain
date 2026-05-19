@@ -1,7 +1,6 @@
 package dev.hail.create_fantasizing.block;
 
 import com.simibubi.create.AllDisplaySources;
-import com.simibubi.create.AllSpriteShifts;
 import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.content.decoration.encasing.CasingBlock;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
@@ -181,6 +180,10 @@ public class CFABlocks {
             .validBlocks(DIAMOND_FLUID_BARREL)
             .register();
 
+    public static final BlockEntry<CasingBlock> ZINC_CASING = REGISTRATE.block("zinc_casing", CasingBlock::new)
+            .properties(p -> p.mapColor(MapColor.GLOW_LICHEN))
+            .transform(BuilderTransformers.casing(() -> CFASpriteShifts.ZINC_CASING))
+            .register();
     public static final BlockEntry<CasingBlock> GOLD_CASING = REGISTRATE.block("gold_casing", CasingBlock::new)
             .properties(p -> p.mapColor(MapColor.GOLD))
             .transform(BuilderTransformers.casing(() -> CFASpriteShifts.GOLD_CASING))

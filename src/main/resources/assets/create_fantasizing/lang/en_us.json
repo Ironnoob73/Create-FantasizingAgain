@@ -22,6 +22,7 @@
   "item.create_fantasizing.block_placer.not_enough_blocks": "Not holding enough blocks!",
   "block.create_fantasizing.shadow_steel_tunnel": "Shadow Steel Tunnel",
   "block.create_fantasizing.refined_radiance_tunnel": "Refined Radiance Tunnel",
+  "block.create_fantasizing.zinc_casing": "Zinc Casing",
   "block.create_fantasizing.gold_casing": "Gold Casing",
   "block.create_fantasizing.transporter": "Transporter",
   "block.create_fantasizing.transporter.tooltip.summary":"_Transfer_ items from one container to another. Can't extract items from another Transporter!",

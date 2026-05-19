@@ -22,6 +22,7 @@
   "item.create_fantasizing.block_placer.not_enough_blocks": "没有足够的方块！",
   "block.create_fantasizing.shadow_steel_tunnel": "暗影钢隧道",
   "block.create_fantasizing.refined_radiance_tunnel": "光辉石隧道",
+  "block.create_fantasizing.zinc_casing": "锌机壳",
   "block.create_fantasizing.gold_casing": "金机壳",
   "block.create_fantasizing.transporter": "运输器",
   "block.create_fantasizing.transporter.tooltip.summary":"将物品从一个容器_转移_到另一个容器。不能从另一个运输器抽取物品！",

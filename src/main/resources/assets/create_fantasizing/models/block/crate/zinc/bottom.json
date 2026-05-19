@@ -3,6 +3,6 @@
   "textures": {
     "crate": "create_fantasizing:block/crate/zinc",
     "side": "create_fantasizing:block/crate/zinc_side",
-    "casing": "create:block/zinc_block"
+    "casing": "create_fantasizing:block/zinc_casing"
   }
 }

@@ -9,6 +9,7 @@ import dev.hail.create_fantasizing.FantasizingMod;
 public class CFASpriteShifts {
     public static final CTSpriteShiftEntry
             STURDY_GIRDER_POLE = vertical("sturdy_girder_pole_side"),
+            ZINC_CASING = omni("zinc_casing"),
             GOLD_CASING = omni("gold_casing");
 
     private static CTSpriteShiftEntry vertical(String name) {
