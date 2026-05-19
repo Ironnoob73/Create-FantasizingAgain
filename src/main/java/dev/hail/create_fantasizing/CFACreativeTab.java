@@ -20,9 +20,10 @@ public class CFACreativeTab {
                 output.accept(CFAItems.BLOCK_PLACER.get());
                 output.accept(CFABlocks.COMPACT_HYDRAULIC_ENGINE.get());
                 output.accept(CFABlocks.COMPACT_WIND_ENGINE.get());
-                output.accept(CFABlocks.TRANSPORTER.get());
                 output.accept(CFABlocks.SHADOW_STEEL_TUNNEL.get());
                 output.accept(CFABlocks.REFINED_RADIANCE_TUNNEL.get());
+                output.accept(CFABlocks.GOLD_CASING.get());
+                output.accept(CFABlocks.TRANSPORTER.get());
                 output.accept(CFABlocks.ANDESITE_CRATE.get());
                 output.accept(CFABlocks.IRON_CRATE.get());
                 output.accept(CFABlocks.BRASS_CRATE.get());

@@ -1,7 +1,9 @@
 package dev.hail.create_fantasizing.block;
 
 import com.simibubi.create.AllDisplaySources;
+import com.simibubi.create.AllSpriteShifts;
 import com.simibubi.create.api.stress.BlockStressValues;
+import com.simibubi.create.content.decoration.encasing.CasingBlock;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.OrientedRotatingVisual;
 import com.simibubi.create.content.kinetics.base.ShaftRenderer;
@@ -10,6 +12,7 @@ import com.simibubi.create.content.kinetics.simpleRelays.*;
 import com.simibubi.create.content.logistics.tunnel.BeltTunnelRenderer;
 import com.simibubi.create.content.logistics.tunnel.BeltTunnelVisual;
 import com.simibubi.create.foundation.data.BlockStateGen;
+import com.simibubi.create.foundation.data.BuilderTransformers;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
@@ -178,6 +181,11 @@ public class CFABlocks {
             .validBlocks(DIAMOND_FLUID_BARREL)
             .register();
 
+    public static final BlockEntry<CasingBlock> GOLD_CASING = REGISTRATE.block("gold_casing", CasingBlock::new)
+            .properties(p -> p.mapColor(MapColor.GOLD))
+            .transform(BuilderTransformers.casing(() -> CFASpriteShifts.GOLD_CASING))
+            .register();
+
     public static final BlockEntry<PhantomShaft> PHANTOM_SHAFT = REGISTRATE.block("phantom_shaft", PhantomShaft::new)
             .initialProperties(SharedProperties::stone)
             .properties(p -> p.mapColor(MapColor.QUARTZ).noCollission())
@@ -227,7 +235,7 @@ public class CFABlocks {
             .renderer(() -> BeltTunnelRenderer::new)
             .register();
     public static final BlockEntry<RefinedRadianceTunnelBlock> REFINED_RADIANCE_TUNNEL = REGISTRATE.block("refined_radiance_tunnel", RefinedRadianceTunnelBlock::new)
-            .properties(p -> p.mapColor(MapColor.SNOW).noOcclusion())
+            .properties(p -> p.mapColor(MapColor.SNOW).noOcclusion().lightLevel($ -> 12))
             .transform(displaySource(AllDisplaySources.ACCUMULATE_ITEMS))
             .transform(displaySource(AllDisplaySources.ITEM_THROUGHPUT))
             .item(ChromaticTunnelItem::new)
