@@ -10,7 +10,8 @@ public class CFASpriteShifts {
     public static final CTSpriteShiftEntry
             STURDY_GIRDER_POLE = vertical("sturdy_girder_pole_side"),
             ZINC_CASING = omni("zinc_casing"),
-            GOLD_CASING = omni("gold_casing");
+            GOLD_CASING = omni("gold_casing"),
+            DIAMOND_CASING = omni("diamond_casing");
 
     private static CTSpriteShiftEntry vertical(String name) {
         return getCT(AllCTTypes.VERTICAL, name);

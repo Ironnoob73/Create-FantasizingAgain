@@ -24,6 +24,7 @@ public class CFACreativeTab {
                 output.accept(CFABlocks.REFINED_RADIANCE_TUNNEL.get());
                 output.accept(CFABlocks.ZINC_CASING.get());
                 output.accept(CFABlocks.GOLD_CASING.get());
+                output.accept(CFABlocks.DIAMOND_CASING.get());
                 output.accept(CFABlocks.TRANSPORTER.get());
                 output.accept(CFABlocks.ANDESITE_CRATE.get());
                 output.accept(CFABlocks.IRON_CRATE.get());

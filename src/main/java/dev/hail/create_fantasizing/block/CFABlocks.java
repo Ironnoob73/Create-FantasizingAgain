@@ -188,6 +188,10 @@ public class CFABlocks {
             .properties(p -> p.mapColor(MapColor.GOLD))
             .transform(BuilderTransformers.casing(() -> CFASpriteShifts.GOLD_CASING))
             .register();
+    public static final BlockEntry<CasingBlock> DIAMOND_CASING = REGISTRATE.block("diamond_casing", CasingBlock::new)
+            .properties(p -> p.mapColor(MapColor.DIAMOND))
+            .transform(BuilderTransformers.casing(() -> CFASpriteShifts.DIAMOND_CASING))
+            .register();
 
     public static final BlockEntry<PhantomShaft> PHANTOM_SHAFT = REGISTRATE.block("phantom_shaft", PhantomShaft::new)
             .initialProperties(SharedProperties::stone)

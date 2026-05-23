@@ -1,0 +1,16 @@
+{
+  "type": "create:item_application",
+  "ingredients": [
+    {
+      "item": "create_fantasizing:zinc_casing"
+    },
+    {
+      "tag": "c:gems/diamond"
+    }
+  ],
+  "results": [
+    {
+      "id": "create_fantasizing:diamond_casing"
+    }
+  ]
+}
