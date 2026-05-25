@@ -15,6 +15,7 @@ public class CFAConfig {
 
     private static final ModConfigSpec.DoubleValue HYDRAULIC_ENGINE_STRESS_PROVIDE;
     private static final ModConfigSpec.DoubleValue WIND_ENGINE_STRESS_PROVIDE;
+    private static final ModConfigSpec.DoubleValue SCULK_ENGINE_STRESS_PROVIDE;
 
     private static final ModConfigSpec.DoubleValue BLOCK_PLACER_POWER;
     private static final ModConfigSpec.IntValue BLOCK_PLACER_RANGE;
@@ -51,6 +52,10 @@ public class CFAConfig {
                 .comment("Stress units provided by the Wind Engine")
                 .translation("create_fantasizing.configuration.engines.wind_stress_provide")
                 .defineInRange("wind_stress_provide", 8192, 0, Double.MAX_VALUE);
+        SCULK_ENGINE_STRESS_PROVIDE = BUILDER_S
+                .comment("Stress units provided by the Sculk Engine")
+                .translation("create_fantasizing.configuration.engines.sculk_stress_provide")
+                .defineInRange("sculk_stress_provide", 8192, 0, Double.MAX_VALUE);
         BUILDER_S.pop();
 
         BUILDER_S.push("block_placer");
@@ -130,6 +135,7 @@ public class CFAConfig {
 
     public static double hydraulicEngineStressProvide;
     public static double windEngineStressProvide;
+    public static double sculkEngineStressProvide;
 
     public static double blockPlacerPower;
     public static int blockPlacerRange = 48;
@@ -165,6 +171,7 @@ public class CFAConfig {
         else if (event.getConfig().getSpec() == SPEC_S) {
             hydraulicEngineStressProvide = HYDRAULIC_ENGINE_STRESS_PROVIDE.getAsDouble();
             windEngineStressProvide = WIND_ENGINE_STRESS_PROVIDE.getAsDouble();
+            sculkEngineStressProvide = SCULK_ENGINE_STRESS_PROVIDE.getAsDouble();
 
             blockPlacerPower = BLOCK_PLACER_POWER.getAsDouble();
             blockPlacerRange = BLOCK_PLACER_RANGE.getAsInt();

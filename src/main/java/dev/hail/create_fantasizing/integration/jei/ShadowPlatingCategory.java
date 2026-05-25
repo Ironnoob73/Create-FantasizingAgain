@@ -27,7 +27,7 @@ public class ShadowPlatingCategory extends CreateRecipeCategory<ShadowPlatingRec
     @Override
     public @NotNull Component getTitle()
     {
-        return Component.translatable("recipe.create_fantasizing.shadow_plating.title");
+        return Component.translatable("create_fantasizing.recipe.shadow_plating");
     }
 
     @Override

@@ -1,0 +1,100 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "tag": "c:plates/gold"
+  },
+  "results": [
+    {
+      "id": "create_fantasizing:taiji_chipset"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:incomplete_taiji_chipset"
+        },
+        {
+          "item": "create:refined_radiance"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_fantasizing:incomplete_taiji_chipset"
+        }
+      ]
+    },
+    {
+      "type": "create_fantasizing:exposing",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:incomplete_taiji_chipset"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_fantasizing:incomplete_taiji_chipset"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:incomplete_taiji_chipset"
+        },
+        {
+          "item": "create:shadow_steel"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_fantasizing:incomplete_taiji_chipset"
+        }
+      ]
+    },
+    {
+      "type": "create_fantasizing:shadow_plating",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:incomplete_taiji_chipset"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_fantasizing:incomplete_taiji_chipset"
+        }
+      ]
+    },
+    {
+      "type": "create:cutting",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:incomplete_taiji_chipset"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_fantasizing:incomplete_taiji_chipset"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:incomplete_taiji_chipset"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_fantasizing:incomplete_taiji_chipset"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "create_fantasizing:incomplete_taiji_chipset"
+  }
+}

@@ -48,7 +48,7 @@ public class CFABlocks {
                     .onRegister((block) -> BlockStressValues.CAPACITIES.register(block, ()-> hydraulicEngineStressProvide /16f))
                     .initialProperties(SharedProperties::stone)
                     .properties(p -> p.mapColor(MapColor.COLOR_BLUE).forceSolidOn())
-                    .blockstate(new CompactEngineBlock.CompactHydraulicEngineGenerator()::generate)
+                    .blockstate(new CompactEngineBlock.CompactEngineGenerator()::generate)
                     .simpleItem()
                     .register();
     public static final BlockEntityEntry<CompactEngineEntity> COMPACT_HYDRAULIC_ENGINE_ENTITY = REGISTRATE
@@ -62,7 +62,7 @@ public class CFABlocks {
                     .onRegister((block) -> BlockStressValues.CAPACITIES.register(block, ()-> windEngineStressProvide /16f))
                     .initialProperties(SharedProperties::stone)
                     .properties(p -> p.mapColor(MapColor.COLOR_BLUE).forceSolidOn())
-                    .blockstate(new CompactEngineBlock.CompactHydraulicEngineGenerator()::generate)
+                    .blockstate(new CompactEngineBlock.CompactEngineGenerator()::generate)
                     .simpleItem()
                     .register();
     public static final BlockEntityEntry<CompactEngineEntity> COMPACT_WIND_ENGINE_ENTITY = REGISTRATE
@@ -70,6 +70,20 @@ public class CFABlocks {
             .visual(() -> OrientedRotatingVisual.of(CFAPartialModels.COMPACT_WIND_ENGINE_CORE), true)
             .validBlock(COMPACT_WIND_ENGINE)
             .renderer(() -> CompactWindEngineRenderer::new)
+            .register();
+    public static final BlockEntry<SculkEngineBlock> SCULK_ENGINE =
+            REGISTRATE.block("sculk_engine", SculkEngineBlock::new)
+                    .onRegister((block) -> BlockStressValues.CAPACITIES.register(block, ()-> sculkEngineStressProvide /16f))
+                    .initialProperties(SharedProperties::stone)
+                    .properties(p -> p.mapColor(MapColor.COLOR_BLUE).forceSolidOn())
+                    .blockstate(new CompactEngineBlock.CompactEngineGenerator()::generate)
+                    .simpleItem()
+                    .register();
+    public static final BlockEntityEntry<CompactEngineEntity> SCULK_ENGINE_ENTITY = REGISTRATE
+            .blockEntity("sculk_hydraulic_engine", CompactEngineEntity::new)
+            .visual(() -> OrientedRotatingVisual.of(CFAPartialModels.SCULK_ENGINE_CORE), true)
+            .validBlock(SCULK_ENGINE)
+            .renderer(() -> CompactHydraulicEngineRenderer::new)
             .register();
 
 

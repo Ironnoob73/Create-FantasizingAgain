@@ -41,8 +41,8 @@
   "item.create_fantasizing.sturdy_heavy_core": "Прочное тяжёлое ядро",
   "item.create_fantasizing.alternative_chromatic_compound": "Альтернативное хроматическое соединение",
 
-  "recipe.create_fantasizing.shadow_plating.title": "Теневое покрытие",
-  "recipe.create_fantasizing.exposing.title": "Экспонирование",
+  "create_fantasizing.recipe.shadow_plating": "Теневое покрытие",
+  "create_fantasizing.recipe.exposing": "Экспонирование",
 
   "create_fantasizing.gui.block_placer.destroy_mode": "Уничтожать выпавшие предметы",
   "create_fantasizing.gui.crate.storage_space": "Объём хранилища",

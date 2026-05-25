@@ -20,6 +20,7 @@ public class CFACreativeTab {
                 output.accept(CFAItems.BLOCK_PLACER.get());
                 output.accept(CFABlocks.COMPACT_HYDRAULIC_ENGINE.get());
                 output.accept(CFABlocks.COMPACT_WIND_ENGINE.get());
+                output.accept(CFABlocks.SCULK_ENGINE.get());
                 output.accept(CFABlocks.SHADOW_STEEL_TUNNEL.get());
                 output.accept(CFABlocks.REFINED_RADIANCE_TUNNEL.get());
                 output.accept(CFABlocks.ZINC_CASING.get());
@@ -40,6 +41,7 @@ public class CFACreativeTab {
                 output.accept(CFABlocks.STURDY_GIRDER.get());
                 output.accept(CFABlocks.ROSE_QUARTZ_BULB.get());
                 output.accept(CFAItems.ALTERNATIVE_CHROMATIC_COMPOUND.get());
+                output.accept(CFAItems.TAIJI_CHIPSET.get());
                 output.accept(CFAItems.PRISMARINE_FAN_BLADES.get());
                 output.accept(CFAItems.STURDY_CONDUIT.get());
                 output.accept(CFAItems.STURDY_HEAVY_CORE.get());

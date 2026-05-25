@@ -54,7 +54,9 @@ public class CompactEngineEntity extends GeneratingKineticBlockEntity {
 
     @Override
     public float getGeneratedSpeed() {
-        if (!CFABlocks.COMPACT_HYDRAULIC_ENGINE.has(getBlockState()) && !CFABlocks.COMPACT_WIND_ENGINE.has(getBlockState()))
+        if (!CFABlocks.COMPACT_HYDRAULIC_ENGINE.has(getBlockState())
+                && !CFABlocks.COMPACT_WIND_ENGINE.has(getBlockState())
+                && !CFABlocks.SCULK_ENGINE.has(getBlockState()))
             return 0;
         return 16 * getAngleSpeedDirection();
     }

@@ -7,6 +7,8 @@
   "block.create_fantasizing.compact_wind_engine": "Compact Wind Engine",
   "block.create_fantasizing.compact_wind_engine.tooltip.summary": "It can generate Stress _anywhere_.",
   "item.create_fantasizing.incomplete_compact_wind_engine": "Incomplete Compact Wind Engine",
+  "block.create_fantasizing.sculk_engine": "Sculk Engine",
+  "block.create_fantasizing.sculk_engine.tooltip.summary": "It can generate Stress _anywhere_.",
   "block.create_fantasizing.sturdy_girder": "Sturdy Girder",
   "block.create_fantasizing.sturdy_girder_encased_shaft": "Sturdy Girder Encased Shaft",
   "item.create_fantasizing.tree_cutter": "Tree Cutter",
@@ -45,7 +47,9 @@
   "item.create_fantasizing.prismarine_fan_blades": "Prismarine Fan Blades",
   "item.create_fantasizing.sturdy_conduit": "Sturdy Conduit",
   "item.create_fantasizing.sturdy_heavy_core": "Sturdy Heavy Core",
-  "item.create_fantasizing.alternative_chromatic_compound": "Alternative_chromatic_compound",
+  "item.create_fantasizing.alternative_chromatic_compound": "Alternative Chromatic Compound",
+  "item.create_fantasizing.taiji_chipset": "Taiji Chipset",
+  "item.create_fantasizing.incomplete_taiji_chipset": "Incomplete Taiji Chipset",
 
   "create_fantasizing.gui.block_placer.destroy_mode": "Destroy Dropping Items",
   "create_fantasizing.gui.crate.storage_space": "Storage Space",
@@ -53,8 +57,8 @@
   "create_fantasizing.gui.crate.no_fold.0": "Is the container interface out of your screen?",
   "create_fantasizing.gui.crate.no_fold.1": "Currently, the only solution to this issue is to resize the interface or enlarge the window.",
 
-  "recipe.create_fantasizing.shadow_plating.title": "Shadow Plating",
-  "recipe.create_fantasizing.exposing.title": "Exposing",
+  "create_fantasizing.recipe.shadow_plating": "Shadow Plating",
+  "create_fantasizing.recipe.exposing": "Exposing",
 
   "create_fantasizing.ponder.acc_convert.header": "Convert the Alternative Chromatic Compound to other materials.",
   "create_fantasizing.ponder.acc_convert.text_1": "When a light source is present near the Alternative Chromatic Compound, it will gradually transform into Refined Radiance.",
