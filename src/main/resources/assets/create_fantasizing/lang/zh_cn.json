@@ -3,10 +3,8 @@
 
   "block.create_fantasizing.compact_hydraulic_engine": "紧缩型水力引擎",
   "block.create_fantasizing.compact_hydraulic_engine.tooltip.summary": "放在_任何地方_都可以产生动力。",
-  "item.create_fantasizing.incomplete_compact_hydraulic_engine": "未完成的紧缩型水力引擎",
   "block.create_fantasizing.compact_wind_engine": "紧缩型风力引擎",
   "block.create_fantasizing.compact_wind_engine.tooltip.summary": "放在_任何地方_都可以产生动力。",
-  "item.create_fantasizing.incomplete_compact_wind_engine": "未完成的紧缩型风力引擎",
   "block.create_fantasizing.sculk_engine": "幽匿引擎",
   "block.create_fantasizing.sculk_engine.tooltip.summary": "放在_任何地方_都可以产生动力。",
   "block.create_fantasizing.sturdy_girder": "坚固梁",
@@ -47,9 +45,14 @@
   "item.create_fantasizing.prismarine_fan_blades": "海晶扇叶",
   "item.create_fantasizing.sturdy_conduit": "坚固潮涌核心",
   "item.create_fantasizing.sturdy_heavy_core": "坚固沉重核心",
+  "item.create_fantasizing.sculk_engine_frame": "幽匿引擎框架",
   "item.create_fantasizing.alternative_chromatic_compound": "替用型异彩化合物",
   "item.create_fantasizing.taiji_chipset": "太极芯片组",
+
+  "item.create_fantasizing.incomplete_compact_hydraulic_engine": "未完成的紧缩型水力引擎",
+  "item.create_fantasizing.incomplete_compact_wind_engine": "未完成的紧缩型风力引擎",
   "item.create_fantasizing.incomplete_taiji_chipset": "未完成的太极芯片组",
+  "item.create_fantasizing.incomplete_alternative_chromatic_compound": "未完成的替用型异彩化合物",
 
   "create_fantasizing.gui.block_placer.destroy_mode": "销毁掉落物",
   "create_fantasizing.gui.crate.storage_space": "储存空间",

@@ -45,6 +45,7 @@ public class CFACreativeTab {
                 output.accept(CFAItems.PRISMARINE_FAN_BLADES.get());
                 output.accept(CFAItems.STURDY_CONDUIT.get());
                 output.accept(CFAItems.STURDY_HEAVY_CORE.get());
+                output.accept(CFAItems.SCULK_ENGINE_FRAME.get());
             }).build());
 
     public static void init(IEventBus modEventBus) {

@@ -1,0 +1,24 @@
+{
+  "type": "create:mechanical_crafting",
+  "accept_mirrored": true,
+  "key": {
+    "#": {
+      "item": "minecraft:sculk_catalyst"
+    },
+    "*": {
+      "item": "minecraft:recovery_compass"
+    },
+    "U": {
+      "item": "minecraft:sculk_shrieker"
+    }
+  },
+  "pattern": [
+    "#",
+    "*",
+    "U"
+  ],
+  "result": {
+    "count": 1,
+    "id": "create_fantasizing:sculk_engine_frame"
+  }
+}

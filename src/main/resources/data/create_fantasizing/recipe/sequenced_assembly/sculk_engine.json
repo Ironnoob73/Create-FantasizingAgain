@@ -1,0 +1,53 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "create_fantasizing:sculk_engine_frame"
+  },
+  "loops": 32,
+  "results": [
+    {
+      "id": "create_fantasizing:sculk_engine"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:incomplete_sculk_engine"
+        },
+        [
+          {
+            "item": "minecraft:sculk_sensor"
+          }
+        ]
+      ],
+      "results": [
+        {
+          "id": "create_fantasizing:incomplete_sculk_engine"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:incomplete_sculk_engine"
+        },
+        [
+          {
+            "item": "minecraft:sculk"
+          }
+        ]
+      ],
+      "results": [
+        {
+          "id": "create_fantasizing:incomplete_sculk_engine"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "create_fantasizing:incomplete_sculk_engine"
+  }
+}

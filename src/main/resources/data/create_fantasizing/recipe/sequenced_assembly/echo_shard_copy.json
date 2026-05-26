@@ -1,0 +1,95 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "minecraft:echo_shard"
+  },
+  "loops": 2,
+  "results": [
+    {
+      "count": 2,
+      "id": "minecraft:echo_shard"
+    },
+    {
+      "id": "minecraft:echo_shard"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:incomplete_echo_shard"
+        },
+        {
+          "tag": "c:gems/amethyst"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_fantasizing:incomplete_echo_shard"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:incomplete_echo_shard"
+        },
+        {
+          "item": "minecraft:sculk"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_fantasizing:incomplete_echo_shard"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:incomplete_echo_shard"
+        },
+        {
+          "item": "create:refined_radiance"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_fantasizing:incomplete_echo_shard"
+        }
+      ]
+    },
+    {
+      "type": "create_fantasizing:shadow_plating",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:incomplete_echo_shard"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_fantasizing:incomplete_echo_shard"
+        }
+      ]
+    },
+    {
+      "type": "create:cutting",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:incomplete_echo_shard"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_fantasizing:incomplete_echo_shard"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "create_fantasizing:incomplete_echo_shard"
+  }
+}
