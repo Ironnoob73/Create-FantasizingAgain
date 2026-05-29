@@ -3,6 +3,7 @@ package dev.hail.create_fantasizing.item;
 import com.mojang.blaze3d.shaders.Effect;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllTags;
+import dev.hail.create_fantasizing.CFAConfig;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
@@ -35,7 +36,7 @@ public class SculkEngineFrameItem extends Item {
     @Override
     public @NotNull InteractionResult interactLivingEntity(ItemStack heldItem, Player player, LivingEntity entity,
                                                            InteractionHand hand) {
-        if (!(entity instanceof Warden))
+        if (!(entity instanceof Warden) || !CFAConfig.sculkEngineCatchWarden)
             return InteractionResult.PASS;
 
         Level world = player.level();

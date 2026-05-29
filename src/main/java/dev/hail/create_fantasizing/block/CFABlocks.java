@@ -74,7 +74,7 @@ public class CFABlocks {
     public static final BlockEntry<SculkEngineBlock> SCULK_ENGINE =
             REGISTRATE.block("sculk_engine", SculkEngineBlock::new)
                     .onRegister((block) -> BlockStressValues.CAPACITIES.register(block, ()-> sculkEngineStressProvide /16f))
-                    .initialProperties(SharedProperties::stone)
+                    .initialProperties(() -> Blocks.SCULK_CATALYST)
                     .properties(p -> p.mapColor(MapColor.COLOR_BLUE).forceSolidOn())
                     .blockstate(new CompactEngineBlock.CompactEngineGenerator()::generate)
                     .simpleItem()
