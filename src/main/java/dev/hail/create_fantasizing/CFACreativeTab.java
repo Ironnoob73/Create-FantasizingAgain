@@ -21,6 +21,7 @@ public class CFACreativeTab {
                 output.accept(CFABlocks.COMPACT_HYDRAULIC_ENGINE.get());
                 output.accept(CFABlocks.COMPACT_WIND_ENGINE.get());
                 output.accept(CFABlocks.SCULK_ENGINE.get());
+                output.accept(CFABlocks.YIN_YANG_ENGINE_BLOCK.get());
                 output.accept(CFABlocks.SHADOW_STEEL_TUNNEL.get());
                 output.accept(CFABlocks.REFINED_RADIANCE_TUNNEL.get());
                 output.accept(CFABlocks.ZINC_CASING.get());

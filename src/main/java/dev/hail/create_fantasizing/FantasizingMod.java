@@ -63,7 +63,7 @@ public class FantasizingMod
             .defaultCreativeTab((ResourceKey<CreativeModeTab>) null)
             .setTooltipModifierFactory(item ->
                     new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE)
-                            .andThen(TooltipModifier.mapNull(KineticStats.create(item)))
+                            //.andThen(TooltipModifier.mapNull(KineticStats.create(item)))
             );
 
     public FantasizingMod(IEventBus modEventBus, ModContainer modContainer)

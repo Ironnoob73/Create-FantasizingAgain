@@ -17,6 +17,7 @@ public class CFAConfig {
     private static final ModConfigSpec.DoubleValue WIND_ENGINE_STRESS_PROVIDE;
     private static final ModConfigSpec.DoubleValue SCULK_ENGINE_STRESS_PROVIDE;
     private static final ModConfigSpec.BooleanValue SCULK_ENGINE_FRAME_CATCH_WARDEN;
+    private static final ModConfigSpec.DoubleValue YIN_YANG_ENGINE_STRESS_PROVIDE;
 
     private static final ModConfigSpec.DoubleValue BLOCK_PLACER_POWER;
     private static final ModConfigSpec.IntValue BLOCK_PLACER_RANGE;
@@ -61,6 +62,10 @@ public class CFAConfig {
                 .comment("Can Sculk Engine Frame catch the Warden and turn into Sculk Engine?")
                 .translation("create_fantasizing.configuration.engines.sculk_engine_frame_catch_warden")
                 .define("sculk_engine_frame_catch_warden", true);
+        YIN_YANG_ENGINE_STRESS_PROVIDE = BUILDER_S
+                .comment("Stress units provided by the Yin Yang Engine")
+                .translation("create_fantasizing.configuration.engines.yin_yang_stress_provide")
+                .defineInRange("yin_yang_stress_provide", 32768, 0, Double.MAX_VALUE);
         BUILDER_S.pop();
 
         BUILDER_S.push("block_placer");
@@ -142,6 +147,7 @@ public class CFAConfig {
     public static double windEngineStressProvide;
     public static double sculkEngineStressProvide;
     public static boolean sculkEngineCatchWarden = true;
+    public static double yinYangStressProvide;
 
     public static double blockPlacerPower;
     public static int blockPlacerRange = 48;
@@ -179,6 +185,7 @@ public class CFAConfig {
             windEngineStressProvide = WIND_ENGINE_STRESS_PROVIDE.getAsDouble();
             sculkEngineStressProvide = SCULK_ENGINE_STRESS_PROVIDE.getAsDouble();
             sculkEngineCatchWarden = SCULK_ENGINE_FRAME_CATCH_WARDEN.getAsBoolean();
+            yinYangStressProvide = YIN_YANG_ENGINE_STRESS_PROVIDE.getAsDouble();
 
             blockPlacerPower = BLOCK_PLACER_POWER.getAsDouble();
             blockPlacerRange = BLOCK_PLACER_RANGE.getAsInt();

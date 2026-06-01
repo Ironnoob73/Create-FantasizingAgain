@@ -19,6 +19,8 @@ public class CFAPartialModels {
     public static final PartialModel PHANTOM_COGWHEEL_SHAFT = block("phantom_cogwheel_shaft");
     public static final PartialModel PHANTOM_LARGE_COGWHEEL_SHAFTLESS = block("phantom_large_cogwheel_shaftless");
 
+    public static final PartialModel YIN_YANG_ENGINE_AXIS = block("yin_yang_engine_axis");
+
     public static final Map<Direction, PartialModel> STURDY_METAL_GIRDER_BRACKETS = new EnumMap<>(Direction.class);
     static {
         for (Direction d : Iterate.horizontalDirections) {

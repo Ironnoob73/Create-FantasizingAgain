@@ -14,6 +14,7 @@ import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.BuilderTransformers;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
+import com.simibubi.create.infrastructure.config.CStress;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import dev.hail.create_fantasizing.block.chromatic_tunnel.RefinedRadianceTunnelBlock;
@@ -34,6 +35,7 @@ import dev.hail.create_fantasizing.block.sturdy_girder.SturdyGirderBlock;
 import dev.hail.create_fantasizing.block.sturdy_girder.SturdyGirderEncasedShaftBlock;
 import dev.hail.create_fantasizing.item.ChromaticTunnelItem;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
@@ -45,10 +47,9 @@ import static dev.hail.create_fantasizing.FantasizingMod.REGISTRATE;
 public class CFABlocks {
     public static final BlockEntry<CompactHydraulicEngineBlock> COMPACT_HYDRAULIC_ENGINE =
             REGISTRATE.block("compact_hydraulic_engine", CompactHydraulicEngineBlock::new)
-                    .onRegister((block) -> BlockStressValues.CAPACITIES.register(block, ()-> hydraulicEngineStressProvide /16f))
+                    .onRegister((block) -> BlockStressValues.CAPACITIES.register(block, ()-> hydraulicEngineStressProvide))
                     .initialProperties(SharedProperties::stone)
                     .properties(p -> p.mapColor(MapColor.COLOR_BLUE).forceSolidOn())
-                    .blockstate(new CompactEngineBlock.CompactEngineGenerator()::generate)
                     .simpleItem()
                     .register();
     public static final BlockEntityEntry<CompactEngineEntity> COMPACT_HYDRAULIC_ENGINE_ENTITY = REGISTRATE
@@ -59,10 +60,9 @@ public class CFABlocks {
             .register();
     public static final BlockEntry<CompactWindEngineBlock> COMPACT_WIND_ENGINE =
             REGISTRATE.block("compact_wind_engine", CompactWindEngineBlock::new)
-                    .onRegister((block) -> BlockStressValues.CAPACITIES.register(block, ()-> windEngineStressProvide /16f))
+                    .onRegister((block) -> BlockStressValues.CAPACITIES.register(block, ()-> windEngineStressProvide))
                     .initialProperties(SharedProperties::stone)
                     .properties(p -> p.mapColor(MapColor.COLOR_BLUE).forceSolidOn())
-                    .blockstate(new CompactEngineBlock.CompactEngineGenerator()::generate)
                     .simpleItem()
                     .register();
     public static final BlockEntityEntry<CompactEngineEntity> COMPACT_WIND_ENGINE_ENTITY = REGISTRATE
@@ -73,17 +73,16 @@ public class CFABlocks {
             .register();
     public static final BlockEntry<SculkEngineBlock> SCULK_ENGINE =
             REGISTRATE.block("sculk_engine", SculkEngineBlock::new)
-                    .onRegister((block) -> BlockStressValues.CAPACITIES.register(block, ()-> sculkEngineStressProvide /16f))
+                    .onRegister((block) -> BlockStressValues.CAPACITIES.register(block, ()-> sculkEngineStressProvide))
                     .initialProperties(() -> Blocks.SCULK_CATALYST)
                     .properties(p -> p.mapColor(MapColor.COLOR_BLUE).forceSolidOn())
-                    .blockstate(new CompactEngineBlock.CompactEngineGenerator()::generate)
                     .simpleItem()
                     .register();
     public static final BlockEntityEntry<CompactEngineEntity> SCULK_ENGINE_ENTITY = REGISTRATE
             .blockEntity("sculk_hydraulic_engine", CompactEngineEntity::new)
             .visual(() -> OrientedRotatingVisual.of(CFAPartialModels.SCULK_ENGINE_CORE), true)
             .validBlock(SCULK_ENGINE)
-            .renderer(() -> CompactHydraulicEngineRenderer::new)
+            .renderer(() -> SculkEngineRenderer::new)
             .register();
 
 
@@ -267,6 +266,22 @@ public class CFABlocks {
             .visual(() -> BeltTunnelVisual::new)
             .validBlocks(REFINED_RADIANCE_TUNNEL)
             .renderer(() -> BeltTunnelRenderer::new)
+            .register();
+
+    public static final BlockEntry<YinYangEngineBlock> YIN_YANG_ENGINE_BLOCK =
+            REGISTRATE.block("yin_yang_engine", YinYangEngineBlock::new)
+                    .initialProperties(SharedProperties::netheriteMetal)
+                    .properties(p -> p.mapColor(MapColor.COLOR_GRAY).noOcclusion().lightLevel($ -> 12))
+                    .onRegister((block) -> BlockStressValues.CAPACITIES.register(block, ()-> yinYangStressProvide))
+                    .item()
+                    .properties(p -> p.rarity(Rarity.EPIC))
+                    .build()
+                    .register();
+    public static final BlockEntityEntry<YinYangEngineEntity> YIN_YANG_ENGINE_ENTITY = REGISTRATE
+            .blockEntity("yin_yang_engine", YinYangEngineEntity::new)
+            .visual(() -> OrientedRotatingVisual.of(CFAPartialModels.YIN_YANG_ENGINE_AXIS), false)
+            .validBlocks(YIN_YANG_ENGINE_BLOCK)
+            .renderer(() -> YinYangEngineRenderer::new)
             .register();
 
     public static void init() {}

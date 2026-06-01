@@ -1,13 +1,13 @@
 package dev.hail.create_fantasizing.block.compat_engine;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.simibubi.create.content.contraptions.IControlContraption;
-import com.simibubi.create.content.contraptions.bearing.WindmillBearingBlockEntity;
-import com.simibubi.create.content.kinetics.base.GeneratingKineticBlockEntity;
+import com.simibubi.create.api.stress.BlockStressValues;
+import com.simibubi.create.compat.computercraft.ComputerCraftProxy;
 import com.simibubi.create.content.kinetics.motor.CreativeMotorBlock;
+import com.simibubi.create.content.kinetics.motor.CreativeMotorBlockEntity;
+import com.simibubi.create.content.kinetics.motor.KineticScrollValueBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueBoxTransform;
-import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollOptionBehaviour;
 import com.simibubi.create.foundation.utility.CreateLang;
 import dev.engine_room.flywheel.lib.transform.TransformStack;
 import dev.hail.create_fantasizing.block.CFABlocks;
@@ -22,58 +22,44 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
-public class CompactEngineEntity extends GeneratingKineticBlockEntity {
-    protected ScrollOptionBehaviour<IControlContraption.RotationMode> movementMode;
-    protected ScrollOptionBehaviour<WindmillBearingBlockEntity.RotationDirection> movementDirection;
-
-    public CompactEngineEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+public class YinYangEngineEntity extends CreativeMotorBlockEntity {
+    public YinYangEngineEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
 
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
         super.addBehaviours(behaviours);
-        behaviours.remove(movementMode);
-        movementDirection = new ScrollOptionBehaviour<>(WindmillBearingBlockEntity.RotationDirection.class,
-                CreateLang.translateDirect("contraptions.windmill.rotation_direction"), this, new MotorValueBox());
-        movementDirection.withCallback($ -> onDirectionChanged());
-        behaviours.add(movementDirection);
-    }
-    private void onDirectionChanged() {
-        if (level != null && !level.isClientSide) updateGeneratedRotation();
-    }
-
-    @Override
-    public void initialize() {
-        super.initialize();
-        if (!hasSource() || getGeneratedSpeed() > getTheoreticalSpeed())
-            updateGeneratedRotation();
+        int max = MAX_SPEED;
+        generatedSpeed = new KineticScrollValueBehaviour(CreateLang.translateDirect("kinetics.creative_motor.rotation_speed"),
+                this, new MotorValueBox());
+        generatedSpeed.between(-max, max);
+        generatedSpeed.value = DEFAULT_SPEED;
+        generatedSpeed.withCallback(i -> this.updateGeneratedRotation());
+        behaviours.add(generatedSpeed);
+        behaviours.add(computerBehaviour = ComputerCraftProxy.behaviour(this));
     }
 
     @Override
     public float getGeneratedSpeed() {
-        if (!CFABlocks.COMPACT_HYDRAULIC_ENGINE.has(getBlockState())
-                && !CFABlocks.COMPACT_WIND_ENGINE.has(getBlockState())
-                && !CFABlocks.SCULK_ENGINE.has(getBlockState()))
+        if (!CFABlocks.YIN_YANG_ENGINE_BLOCK.has(getBlockState()))
             return 0;
-        return 16 * getAngleSpeedDirection();
+        return convertToDirection(generatedSpeed.getValue(), getBlockState().getValue(CreativeMotorBlock.FACING));
     }
-    protected float getAngleSpeedDirection() {
-        WindmillBearingBlockEntity.RotationDirection rotationDirection = WindmillBearingBlockEntity.RotationDirection.values()[movementDirection.getValue()];
-        return (rotationDirection == WindmillBearingBlockEntity.RotationDirection.CLOCKWISE ? 1 : -1);
-    }
-    static class MotorValueBox extends ValueBoxTransform.Sided {
 
+    static class MotorValueBox extends ValueBoxTransform.Sided {
         @Override
         protected Vec3 getSouthLocation() {
-            return VecHelper.voxelSpace(8, 8, 12.5);
+            return VecHelper.voxelSpace(8, 8, 16);
         }
 
         @Override
         public Vec3 getLocalOffset(LevelAccessor level, BlockPos pos, BlockState state) {
             Direction facing = state.getValue(CreativeMotorBlock.FACING);
-            return super.getLocalOffset(level, pos, state).add(Vec3.atLowerCornerOf(facing.getNormal())
-                    .scale(-1 / 16f));
+            if (facing.getAxis() != Direction.Axis.Y)
+                return super.getLocalOffset(level, pos, state).add(Vec3.atLowerCornerOf(Direction.UP.getNormal())
+                    .scale(3 / 16f));
+            return super.getLocalOffset(level, pos, state);
         }
 
         @Override
@@ -82,7 +68,7 @@ public class CompactEngineEntity extends GeneratingKineticBlockEntity {
             Direction facing = state.getValue(CreativeMotorBlock.FACING);
             if (facing.getAxis() == Direction.Axis.Y)
                 return;
-            if (getSide() != Direction.UP)
+            if (getSide().getAxis() != Direction.Axis.Y)
                 return;
             TransformStack.of(ms)
                     .rotateZDegrees(-AngleHelper.horizontalAngle(facing) + 180);
@@ -91,7 +77,7 @@ public class CompactEngineEntity extends GeneratingKineticBlockEntity {
         @Override
         protected boolean isSideActive(BlockState state, Direction direction) {
             Direction facing = state.getValue(CreativeMotorBlock.FACING);
-            if (facing.getAxis() != Direction.Axis.Y && direction == Direction.DOWN)
+            if (facing.getAxis() != Direction.Axis.Y && (direction == Direction.DOWN || direction == Direction.UP))
                 return false;
             return direction.getAxis() != facing.getAxis();
         }
