@@ -3,6 +3,7 @@
   "ingredient": {
     "tag": "c:plates/gold"
   },
+  "loops": 3,
   "results": [
     {
       "id": "create_fantasizing:taiji_chipset"

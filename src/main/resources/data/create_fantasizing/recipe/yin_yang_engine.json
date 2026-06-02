@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "create_fantasizing:taiji_chipset"
+    },
+    "E":
+    {
+      "type": "neoforge:compound",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:compact_hydraulic_engine"
+        },
+        {
+          "item": "create_fantasizing:compact_wind_engine"
+        },
+        {
+          "item": "create_fantasizing:sculk_engine"
+        }
+      ]
+    }
+  },
+  "pattern": [
+    "#",
+    "E"
+  ],
+  "result": {
+    "count": 1,
+    "id": "create_fantasizing:yin_yang_engine"
+  }
+}

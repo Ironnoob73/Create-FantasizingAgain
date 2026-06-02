@@ -53,8 +53,12 @@
 
   "item.create_fantasizing.incomplete_compact_hydraulic_engine": "未完成的紧缩型水力引擎",
   "item.create_fantasizing.incomplete_compact_wind_engine": "未完成的紧缩型风力引擎",
+  "item.create_fantasizing.incomplete_sculk_engine": "未完成的幽匿引擎",
   "item.create_fantasizing.incomplete_taiji_chipset": "未完成的太极芯片组",
-  "item.create_fantasizing.incomplete_alternative_chromatic_compound": "未完成的替用型异彩化合物",
+  "item.create_fantasizing.incomplete_alternative_chromatic_compound": "替用型异彩化合物半成品",
+  "item.create_fantasizing.unprocessed_echo_shard": "未加工的回响碎片",
+  "item.create_fantasizing.unprocessed_heart_of_the_sea": "未加工的海洋之心",
+  "item.create_fantasizing.unprocessed_heavy_core": "未加工的沉重核心",
 
   "create_fantasizing.gui.block_placer.destroy_mode": "销毁掉落物",
   "create_fantasizing.gui.crate.storage_space": "储存空间",
@@ -94,6 +98,8 @@
   "create_fantasizing.configuration.engines.sculk_stress_provide.tooltip": "幽匿引擎产生的应力量",
   "create_fantasizing.configuration.engines.sculk_engine_frame_catch_warden": "幽匿引擎框架捕捉监守者",
   "create_fantasizing.configuration.engines.sculk_engine_frame_catch_warden.tooltip": "幽匿引擎框架可以捕捉监守者并转化为幽匿引擎吗？",
+  "create_fantasizing.configuration.engines.yin_yang_stress_provide": "晦明引擎应力提供",
+  "create_fantasizing.configuration.engines.yin_yang_stress_provide.tooltip": "晦明引擎产生的应力量",
   "create_fantasizing.configuration.block_placer": "方块放置器",
   "create_fantasizing.configuration.block_placer.power": "方块放置器威力",
   "create_fantasizing.configuration.block_placer.power.tooltip": "方块放置器可以破坏/替换的方块的最大硬度。硬度更高的方块将被忽略。",

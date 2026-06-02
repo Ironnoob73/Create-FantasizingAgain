@@ -3,7 +3,6 @@ package dev.hail.create_fantasizing;
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
-import com.simibubi.create.foundation.item.KineticStats;
 import com.simibubi.create.foundation.item.TooltipModifier;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import dev.hail.create_fantasizing.block.CFAMenus;
@@ -26,6 +25,7 @@ import dev.hail.create_fantasizing.data.CFADataComponents;
 import dev.hail.create_fantasizing.data.CFARecipeTypes;
 import dev.hail.create_fantasizing.event.CFAPackets;
 import dev.hail.create_fantasizing.item.CFAItems;
+import dev.hail.create_fantasizing.item.NoMultiplierKineticStats;
 import dev.hail.create_fantasizing.item.block_placer.SyncBlockPlacerLimitsPacket;
 import dev.hail.create_fantasizing.ponder.CFAPonderPlugin;
 import net.createmod.catnip.lang.FontHelper;
@@ -63,7 +63,7 @@ public class FantasizingMod
             .defaultCreativeTab((ResourceKey<CreativeModeTab>) null)
             .setTooltipModifierFactory(item ->
                     new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE)
-                            //.andThen(TooltipModifier.mapNull(KineticStats.create(item)))
+                            .andThen(TooltipModifier.mapNull(NoMultiplierKineticStats.create(item)))
             );
 
     public FantasizingMod(IEventBus modEventBus, ModContainer modContainer)
