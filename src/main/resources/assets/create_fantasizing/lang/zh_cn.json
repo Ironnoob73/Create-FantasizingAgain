@@ -62,9 +62,8 @@
 
   "create_fantasizing.gui.block_placer.destroy_mode": "销毁掉落物",
   "create_fantasizing.gui.crate.storage_space": "储存空间",
-  "create_fantasizing.gui.crate.no_fold": "抱歉，不行。",
-  "create_fantasizing.gui.crate.no_fold.0": "容器界面超出了你的屏幕？",
-  "create_fantasizing.gui.crate.no_fold.1": "目前你只能通过修改界面尺寸或者放大窗口来解决这个问题。",
+  "create_fantasizing.gui.crate.fold": "折叠界面",
+  "create_fantasizing.gui.crate.unfold": "展开界面",
 
   "create_fantasizing.recipe.shadow_plating": "镀影",
   "create_fantasizing.recipe.exposing": "曝光",

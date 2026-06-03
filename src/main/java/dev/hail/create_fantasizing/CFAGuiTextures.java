@@ -42,6 +42,8 @@ public enum CFAGuiTextures implements ScreenElement, TextureSheetSegment {
     ZINC_EDIT("copper_fluid_barrel", 196, 73, 9, 9),
     GOLD_FLUID_BARREL("copper_fluid_barrel", 0, 146, 196, 73),
     GOLD_EDIT("copper_fluid_barrel", 196, 146, 9, 9),
+    DIAMOND_FLUID_BARREL("diamond_fluid_barrel", 196, 73),
+    DIAMOND_EDIT("diamond_fluid_barrel", 196, 0, 9, 9),
 
     FLUID_BARREL_BAR_END("copper_fluid_barrel", 1, 220, 1, 10),
     FLUID_BARREL_BAR_MID("copper_fluid_barrel", 3, 220, 1, 10),

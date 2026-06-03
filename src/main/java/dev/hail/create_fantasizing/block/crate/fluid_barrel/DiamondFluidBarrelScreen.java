@@ -10,7 +10,7 @@ public class DiamondFluidBarrelScreen extends AbstractFluidBarrelScreen<DiamondF
         super(container, inv, title);
         blockEntry = CFABlocks.DIAMOND_FLUID_BARREL;
         renderedItem = blockEntry.asStack();
-        background = CFAGuiTextures.COPPER_FLUID_BARREL;
-        editButton = CFAGuiTextures.COPPER_EDIT;
+        background = CFAGuiTextures.DIAMOND_FLUID_BARREL;
+        editButton = CFAGuiTextures.DIAMOND_EDIT;
     }
 }
