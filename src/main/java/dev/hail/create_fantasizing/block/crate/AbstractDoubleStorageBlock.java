@@ -1,5 +1,6 @@
 package dev.hail.create_fantasizing.block.crate;
 
+import com.simibubi.create.AllItems;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.logistics.crate.CrateBlock;
 import com.simibubi.create.foundation.block.IBE;
@@ -51,7 +52,7 @@ public abstract class AbstractDoubleStorageBlock extends CrateBlock implements I
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-        if(state.getValue(CRATE_TYPE) != AbstractDoubleStorageBlock.CrateType.SINGLE){
+        if(state.getValue(CRATE_TYPE).isDouble()){
             switch (state.getValue(FACING)){
                 case SOUTH -> { return Block.box(1, 0, 1, 15, 14, 16);}
                 case NORTH -> { return Block.box(1, 0, 0, 15, 14, 15);}
@@ -186,6 +187,18 @@ public abstract class AbstractDoubleStorageBlock extends CrateBlock implements I
     @Override
     public boolean hasAnalogOutputSignal(BlockState state) {
         return true;
+    }
+
+    public boolean switchMainAndSecond(BlockState state, Level worldIn, BlockPos pos, boolean doChange) {
+        BlockEntity be = worldIn.getBlockEntity(pos);
+        if (be instanceof AbstractDoubleStorageEntity storageEntity && storageEntity.isDoubleCrate()) {
+            if (doChange) {
+                worldIn.setBlock(pos, state.setValue(CRATE_TYPE, state.getValue(CRATE_TYPE).getOpposite()), Block.UPDATE_ALL);
+                worldIn.setBlock(pos.relative(state.getValue(FACING)), state.setValue(FACING, state.getValue(FACING).getOpposite()), Block.UPDATE_ALL);
+            }
+            return true;
+        }
+        return false;
     }
 
     public enum CrateType implements StringRepresentable {

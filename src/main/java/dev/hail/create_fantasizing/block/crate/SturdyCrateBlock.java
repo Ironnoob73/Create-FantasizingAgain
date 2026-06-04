@@ -1,5 +1,6 @@
 package dev.hail.create_fantasizing.block.crate;
 
+import com.simibubi.create.AllItems;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import dev.hail.create_fantasizing.data.CFAAttachmentTypes;
 import net.minecraft.core.BlockPos;
@@ -26,6 +27,11 @@ public class SturdyCrateBlock extends AbstractCrateBlock {
     public @NotNull ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn,
                                                     BlockHitResult hit) {
         super.useItemOn(stack,state,worldIn,pos,player,handIn,hit);
+
+        if (stack.is(AllItems.WRENCH) && state.getValue(CRATE_TYPE).isDouble()) {
+            if (switchMainAndSecond(state, worldIn, pos, false))
+                return ItemInteractionResult.SUCCESS;
+        }
         withBlockEntityDo(worldIn, pos, crate -> {
             var main = crate.getMainCrate();
             player.openMenu(main, buf -> {

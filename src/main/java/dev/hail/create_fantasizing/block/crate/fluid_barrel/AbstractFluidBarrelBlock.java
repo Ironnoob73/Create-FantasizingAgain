@@ -1,5 +1,6 @@
 package dev.hail.create_fantasizing.block.crate.fluid_barrel;
 
+import com.simibubi.create.AllItems;
 import com.simibubi.create.content.fluids.tank.FluidTankBlockEntity;
 import com.simibubi.create.foundation.fluid.FluidHelper;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
@@ -54,6 +55,10 @@ public abstract class AbstractFluidBarrelBlock extends AbstractDoubleStorageBloc
     public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         super.useItemOn(stack,state,level,pos,player,hand,hitResult);
 
+        if (stack.is(AllItems.WRENCH) && state.getValue(CRATE_TYPE).isDouble()) {
+            if (switchMainAndSecond(state, level, pos, true))
+                return ItemInteractionResult.SUCCESS;
+        }
         return onBlockEntityUseItemOn(level, pos, be -> {
             if (!stack.isEmpty() && be instanceof AbstractFluidBarrelEntity fluidBarrelEntity) {
                 ItemInteractionResult tryExchange = tryExchange(level, player, hand, stack, fluidBarrelEntity);
