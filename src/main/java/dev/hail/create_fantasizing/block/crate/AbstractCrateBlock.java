@@ -113,7 +113,7 @@ public abstract class AbstractCrateBlock extends AbstractDoubleStorageBlock {
     @Override
     public boolean switchMainAndSecond(BlockState state, Level worldIn, BlockPos pos, boolean doChange) {
         boolean result =  super.switchMainAndSecond(state, worldIn, pos, doChange);
-        if (result) {
+        if (result && doChange) {
             BlockEntity be = worldIn.getBlockEntity(pos);
             if (be instanceof AbstractCrateEntity crateEntity) {
                 CrateInventory midInv = crateEntity.inventory;
