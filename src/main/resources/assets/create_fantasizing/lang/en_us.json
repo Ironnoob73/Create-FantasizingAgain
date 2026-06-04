@@ -64,6 +64,8 @@
   "create_fantasizing.gui.crate.storage_space": "Storage Space",
   "create_fantasizing.gui.crate.fold": "Fold Interface",
   "create_fantasizing.gui.crate.unfold": "Unfold Interface",
+  "create_fantasizing.gui.crate.next_page": "Next Page",
+  "create_fantasizing.gui.crate.prev_page": "Previous Page",
 
   "create_fantasizing.recipe.shadow_plating": "Shadow Plating",
   "create_fantasizing.recipe.exposing": "Exposing",

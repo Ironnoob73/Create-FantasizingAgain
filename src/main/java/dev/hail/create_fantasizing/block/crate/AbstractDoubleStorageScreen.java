@@ -80,7 +80,7 @@ public abstract class AbstractDoubleStorageScreen<T extends AbstractDoubleStorag
         if (lastModification >= 0)
             lastModification++;
 
-        if (lastModification >= 15) {
+        if (lastModification >= 1) {
             lastModification = -1;
             sendPacketToServer();
         }
@@ -94,7 +94,7 @@ public abstract class AbstractDoubleStorageScreen<T extends AbstractDoubleStorag
         return extraAreas;
     }
 
-    private void sendPacketToServer(){
+    void sendPacketToServer(){
         if (storageHolder instanceof AbstractCrateEntity)
             CatnipServices.NETWORK.sendToServer(new ConfigureCratePacket(storageHolder.getBlockPos(), allowedCapacity.getState(), nameBox.getValue()));
         else if (storageHolder instanceof AbstractFluidBarrelEntity && allowedCapacity != null)

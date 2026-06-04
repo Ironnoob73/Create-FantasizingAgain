@@ -25,11 +25,7 @@ import java.util.function.Consumer;
 import static com.simibubi.create.foundation.gui.AllGuiTextures.PLAYER_INVENTORY;
 
 @OnlyIn(Dist.CLIENT)
-public class SturdyCrateScreen extends AbstractDoubleStorageScreen<SturdyCrateMenu> {
-
-    protected IconButton foldButton;
-    protected IconButton pageUpButton;
-    protected IconButton pageDownButton;
+public class SturdyCrateScreen extends AbstractFoldAbleCrateScreen<SturdyCrateMenu> {
 
     public SturdyCrateScreen(SturdyCrateMenu container, Inventory inv, Component title) {
         super(container, inv, title);
@@ -136,7 +132,7 @@ public class SturdyCrateScreen extends AbstractDoubleStorageScreen<SturdyCrateMe
         ms.drawString(font, itemCount, x + 143 - font.width(itemCount), y + 126 + capacityLabelOffset, 0x4B3A22, false);
 
         for (int slot = 0; slot < (menu.isFullInterface() ? 100 : 50); slot++) {
-            if (allowedCapacity.getState() > slot * 64)
+            if (allowedCapacity.getState() - (menu.page == 1 && menu.isFold ? 50*64 : 0) > slot * 64)
                 continue;
             int slotsPerRow = 10;
             int slotX = x + 13 + (slot % slotsPerRow) * 18;
@@ -159,6 +155,11 @@ public class SturdyCrateScreen extends AbstractDoubleStorageScreen<SturdyCrateMe
 /**/        }                                                                                                                           /**/
 /*========================================================================================================================================*/
         }
+
+        if (pageUpButton != null && pageUpButton.isHovered())
+            ms.renderComponentTooltip(font, List.of(Component.translatable("create_fantasizing.gui.crate.next_page")), mouseX, mouseY);
+        if (pageDownButton != null && pageDownButton.isHovered())
+            ms.renderComponentTooltip(font, List.of(Component.translatable("create_fantasizing.gui.crate.prev_page")), mouseX, mouseY);
 
         GuiGameElement.of(renderedItem)
                 .<GuiGameElement.GuiRenderBuilder>at(x + backgroundSec.getWidth(), y + background.getHeight() - 20 + itemYShift, -200)

@@ -25,11 +25,7 @@ import java.util.function.Consumer;
 import static com.simibubi.create.foundation.gui.AllGuiTextures.PLAYER_INVENTORY;
 
 @OnlyIn(Dist.CLIENT)
-public class BrassCrateScreen extends AbstractDoubleStorageScreen<BrassCrateMenu> {
-
-    protected IconButton foldButton;
-    protected IconButton pageUpButton;
-    protected IconButton pageDownButton;
+public class BrassCrateScreen extends AbstractFoldAbleCrateScreen<BrassCrateMenu> {
 
     public BrassCrateScreen(BrassCrateMenu container, Inventory inv, Component title) {
         super(container, inv, title);
@@ -143,7 +139,7 @@ public class BrassCrateScreen extends AbstractDoubleStorageScreen<BrassCrateMenu
         ms.drawString(font, itemCount, x + 125 - font.width(itemCount), y + 108 + capacityLabelOffset, 0x4B3A22, false);
 
         for (int slot = 0; slot < (menu.isFullInterface() ? 72 : 36); slot++) {
-            if (allowedCapacity.getState() > slot * 64)
+            if (allowedCapacity.getState() - (menu.page == 1 && menu.isFold ? 36*64 : 0) > slot * 64)
                 continue;
             int slotsPerRow = 9;
             int slotX = x + 13 + (slot % slotsPerRow) * 18;
@@ -161,7 +157,7 @@ public class BrassCrateScreen extends AbstractDoubleStorageScreen<BrassCrateMenu
 /**/                    mouseX, mouseY);                                                                                                /**/
 /**/        } else {                                                                                                                    /**/
 /**/            ms.renderComponentTooltip(font,                                                                                         /**/
-/**/                    List.of(Component.translatable("create_fantasizing.gui.crate.fold")),                                                                                      /**/
+/**/                    List.of(Component.translatable("create_fantasizing.gui.crate.fold")),                                      /**/
 /**/                    mouseX, mouseY);                                                                                                /**/
 /**/        }                                                                                                                           /**/
 /*========================================================================================================================================*/

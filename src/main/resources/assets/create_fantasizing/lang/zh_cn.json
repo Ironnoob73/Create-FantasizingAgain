@@ -64,6 +64,8 @@
   "create_fantasizing.gui.crate.storage_space": "储存空间",
   "create_fantasizing.gui.crate.fold": "折叠界面",
   "create_fantasizing.gui.crate.unfold": "展开界面",
+  "create_fantasizing.gui.crate.next_page": "下一页",
+  "create_fantasizing.gui.crate.prev_page": "上一页",
 
   "create_fantasizing.recipe.shadow_plating": "镀影",
   "create_fantasizing.recipe.exposing": "曝光",

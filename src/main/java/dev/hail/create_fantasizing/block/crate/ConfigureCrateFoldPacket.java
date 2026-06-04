@@ -33,11 +33,11 @@ public class ConfigureCrateFoldPacket extends BlockEntityConfigurationPacket<Abs
     @Override
     protected void applySettings(ServerPlayer player, AbstractCrateEntity be) {
         player.closeContainer();
-        if (isFold) {
-            player.setData(CFAAttachmentTypes.FOLD_INTERFACE, true);
-            player.setData(CFAAttachmentTypes.CRATE_PAGE, page);
-        }
+        player.setData(CFAAttachmentTypes.FOLD_INTERFACE, isFold);
+        player.setData(CFAAttachmentTypes.CRATE_PAGE, page);
         var main = be.getMainCrate();
+        be.notifyUpdate();
+        main.notifyUpdate();
         player.openMenu(main, buf -> {
             buf.writeBlockPos(main.getBlockPos());
             buf.writeNbt(main.getUpdateTag(buf.registryAccess()));
