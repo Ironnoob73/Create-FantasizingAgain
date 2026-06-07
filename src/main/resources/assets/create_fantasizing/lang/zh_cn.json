@@ -88,6 +88,9 @@
   "create_fantasizing.ponder.crate_usage.text_8": "板条箱可以被移动结构移动，其容量限制依旧生效。（但是在移动时不能打开）",
   "create_fantasizing.ponder.crate_usage.text_9": "不同材料制作的板条箱具有不同的最大容量。",
 
+  "advancement.create_fantasizing.root": "让机械动力再次伟大",
+  "advancement.create_fantasizing.root.desc": "俺寻思这样能行！",
+
   "create_fantasizing.configuration.chromatic_tunnel_silent_processing": "异彩隧道静默处理",
   "create_fantasizing.configuration.chromatic_tunnel_silent_processing.tooltip": "暗影钢隧道和光辉石隧道进行处理时不再播放粒子和音效。",
   "create_fantasizing.configuration.engines": "引擎",

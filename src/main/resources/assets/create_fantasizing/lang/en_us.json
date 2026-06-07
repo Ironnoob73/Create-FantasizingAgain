@@ -70,6 +70,9 @@
   "create_fantasizing.recipe.shadow_plating": "Shadow Plating",
   "create_fantasizing.recipe.exposing": "Exposing",
 
+  "advancement.create_fantasizing.root": "Make Create Crate Again",
+  "advancement.create_fantasizing.root.desc": "It's the creation of \"Waaagh!\"",
+
   "create_fantasizing.ponder.acc_convert.header": "Convert the Alternative Chromatic Compound to other materials.",
   "create_fantasizing.ponder.acc_convert.text_1": "When a light source is present near the Alternative Chromatic Compound, it will gradually transform into Refined Radiance.",
   "create_fantasizing.ponder.acc_convert.text_2": "The more light sources there are around, the faster the transformation speed.",

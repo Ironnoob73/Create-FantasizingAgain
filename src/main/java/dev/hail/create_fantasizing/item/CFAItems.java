@@ -33,6 +33,8 @@ public class CFAItems {
     public static final ItemEntry<Item> UNPROCESSED_HEART_OF_THE_SEA = REGISTRATE.item("unprocessed_heart_of_the_sea", Item::new).register();
     public static final ItemEntry<Item> UNPROCESSED_HEAVY_CORE = REGISTRATE.item("unprocessed_heavy_core", Item::new).register();
 
+    public static final ItemEntry<Item> THINKING_PUFFERFISH = REGISTRATE.item("thinking_pufferfish", Item::new).register();
+
     private static ItemEntry<SequencedAssemblyItem> sequencedIngredient(String name) {
         return REGISTRATE.item(name, SequencedAssemblyItem::new)
                 .register();
