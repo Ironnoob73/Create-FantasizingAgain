@@ -2,6 +2,7 @@ package dev.hail.create_fantasizing.block.crate;
 
 import dev.hail.create_fantasizing.block.CFAMenus;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
@@ -18,7 +19,6 @@ public class AndesiteCrateMenu extends AbstractDoubleStorageMenu<AndesiteCrateEn
     public AndesiteCrateMenu(MenuType<?> type, int id, Inventory inv, AndesiteCrateEntity be) {
         super(type, id, inv, be);
     }
-
     public static AndesiteCrateMenu create(int id, Inventory inv, AndesiteCrateEntity be) {
         return new AndesiteCrateMenu(CFAMenus.ANDESITE_CRATE.get(), id, inv, be);
     }
