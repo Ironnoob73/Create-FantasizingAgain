@@ -2,42 +2,24 @@ package dev.hail.create_fantasizing.block.crate;
 
 import dev.hail.create_fantasizing.block.CFAMenus;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.SlotItemHandler;
-import org.jetbrains.annotations.NotNull;
 
-public class AndesiteCrateMenu extends AbstractDoubleStorageMenu<AndesiteCrateEntity> {
+/**
+ * THIS CLASS WAS MODIFIED BY DEEPSEEK V4
+ * AndesiteCrateEntity -> AbstractCrateEntity
+ */
+public class AndesiteCrateMenu extends AbstractCrateMenu {
     public AndesiteCrateMenu(MenuType<?> type, int id, Inventory inv, RegistryFriendlyByteBuf extraData) {
         super(type, id, inv, extraData);
     }
 
-    public AndesiteCrateMenu(MenuType<?> type, int id, Inventory inv, AndesiteCrateEntity be) {
+    public AndesiteCrateMenu(MenuType<?> type, int id, Inventory inv, AbstractCrateEntity be) {
         super(type, id, inv, be);
     }
-    public static AndesiteCrateMenu create(int id, Inventory inv, AndesiteCrateEntity be) {
+    public static AndesiteCrateMenu create(int id, Inventory inv, AbstractCrateEntity be) {
         return new AndesiteCrateMenu(CFAMenus.ANDESITE_CRATE.get(), id, inv, be);
-    }
-
-    @Override
-    public @NotNull ItemStack quickMoveStack(@NotNull Player playerIn, int index) {
-        Slot clickedSlot = getSlot(index);
-        if (!clickedSlot.hasItem())
-            return ItemStack.EMPTY;
-
-        ItemStack stack = clickedSlot.getItem();
-        int crateSize = dualBlock ? 32 : 16;
-        if (index < crateSize) {
-            moveItemStackTo(stack, crateSize, slots.size(), false);
-        } else
-            moveItemStackTo(stack, 0, crateSize, false);
-        contentHolder.inventory.onContentsChanged(index);
-
-        return ItemStack.EMPTY;
     }
 
     @Override

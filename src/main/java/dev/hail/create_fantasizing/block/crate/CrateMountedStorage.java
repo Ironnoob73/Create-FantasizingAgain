@@ -4,20 +4,12 @@ import com.mojang.serialization.MapCodec;
 import com.simibubi.create.api.contraption.storage.item.MountedItemStorage;
 import com.simibubi.create.api.contraption.storage.item.MountedItemStorageType;
 import com.simibubi.create.api.contraption.storage.item.WrapperMountedItemStorage;
-import com.simibubi.create.api.contraption.storage.item.menu.StorageInteractionWrapper;
 import com.simibubi.create.content.contraptions.Contraption;
-import dev.hail.create_fantasizing.block.CFABlocks;
 import dev.hail.create_fantasizing.block.CFAMountedStorageTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.Container;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleMenuProvider;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -29,8 +21,6 @@ import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.wrapper.CombinedInvWrapper;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.OptionalInt;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public class CrateMountedStorage extends WrapperMountedItemStorage<CrateInventory> {
@@ -61,53 +51,46 @@ public class CrateMountedStorage extends WrapperMountedItemStorage<CrateInventor
         ServerLevel level = player.serverLevel();
         BlockPos localPos = info.pos();
         Vec3 localPosVec = Vec3.atCenterOf(localPos);
+        BlockState state = info.state();
+        Block sourceBlock = state.getBlock();
+        boolean isDouble = state.getValue(AbstractCrateBlock.CRATE_TYPE).isDouble();
 
         Predicate<Player> stillValid = p -> {
             Vec3 currentPos = contraption.entity.toGlobalVector(localPosVec, 0);
             return this.isMenuValid(player, contraption, currentPos);
         };
 
-        Component menuName = this.getMenuName(info, contraption);
-        IItemHandlerModifiable handler = this.getHandlerForMenu(info, contraption);
-
-        Consumer<Player> onClose = p -> {
-            Vec3 newPos = contraption.entity.toGlobalVector(localPosVec, 0);
-            this.playClosingSound(level, newPos);
-        };
-
-        Block sourceBlock = info.state().getBlock();
-        StorageInteractionWrapper wrapper = new StorageInteractionWrapper(handler, stillValid, onClose);
-
-        // Calculate total allowed amount for client-side display
-        int totalAllow = this.wrapped.allowedAmount;
-        if (handler instanceof CombinedInvWrapper) {
-            BlockState blockState = info.state();
-            CrateMountedStorage other = getOtherHalf(contraption,
-                    info.pos().relative(blockState.getValue(AbstractCrateBlock.FACING)),
-                    sourceBlock, blockState.getValue(AbstractCrateBlock.FACING));
-            if (other != null)
-                totalAllow += other.wrapped.allowedAmount;
+        // Create proxy for other half (double crates only)
+        MountedCrateProxyEntity otherProxy = null;
+        if (isDouble) {
+            Direction facing = state.getValue(AbstractCrateBlock.FACING);
+            BlockPos otherPos = localPos.relative(facing);
+            CrateMountedStorage otherStorage = getOtherHalf(contraption, otherPos, sourceBlock, facing);
+            if (otherStorage != null) {
+                // Get the other block's state for its proxy
+                StructureTemplate.StructureBlockInfo otherInfo = contraption.getBlocks().get(otherPos);
+                BlockState otherState = otherInfo != null ? otherInfo.state() : state;
+                otherProxy = MountedCrateProxyEntity.create(
+                        sourceBlock, otherState, otherStorage.wrapped, true, null, stillValid);
+            } else {
+                // Could not find other half — treat as single crate to avoid NPE
+                isDouble = false;
+            }
         }
-        final int totalAllowed = totalAllow;
 
-        MenuProvider provider = new SimpleMenuProvider(
-                (id, inv, p) -> new MountedCrateMenu(id, inv, wrapper, handler, sourceBlock),
-                menuName
-        );
+        // Create main proxy with this storage's inventory
+        MountedCrateProxyEntity mainProxy = MountedCrateProxyEntity.create(
+                sourceBlock, state, this.wrapped, isDouble, otherProxy, stillValid);
 
-        OptionalInt id = player.openMenu(provider, buf -> {
-            buf.writeResourceLocation(BuiltInRegistries.BLOCK.getKey(sourceBlock));
-            buf.writeVarInt(handler.getSlots());
-            buf.writeVarInt(totalAllowed);
-        });
+        // Link other proxy back to main proxy
+        if (otherProxy != null)
+            otherProxy.setOtherProxy(mainProxy);
 
-        if (id.isPresent()) {
-            Vec3 globalPos = contraption.entity.toGlobalVector(localPosVec, 0);
-            this.playOpeningSound(level, globalPos);
-            return true;
-        } else {
-            return false;
-        }
+        player.openMenu(mainProxy, mainProxy::sendToMenu);
+
+        Vec3 globalPos = contraption.entity.toGlobalVector(localPosVec, 0);
+        this.playOpeningSound(level, globalPos);
+        return true;
     }
 
     @Override
@@ -144,7 +127,7 @@ public class CrateMountedStorage extends WrapperMountedItemStorage<CrateInventor
         boolean type = state.getValue(AbstractCrateBlock.CRATE_TYPE).isDouble();
 
         return facing == thisFacing.getOpposite() && type
-                ? (CrateMountedStorage) contraption.getStorage().getMountedItems().storages.get(localPos)
+                ? (CrateMountedStorage) contraption.getStorage().getAllItemStorages().get(localPos) // MODIFIED BY DEEPSEEK V4
                 : null;
     }
 

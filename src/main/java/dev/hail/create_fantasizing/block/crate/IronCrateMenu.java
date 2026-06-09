@@ -10,34 +10,21 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
-public class IronCrateMenu extends AbstractDoubleStorageMenu<IronCrateEntity> {
+/**
+ * THIS CLASS WAS MODIFIED BY DEEPSEEK V4
+ * IronCrateEntity -> AbstractCrateEntity
+ */
+public class IronCrateMenu extends AbstractCrateMenu {
     public IronCrateMenu(MenuType<?> type, int id, Inventory inv, RegistryFriendlyByteBuf extraData) {
         super(type, id, inv, extraData);
     }
 
-    public IronCrateMenu(MenuType<?> type, int id, Inventory inv, IronCrateEntity be) {
+    public IronCrateMenu(MenuType<?> type, int id, Inventory inv, AbstractCrateEntity be) {
         super(type, id, inv, be);
     }
 
-    public static IronCrateMenu create(int id, Inventory inv, IronCrateEntity be) {
+    public static IronCrateMenu create(int id, Inventory inv, AbstractCrateEntity be) {
         return new IronCrateMenu(CFAMenus.IRON_CRATE.get(), id, inv, be);
-    }
-
-    @Override
-    public @NotNull ItemStack quickMoveStack(@NotNull Player playerIn, int index) {
-        Slot clickedSlot = getSlot(index);
-        if (!clickedSlot.hasItem())
-            return ItemStack.EMPTY;
-
-        ItemStack stack = clickedSlot.getItem();
-        int crateSize = dualBlock ? 40 : 20;
-        if (index < crateSize) {
-            moveItemStackTo(stack, crateSize, slots.size(), false);
-            contentHolder.inventory.onContentsChanged(index);
-        } else
-            moveItemStackTo(stack, 0, crateSize, false);
-
-        return ItemStack.EMPTY;
     }
 
     @Override

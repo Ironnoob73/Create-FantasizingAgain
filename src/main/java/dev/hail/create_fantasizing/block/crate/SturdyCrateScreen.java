@@ -25,7 +25,7 @@ import java.util.function.Consumer;
 import static com.simibubi.create.foundation.gui.AllGuiTextures.PLAYER_INVENTORY;
 
 @OnlyIn(Dist.CLIENT)
-public class SturdyCrateScreen extends AbstractFoldAbleCrateScreen<SturdyCrateMenu> {
+public class SturdyCrateScreen extends AbstractCrateScreen<SturdyCrateMenu> {
 
     public SturdyCrateScreen(SturdyCrateMenu container, Inventory inv, Component title) {
         super(container, inv, title);
@@ -33,6 +33,25 @@ public class SturdyCrateScreen extends AbstractFoldAbleCrateScreen<SturdyCrateMe
         renderedItem = blockEntry.asStack();
         background = CFAGuiTextures.STURDY_CRATE_UPSIDE;
         backgroundSec = CFAGuiTextures.STURDY_CRATE_DOWNSIDE;
+
+        initWindowSizeHeight = (menu.isFullInterface() ? 235 : 145) - 18;
+        initWindowXOffset = 0;
+        //capacityLabelOffset = menu.isFullInterface() ? 90 : 0;
+        //textureYShift = menu.isFullInterface() ? -45 : 0;
+        //itemYShift = menu.isFullInterface() ? 81 : 0;
+        //YShift = topPos + (menu.isFullInterface() ? 52 : 7);
+        initEditBoxXPos = 14;
+        initAllowedItemsLabelXPos = 140;
+        initAllowedItemsLabelYPos = 122;
+        initAllowedRange = (menu.dualBlock ? 6401 : 3201);
+        initExtraAreaYOffset = 20;
+
+        editIcon = CFAGuiTextures.STURDY_EDIT;
+        bgInvXOffset = 15;
+        bgInvYOffset = (menu.isFullInterface() ? 67 : 22);
+        bgAddTexXShift = false;
+        bgAddTexYShift = true;
+        secBgOffset = 109;
     }
 
     @Override

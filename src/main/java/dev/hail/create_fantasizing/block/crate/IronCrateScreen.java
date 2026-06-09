@@ -21,13 +21,31 @@ import java.util.function.Consumer;
 import static com.simibubi.create.foundation.gui.AllGuiTextures.PLAYER_INVENTORY;
 
 @OnlyIn(Dist.CLIENT)
-public class IronCrateScreen extends AbstractDoubleStorageScreen<IronCrateMenu> {
+public class IronCrateScreen extends AbstractCrateScreen<IronCrateMenu> {
 
     public IronCrateScreen(IronCrateMenu container, Inventory inv, Component title) {
         super(container, inv, title);
         blockEntry = CFABlocks.IRON_CRATE;
         renderedItem = blockEntry.asStack();
         background = container.dualBlock ? CFAGuiTextures.IRON_DOUBLE_CRATE : CFAGuiTextures.IRON_CRATE;
+
+        initWindowSizeHeight = background.getHeight();
+        initWindowXOffset = menu.dualBlock ? -5 : 0;
+        //capacityLabelOffset = menu.dualBlock ? 155 : 65;
+        //textureXShift = menu.dualBlock ? 9 : (imageWidth - (background.getWidth() - 8)) / 2;
+        //itemYShift = menu.dualBlock ? 0 : -16;
+        //YShift = topPos + 7;
+        initEditBoxXPos = 23;
+        initAllowedItemsLabelXPos = capacityLabelOffset;
+        initAllowedItemsLabelYPos = 104;
+        initAllowedRange = (menu.dualBlock ? 2561 : 1281);
+        initExtraAreaYOffset = 56;
+
+        editIcon = CFAGuiTextures.IRON_EDIT;
+        bgInvXOffset = windowXOffset + (menu.dualBlock ? 14 : 0);
+        bgInvYOffset = 4;
+        bgAddTexXShift = true;
+        bgAddTexYShift = false;
     }
 
     @Override

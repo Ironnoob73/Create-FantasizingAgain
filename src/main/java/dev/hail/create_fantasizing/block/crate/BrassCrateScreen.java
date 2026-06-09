@@ -25,7 +25,7 @@ import java.util.function.Consumer;
 import static com.simibubi.create.foundation.gui.AllGuiTextures.PLAYER_INVENTORY;
 
 @OnlyIn(Dist.CLIENT)
-public class BrassCrateScreen extends AbstractFoldAbleCrateScreen<BrassCrateMenu> {
+public class BrassCrateScreen extends AbstractCrateScreen<BrassCrateMenu> {
 
     public BrassCrateScreen(BrassCrateMenu container, Inventory inv, Component title) {
         super(container, inv, title);
@@ -33,6 +33,27 @@ public class BrassCrateScreen extends AbstractFoldAbleCrateScreen<BrassCrateMenu
         renderedItem = blockEntry.asStack();
         background = CFAGuiTextures.BRASS_CRATE_UPSIDE;
         backgroundSec = CFAGuiTextures.BRASS_CRATE_DOWNSIDE;
+
+        initWindowSizeHeight = (menu.isFullInterface() ? 199 : 127);
+        initWindowXOffset = -4;
+        //capacityLabelOffset = menu.isFullInterface() ? 72 : 0;
+        //textureXShift = 8;
+        //textureYShift = menu.isFullInterface() ? -36 : 0;
+        //itemYShift = menu.isFullInterface() ? 72 : 0;
+        //YShift = topPos + (menu.isFullInterface() ? 43 : 7);
+        initEditBoxXPos = 23;
+        initAllowedItemsLabelXPos = 133;
+        initIsBrassCrate = true;
+        initAllowedItemsLabelYPos = 104;
+        initAllowedRange = (menu.dualBlock ? 4609 : 2305);
+        initExtraAreaYOffset = 20;
+
+        editIcon = CFAGuiTextures.BRASS_EDIT;
+        bgInvXOffset = textureXShift + 6;
+        bgInvYOffset = (menu.isFullInterface() ? 76 : 40);
+        bgAddTexXShift = true;
+        bgAddTexYShift = true;
+        secBgOffset = 91;
     }
 
     @Override
