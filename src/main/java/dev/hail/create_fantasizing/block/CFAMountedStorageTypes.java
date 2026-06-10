@@ -12,8 +12,8 @@ import static dev.hail.create_fantasizing.FantasizingMod.REGISTRATE;
 public class CFAMountedStorageTypes {
     public static final RegistryEntry<MountedItemStorageType<?>, CrateMountedStorageType> CRATE =
             REGISTRATE.mountedItemStorage("crate", CrateMountedStorageType::new)
-            .associateBlockTag(CFATags.CRATE_MOUNTED_STORAGE)
-            .register();
+                    .associateBlockTag(CFATags.CRATE_MOUNTED_STORAGE)
+                    .register();
     public static final RegistryEntry<MountedFluidStorageType<?>, FluidBarrelMountedStorageType> FLUID_BARREL =
             REGISTRATE.mountedFluidStorage("fluid_barrel", FluidBarrelMountedStorageType::new)
                     .associateBlockTag(CFATags.FLUID_BARREL_MOUNTED_STORAGE)

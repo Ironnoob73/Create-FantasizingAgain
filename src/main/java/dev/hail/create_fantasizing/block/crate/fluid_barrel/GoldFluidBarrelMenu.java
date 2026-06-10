@@ -5,16 +5,16 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 
-public class GoldFluidBarrelMenu extends AbstractFluidBarrelMenu<GoldFluidBarrelEntity> {
+public class GoldFluidBarrelMenu extends AbstractFluidBarrelMenu<AbstractFluidBarrelEntity> {
     public GoldFluidBarrelMenu(MenuType<?> type, int id, Inventory inv, RegistryFriendlyByteBuf extraData) {
         super(type, id, inv, extraData);
     }
 
-    public GoldFluidBarrelMenu(MenuType<?> type, int id, Inventory inv, GoldFluidBarrelEntity be) {
+    public GoldFluidBarrelMenu(MenuType<?> type, int id, Inventory inv, AbstractFluidBarrelEntity be) {
         super(type, id, inv, be);
     }
 
-    public static GoldFluidBarrelMenu create(int id, Inventory inv, GoldFluidBarrelEntity be) {
+    public static GoldFluidBarrelMenu create(int id, Inventory inv, AbstractFluidBarrelEntity be) {
         return new GoldFluidBarrelMenu(CFAMenus.GOLD_FLUID_BARREL_MENU.get(), id, inv, be);
     }
 }

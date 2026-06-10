@@ -9,15 +9,23 @@ import com.simibubi.create.content.contraptions.Contraption;
 import dev.hail.create_fantasizing.block.CFAMountedStorageTypes;
 import dev.hail.create_fantasizing.block.crate.*;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.ExtraCodecs;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Predicate;
 
 public class FluidBarrelMountedStorage extends WrapperMountedFluidStorage<FluidBarrelMountedStorage.Handler> implements SyncedMountedStorage {
     public static final MapCodec<FluidBarrelMountedStorage> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
