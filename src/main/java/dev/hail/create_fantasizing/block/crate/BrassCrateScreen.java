@@ -1,18 +1,9 @@
 package dev.hail.create_fantasizing.block.crate;
 
-import com.google.common.collect.ImmutableList;
-import com.simibubi.create.content.trains.station.NoShadowFontWrapper;
-import com.simibubi.create.foundation.gui.widget.IconButton;
-import com.simibubi.create.foundation.gui.widget.Label;
-import com.simibubi.create.foundation.gui.widget.ScrollInput;
 import dev.hail.create_fantasizing.CFAGuiTextures;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import net.createmod.catnip.gui.element.GuiGameElement;
-import net.createmod.catnip.platform.CatnipServices;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.api.distmarker.Dist;
@@ -20,9 +11,6 @@ import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.function.Consumer;
-
-import static com.simibubi.create.foundation.gui.AllGuiTextures.PLAYER_INVENTORY;
 
 @OnlyIn(Dist.CLIENT)
 public class BrassCrateScreen extends AbstractCrateScreen<BrassCrateMenu> {
@@ -34,119 +22,28 @@ public class BrassCrateScreen extends AbstractCrateScreen<BrassCrateMenu> {
         background = CFAGuiTextures.BRASS_CRATE_UPSIDE;
         backgroundSec = CFAGuiTextures.BRASS_CRATE_DOWNSIDE;
 
-        initWindowSizeHeight = (menu.isFullInterface() ? 199 : 127);
-        initWindowXOffset = -4;
-        //capacityLabelOffset = menu.isFullInterface() ? 72 : 0;
-        //textureXShift = 8;
-        //textureYShift = menu.isFullInterface() ? -36 : 0;
-        //itemYShift = menu.isFullInterface() ? 72 : 0;
-        //YShift = topPos + (menu.isFullInterface() ? 43 : 7);
-        initEditBoxXPos = 23;
-        initAllowedItemsLabelXPos = 133;
-        initIsBrassCrate = true;
-        initAllowedItemsLabelYPos = 104;
-        initAllowedRange = (menu.dualBlock ? 4609 : 2305);
-        initExtraAreaYOffset = 20;
-
-        editIcon = CFAGuiTextures.BRASS_EDIT;
-        bgInvXOffset = textureXShift + 6;
-        bgInvYOffset = (menu.isFullInterface() ? 76 : 40);
-        bgAddTexXShift = true;
-        bgAddTexYShift = true;
-        secBgOffset = 91;
-    }
-
-    @Override
-    protected void init() {
-        setWindowSize(Math.max(backgroundSec.getWidth(), PLAYER_INVENTORY.getWidth()), (menu.isFullInterface() ? 199 : 127) + 4 + PLAYER_INVENTORY.getHeight());
-        setWindowOffset(-4, - 7);
-        super.init();
-        clearWidgets();
-
         capacityLabelOffset = menu.isFullInterface() ? 72 : 0;
         textureXShift = 8;
         textureYShift = menu.isFullInterface() ? -36 : 0;
         itemYShift = menu.isFullInterface() ? 72 : 0;
-        YShift = topPos + (menu.isFullInterface() ? 43 : 7);
 
-        int x = leftPos + textureXShift;
-        int y = YShift + textureYShift;
+        initWindowSizeHeight = (menu.isFullInterface() ? 199 : 127);
+        initWindowXOffset = -4;
+        initYShiftOffset = (menu.isFullInterface() ? 47 : 11);
+        initEditBoxXPos = 23;
+        initAllowedItemsLabelXPos = 133;
+        initIsBrassCrate = true;
+        initAllowedItemsLabelYPos = (menu.isFullInterface() ? 176 : 104);
+        initAllowedRange = (menu.dualBlock ? 4609 : 2305);
+        initExtraAreaYOffset = 20;
+        initFoldable = true;
 
-        Consumer<String> onTextChanged;
-        onTextChanged = s -> nameBox.setX(nameBoxX(s, nameBox));
-        nameBox = new EditBox(new NoShadowFontWrapper(font), x + 23, y + 3, background.getWidth(), 10,
-                Component.empty());
-        nameBox.setBordered(false);
-        nameBox.setMaxLength(25);
-        nameBox.setTextColor(0x3D3C48);
-        if (menu.contentHolder != null) {
-            nameBox.setValue(menu.contentHolder.customName);
-        }
-        nameBox.setFocused(false);
-        nameBox.mouseClicked(0, 0, 0);
-        nameBox.setResponder(onTextChanged);
-        nameBox.setX(nameBoxX(nameBox.getValue(), nameBox));
-        addRenderableWidget(nameBox);
-
-        Label allowedItemsLabel = new Label(x + 133 + textureXShift, y + 108 + capacityLabelOffset, Component.empty()).colored(0xFFFFFF).withShadow();
-        allowedCapacity = new ScrollInput(x + 131, y + 104 + capacityLabelOffset, 41, 16).titled(storageSpace.plainCopy())
-                .withRange(0, (menu.dualBlock ? 4609 : 2305))
-                .writingTo(allowedItemsLabel)
-                .withShiftStep(64)
-                .setState(menu.contentHolder.getOverallAllowedAmount())
-                .calling(s -> lastModification = 0);
-        allowedCapacity.onChanged();
-        addRenderableWidget(allowedItemsLabel);
-        addRenderableWidget(allowedCapacity);
-
-        extraAreas = ImmutableList.of(
-                new Rect2i(x + background.getWidth(), y + background.getHeight() - 20 + itemYShift, 80, 80)
-        );
-        
-        // Page
-/*========================================================================================================================================*/
-/*  THIS PART OF THE CODE WAS GENERATED BY DEEPSEEK V4                                                                                    */
-/*----------------------------------------------------------------------------------------------------------------------------------------*/
-/**/    if (menu.dualBlock) {                                                                                                           /**/
-/**/        removeWidgets(foldButton, pageUpButton, pageDownButton);                                                                    /**/
-/**/        int screenHeight = Minecraft.getInstance().getWindow().getGuiScaledHeight();                                                /**/
-/**/        boolean exceedsScreen = topPos + imageHeight > screenHeight;                                                                /**/
-/**/                                                                                                                                    /**/
-/**/        if (menu.isFold) {                                                                                                          /**/
-/**/            foldButton = new IconButton(x + 7, y + 102, CFAGuiTextures.CRATE_INTERFACE_UNFOLD);                               /**/
-/**/            foldButton.withCallback(() -> {                                                                                         /**/
-/**/                CatnipServices.NETWORK.sendToServer(new ConfigureCrateFoldPacket(                                                   /**/
-/**/                        menu.contentHolder.getBlockPos(), false, 0));                                                   /**/
-/**/            });                                                                                                                     /**/
-/**/            addRenderableWidget(foldButton);                                                                                        /**/
-/**/                                                                                                                                    /**/
-/**/            if (menu.page > 0) {                                                                                                    /**/
-/**/                pageUpButton = new IconButton(x + 27, y + 102, CFAGuiTextures.CRATE_PAGE_UP);                                 /**/
-/**/                pageUpButton.withCallback(() -> {                                                                                   /**/
-/**/                    CatnipServices.NETWORK.sendToServer(new ConfigureCrateFoldPacket(                                               /**/
-/**/                            menu.contentHolder.getBlockPos(), true, menu.page - 1));                                    /**/
-/**/                });                                                                                                                 /**/
-/**/                addRenderableWidget(pageUpButton);                                                                                  /**/
-/**/            }                                                                                                                       /**/
-/**/                                                                                                                                    /**/
-/**/            if (menu.page < 1) {                                                                                                    /**/
-/**/                pageDownButton = new IconButton(x + 27, y + 102, CFAGuiTextures.CRATE_PAGE_DOWN);                             /**/
-/**/                pageDownButton.withCallback(() -> {                                                                                 /**/
-/**/                    CatnipServices.NETWORK.sendToServer(new ConfigureCrateFoldPacket(                                               /**/
-/**/                            menu.contentHolder.getBlockPos(), true, menu.page + 1));                                    /**/
-/**/                });                                                                                                                 /**/
-/**/                addRenderableWidget(pageDownButton);                                                                                /**/
-/**/            }                                                                                                                       /**/
-/**/        } else if (exceedsScreen) {                                                                                                 /**/
-/**/            foldButton = new IconButton(x + 7, y + 174, CFAGuiTextures.CRATE_INTERFACE_FOLD);                                 /**/
-/**/            foldButton.withCallback(() -> {                                                                                         /**/
-/**/                CatnipServices.NETWORK.sendToServer(new ConfigureCrateFoldPacket(                                                   /**/
-/**/                        menu.contentHolder.getBlockPos(), true, 0));                                                    /**/
-/**/            });                                                                                                                     /**/
-/*========================================================================================================================================*/
-                addRenderableWidget(foldButton);
-            }
-        }
+        editIcon = CFAGuiTextures.BRASS_EDIT;
+        bgInvXOffset = textureXShift + 2;
+        bgInvYOffset = (menu.isFullInterface() ? 72 : 40);
+        bgAddTexXShift = true;
+        bgAddTexYShift = true;
+        secBgOffset = 91;
     }
 
     @Override
@@ -188,28 +85,5 @@ public class BrassCrateScreen extends AbstractCrateScreen<BrassCrateMenu> {
                 .<GuiGameElement.GuiRenderBuilder>at(x + backgroundSec.getWidth(), y + background.getHeight() - 20 + itemYShift, -200)
                 .scale(5)
                 .render(ms);
-    }
-    @Override
-    public void renderBg(@NotNull GuiGraphics ms, float partialTicks, int mouseX, int mouseY) {
-        int invX = getLeftOfCentered(PLAYER_INVENTORY.getWidth()) + textureXShift - 2;
-        int invY = YShift + background.getHeight() + (menu.isFullInterface() ? 76 : 40);
-        renderPlayerInventory(ms, invX, invY);
-
-        int x = leftPos + textureXShift;
-        int y = YShift + textureYShift;
-
-        background.render(ms, x, y);
-        backgroundSec.render(ms, x, y + (menu.isFullInterface() ? 91 : 19));
-
-        String text = nameBox.getValue();
-        if (!nameBox.isFocused()) {
-            if (nameBox.getValue()
-                    .isEmpty()) {
-                text = renderedItem.getHoverName()
-                        .getString();
-                ms.drawString(font, text, nameBoxX(text, nameBox), y + 3, 0x3D3C48, false);
-            }
-            CFAGuiTextures.BRASS_EDIT.render(ms, nameBoxX(text, nameBox) + font.width(text) + 5, y + 2);
-        }
     }
 }

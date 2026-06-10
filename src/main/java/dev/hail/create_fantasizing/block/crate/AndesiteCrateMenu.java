@@ -31,10 +31,10 @@ public class AndesiteCrateMenu extends AbstractCrateMenu {
             for (int col = 0; col < maxCol; ++col) {
                 this.addSlot(
                         new SlotItemHandler(col + row * maxCol < 16 ? contentHolder.inventory : contentHolder.getOtherCrate().inventory,
-                                col + row * maxCol - (col + row * maxCol < 16 ? 0 : 16), x + col * 18, row * 18 + 27));
+                                col + row * maxCol - (col + row * maxCol < 16 ? 0 : 16), x + col * 18, row * 18 + 31));
             }
         }
         // player Slots
-        addPlayerSlots(dualBlock ? 28 : 8, 156);
+        addPlayerSlots(dualBlock ? 28 : 8, 160);
     }
 }

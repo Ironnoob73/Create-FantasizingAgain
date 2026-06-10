@@ -8,7 +8,6 @@ import com.simibubi.create.content.contraptions.Contraption;
 import dev.hail.create_fantasizing.block.CFAMountedStorageTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -48,7 +47,6 @@ public class CrateMountedStorage extends WrapperMountedItemStorage<CrateInventor
      */
     @Override
     public boolean handleInteraction(ServerPlayer player, Contraption contraption, StructureTemplate.StructureBlockInfo info) {
-        ServerLevel level = player.serverLevel();
         BlockPos localPos = info.pos();
         Vec3 localPosVec = Vec3.atCenterOf(localPos);
         BlockState state = info.state();
@@ -88,8 +86,6 @@ public class CrateMountedStorage extends WrapperMountedItemStorage<CrateInventor
 
         player.openMenu(mainProxy, mainProxy::sendToMenu);
 
-        Vec3 globalPos = contraption.entity.toGlobalVector(localPosVec, 0);
-        this.playOpeningSound(level, globalPos);
         return true;
     }
 

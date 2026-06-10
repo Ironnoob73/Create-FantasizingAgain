@@ -56,17 +56,17 @@ public class SturdyCrateMenu extends AbstractCrateMenu {
 /**/            if (isFullInterface()) {                                                                                                /**/
 /**/                this.addSlot(                                                                                                       /**/
 /**/                        new SlotItemHandler(col + row * 10 < 50 ? contentHolder.inventory : contentHolder.getOtherCrate().inventory,/**/
-/**/                                col + row * 10 - (col + row * 10 < 50 ? 0 : 50), x + col * 18, row * 18 + 27));    /**/
+/**/                                col + row * 10 - (col + row * 10 < 50 ? 0 : 50), x + col * 18, row * 18 + 31));    /**/
 /**/            } else if (dualBlock && isFold) {                                                                                       /**/
 /**/                var inv = page == 0 ? contentHolder.inventory : contentHolder.getOtherCrate().inventory;                            /**/
-/**/                this.addSlot(new SlotItemHandler(inv, col + row * 10, x + col * 18, row * 18 + 27));        /**/
+/**/                this.addSlot(new SlotItemHandler(inv, col + row * 10, x + col * 18, row * 18 + 31));        /**/
 /**/            } else {                                                                                                                /**/
-/**/                this.addSlot(new SlotItemHandler(contentHolder.inventory, col + row * 10, x + col * 18, row * 18 + 27));/**/
+/**/                this.addSlot(new SlotItemHandler(contentHolder.inventory, col + row * 10, x + col * 18, row * 18 + 31));/**/
 /**/            }                                                                                                                       /**/
 /*========================================================================================================================================*/
             }
         }
         // player Slots
-        addPlayerSlots(38, isFullInterface() ? 246 : 156);
+        addPlayerSlots(38, isFullInterface() ? 250 : 160);
     }
 }

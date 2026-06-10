@@ -36,10 +36,10 @@ public class IronCrateMenu extends AbstractCrateMenu {
             for (int col = 0; col < maxCol; ++col) {
                 this.addSlot(
                         new SlotItemHandler(col + row * maxCol < 20 ? contentHolder.inventory : contentHolder.getOtherCrate().inventory,
-                                col + row * maxCol - (col + row * maxCol < 20 ? 0 : 20), x + col * 18, row * 18 + 27));
+                                col + row * maxCol - (col + row * maxCol < 20 ? 0 : 20), x + col * 18, row * 18 + 31));
             }
         }
         // player Slots
-        addPlayerSlots(dualBlock ? 46 : 8, 156);
+        addPlayerSlots(dualBlock ? 46 : 8, 160);
     }
 }
