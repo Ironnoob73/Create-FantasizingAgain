@@ -28,17 +28,58 @@ public abstract class AbstractDoubleStorageMenu<T> extends MenuBase<T> {
 
     /**
      * THIS METHOD WAS REWRITTEN BY DEEPSEEK V4
+     * <p>
+     * Modified to support both {@link MountedCrateProxyEntity} (crates) and
+     * {@link dev.hail.create_fantasizing.block.crate.fluid_barrel.MountedFluidBarrelProxyEntity} (fluid barrels)
+     * as contraption-mounted proxy entities. The discriminator is the block type:
+     * fluid barrel blocks use their own serialization format.
+     * </p>
      */
     @Override
     protected T createOnClient(RegistryFriendlyByteBuf extraData) {
         BlockPos readBlockPos = extraData.readBlockPos();
-        // BlockPos.ZERO is the sentinel for MountedCrateProxyEntity
+        // BlockPos.ZERO is the sentinel for contraption proxy entities
         if (BlockPos.ZERO.equals(readBlockPos)) {
             net.minecraft.resources.ResourceLocation blockId = extraData.readResourceLocation();
             net.minecraft.world.level.block.Block sourceBlock =
                     net.minecraft.core.registries.BuiltInRegistries.BLOCK.getOptional(blockId)
                             .orElse(net.minecraft.world.level.block.Blocks.AIR);
             boolean isDbl = extraData.readBoolean();
+
+            // ---- Fluid barrel proxy path ----
+            if (sourceBlock instanceof dev.hail.create_fantasizing.block.crate.fluid_barrel.AbstractFluidBarrelBlock) {
+                net.minecraft.core.Direction facing = extraData.readEnum(net.minecraft.core.Direction.class);
+                AbstractDoubleStorageBlock.CrateType crateType =
+                        extraData.readEnum(AbstractDoubleStorageBlock.CrateType.class);
+
+                // Read main fluid/bucket data
+                dev.hail.create_fantasizing.block.crate.fluid_barrel.MountedFluidBarrelProxyEntity.FluidBarrelClientData data =
+                        dev.hail.create_fantasizing.block.crate.fluid_barrel.MountedFluidBarrelProxyEntity
+                                .readClientData(extraData);
+
+                // For double barrels, both halves share the same fluid & bucket data but differ in crate type
+                dev.hail.create_fantasizing.block.crate.fluid_barrel.MountedFluidBarrelProxyEntity otherProxy = null;
+                if (isDbl) {
+                    AbstractDoubleStorageBlock.CrateType otherType = crateType == AbstractDoubleStorageBlock.CrateType.MAIN
+                            ? AbstractDoubleStorageBlock.CrateType.SECOND
+                            : AbstractDoubleStorageBlock.CrateType.MAIN;
+                    otherProxy = dev.hail.create_fantasizing.block.crate.fluid_barrel.MountedFluidBarrelProxyEntity
+                            .createClient(sourceBlock, true, data.capacity(), data.singleCapacity(),
+                                    data.fluid(), data.bucketSlot0(), data.bucketSlot1(),
+                                    data.customName(), null, facing, otherType);
+                }
+
+                dev.hail.create_fantasizing.block.crate.fluid_barrel.MountedFluidBarrelProxyEntity proxy =
+                        dev.hail.create_fantasizing.block.crate.fluid_barrel.MountedFluidBarrelProxyEntity
+                                .createClient(sourceBlock, isDbl, data.capacity(), data.singleCapacity(),
+                                        data.fluid(), data.bucketSlot0(), data.bucketSlot1(),
+                                        data.customName(), otherProxy, facing, crateType);
+                if (otherProxy != null)
+                    otherProxy.setOtherProxy(proxy);
+                return (T) proxy;
+            }
+
+            // ---- Crate proxy path (original behavior) ----
             int slotCount = extraData.readVarInt();
             int allowedAmt = extraData.readVarInt();
             int slotCount2 = 0, allowedAmt2 = 0;

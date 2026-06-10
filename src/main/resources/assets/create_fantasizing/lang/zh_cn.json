@@ -66,6 +66,9 @@
   "create_fantasizing.gui.crate.unfold": "展开界面",
   "create_fantasizing.gui.crate.next_page": "下一页",
   "create_fantasizing.gui.crate.prev_page": "上一页",
+  "create_fantasizing.gui.fluid_barrel.snapshot_notice": "这是一个快照",
+  "create_fantasizing.gui.fluid_barrel.snapshot_notice.0": "该界面显示的是你打开容器时的容量信息。",
+  "create_fantasizing.gui.fluid_barrel.snapshot_notice.1": "实际容量信息可能已改变，重新打开容器以刷新。",
 
   "create_fantasizing.recipe.shadow_plating": "镀影",
   "create_fantasizing.recipe.exposing": "曝光",

@@ -66,6 +66,9 @@
   "create_fantasizing.gui.crate.unfold": "Unfold Interface",
   "create_fantasizing.gui.crate.next_page": "Next Page",
   "create_fantasizing.gui.crate.prev_page": "Previous Page",
+  "create_fantasizing.gui.fluid_barrel.snapshot_notice": "This is a snapshot",
+  "create_fantasizing.gui.fluid_barrel.snapshot_notice.0": "This interface displays the capacity information when you opened the container.",
+  "create_fantasizing.gui.fluid_barrel.snapshot_notice.1": "The actual capacity information may have changed, reopen the container to refresh.",
 
   "create_fantasizing.recipe.shadow_plating": "Shadow Plating",
   "create_fantasizing.recipe.exposing": "Exposing",
