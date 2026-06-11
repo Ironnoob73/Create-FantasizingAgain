@@ -69,7 +69,7 @@ public class MountedStorageManagerMixin {
         }
 
         // ---- Double barrel: redirect SECOND half click to MAIN half ----
-        /*BlockState state = info.state();
+        BlockState state = info.state();
         if (state.getBlock() instanceof AbstractFluidBarrelBlock
                 && state.hasProperty(AbstractDoubleStorageBlock.CRATE_TYPE)
                 && state.getValue(AbstractDoubleStorageBlock.CRATE_TYPE) == AbstractDoubleStorageBlock.CrateType.SECOND
@@ -86,6 +86,6 @@ public class MountedStorageManagerMixin {
             if (mainStorage instanceof IMountedFluidStorageInteraction mainInteraction) {
                 cir.setReturnValue(mainInteraction.handleInteraction(serverPlayer, contraption, mainInfo));
             }
-        }*/
+        }
     }
 }

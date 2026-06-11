@@ -6,6 +6,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.NonInteractiveResultSlot;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.SlotItemHandler;
@@ -43,8 +44,10 @@ public abstract class AbstractFluidBarrelMenu<T extends AbstractFluidBarrelEntit
         if (contentHolder.isSecondaryCrate() && contentHolder.getMainCrate() instanceof AbstractFluidBarrelEntity mainBarrel)
             buckets = mainBarrel.bucketSlots;
         for (int i = 0; i <= 1; i++) {
-            this.addSlot(
-                    new SlotItemHandler(buckets, i, 31 + (i * 18), 27));
+            if (contentHolder.isMountedProxy())
+                this.addSlot(new NonInteractiveResultSlot(buckets, i, 31 + (i * 18), 27));
+            else
+                this.addSlot(new SlotItemHandler(buckets, i, 31 + (i * 18), 27));
         }
         // player Slots
         addPlayerSlots(28, 102);

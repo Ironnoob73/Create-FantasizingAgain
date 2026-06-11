@@ -18,8 +18,12 @@ public class FluidBarrelMountedStorageType extends MountedFluidStorageType<Fluid
         if (be != null) {
             be.invalidateCapabilities();
         }
-        if (be instanceof AbstractFluidBarrelEntity barrel && !barrel.isSecondaryCrate())
-            return FluidBarrelMountedStorage.fromBarrel(barrel);
+        if (be instanceof AbstractFluidBarrelEntity barrel) {
+            if (!barrel.isSecondaryCrate())
+                return FluidBarrelMountedStorage.fromBarrel(barrel);
+            else
+                return FluidBarrelMountedStorage.emptyBarrel();
+        }
         return null;
     }
 }

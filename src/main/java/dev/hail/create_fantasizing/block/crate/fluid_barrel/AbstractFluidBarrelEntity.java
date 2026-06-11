@@ -46,7 +46,7 @@ public abstract class AbstractFluidBarrelEntity extends AbstractDoubleStorageEnt
         bucketHandler = ResetableLazy.of(() -> bucketSlots);
         tankInventory = new SmartFluidTank(singleTankCapacity, this::onFluidStackChanged);
         bucketSlots = new SmartInventory(2, this, (slot, stack) ->
-                slot == 0 && (GenericItemEmptying.canItemBeEmptied(this.getLevel(), stack) || GenericItemFilling.canItemBeFilled(this.getLevel(), stack)));
+                slot == 0 && (this.hasLevel() && (GenericItemEmptying.canItemBeEmptied(this.getLevel(), stack) || GenericItemFilling.canItemBeFilled(this.getLevel(), stack))));
     }
 
     protected void initCapability() {

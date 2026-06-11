@@ -1,7 +1,6 @@
 package dev.hail.create_fantasizing.block.crate.fluid_barrel;
 
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
-import com.simibubi.create.foundation.item.SmartInventory;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import dev.hail.create_fantasizing.block.crate.*;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -9,11 +8,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -53,6 +54,8 @@ public class MountedFluidBarrelProxyEntity extends AbstractFluidBarrelEntity imp
     private final boolean isDouble;
     private final Predicate<Player> stillValidChecker;
 
+    private Level contraptionLevel;
+
     /**
      * Constructs the proxy.
      * <p>
@@ -73,10 +76,10 @@ public class MountedFluidBarrelProxyEntity extends AbstractFluidBarrelEntity imp
      * @param stillValidChecker menu validity predicate
      */
     private MountedFluidBarrelProxyEntity(BlockEntityType<?> type, BlockPos pos, BlockState state,
-                                           Block sourceBlock, SmartFluidTank tankInventory,
-                                           ItemStack bucket0, ItemStack bucket1,
-                                           boolean isDouble, @Nullable MountedFluidBarrelProxyEntity otherProxy,
-                                           Predicate<Player> stillValidChecker) {
+                                          Block sourceBlock, SmartFluidTank tankInventory,
+                                          ItemStack bucket0, ItemStack bucket1,
+                                          boolean isDouble, @Nullable MountedFluidBarrelProxyEntity otherProxy,
+                                          Predicate<Player> stillValidChecker) {
         super(type, pos, state);
         this.blockState = state;
         this.sourceBlock = sourceBlock;
@@ -192,6 +195,11 @@ public class MountedFluidBarrelProxyEntity extends AbstractFluidBarrelEntity imp
         // No NBT persistence needed
     }
 
+    @Nullable
+    public Level getLevel() {
+        return this.contraptionLevel;
+    }
+
     // ========================================================================
     // Network serialization — sends proxy data to the client
     // ========================================================================
@@ -244,6 +252,8 @@ public class MountedFluidBarrelProxyEntity extends AbstractFluidBarrelEntity imp
         buf.writeNbt(bucketsTag);
 
         buf.writeUtf(customName != null ? customName : "");
+
+        buf.writeNbt((Tag) this.contraptionLevel);
     }
 
     public Block getSourceBlock() {
@@ -267,11 +277,11 @@ public class MountedFluidBarrelProxyEntity extends AbstractFluidBarrelEntity imp
      * @param stillValidChecker menu validity predicate
      */
     public static MountedFluidBarrelProxyEntity create(Block sourceBlock, BlockState state,
-                                                        SmartFluidTank tankInv,
-                                                        ItemStack bucket0, ItemStack bucket1,
-                                                        boolean isDouble,
-                                                        @Nullable MountedFluidBarrelProxyEntity otherProxy,
-                                                        Predicate<Player> stillValidChecker) {
+                                                       SmartFluidTank tankInv,
+                                                       ItemStack bucket0, ItemStack bucket1,
+                                                       boolean isDouble,
+                                                       @Nullable MountedFluidBarrelProxyEntity otherProxy,
+                                                       Predicate<Player> stillValidChecker) {
         return new MountedFluidBarrelProxyEntity(
                 getEntityType(sourceBlock), BlockPos.ZERO, state, sourceBlock,
                 tankInv, bucket0, bucket1, isDouble, otherProxy, stillValidChecker);
@@ -293,15 +303,15 @@ public class MountedFluidBarrelProxyEntity extends AbstractFluidBarrelEntity imp
      * @param crateType   MAIN, SECOND, or SINGLE
      */
     public static MountedFluidBarrelProxyEntity createClient(Block sourceBlock,
-                                                              boolean isDouble,
-                                                              int capacity,
-                                                              int singleCapacity,
-                                                              net.neoforged.neoforge.fluids.FluidStack fluid,
-                                                              ItemStack bucket0, ItemStack bucket1,
-                                                              String customName,
-                                                              @Nullable MountedFluidBarrelProxyEntity otherProxy,
-                                                              Direction facing,
-                                                              AbstractDoubleStorageBlock.CrateType crateType) {
+                                                             boolean isDouble,
+                                                             int capacity,
+                                                             int singleCapacity,
+                                                             net.neoforged.neoforge.fluids.FluidStack fluid,
+                                                             ItemStack bucket0, ItemStack bucket1,
+                                                             String customName,
+                                                             @Nullable MountedFluidBarrelProxyEntity otherProxy,
+                                                             Direction facing,
+                                                             AbstractDoubleStorageBlock.CrateType crateType) {
         BlockState state = sourceBlock.defaultBlockState()
                 .setValue(AbstractDoubleStorageBlock.FACING, facing)
                 .setValue(AbstractDoubleStorageBlock.CRATE_TYPE, crateType);

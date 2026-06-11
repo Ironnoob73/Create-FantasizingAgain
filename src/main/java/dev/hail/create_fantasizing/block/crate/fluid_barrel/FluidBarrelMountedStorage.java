@@ -190,6 +190,13 @@ public class FluidBarrelMountedStorage extends WrapperMountedFluidStorage<FluidB
     }
 
     /**
+     * Empty {@link FluidBarrelMountedStorage} when the FluidBarrel is secondary.
+     */
+    public static FluidBarrelMountedStorage emptyBarrel() {
+        return new FluidBarrelMountedStorage(0, FluidStack.EMPTY, ItemStack.EMPTY, ItemStack.EMPTY);
+    }
+
+    /**
      * Legacy deserialization from NBT.
      */
     public static FluidBarrelMountedStorage fromLegacy(HolderLookup.Provider registries, CompoundTag nbt) {
@@ -267,41 +274,16 @@ public class FluidBarrelMountedStorage extends WrapperMountedFluidStorage<FluidB
         mainTank.setCapacity(getCapacity());
 
         // ---- Handle double barrels: locate the other half ----
-        MountedFluidBarrelProxyEntity otherProxy = null;
         FluidBarrelMountedStorage mainStorage = null;
         if (isDouble && state.getValue(AbstractDoubleStorageBlock.CRATE_TYPE) == AbstractDoubleStorageBlock.CrateType.SECOND) {
             Direction facing = state.getValue(AbstractDoubleStorageBlock.FACING);
             BlockPos otherPos = localPos.relative(facing);
             mainStorage = getOtherHalf(contraption, otherPos, sourceBlock, facing);
-            /*
-
-            // ---- Look up the other half via the contraption's fluid storage map ----
-            var otherFluidStorage = contraption.getStorage().getFluids().storages.get(otherPos);
-            if (otherFluidStorage instanceof FluidBarrelMountedStorage otherBarrelStorage) {
-                StructureTemplate.StructureBlockInfo otherInfo = contraption.getBlocks().get(otherPos);
-                BlockState otherState = otherInfo != null ? otherInfo.state() : state;
-
-                SmartFluidTank otherTank = new SmartFluidTank(otherBarrelStorage.getCapacity(), fs -> {
-                    otherBarrelStorage.wrapped.setFluid(fs);
-                    otherBarrelStorage.dirty = true;
-                });
-                otherTank.setFluid(otherBarrelStorage.getFluid().copy());
-                otherTank.setCapacity(otherBarrelStorage.getCapacity());
-
-                // Create other half proxy with bucket items passed as raw ItemStacks
-                otherProxy = MountedFluidBarrelProxyEntity.create(
-                        sourceBlock, otherState, otherTank,
-                        otherBarrelStorage.bucketSlot0.copy(),
-                        otherBarrelStorage.bucketSlot1.copy(),
-                        true, null, stillValid);
-            } //else {
-                // Could not find other half — fall back to single barrel
-                //isDouble = false;
-            //}*/
         }
 
         MountedFluidBarrelProxyEntity mainProxy;
         if (mainStorage != null) {
+            mainTank.setFluid(mainStorage.getFluid());
             mainTank.setCapacity(mainStorage.getCapacity());
             mainProxy = MountedFluidBarrelProxyEntity.create(
                     sourceBlock, state, mainTank,
@@ -315,10 +297,6 @@ public class FluidBarrelMountedStorage extends WrapperMountedFluidStorage<FluidB
                     this.bucketSlot0.copy(),
                     this.bucketSlot1.copy(),
                     isDouble, null, stillValid);
-
-        // ---- Link proxies for double barrels ----
-        //if (otherProxy != null)
-        //    otherProxy.setOtherProxy(mainProxy);
 
         // ---- Open the fluid barrel menu ----
         player.openMenu(mainProxy, mainProxy::sendToMenu);
