@@ -126,6 +126,7 @@ public class TransporterEntity extends SmartBlockEntity implements IHaveGoggleIn
         invVersionTracker.reset();
         if (level != null && !level.isClientSide) {
             notifyUpdate();
+            //award(AllAdvancements.CHUTE);
         }
     }
 
@@ -140,6 +141,8 @@ public class TransporterEntity extends SmartBlockEntity implements IHaveGoggleIn
 
         behaviours.add(new DirectBeltInputBehaviour(this).onlyInsertWhen((d) -> canPickUpItems));
         behaviours.add(invVersionTracker = new VersionedInventoryTrackerBehaviour(this));
+
+        //registerAwardables(behaviours, AllAdvancements.CHUTE);
     }
 
     private boolean supportsAmountOnFilter() {
