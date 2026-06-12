@@ -84,6 +84,11 @@ public class CrateMountedStorage extends WrapperMountedItemStorage<CrateInventor
         if (otherProxy != null)
             otherProxy.setOtherProxy(mainProxy);
 
+        // Custom Name
+        if (info.nbt() != null) {
+            mainProxy.customName = info.nbt().getString("CustomName");
+        }
+
         player.openMenu(mainProxy, mainProxy::sendToMenu);
 
         return true;

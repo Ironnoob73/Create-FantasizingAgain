@@ -2,6 +2,7 @@ package dev.hail.create_fantasizing.block.crate;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
+import com.simibubi.create.foundation.gui.widget.IconButton;
 import com.simibubi.create.foundation.gui.widget.ScrollInput;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import dev.hail.create_fantasizing.CFAGuiTextures;
@@ -39,6 +40,8 @@ public abstract class AbstractDoubleStorageScreen<T extends AbstractDoubleStorag
     protected BlockEntry<? extends AbstractDoubleStorageBlock> blockEntry;
     protected ItemStack renderedItem;
     protected final Component storageSpace = Component.translatable("create_fantasizing.gui.crate.storage_space");
+
+    protected IconButton snapshotNotice;
 
     private final AbstractDoubleStorageEntity storageHolder = (AbstractDoubleStorageEntity) menu.contentHolder;
 

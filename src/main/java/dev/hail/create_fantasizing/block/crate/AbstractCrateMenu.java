@@ -27,7 +27,7 @@ public abstract class AbstractCrateMenu extends AbstractDoubleStorageMenu<Abstra
             return ItemStack.EMPTY;
 
         ItemStack stack = clickedSlot.getItem();
-        int crateSize = contentHolder.inventory.getSlots() * (dualBlock? 2 : 1);
+        int crateSize = contentHolder.inventory.getSlots() * (dualBlock && !isFold ? 2 : 1);
         if (index < crateSize) {
             moveItemStackTo(stack, crateSize, slots.size(), false);
 /*========================================================================================================================================*/

@@ -35,7 +35,6 @@ import static net.minecraft.util.Mth.ceil;
 
 public abstract class AbstractFluidBarrelScreen<T extends AbstractFluidBarrelMenu> extends AbstractDoubleStorageScreen<T> {
     AbstractFluidBarrelEntity barrel = (AbstractFluidBarrelEntity) menu.contentHolder;
-    protected IconButton snapshotNotice;
 
     public AbstractFluidBarrelScreen(T container, Inventory inv, Component title) {
         super(container, inv, title);

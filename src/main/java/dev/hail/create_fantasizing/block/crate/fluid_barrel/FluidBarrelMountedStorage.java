@@ -26,6 +26,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.function.Predicate;
 
 /**
@@ -53,6 +54,7 @@ import java.util.function.Predicate;
  * @see IMountedFluidStorageInteraction
  * @see MountedFluidBarrelProxyEntity
  */
+@ParametersAreNonnullByDefault
 public class FluidBarrelMountedStorage extends WrapperMountedFluidStorage<FluidBarrelMountedStorage.Handler>
         implements SyncedMountedStorage, IMountedFluidStorageInteraction {
 
@@ -297,6 +299,11 @@ public class FluidBarrelMountedStorage extends WrapperMountedFluidStorage<FluidB
                     this.bucketSlot0.copy(),
                     this.bucketSlot1.copy(),
                     isDouble, null, stillValid);
+
+        // Custom Name
+        if (info.nbt() != null) {
+            mainProxy.customName = info.nbt().getString("CustomName");
+        }
 
         // ---- Open the fluid barrel menu ----
         player.openMenu(mainProxy, mainProxy::sendToMenu);

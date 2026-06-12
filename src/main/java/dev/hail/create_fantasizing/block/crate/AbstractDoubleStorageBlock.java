@@ -1,16 +1,13 @@
 package dev.hail.create_fantasizing.block.crate;
 
-import com.simibubi.create.AllItems;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.logistics.crate.CrateBlock;
 import com.simibubi.create.foundation.block.IBE;
-import dev.hail.create_fantasizing.block.crate.fluid_barrel.AbstractFluidBarrelEntity;
 import net.createmod.catnip.data.Iterate;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
@@ -33,7 +30,6 @@ import net.neoforged.neoforge.common.util.FakePlayer;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Objects;
-import java.util.function.Consumer;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
