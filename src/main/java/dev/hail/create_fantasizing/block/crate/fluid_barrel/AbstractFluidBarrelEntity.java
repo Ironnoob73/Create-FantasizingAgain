@@ -203,8 +203,19 @@ public abstract class AbstractFluidBarrelEntity extends AbstractDoubleStorageEnt
         else
             CreateLang.text(getBlockState().getBlock().getName().getString()).style(ChatFormatting.WHITE).forGoggles(tooltip);
 
-        if (isDoubleCrate() && isSecondaryCrate())
-            CreateLang.builder().add(getOtherCrate().componentHelper(false)).forGoggles(tooltip);
+        if (isDoubleCrate()) {
+            SmartFluidTank mainAbstractTank = new SmartFluidTank(0, fs -> {});
+            mainAbstractTank.setFluid(tankInventory.getFluid().copy());
+            mainAbstractTank.getFluid().setAmount(Math.min(singleTankCapacity, tankInventory.getFluidAmount()));
+            mainAbstractTank.setCapacity(Math.min(singleTankCapacity, tankInventory.getCapacity()));
+            SmartFluidTank secAbstractTank = new SmartFluidTank(0, fs -> {});
+            secAbstractTank.setFluid(tankInventory.getFluid().copy());
+            secAbstractTank.getFluid().setAmount(Math.max(0, tankInventory.getFluidAmount() - singleTankCapacity));
+            secAbstractTank.setCapacity(Math.max(0, tankInventory.getCapacity() - singleTankCapacity));
+
+            CreateLang.builder().add(barComponent(mainAbstractTank, singleTankCapacity)).forGoggles(tooltip);
+            CreateLang.builder().add(barComponent(secAbstractTank, singleTankCapacity)).forGoggles(tooltip);
+            }
         else
             CreateLang.builder().add(componentHelper(false)).forGoggles(tooltip);
 
