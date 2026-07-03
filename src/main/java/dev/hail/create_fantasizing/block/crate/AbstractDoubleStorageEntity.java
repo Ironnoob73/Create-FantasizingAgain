@@ -45,7 +45,7 @@ public abstract class AbstractDoubleStorageEntity extends CrateBlockEntity imple
     }
 
     public boolean isDoubleCrate() {
-        return getBlockState().getValue(CRATE_TYPE).isDouble();
+        return getBlockState().getValue(CRATE_TYPE).isDouble() && getOtherCrate() != null;
     }
 
     public boolean isSecondaryCrate() {
