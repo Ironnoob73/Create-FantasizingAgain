@@ -20,23 +20,33 @@ public class CFACreativeTab {
                 output.accept(CFAItems.BLOCK_PLACER.get());
                 output.accept(CFABlocks.COMPACT_HYDRAULIC_ENGINE.get());
                 output.accept(CFABlocks.COMPACT_WIND_ENGINE.get());
-                output.accept(CFABlocks.TRANSPORTER.get());
+                output.accept(CFABlocks.SCULK_ENGINE.get());
+                output.accept(CFABlocks.YIN_YANG_ENGINE_BLOCK.get());
                 output.accept(CFABlocks.SHADOW_STEEL_TUNNEL.get());
                 output.accept(CFABlocks.REFINED_RADIANCE_TUNNEL.get());
+                output.accept(CFABlocks.ZINC_CASING.get());
+                output.accept(CFABlocks.GOLD_CASING.get());
+                output.accept(CFABlocks.DIAMOND_CASING.get());
+                output.accept(CFABlocks.TRANSPORTER.get());
                 output.accept(CFABlocks.ANDESITE_CRATE.get());
                 output.accept(CFABlocks.IRON_CRATE.get());
                 output.accept(CFABlocks.BRASS_CRATE.get());
                 output.accept(CFABlocks.STURDY_CRATE.get());
                 output.accept(CFABlocks.COPPER_FLUID_BARREL.get());
+                output.accept(CFABlocks.ZINC_FLUID_BARREL.get());
+                output.accept(CFABlocks.GOLD_FLUID_BARREL.get());
+                output.accept(CFABlocks.DIAMOND_FLUID_BARREL.get());
                 output.accept(CFABlocks.PHANTOM_SHAFT.get());
                 output.accept(CFABlocks.PHANTOM_COGWHEEL.get());
                 output.accept(CFABlocks.PHANTOM_LARGE_COGWHEEL.get());
                 output.accept(CFABlocks.STURDY_GIRDER.get());
                 output.accept(CFABlocks.ROSE_QUARTZ_BULB.get());
                 output.accept(CFAItems.ALTERNATIVE_CHROMATIC_COMPOUND.get());
+                output.accept(CFAItems.TAIJI_CHIPSET.get());
                 output.accept(CFAItems.PRISMARINE_FAN_BLADES.get());
                 output.accept(CFAItems.STURDY_CONDUIT.get());
                 output.accept(CFAItems.STURDY_HEAVY_CORE.get());
+                output.accept(CFAItems.SCULK_ENGINE_FRAME.get());
             }).build());
 
     public static void init(IEventBus modEventBus) {

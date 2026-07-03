@@ -1,6 +1,9 @@
 # Create: Fantasizing Again
 ![title](/src/unused/title.png)
 
+> ### 🐋 AI-generated content disclosure
+> Some code in this project is generated using AI, and all AI-generated content has been annotated with comments.
+
 A mod that adds some powerful things for Create! Includes:
 - Two stress engines that are in perpetual motion!
   ![Engine](/src/unused/screencap_engine.png)

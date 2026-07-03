@@ -70,7 +70,7 @@ public class RefinedRadianceTunnelBlockEntity extends ChromaticTunnelBlockEntity
 
     public Optional<RecipeHolder<ExposingRecipe>> getRecipe(ItemStack item) {
         Optional<RecipeHolder<ExposingRecipe>> assemblyRecipe =
-                SequencedAssemblyRecipe.getRecipe(level, item, CFARecipeTypes.SHADOW_PLATING.getType(), ExposingRecipe.class);
+                SequencedAssemblyRecipe.getRecipe(level, item, CFARecipeTypes.EXPOSING.getType(), ExposingRecipe.class);
         if (assemblyRecipe.isPresent())
             return assemblyRecipe;
 

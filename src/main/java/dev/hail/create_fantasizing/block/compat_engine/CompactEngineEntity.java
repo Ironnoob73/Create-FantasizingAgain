@@ -5,7 +5,6 @@ import com.simibubi.create.content.contraptions.IControlContraption;
 import com.simibubi.create.content.contraptions.bearing.WindmillBearingBlockEntity;
 import com.simibubi.create.content.kinetics.base.GeneratingKineticBlockEntity;
 import com.simibubi.create.content.kinetics.motor.CreativeMotorBlock;
-import com.simibubi.create.foundation.advancement.AllAdvancements;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueBoxTransform;
 import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollOptionBehaviour;
@@ -39,7 +38,6 @@ public class CompactEngineEntity extends GeneratingKineticBlockEntity {
                 CreateLang.translateDirect("contraptions.windmill.rotation_direction"), this, new MotorValueBox());
         movementDirection.withCallback($ -> onDirectionChanged());
         behaviours.add(movementDirection);
-        registerAwardables(behaviours, AllAdvancements.WINDMILL, AllAdvancements.WINDMILL_MAXED);
     }
     private void onDirectionChanged() {
         if (level != null && !level.isClientSide) updateGeneratedRotation();
@@ -54,7 +52,9 @@ public class CompactEngineEntity extends GeneratingKineticBlockEntity {
 
     @Override
     public float getGeneratedSpeed() {
-        if (!CFABlocks.COMPACT_HYDRAULIC_ENGINE.has(getBlockState()) && !CFABlocks.COMPACT_WIND_ENGINE.has(getBlockState()))
+        if (!CFABlocks.COMPACT_HYDRAULIC_ENGINE.has(getBlockState())
+                && !CFABlocks.COMPACT_WIND_ENGINE.has(getBlockState())
+                && !CFABlocks.SCULK_ENGINE.has(getBlockState()))
             return 0;
         return 16 * getAngleSpeedDirection();
     }
@@ -96,5 +96,14 @@ public class CompactEngineEntity extends GeneratingKineticBlockEntity {
             return direction.getAxis() != facing.getAxis();
         }
 
+    }
+
+    @Override
+    public float calculateStressApplied() {
+        return super.calculateStressApplied() / Math.abs(getGeneratedSpeed());
+    }
+    @Override
+    public float calculateAddedStressCapacity() {
+        return super.calculateAddedStressCapacity() / Math.abs(getGeneratedSpeed());
     }
 }

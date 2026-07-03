@@ -1,0 +1,60 @@
+{
+  "criteria": {
+    "andesite_alloy": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "create:andesite_alloy"
+          }
+        ]
+      }
+    },
+    "brass_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:ingots/brass"
+          }
+        ]
+      }
+    },
+    "obsidian_plate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "c:plates/obsidian"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "create_fantasizing:textures/gui/advancements.png",
+    "description": {
+      "color": "#DBA213",
+      "translate": "advancement.create_fantasizing.root.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "create_fantasizing:thinking_pufferfish"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancement.create_fantasizing.root"
+    }
+  },
+  "requirements": [
+    [
+      "andesite_alloy"
+    ],
+    [
+      "brass_ingot",
+      "obsidian_plate"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

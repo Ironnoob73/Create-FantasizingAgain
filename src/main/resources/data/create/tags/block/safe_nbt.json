@@ -1,6 +1,8 @@
 {
   "values": [
     "create_fantasizing:compact_hydraulic_engine",
-    "create_fantasizing:compact_wind_engine"
+    "create_fantasizing:compact_wind_engine",
+    "create_fantasizing:sculk_engine",
+    "create_fantasizing:yin_yang_engine"
   ]
 }

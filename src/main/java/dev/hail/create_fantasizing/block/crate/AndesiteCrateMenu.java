@@ -3,41 +3,23 @@ package dev.hail.create_fantasizing.block.crate;
 import dev.hail.create_fantasizing.block.CFAMenus;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.SlotItemHandler;
-import org.jetbrains.annotations.NotNull;
 
-public class AndesiteCrateMenu extends AbstractDoubleStorageMenu<AndesiteCrateEntity> {
+/**
+ * THIS CLASS WAS MODIFIED BY DEEPSEEK V4
+ * AndesiteCrateEntity -> AbstractCrateEntity
+ */
+public class AndesiteCrateMenu extends AbstractCrateMenu {
     public AndesiteCrateMenu(MenuType<?> type, int id, Inventory inv, RegistryFriendlyByteBuf extraData) {
         super(type, id, inv, extraData);
     }
 
-    public AndesiteCrateMenu(MenuType<?> type, int id, Inventory inv, AndesiteCrateEntity be) {
+    public AndesiteCrateMenu(MenuType<?> type, int id, Inventory inv, AbstractCrateEntity be) {
         super(type, id, inv, be);
     }
-
-    public static AndesiteCrateMenu create(int id, Inventory inv, AndesiteCrateEntity be) {
+    public static AndesiteCrateMenu create(int id, Inventory inv, AbstractCrateEntity be) {
         return new AndesiteCrateMenu(CFAMenus.ANDESITE_CRATE.get(), id, inv, be);
-    }
-
-    @Override
-    public @NotNull ItemStack quickMoveStack(@NotNull Player playerIn, int index) {
-        Slot clickedSlot = getSlot(index);
-        if (!clickedSlot.hasItem())
-            return ItemStack.EMPTY;
-
-        ItemStack stack = clickedSlot.getItem();
-        int crateSize = dualBlock ? 32 : 16;
-        if (index < crateSize) {
-            moveItemStackTo(stack, crateSize, slots.size(), false);
-        } else
-            moveItemStackTo(stack, 0, crateSize, false);
-        contentHolder.inventory.onContentsChanged(index);
-
-        return ItemStack.EMPTY;
     }
 
     @Override
@@ -49,10 +31,10 @@ public class AndesiteCrateMenu extends AbstractDoubleStorageMenu<AndesiteCrateEn
             for (int col = 0; col < maxCol; ++col) {
                 this.addSlot(
                         new SlotItemHandler(col + row * maxCol < 16 ? contentHolder.inventory : contentHolder.getOtherCrate().inventory,
-                                col + row * maxCol - (col + row * maxCol < 16 ? 0 : 16), x + col * 18, row * 18 + 27));
+                                col + row * maxCol - (col + row * maxCol < 16 ? 0 : 16), x + col * 18, row * 18 + 31));
             }
         }
         // player Slots
-        addPlayerSlots(dualBlock ? 28 : 8, 156);
+        addPlayerSlots(dualBlock ? 28 : 8, 160);
     }
 }

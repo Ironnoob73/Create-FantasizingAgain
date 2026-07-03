@@ -1,0 +1,105 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "minecraft:heart_of_the_sea"
+  },
+  "loops": 3,
+  "results": [
+    {
+      "chance": 75.0,
+      "count": 2,
+      "id": "minecraft:heart_of_the_sea"
+    },
+    {
+      "chance": 25.0,
+      "id": "minecraft:heart_of_the_sea"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:unprocessed_heart_of_the_sea"
+        },
+        {
+          "item": "minecraft:prismarine_shard"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_fantasizing:unprocessed_heart_of_the_sea"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:unprocessed_heart_of_the_sea"
+        },
+        {
+          "tag": "c:gems/prismarine"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_fantasizing:unprocessed_heart_of_the_sea"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:unprocessed_heart_of_the_sea"
+        },
+        {
+          "item": "create:refined_radiance"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_fantasizing:unprocessed_heart_of_the_sea"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:unprocessed_heart_of_the_sea"
+        },
+        {
+          "item": "minecraft:prismarine_shard"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_fantasizing:unprocessed_heart_of_the_sea"
+        }
+      ]
+    },
+    {
+      "type": "create:filling",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:unprocessed_heart_of_the_sea"
+        },
+        {
+          "type": "fluid_stack",
+          "amount": 1000,
+          "fluid": "minecraft:water"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_fantasizing:unprocessed_heart_of_the_sea"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "create_fantasizing:unprocessed_heart_of_the_sea"
+  }
+}

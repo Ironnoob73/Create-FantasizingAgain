@@ -63,7 +63,7 @@ public abstract class CompactEngineBlock extends DirectionalKineticBlock impleme
         return CompactEngineEntity.class;
     }
 
-    public static class CompactHydraulicEngineGenerator extends SpecialBlockStateGen {
+    public static class CompactEngineGenerator extends SpecialBlockStateGen {
 
         @Override
         protected int getXRotation(BlockState state) {

@@ -7,6 +7,7 @@ import com.simibubi.create.foundation.fluid.SmartFluidTank;
 import com.simibubi.create.foundation.item.SmartInventory;
 import com.simibubi.create.foundation.utility.CreateLang;
 import com.simibubi.create.foundation.utility.ResetableLazy;
+import dev.hail.create_fantasizing.block.crate.AbstractDoubleStorageBlock;
 import dev.hail.create_fantasizing.block.crate.AbstractDoubleStorageEntity;
 import joptsimple.internal.Strings;
 import net.createmod.catnip.data.Pair;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static dev.hail.create_fantasizing.block.crate.AbstractDoubleStorageBlock.CRATE_TYPE;
 import static net.minecraft.util.Mth.ceil;
 import static net.minecraft.util.Mth.floor;
 
@@ -44,7 +46,7 @@ public abstract class AbstractFluidBarrelEntity extends AbstractDoubleStorageEnt
         bucketHandler = ResetableLazy.of(() -> bucketSlots);
         tankInventory = new SmartFluidTank(singleTankCapacity, this::onFluidStackChanged);
         bucketSlots = new SmartInventory(2, this, (slot, stack) ->
-                slot == 0 && (GenericItemEmptying.canItemBeEmptied(this.getLevel(), stack) || GenericItemFilling.canItemBeFilled(this.getLevel(), stack)));
+                slot == 0 && (this.hasLevel() && (GenericItemEmptying.canItemBeEmptied(this.getLevel(), stack) || GenericItemFilling.canItemBeFilled(this.getLevel(), stack))));
     }
 
     protected void initCapability() {
@@ -73,16 +75,13 @@ public abstract class AbstractFluidBarrelEntity extends AbstractDoubleStorageEnt
         if (getOtherCrate() != null){
             if (isSecondaryCrate()){
                 fluidCapability = ICapabilityProvider.of(getOtherCrate().tankInventory);
-                //getOtherCrate().tankInventory.setCapacity(Math.min(singleTankCapacity * 2, allowedCapacity));
                 itemCapability = ICapabilityProvider.of(getOtherCrate().bucketSlots);
             } else {
                 fluidCapability = ICapabilityProvider.of(tankInventory);
-                //tankInventory.setCapacity(Math.min(singleTankCapacity * 2, allowedCapacity));
                 itemCapability = ICapabilityProvider.of(bucketSlots);
             }
         } else {
             fluidCapability = ICapabilityProvider.of(tankInventory);
-            //tankInventory.setCapacity(Math.min(singleTankCapacity, allowedCapacity));
             itemCapability = ICapabilityProvider.of(bucketSlots);
         }
     }
@@ -170,6 +169,8 @@ public abstract class AbstractFluidBarrelEntity extends AbstractDoubleStorageEnt
 
     @Override
     public void onSplit(){
+        if (this.getBlockState().getValue(CRATE_TYPE) == AbstractDoubleStorageBlock.CrateType.SINGLE)
+            return;
         AbstractDoubleStorageEntity other = getOtherCrate();
         if (other == null)
             return;
@@ -188,11 +189,9 @@ public abstract class AbstractFluidBarrelEntity extends AbstractDoubleStorageEnt
 
     protected void onFluidStackChanged(FluidStack newFluidStack) {
         if (level != null && !level.isClientSide) {
-            setChanged();
-            sendData();
+            notifyUpdate();
             if (isDoubleCrate()){
-                getOtherCrate().setChanged();
-                getOtherCrate().sendData();
+                getOtherCrate().notifyUpdate();
             }
         }
     }
@@ -204,8 +203,19 @@ public abstract class AbstractFluidBarrelEntity extends AbstractDoubleStorageEnt
         else
             CreateLang.text(getBlockState().getBlock().getName().getString()).style(ChatFormatting.WHITE).forGoggles(tooltip);
 
-        if (isDoubleCrate() && isSecondaryCrate())
-            CreateLang.builder().add(getOtherCrate().componentHelper(false)).forGoggles(tooltip);
+        if (isDoubleCrate()) {
+            SmartFluidTank mainAbstractTank = new SmartFluidTank(0, fs -> {});
+            mainAbstractTank.setFluid(tankInventory.getFluid().copy());
+            mainAbstractTank.getFluid().setAmount(Math.min(singleTankCapacity, tankInventory.getFluidAmount()));
+            mainAbstractTank.setCapacity(Math.min(singleTankCapacity, tankInventory.getCapacity()));
+            SmartFluidTank secAbstractTank = new SmartFluidTank(0, fs -> {});
+            secAbstractTank.setFluid(tankInventory.getFluid().copy());
+            secAbstractTank.getFluid().setAmount(Math.max(0, tankInventory.getFluidAmount() - singleTankCapacity));
+            secAbstractTank.setCapacity(Math.max(0, tankInventory.getCapacity() - singleTankCapacity));
+
+            CreateLang.builder().add(barComponent(mainAbstractTank, singleTankCapacity)).forGoggles(tooltip);
+            CreateLang.builder().add(barComponent(secAbstractTank, singleTankCapacity)).forGoggles(tooltip);
+            }
         else
             CreateLang.builder().add(componentHelper(false)).forGoggles(tooltip);
 

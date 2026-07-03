@@ -41,14 +41,11 @@
   "item.create_fantasizing.sturdy_heavy_core": "Прочное тяжёлое ядро",
   "item.create_fantasizing.alternative_chromatic_compound": "Альтернативное хроматическое соединение",
 
-  "recipe.create_fantasizing.shadow_plating.title": "Теневое покрытие",
-  "recipe.create_fantasizing.exposing.title": "Экспонирование",
+  "create_fantasizing.recipe.shadow_plating": "Теневое покрытие",
+  "create_fantasizing.recipe.exposing": "Экспонирование",
 
   "create_fantasizing.gui.block_placer.destroy_mode": "Уничтожать выпавшие предметы",
   "create_fantasizing.gui.crate.storage_space": "Объём хранилища",
-  "create_fantasizing.gui.crate.no_fold": "Извини, но НЕТ.",
-  "create_fantasizing.gui.crate.no_fold.0": "Интерфейс контейнера выходит за пределы экрана?",
-  "create_fantasizing.gui.crate.no_fold.1": "На данный момент единственное решение — изменить масштаб интерфейса или увеличить окно.",
 
   "create_fantasizing.ponder.acc_convert.header": "Превращение альтернативного хроматического соединения в другие материалы.",
   "create_fantasizing.ponder.acc_convert.text_1": "Если рядом с альтернативным хроматическим соединением есть источник света, оно постепенно превратится в Очищённое сияние.",

@@ -3,13 +3,11 @@ package dev.hail.create_fantasizing.block.crate;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.logistics.crate.CrateBlock;
 import com.simibubi.create.foundation.block.IBE;
-import dev.hail.create_fantasizing.block.crate.fluid_barrel.AbstractFluidBarrelEntity;
 import net.createmod.catnip.data.Iterate;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
@@ -32,7 +30,6 @@ import net.neoforged.neoforge.common.util.FakePlayer;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Objects;
-import java.util.function.Consumer;
 
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
@@ -51,7 +48,7 @@ public abstract class AbstractDoubleStorageBlock extends CrateBlock implements I
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-        if(state.getValue(CRATE_TYPE) != AbstractDoubleStorageBlock.CrateType.SINGLE){
+        if(state.getValue(CRATE_TYPE).isDouble()){
             switch (state.getValue(FACING)){
                 case SOUTH -> { return Block.box(1, 0, 1, 15, 14, 16);}
                 case NORTH -> { return Block.box(1, 0, 0, 15, 14, 15);}
@@ -95,17 +92,17 @@ public abstract class AbstractDoubleStorageBlock extends CrateBlock implements I
             BlockEntity blockEntity = worldIn.getBlockEntity(pos);
             if (!(blockEntity instanceof AbstractDoubleStorageEntity be))
                 return;
-            be.invalidateCapabilities();
+            be.notifyUpdate();
 
             if (be.components().has(DataComponents.CUSTOM_NAME) && be.customName == null){
                 MutableComponent customNameComponent = Objects.requireNonNull(be.components().get(DataComponents.CUSTOM_NAME)).copy();
                 be.customName = customNameComponent.getString();
             }
 
-            if (state.getValue(CRATE_TYPE).isDouble()){
+            if (state.getValue(CRATE_TYPE).isDouble() && !isMoving /* Fix MountStorage unmount capacity issue By Deepseek V4*/ ){
                 AbstractDoubleStorageEntity other = be.getOtherCrate();
                 if (other != null) {
-                    other.invalidateCapabilities();
+                    other.notifyUpdate();
                     if (state.getValue(CRATE_TYPE) == AbstractDoubleStorageBlock.CrateType.MAIN) {
                         onMerge(be, other);
                     } else {
@@ -186,6 +183,18 @@ public abstract class AbstractDoubleStorageBlock extends CrateBlock implements I
     @Override
     public boolean hasAnalogOutputSignal(BlockState state) {
         return true;
+    }
+
+    public boolean switchMainAndSecond(BlockState state, Level worldIn, BlockPos pos, boolean doChange) {
+        BlockEntity be = worldIn.getBlockEntity(pos);
+        if (be instanceof AbstractDoubleStorageEntity storageEntity && storageEntity.isDoubleCrate()) {
+            if (doChange) {
+                worldIn.setBlock(pos, state.setValue(CRATE_TYPE, state.getValue(CRATE_TYPE).getOpposite()), Block.UPDATE_ALL);
+                worldIn.setBlock(pos.relative(state.getValue(FACING)), state.setValue(FACING, state.getValue(FACING).getOpposite()), Block.UPDATE_ALL);
+            }
+            return true;
+        }
+        return false;
     }
 
     public enum CrateType implements StringRepresentable {

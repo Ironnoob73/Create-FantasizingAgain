@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "c:gems/diamond"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    },
+    "C": {
+      "tag": "c:barrels"
+    }
+  },
+  "pattern": [
+    "APA",
+    "PCP",
+    "APA"
+  ],
+  "result": {
+    "count": 4,
+    "id": "create_fantasizing:diamond_fluid_barrel"
+  }
+}

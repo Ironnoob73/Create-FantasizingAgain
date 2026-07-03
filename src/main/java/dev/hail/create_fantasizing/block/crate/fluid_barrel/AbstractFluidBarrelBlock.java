@@ -1,5 +1,6 @@
 package dev.hail.create_fantasizing.block.crate.fluid_barrel;
 
+import com.simibubi.create.AllItems;
 import com.simibubi.create.content.fluids.tank.FluidTankBlockEntity;
 import com.simibubi.create.foundation.fluid.FluidHelper;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
@@ -7,6 +8,7 @@ import dev.hail.create_fantasizing.block.crate.AbstractDoubleStorageBlock;
 import dev.hail.create_fantasizing.block.crate.AbstractDoubleStorageEntity;
 import net.createmod.catnip.annotations.ClientOnly;
 import net.minecraft.ChatFormatting;
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -31,7 +33,6 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.fluids.FluidStack;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ import java.util.Objects;
 import static net.minecraft.util.Mth.ceil;
 
 @ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public abstract class AbstractFluidBarrelBlock extends AbstractDoubleStorageBlock{
     SoundEvent soundEvent;
 
@@ -50,9 +52,13 @@ public abstract class AbstractFluidBarrelBlock extends AbstractDoubleStorageBloc
     }
 
     @Override
-    public @NotNull ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         super.useItemOn(stack,state,level,pos,player,hand,hitResult);
 
+        if (stack.is(AllItems.WRENCH) && state.getValue(CRATE_TYPE).isDouble()) {
+            if (switchMainAndSecond(state, level, pos, true))
+                return ItemInteractionResult.SUCCESS;
+        }
         return onBlockEntityUseItemOn(level, pos, be -> {
             if (!stack.isEmpty() && be instanceof AbstractFluidBarrelEntity fluidBarrelEntity) {
                 ItemInteractionResult tryExchange = tryExchange(level, player, hand, stack, fluidBarrelEntity);
@@ -75,8 +81,14 @@ public abstract class AbstractFluidBarrelBlock extends AbstractDoubleStorageBloc
             be.invalidateCapabilities();
             other.invalidateCapabilities();
             if (mainBarrel.tankInventory.getFluid().getFluid() != secondaryBarrel.tankInventory.getFluid().getFluid()
-                    && !mainBarrel.tankInventory.isEmpty() && !secondaryBarrel.tankInventory.isEmpty())
+                    && !mainBarrel.tankInventory.isEmpty() && !secondaryBarrel.tankInventory.isEmpty()) {
+                Level level = be.getLevel();
+                if (level != null) {
+                    level.setBlock(be.getBlockPos(), be.getBlockState().setValue(CRATE_TYPE, CrateType.SINGLE), 3);
+                    level.setBlock(other.getBlockPos(), other.getBlockState().setValue(CRATE_TYPE, CrateType.SINGLE), 3);
+                }
                 return;
+            }
             if (mainBarrel.tankInventory.getFluid().getFluid() == secondaryBarrel.tankInventory.getFluid().getFluid()
                     || mainBarrel.tankInventory.isEmpty() || secondaryBarrel.tankInventory.isEmpty()){
                 if (mainBarrel.tankInventory.isEmpty() && !secondaryBarrel.tankInventory.isEmpty()){
@@ -91,13 +103,13 @@ public abstract class AbstractFluidBarrelBlock extends AbstractDoubleStorageBloc
                         popResource(secondaryBarrel.getLevel(), secondaryBarrel.getBlockPos(), secondaryBarrel.bucketSlots.getStackInSlot(i));
                     else
                         mainBarrel.bucketSlots.setStackInSlot(i, secondaryBarrel.bucketSlots.getStackInSlot(i));
-            be.setChanged();
-            other.setChanged();
+            be.notifyUpdate();
+            other.notifyUpdate();
         }
     }
 
     @Override
-    public @NotNull List<ItemStack> getDrops(BlockState blockState, LootParams.Builder builder) {
+    public List<ItemStack> getDrops(BlockState blockState, LootParams.Builder builder) {
         BlockEntity blockentity = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
         if (blockentity instanceof AbstractFluidBarrelEntity abstractFluidBarrelEntity) {
             ItemStack itemstack = new ItemStack(blockState.getBlock());

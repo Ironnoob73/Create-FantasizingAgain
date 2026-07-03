@@ -27,7 +27,7 @@ public class ExposingCategory extends CreateRecipeCategory<ExposingRecipe> {
     @Override
     public @NotNull Component getTitle()
     {
-        return Component.translatable("recipe.create_fantasizing.exposing.title");
+        return Component.translatable("create_fantasizing.recipe.exposing");
     }
 
     @Override

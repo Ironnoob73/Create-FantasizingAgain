@@ -1,0 +1,112 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "tag": "c:dusts/obsidian"
+  },
+  "loops": 2,
+  "results": [
+    {
+      "id": "create_fantasizing:alternative_chromatic_compound"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:incomplete_alternative_chromatic_compound"
+        },
+        {
+          "tag": "c:dusts/glowstone"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_fantasizing:incomplete_alternative_chromatic_compound"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:incomplete_alternative_chromatic_compound"
+        },
+        {
+          "item": "minecraft:prismarine_shard"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_fantasizing:incomplete_alternative_chromatic_compound"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:incomplete_alternative_chromatic_compound"
+        },
+        {
+          "item": "minecraft:popped_chorus_fruit"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_fantasizing:incomplete_alternative_chromatic_compound"
+        }
+      ]
+    },
+    {
+      "type": "create:filling",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:incomplete_alternative_chromatic_compound"
+        },
+        {
+          "type": "fluid_stack",
+          "amount": 500,
+          "fluid": "minecraft:lava"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_fantasizing:incomplete_alternative_chromatic_compound"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:incomplete_alternative_chromatic_compound"
+        },
+        {
+          "tag": "c:dusts/obsidian"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_fantasizing:incomplete_alternative_chromatic_compound"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:incomplete_alternative_chromatic_compound"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_fantasizing:incomplete_alternative_chromatic_compound"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "create_fantasizing:incomplete_alternative_chromatic_compound"
+  }
+}

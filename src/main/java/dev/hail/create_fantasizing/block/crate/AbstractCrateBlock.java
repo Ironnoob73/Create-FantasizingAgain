@@ -1,5 +1,6 @@
 package dev.hail.create_fantasizing.block.crate;
 
+import com.simibubi.create.AllItems;
 import com.simibubi.create.foundation.item.ItemHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -12,7 +13,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -40,6 +40,11 @@ public abstract class AbstractCrateBlock extends AbstractDoubleStorageBlock {
     public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn,
                                            BlockHitResult hit) {
         super.useItemOn(stack,state,worldIn,pos,player,handIn,hit);
+
+        if (stack.is(AllItems.WRENCH) && state.getValue(CRATE_TYPE).isDouble()) {
+            if (switchMainAndSecond(state, worldIn, pos, true))
+                return ItemInteractionResult.SUCCESS;
+        }
         withBlockEntityDo(worldIn, pos, crate -> player.openMenu(crate.getMainCrate(), crate.getMainCrate()::sendToMenu));
         return ItemInteractionResult.SUCCESS;
     }
@@ -103,5 +108,19 @@ public abstract class AbstractCrateBlock extends AbstractDoubleStorageBlock {
             return ItemHelper.calcRedstoneFromInventory(flexCrateBlockEntity.inventory);
         }
         return 0;
+    }
+
+    @Override
+    public boolean switchMainAndSecond(BlockState state, Level worldIn, BlockPos pos, boolean doChange) {
+        boolean result =  super.switchMainAndSecond(state, worldIn, pos, doChange);
+        if (result && doChange) {
+            BlockEntity be = worldIn.getBlockEntity(pos);
+            if (be instanceof AbstractCrateEntity crateEntity) {
+                CrateInventory midInv = crateEntity.inventory;
+                crateEntity.inventory = crateEntity.getOtherCrate().inventory;
+                crateEntity.getOtherCrate().inventory = midInv;
+            }
+        }
+        return result;
     }
 }

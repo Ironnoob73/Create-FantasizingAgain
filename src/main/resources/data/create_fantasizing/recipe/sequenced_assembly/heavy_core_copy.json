@@ -1,0 +1,97 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "minecraft:heavy_core"
+  },
+  "loops": 4,
+  "results": [
+    {
+      "chance": 90.0,
+      "count": 2,
+      "id": "minecraft:heavy_core"
+    },
+    {
+      "chance": 10.0,
+      "id": "minecraft:heavy_core"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:unprocessed_heavy_core"
+        },
+        {
+          "tag": "minecraft:anvil"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_fantasizing:unprocessed_heavy_core"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:unprocessed_heavy_core"
+        },
+        {
+          "item": "create:shadow_steel"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_fantasizing:unprocessed_heavy_core"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:unprocessed_heavy_core"
+        },
+        {
+          "tag": "c:obsidians"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_fantasizing:unprocessed_heavy_core"
+        }
+      ]
+    },
+    {
+      "type": "create_fantasizing:shadow_plating",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:unprocessed_heavy_core"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_fantasizing:unprocessed_heavy_core"
+        }
+      ]
+    },
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "create_fantasizing:unprocessed_heavy_core"
+        }
+      ],
+      "results": [
+        {
+          "id": "create_fantasizing:unprocessed_heavy_core"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "create_fantasizing:unprocessed_heavy_core"
+  }
+}

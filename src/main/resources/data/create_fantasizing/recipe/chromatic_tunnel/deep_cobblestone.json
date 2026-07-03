@@ -2,12 +2,7 @@
   "type": "create_fantasizing:shadow_plating",
   "ingredients": [
     {
-      "type": "neoforge:compound",
-      "ingredients": [
-        {
-          "item": "minecraft:cobblestone"
-        }
-      ]
+      "item": "minecraft:cobblestone"
     }
   ],
   "results": [

@@ -24,5 +24,6 @@ runs
 run-data
 
 /.claude
+/.vscode
 
 repo

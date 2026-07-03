@@ -1,6 +1,5 @@
 package dev.hail.create_fantasizing.block.chromatic_tunnel;
 
-import com.simibubi.create.compat.jei.category.sequencedAssembly.SequencedAssemblySubCategory;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeParams;
 import com.simibubi.create.content.processing.recipe.StandardProcessingRecipe;
 import com.simibubi.create.content.processing.sequenced.IAssemblyRecipe;
@@ -18,13 +17,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Set;
-import java.util.function.Supplier;
 
-public abstract class ChromaticTunnelRecipes extends StandardProcessingRecipe<SingleRecipeInput> implements IAssemblyRecipe {
+public abstract class ChromaticTunnelRecipe extends StandardProcessingRecipe<SingleRecipeInput> implements IAssemblyRecipe {
     String assemblyDescription;
     Block processMachine;
 
-    public ChromaticTunnelRecipes(IRecipeTypeInfo typeInfo, ProcessingRecipeParams params, String assemblyDescription, Block processMachine) {
+    public ChromaticTunnelRecipe(IRecipeTypeInfo typeInfo, ProcessingRecipeParams params, String assemblyDescription, Block processMachine) {
         super(typeInfo, params);
         this.assemblyDescription = assemblyDescription;
         this.processMachine = processMachine;
@@ -59,10 +57,5 @@ public abstract class ChromaticTunnelRecipes extends StandardProcessingRecipe<Si
     @Override
     public void addRequiredMachines(Set<ItemLike> list) {
         list.add(processMachine);
-    }
-
-    @Override
-    public Supplier<Supplier<SequencedAssemblySubCategory>> getJEISubCategory() {
-        return () -> SequencedAssemblySubCategory.AssemblyPressing::new;
     }
 }

@@ -1,0 +1,13 @@
+{
+  "type": "create:mystery_conversion",
+  "ingredients": [
+    {
+      "item": "create_fantasizing:sculk_engine_frame"
+    }
+  ],
+  "results": [
+    {
+      "id": "create_fantasizing:sculk_engine"
+    }
+  ]
+}

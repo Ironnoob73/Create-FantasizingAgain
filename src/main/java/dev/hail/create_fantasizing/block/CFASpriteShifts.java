@@ -7,9 +7,17 @@ import com.simibubi.create.foundation.block.connected.CTType;
 import dev.hail.create_fantasizing.FantasizingMod;
 
 public class CFASpriteShifts {
-    public static final CTSpriteShiftEntry STURDY_GIRDER_POLE = vertical("sturdy_girder_pole_side");
+    public static final CTSpriteShiftEntry
+            STURDY_GIRDER_POLE = vertical("sturdy_girder_pole_side"),
+            ZINC_CASING = omni("zinc_casing"),
+            GOLD_CASING = omni("gold_casing"),
+            DIAMOND_CASING = omni("diamond_casing");
+
     private static CTSpriteShiftEntry vertical(String name) {
         return getCT(AllCTTypes.VERTICAL, name);
+    }
+    private static CTSpriteShiftEntry omni(String name) {
+        return getCT(AllCTTypes.OMNIDIRECTIONAL, name);
     }
     private static CTSpriteShiftEntry getCT(CTType type, String blockTextureName, String connectedTextureName) {
         return CTSpriteShifter.getCT(type, FantasizingMod.resourceLocation("block/" + blockTextureName),
