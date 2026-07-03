@@ -114,7 +114,7 @@ public abstract class AbstractCrateEntity extends AbstractDoubleStorageEntity {
         if (isDoubleCrate() && !isSecondaryCrate() && other != null)
             CreateLang.builder().add(other.componentHelper(false)).forGoggles(tooltip);
 
-        if (itemCapability != null){
+        if (itemCapability != null && itemCapability.getCapability() != null){
             for (Component component: contentList(Objects.requireNonNull(itemCapability.getCapability())))
                 CreateLang.builder().add(component).forGoggles(tooltip);
         }
