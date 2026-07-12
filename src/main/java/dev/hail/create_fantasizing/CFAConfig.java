@@ -7,6 +7,10 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 
 @EventBusSubscriber(modid = FantasizingMod.MOD_ID)
 public class CFAConfig {
+    private static final ModConfigSpec.Builder BUILDER_U = new ModConfigSpec.Builder();
+
+    private static final ModConfigSpec.BooleanValue REGISTER_POWDER_SNOW_LIQUID_CAPABILITIES;
+
     private static final ModConfigSpec.Builder BUILDER_C = new ModConfigSpec.Builder();
 
     private static final ModConfigSpec.BooleanValue CHROMATIC_TUNNEL_SILENT_PROCESSING;
@@ -36,10 +40,16 @@ public class CFAConfig {
     private static final ModConfigSpec.BooleanValue BLOCK_PLACER_FORTUNE_ENABLED;
     private static final ModConfigSpec.BooleanValue BLOCK_PLACER_SILK_TOUCH_ENABLED;
 
+    static final ModConfigSpec SPEC_U;
     static final ModConfigSpec SPEC_C;
     static final ModConfigSpec SPEC_S;
 
     static {
+        REGISTER_POWDER_SNOW_LIQUID_CAPABILITIES = BUILDER_U
+                .comment("Register the Powder Snow Bucket and the Powder Snow Cauldron capabilities that have the Snow Powder liquid.\n* The Snow Powder liquid will always be registered.\n* You need to turn it off when another mod also adds the powder snow liquid.\n* Need to restart the game!")
+                .translation("create_fantasizing.configuration.register_powder_snow_liquid_capabilities")
+                .define("register_powder_snow_liquid_capabilities", true);
+
         CHROMATIC_TUNNEL_SILENT_PROCESSING = BUILDER_C
                 .comment("When processing, the Refined Radiance Tunnel and Shadow Steel Tunnel do not play particles and sound.")
                 .translation("create_fantasizing.configuration.chromatic_tunnel_silent_processing")
@@ -137,9 +147,12 @@ public class CFAConfig {
 
         BUILDER_S.pop(); // block_placer
 
+        SPEC_U = BUILDER_U.build();
         SPEC_C = BUILDER_C.build();
         SPEC_S = BUILDER_S.build();
     }
+
+    public static boolean registerPowderSnowLiquid = true;
 
     public static boolean chromaticTunnelSilentProcessing = false;
 
@@ -177,6 +190,9 @@ public class CFAConfig {
     }
 
     protected static void appConfig(ModConfigEvent event){
+        if (event.getConfig().getSpec() == SPEC_U) {
+            registerPowderSnowLiquid = REGISTER_POWDER_SNOW_LIQUID_CAPABILITIES.getAsBoolean();
+        }
         if (event.getConfig().getSpec() == SPEC_C) {
             chromaticTunnelSilentProcessing = CHROMATIC_TUNNEL_SILENT_PROCESSING.getAsBoolean();
         }

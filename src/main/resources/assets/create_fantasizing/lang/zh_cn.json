@@ -97,6 +97,8 @@
   "advancement.create_fantasizing.root": "让机械动力再次伟大",
   "advancement.create_fantasizing.root.desc": "俺寻思这样能行！",
 
+  "create_fantasizing.configuration.register_powder_snow_liquid_capabilities": "注册细雪流体能力",
+  "create_fantasizing.configuration.register_powder_snow_liquid_capabilities.tooltip": "注册细雪桶和细雪炼药埚含有细雪流体的能力。\n* 细雪流体始终会被注册。\n* 如果其他模组也添加了细雪流体，你需要关闭此项。\n* 需要重启游戏！",
   "create_fantasizing.configuration.chromatic_tunnel_silent_processing": "异彩隧道静默处理",
   "create_fantasizing.configuration.chromatic_tunnel_silent_processing.tooltip": "暗影钢隧道和光辉石隧道进行处理时不再播放粒子和音效。",
   "create_fantasizing.configuration.engines": "引擎",

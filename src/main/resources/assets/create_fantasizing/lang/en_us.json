@@ -97,6 +97,8 @@
   "create_fantasizing.ponder.crate_usage.text_8": "The Crates can be moved by a Contraption, and their capacity limits remain in effect. (But they cannot be opened during movement.)",
   "create_fantasizing.ponder.crate_usage.text_9": "Crates made of different materials have different maximum capacities.",
 
+  "create_fantasizing.configuration.register_powder_snow_liquid_capabilities": "Register Powder Snow liquid capabilities",
+  "create_fantasizing.configuration.register_powder_snow_liquid_capabilities.tooltip": "Register the Powder Snow Bucket and the Powder Snow Cauldron capabilities that have the Snow Powder liquid.\n* The Snow Powder liquid will always be registered.\n* You need to turn it off when another mod also adds the powder snow liquid.\n* Need to restart the game!",
   "create_fantasizing.configuration.chromatic_tunnel_silent_processing": "Chromatic Tunnel Silent Processing",
   "create_fantasizing.configuration.chromatic_tunnel_silent_processing.tooltip": "When processing, the Refined Radiance Tunnel and Shadow Steel Tunnel do not play particles and sound.",
   "create_fantasizing.configuration.engines": "Engines",

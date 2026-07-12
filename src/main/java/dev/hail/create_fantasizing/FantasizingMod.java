@@ -93,6 +93,7 @@ public class FantasizingMod
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
+        ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.STARTUP, CFAConfig.SPEC_U);
         ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.SERVER, CFAConfig.SPEC_S);
     }
     private void registerCapabilities(RegisterCapabilitiesEvent event) {
@@ -107,11 +108,13 @@ public class FantasizingMod
         ZincFluidBarrelEntity.registerCapabilities(event);
         GoldFluidBarrelEntity.registerCapabilities(event);
         DiamondFluidBarrelEntity.registerCapabilities(event);
-        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new PowderSnowBucketWrapper(stack), Items.POWDER_SNOW_BUCKET);
+        if (CFAConfig.registerPowderSnowLiquid)
+            event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new PowderSnowBucketWrapper(stack), Items.POWDER_SNOW_BUCKET);
     }
 
     public void registerCauldronFluidContentEvent(RegisterCauldronFluidContentEvent event){
-        event.register(Blocks.POWDER_SNOW_CAULDRON, CFAFluids.POWDER_SNOW.get(), 1000, LayeredCauldronBlock.LEVEL);
+        if (CFAConfig.registerPowderSnowLiquid)
+            event.register(Blocks.POWDER_SNOW_CAULDRON, CFAFluids.POWDER_SNOW.get(), 1000, LayeredCauldronBlock.LEVEL);
     }
 
     @SubscribeEvent
