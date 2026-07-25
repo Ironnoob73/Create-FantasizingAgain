@@ -97,6 +97,8 @@
   "create_fantasizing.ponder.crate_usage.text_8": "Ящики можно перемещать конструкцией, ограничения вместимости остаются в силе. (Но открыть их во время движения нельзя.)",
   "create_fantasizing.ponder.crate_usage.text_9": "Ящики из разных материалов имеют разную максимальную вместимость.",
 
+  "create_fantasizing.configuration.register_powder_snow_liquid_capabilities": "Регистрация возможностей жидкого снежного порошка",
+  "create_fantasizing.configuration.register_powder_snow_liquid_capabilities.tooltip": "Регистрирует возможности ведра снежного порошка и котла со снежным порошком, содержащие жидкость снежного порошка.\n* Жидкость снежного порошка всегда будет зарегистрирована.\n* Отключите эту опцию, если другой мод тоже добавляет жидкость снежного порошка.\n* Требуется перезапуск игры!",
   "create_fantasizing.configuration.chromatic_tunnel_silent_processing": "Тихая обработка хроматического туннеля",
   "create_fantasizing.configuration.chromatic_tunnel_silent_processing.tooltip": "При обработке туннель из очищённого сияния и туннель из теневой стали не воспроизводят частицы и звуки.",
   "create_fantasizing.configuration.engines": "Двигатели",
