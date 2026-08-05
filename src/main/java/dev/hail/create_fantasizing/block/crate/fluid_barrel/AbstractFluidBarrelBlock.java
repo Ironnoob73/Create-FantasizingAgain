@@ -93,6 +93,7 @@ public abstract class AbstractFluidBarrelBlock extends AbstractDoubleStorageBloc
                     || mainBarrel.tankInventory.isEmpty() || secondaryBarrel.tankInventory.isEmpty()){
                 if (mainBarrel.tankInventory.isEmpty() && !secondaryBarrel.tankInventory.isEmpty()){
                     mainBarrel.tankInventory.setFluid(secondaryBarrel.tankInventory.getFluid());
+                    secondaryBarrel.tankInventory.setFluid(secondaryBarrel.tankInventory.getFluid().copyWithAmount(0));
                 }
                 mainBarrel.tankInventory.getFluid().setAmount(mainBarrel.tankInventory.getFluid().getAmount() + secondaryBarrel.tankInventory.getFluid().getAmount());
                 mainBarrel.tankInventory.setCapacity(mainBarrel.tankInventory.getCapacity() + secondaryBarrel.tankInventory.getCapacity());
