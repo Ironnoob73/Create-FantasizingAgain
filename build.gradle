@@ -99,7 +99,7 @@ configurations {
 dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
 
-    implementation "curse.maven:jei-238222:5846880"
+    implementation "curse.maven:jei-238222:8870333"
     implementation "curse.maven:jade-324717:6291517"
 
     implementation("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
@@ -112,7 +112,7 @@ dependencies {
     runtimeOnly "maven.modrinth:libipn:neoforge-1.21.1-6.6.2"
     runtimeOnly "maven.modrinth:kotlin-for-forge:5.10.0"
 
-    implementation "curse.maven:create-encased-829380:7459750"
+    implementation "curse.maven:create-cyber-goggles-1233804:8821329"
 }
 
 tasks.withType(ProcessResources).configureEach {
