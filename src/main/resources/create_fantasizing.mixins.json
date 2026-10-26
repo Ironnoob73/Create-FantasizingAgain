@@ -9,6 +9,7 @@
     "BeltInventoryMixin",
     "CogwheelBlockMixin",
     "ContraptionMixin",
+    "DepotBehaviorMixin",
     "FluidDrainBehaviorMixin",
     "FluidTargetsMixin",
     "MountedStorageManagerMixin",
