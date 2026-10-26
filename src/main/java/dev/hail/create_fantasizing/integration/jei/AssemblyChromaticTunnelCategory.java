@@ -13,7 +13,7 @@ public class AssemblyChromaticTunnelCategory extends SequencedAssemblySubCategor
 
     public AssemblyChromaticTunnelCategory(BlockState blockState) {
         super(25);
-        tunnel = new ChromaticTunnelRecipeAnimation(blockState);
+        tunnel = new ChromaticTunnelRecipeAnimation(blockState, true);
     }
 
     @Override
