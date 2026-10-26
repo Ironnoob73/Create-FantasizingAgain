@@ -54,11 +54,17 @@ public class ChromaticTunnelRecipeAnimation extends AnimatedKinetics {
     public void draw(GuiGraphics guiGraphics, int xOffset, int yOffset) {
         PoseStack matrixStack = guiGraphics.pose();
         matrixStack.pushPose();
-        matrixStack.translate(xOffset, yOffset + 13, 200);
+        matrixStack.translate(xOffset, yOffset + 7, 200);
         matrixStack.mulPose(Axis.XP.rotationDegrees(-15.5f));
         matrixStack.mulPose(Axis.YP.rotationDegrees(22.5f));
 
-        if (!assembly) {
+        if (assembly) {
+            blockElement(AllBlocks.DEPOT.getDefaultState())
+                    .atLocal(0, 1, 0)
+                    .scale(24)
+                    .render(guiGraphics);
+        }
+        else {
             renderRunningBelt(guiGraphics, 0,
                     AllBlocks.BELT.getDefaultState().setValue(BeltBlock.PART, BeltPart.MIDDLE)
                             .setValue(BeltBlock.HORIZONTAL_FACING, Direction.EAST));

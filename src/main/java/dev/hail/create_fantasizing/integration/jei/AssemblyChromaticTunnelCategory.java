@@ -20,7 +20,7 @@ public class AssemblyChromaticTunnelCategory extends SequencedAssemblySubCategor
     public void draw(SequencedRecipe<?> recipe, GuiGraphics graphics, double mouseX, double mouseY, int index) {
         PoseStack ms = graphics.pose();
         ms.pushPose();
-        ms.translate(0, 47f, 0);
+        ms.translate(0, 43, 0);
         ms.scale(.6f, .6f, .6f);
         tunnel.draw(graphics, getWidth() / 2 - 7, 30);
         ms.popPose();
