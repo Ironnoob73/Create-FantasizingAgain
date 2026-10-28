@@ -35,11 +35,11 @@ public class MainSecondRelationshipScene {
         scene.idle(60);
         scene.overlay().showText(60)
                 .attachKeyFrame()
-                .pointAt(util.vector().topOf(util.grid().at(3, 0, 2)))
+                .pointAt(util.vector().topOf(util.grid().at(3, 0, 3)))
                 .placeNearTarget()
                 .text("2");
         scene.overlay().showText(60)
-                .pointAt(util.vector().topOf(util.grid().at(1, 0, 2)))
+                .pointAt(util.vector().topOf(util.grid().at(1, 0, 1)))
                 .placeNearTarget()
                 .text("3");
         scene.idle(60);

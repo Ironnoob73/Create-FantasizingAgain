@@ -1,0 +1,28 @@
+{
+  "parent": "create_fantasizing:phantom_transmission",
+  "display": {
+    "icon": {
+      "id": "create_fantasizing:sturdy_girder"
+    },
+    "title": {
+      "translate": "advancement.create_fantasizing.sturdy_girder_track"
+    },
+    "description": {
+      "color": "#DBA213",
+      "translate": "advancement.create_fantasizing.sturdy_girder_track.desc"
+    },
+    "frame": "goal",
+    "show_toast": true
+  },
+  "criteria": {
+    "sturdy_girder_track": {
+      "trigger": "create_fantasizing:sturdy_girder_track",
+      "conditions": {}
+    }
+  },
+  "requirements": [
+    [
+      "sturdy_girder_track"
+    ]
+  ]
+}

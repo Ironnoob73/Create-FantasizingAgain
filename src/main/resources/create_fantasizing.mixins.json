@@ -17,6 +17,7 @@
     "DepotBehaviorMixin",
     "FluidDrainBehaviorMixin",
     "FluidTargetsMixin",
+    "GirderBlockMixin",
     "MountedStorageManagerMixin",
     "ShaftBlockMixin",
     "TrackBlockItemMixin",

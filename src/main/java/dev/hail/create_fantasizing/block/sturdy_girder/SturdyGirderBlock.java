@@ -29,6 +29,11 @@ public class SturdyGirderBlock extends GirderBlock {
     public SturdyGirderBlock(Properties properties) {
         super(properties);
     }
+
+    public static IPlacementHelper getPlacementHelper() {
+        return PlacementHelpers.get(placementHelperId);
+    }
+
     @Override
     protected @NotNull ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (AllBlocks.SHAFT.isIn(stack)) {
@@ -57,7 +62,6 @@ public class SturdyGirderBlock extends GirderBlock {
         if (helper.matchesItem(stack))
             return helper.getOffset(player, level, state, pos, hitResult)
                     .placeInWorld(level, (BlockItem) stack.getItem(), player, hand, hitResult);
-        super.useItemOn(stack,state,level,pos,player,hand,hitResult);
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }
 }
