@@ -1,0 +1,34 @@
+{
+  "parent": "create_fantasizing:chromatic_tunnel",
+  "criteria": {
+    "taiji_chipset": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "create_fantasizing:taiji_chipset"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "description": {
+      "color": "#DBA213",
+      "translate": "advancement.create_fantasizing.taiji_chipset.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "create_fantasizing:taiji_chipset"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.create_fantasizing.taiji_chipset"
+    }
+  },
+  "requirements": [
+    [
+      "taiji_chipset"
+    ]
+  ]
+}

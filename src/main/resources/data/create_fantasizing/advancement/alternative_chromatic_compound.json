@@ -13,7 +13,6 @@
     }
   },
   "display": {
-    "announce_to_chat": false,
     "description": {
       "color": "#DBA213",
       "translate": "advancement.create_fantasizing.alternative_chromatic_compound.desc"

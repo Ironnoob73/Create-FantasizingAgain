@@ -13,10 +13,7 @@
     },
     "frame": "task",
     "show_toast": true,
-    "announce_to_chat": false,
-    "hidden": false,
-    "x": 0.0,
-    "y": 1.0
+    "hidden": false
   },
   "criteria": {
     "fell_tree": {

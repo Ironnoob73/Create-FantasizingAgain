@@ -135,6 +135,10 @@
   "advancement.create_fantasizing.chromatic_tunnel.desc": "使用光辉石隧道或暗影钢隧道处理物品。",
   "advancement.create_fantasizing.chromatic_tunnel_on_depot": "这居然是合法的",
   "advancement.create_fantasizing.chromatic_tunnel_on_depot.desc": "将光辉石或暗影钢隧道放置于置物台上。\n§7（隐藏进度）",
+  "advancement.create_fantasizing.taiji_chipset": "掌执乾坤",
+  "advancement.create_fantasizing.taiji_chipset.desc": "获得太极芯片组。",
+  "advancement.create_fantasizing.block_placer": "神之一手",
+  "advancement.create_fantasizing.block_placer.desc": "获得方块放置器。",
 
   "create_fantasizing.configuration.register_powder_snow_liquid_capabilities": "注册细雪流体能力",
   "create_fantasizing.configuration.register_powder_snow_liquid_capabilities.tooltip": "注册细雪桶和细雪炼药埚含有细雪流体的能力。\n* 细雪流体始终会被注册。\n* 如果其他模组也添加了细雪流体，你需要关闭此项。\n* 需要重启游戏！",

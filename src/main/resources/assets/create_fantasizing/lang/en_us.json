@@ -100,6 +100,10 @@
   "advancement.create_fantasizing.chromatic_tunnel.desc": "Process an item with a Refined Radiance Tunnel or Shadow Steel Tunnel.",
   "advancement.create_fantasizing.chromatic_tunnel_on_depot": "This is actually legal",
   "advancement.create_fantasizing.chromatic_tunnel_on_depot.desc": "Place Refined Radiance Tunnel or Shadow Steel Tunnel on Depot.\n§7(Hidden Advancement)",
+  "advancement.create_fantasizing.taiji_chipset": "Holding the Universe",
+  "advancement.create_fantasizing.taiji_chipset.desc": "Get Taiji Chipset.",
+  "advancement.create_fantasizing.block_placer": "God Hand",
+  "advancement.create_fantasizing.block_placer.desc": "Get Block Placer.",
 
   "create_fantasizing.ponder.acc_convert.header": "Convert the Alternative Chromatic Compound to other materials.",
   "create_fantasizing.ponder.acc_convert.text_1": "When a light source is present near the Alternative Chromatic Compound, it will gradually transform into Refined Radiance.",

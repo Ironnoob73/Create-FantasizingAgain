@@ -13,10 +13,7 @@
     },
     "frame": "goal",
     "show_toast": true,
-    "announce_to_chat": false,
-    "hidden": true,
-    "x": 1.0,
-    "y": 2.0
+    "hidden": true
   },
   "criteria": {
     "capture_warden": {

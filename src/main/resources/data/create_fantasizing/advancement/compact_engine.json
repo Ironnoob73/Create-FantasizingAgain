@@ -33,7 +33,6 @@
     }
   },
   "display": {
-    "announce_to_chat": false,
     "description": {
       "color": "#DBA213",
       "translate": "advancement.create_fantasizing.compact_engine.desc"
@@ -42,7 +41,6 @@
       "count": 1,
       "id": "create_fantasizing:compact_wind_engine"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.create_fantasizing.compact_engine"
     }
