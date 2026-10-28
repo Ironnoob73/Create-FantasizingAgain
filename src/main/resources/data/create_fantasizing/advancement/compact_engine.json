@@ -1,0 +1,57 @@
+{
+  "parent": "create_fantasizing:root",
+  "criteria": {
+    "compact_wind_engine": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "create_fantasizing:compact_wind_engine"
+          }
+        ]
+      }
+    },
+    "compact_hydraulic_engine": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "create_fantasizing:compact_hydraulic_engine"
+          }
+        ]
+      }
+    },
+    "sculk_engine": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "create_fantasizing:sculk_engine"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "color": "#DBA213",
+      "translate": "advancement.create_fantasizing.compact_engine.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "create_fantasizing:compact_wind_engine"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.create_fantasizing.compact_engine"
+    }
+  },
+  "requirements": [
+    [
+      "compact_wind_engine",
+      "compact_hydraulic_engine",
+      "sculk_engine"
+    ]
+  ]
+}

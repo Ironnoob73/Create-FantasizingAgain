@@ -21,6 +21,10 @@ public class CFAPartialModels {
 
     public static final PartialModel YIN_YANG_ENGINE_AXIS = block("yin_yang_engine_axis");
 
+    public static final PartialModel STURDY_GIRDER_SEGMENT_TOP = block("sturdy_girder/segment_top");
+    public static final PartialModel STURDY_GIRDER_SEGMENT_MIDDLE = block("sturdy_girder/segment_middle");
+    public static final PartialModel STURDY_GIRDER_SEGMENT_BOTTOM = block("sturdy_girder/segment_bottom");
+
     public static final Map<Direction, PartialModel> STURDY_METAL_GIRDER_BRACKETS = new EnumMap<>(Direction.class);
     static {
         for (Direction d : Iterate.horizontalDirections) {

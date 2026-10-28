@@ -1,0 +1,13 @@
+{
+  "type": "create:conversion",
+  "ingredients": [
+    {
+      "item": "create:shaft"
+    }
+  ],
+  "results": [
+    {
+      "id": "create_fantasizing:phantom_shaft"
+    }
+  ]
+}

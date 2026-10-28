@@ -6,6 +6,7 @@ import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipe;
 import com.simibubi.create.foundation.recipe.RecipeApplier;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import dev.hail.create_fantasizing.data.CFARecipeTypes;
+import dev.hail.create_fantasizing.data.CFATriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
@@ -14,6 +15,7 @@ import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.items.IItemHandler;
@@ -65,6 +67,9 @@ public class RefinedRadianceTunnelBlockEntity extends ChromaticTunnelBlockEntity
         }
 
         outputList.addAll(outputs);
+        if (level != null)
+            CFATriggers.triggerNearby(level, Vec3.atCenterOf(worldPosition), 32,
+                    CFATriggers.REFINED_RADIANCE_TUNNEL_PROCESSED.get());
         return true;
     }
 

@@ -1,22 +1,19 @@
 package dev.hail.create_fantasizing.item;
 
-import com.mojang.blaze3d.shaders.Effect;
-import com.simibubi.create.AllBlocks;
-import com.simibubi.create.AllTags;
 import dev.hail.create_fantasizing.CFAConfig;
 import dev.hail.create_fantasizing.block.CFABlocks;
+import dev.hail.create_fantasizing.data.CFATriggers;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.Guardian;
 import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -41,6 +38,10 @@ public class SculkEngineFrameItem extends Item {
 
         Level world = player.level();
         spawnCaptureEffects(world, entity.position());
+
+        if (!world.isClientSide && player instanceof ServerPlayer serverPlayer)
+            CFATriggers.CAPTURE_WARDEN.get().trigger(serverPlayer);
+
         if (world.isClientSide)
             return InteractionResult.FAIL;
 

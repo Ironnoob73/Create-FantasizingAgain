@@ -4,16 +4,23 @@
   "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
   "client": [
+    "client.TrackRendererMixin",
+    "client.TrackVisualBezierTrackVisualMixin",
+    "client.TrackVisualGirderVisualMixin"
   ],
   "mixins": [
+    "BeaconBlockEntityMixin",
     "BeltInventoryMixin",
+    "BezierConnectionMixin",
     "CogwheelBlockMixin",
     "ContraptionMixin",
     "DepotBehaviorMixin",
     "FluidDrainBehaviorMixin",
     "FluidTargetsMixin",
     "MountedStorageManagerMixin",
-    "ShaftBlockMixin"
+    "ShaftBlockMixin",
+    "TrackBlockItemMixin",
+    "TrackPaverMixin"
   ],
   "injectors": {
     "defaultRequire": 1

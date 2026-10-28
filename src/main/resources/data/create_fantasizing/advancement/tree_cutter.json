@@ -1,0 +1,32 @@
+{
+  "parent": "create_fantasizing:root",
+  "display": {
+    "icon": {
+      "id": "create_fantasizing:tree_cutter"
+    },
+    "title": {
+      "translate": "advancement.create_fantasizing.tree_cutter"
+    },
+    "description": {
+      "color": "#DBA213",
+      "translate": "advancement.create_fantasizing.tree_cutter.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false,
+    "x": 0.0,
+    "y": 1.0
+  },
+  "criteria": {
+    "fell_tree": {
+      "trigger": "create_fantasizing:tree_cutter_felled_tree",
+      "conditions": {}
+    }
+  },
+  "requirements": [
+    [
+      "fell_tree"
+    ]
+  ]
+}

@@ -111,11 +111,10 @@ dependencies {
     runtimeOnly "maven.modrinth:inventory-profiles-next:neoforge-1.21.1-2.2.3"
     runtimeOnly "maven.modrinth:libipn:neoforge-1.21.1-6.6.2"
     runtimeOnly "maven.modrinth:kotlin-for-forge:5.10.0"
-
-    implementation "curse.maven:create-cyber-goggles-1233804:8821329"
 }
 
 tasks.withType(ProcessResources).configureEach {
+    filteringCharset = 'UTF-8'
     var replaceProperties = [
             minecraft_version      : minecraft_version,
             minecraft_version_range: minecraft_version_range,

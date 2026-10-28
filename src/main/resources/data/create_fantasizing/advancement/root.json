@@ -55,6 +55,5 @@
       "brass_ingot",
       "obsidian_plate"
     ]
-  ],
-  "sends_telemetry_event": true
+  ]
 }

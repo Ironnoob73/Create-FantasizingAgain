@@ -1,0 +1,32 @@
+{
+  "parent": "create_fantasizing:chromatic_tunnel",
+  "display": {
+    "icon": {
+      "id": "create:depot"
+    },
+    "title": {
+      "translate": "advancement.create_fantasizing.chromatic_tunnel_on_depot"
+    },
+    "description": {
+      "color": "#DBA213",
+      "translate": "advancement.create_fantasizing.chromatic_tunnel_on_depot.desc"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": true,
+    "x": 1.0,
+    "y": 2.0
+  },
+  "criteria": {
+    "chromatic_tunnel_put_on_depot": {
+      "trigger": "create_fantasizing:chromatic_tunnel_put_on_depot",
+      "conditions": {}
+    }
+  },
+  "requirements": [
+    [
+      "chromatic_tunnel_put_on_depot"
+    ]
+  ]
+}

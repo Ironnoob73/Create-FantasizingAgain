@@ -181,9 +181,11 @@ public class ChromaticTunnelRecipeAnimation extends AnimatedKinetics {
         ms.mulPose(Axis.YP.rotationDegrees(90));
         ms.translate(-.5, -.5, -.5);
 
+        float flapAnimation = 0;
+        if (!assembly)
+            flapAnimation = -(AnimationTickHolder.getRenderTime() * 0.05f % 1);
         SuperByteBuffer flapBuffer = CachedBuffers.partial(AllPartialModels.BELT_TUNNEL_FLAP, state);
-        FlapStuffs.renderFlaps(ms, vb, flapBuffer, FlapStuffs.TUNNEL_PIVOT, Direction.NORTH,
-                -(AnimationTickHolder.getRenderTime() * 0.05f % 1), 0, LightTexture.FULL_BRIGHT);
+        FlapStuffs.renderFlaps(ms, vb, flapBuffer, FlapStuffs.TUNNEL_PIVOT, Direction.NORTH, flapAnimation, 0, LightTexture.FULL_BRIGHT);
 
         guiGraphics.bufferSource().endBatch();
 

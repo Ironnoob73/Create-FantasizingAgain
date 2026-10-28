@@ -1,0 +1,80 @@
+{
+  "parent": "create_fantasizing:crate",
+  "criteria": {
+    "copper_fluid_barrel": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "create_fantasizing:copper_fluid_barrel"
+      }
+    },
+    "copper_fluid_barrel_alternative": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "create_fantasizing:copper_fluid_barrel_alternative"
+      }
+    },
+    "zinc_fluid_barrel": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "create_fantasizing:zinc_fluid_barrel"
+      }
+    },
+    "zinc_fluid_barrel_alternative": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "create_fantasizing:zinc_fluid_barrel_alternative"
+      }
+    },
+    "gold_fluid_barrel": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "create_fantasizing:gold_fluid_barrel"
+      }
+    },
+    "gold_fluid_barrel_alternative": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "create_fantasizing:gold_fluid_barrel_alternative"
+      }
+    },
+    "diamond_fluid_barrel": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "create_fantasizing:diamond_fluid_barrel"
+      }
+    },
+    "diamond_fluid_barrel_alternative": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "create_fantasizing:diamond_fluid_barrel_alternative"
+      }
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "color": "#DBA213",
+      "translate": "advancement.create_fantasizing.fluid_barrel.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "create_fantasizing:copper_fluid_barrel"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.create_fantasizing.fluid_barrel"
+    }
+  },
+  "requirements": [
+    [
+      "copper_fluid_barrel",
+      "zinc_fluid_barrel",
+      "gold_fluid_barrel",
+      "diamond_fluid_barrel",
+      "copper_fluid_barrel_alternative",
+      "zinc_fluid_barrel_alternative",
+      "gold_fluid_barrel_alternative",
+      "diamond_fluid_barrel_alternative"
+    ]
+  ]
+}

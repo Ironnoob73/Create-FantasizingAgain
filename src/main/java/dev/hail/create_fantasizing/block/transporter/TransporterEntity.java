@@ -10,6 +10,7 @@ import com.simibubi.create.foundation.item.ItemHelper;
 import com.simibubi.create.foundation.utility.CreateLang;
 import dev.engine_room.flywheel.lib.visualization.VisualizationHelper;
 import dev.hail.create_fantasizing.block.CFABlocks;
+import dev.hail.create_fantasizing.data.CFATriggers;
 import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -22,6 +23,7 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
@@ -82,6 +84,7 @@ public class TransporterEntity extends SmartBlockEntity implements IHaveGoggleIn
             ItemStack extracted = ItemHelper.extract(inv, canAccept, mode, count, false);
             if (!extracted.isEmpty()) {
                 setItem(extracted);
+                cfa$triggerTransported();
                 return;
             }
         }
@@ -90,8 +93,20 @@ public class TransporterEntity extends SmartBlockEntity implements IHaveGoggleIn
     private void handleOutput(@Nullable IItemHandler inv) {
         if (inv == null || !canActivate()/* || invVersionTracker.stillWaiting(inv)*/)
             return;
-        setItem(ItemHandlerHelper.insertItemStacked(inv, item, false));
+        ItemStack before = item;
+        ItemStack remainder = ItemHandlerHelper.insertItemStacked(inv, before, false);
+        if (remainder.getCount() < before.getCount())
+            cfa$triggerTransported();
+        setItem(remainder);
         invVersionTracker.awaitNewVersion(inv);
+    }
+
+    // By Deepseek V4.1 Flash 1017:
+    private void cfa$triggerTransported() {
+        if (level == null || level.isClientSide)
+            return;
+        CFATriggers.triggerNearby(level, Vec3.atCenterOf(worldPosition), 32,
+                CFATriggers.TRANSPORTER_ITEM_TRANSPORTED.get());
     }
     private @Nullable IItemHandler grabCapability(@NotNull Direction facing) {
         BlockPos pos = this.worldPosition.relative(facing);

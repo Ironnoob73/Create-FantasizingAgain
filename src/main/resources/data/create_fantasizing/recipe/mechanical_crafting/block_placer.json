@@ -7,7 +7,7 @@
       "tag": "c:plates/obsidian"
     },
     "*": {
-      "item": "create:precision_mechanism"
+      "item": "create_fantasizing:taiji_chipset"
     },
     "-": {
       "item": "minecraft:end_rod"

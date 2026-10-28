@@ -15,5 +15,10 @@ public class CFAPonderScenes {
                 .addStoryBoard("alternative_chromatic_compound",AlternativeChromaticCompoundScene::convert);
         HELPER.forComponents(CFABlocks.ANDESITE_CRATE, CFABlocks.IRON_CRATE, CFABlocks.BRASS_CRATE, CFABlocks.STURDY_CRATE)
                 .addStoryBoard("crate",CrateScene::usage);
+        HELPER.forComponents(CFABlocks.COPPER_FLUID_BARREL, CFABlocks.ZINC_FLUID_BARREL, CFABlocks.GOLD_FLUID_BARREL, CFABlocks.DIAMOND_FLUID_BARREL)
+                .addStoryBoard("fluid_barrel",FluidBarrelScene::usage);
+        HELPER.forComponents(CFABlocks.ANDESITE_CRATE, CFABlocks.IRON_CRATE, CFABlocks.BRASS_CRATE, CFABlocks.STURDY_CRATE,
+                        CFABlocks.COPPER_FLUID_BARREL, CFABlocks.ZINC_FLUID_BARREL, CFABlocks.GOLD_FLUID_BARREL, CFABlocks.DIAMOND_FLUID_BARREL)
+                .addStoryBoard("main_second_relationship",MainSecondRelationshipScene::usage);
     }
 }

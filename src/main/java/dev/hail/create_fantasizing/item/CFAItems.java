@@ -8,13 +8,14 @@ import net.minecraft.world.item.Rarity;
 
 import static dev.hail.create_fantasizing.FantasizingMod.REGISTRATE;
 
+@SuppressWarnings("unused")
 public class CFAItems {
     public static final ItemEntry<TreeCutterItem> TREE_CUTTER = REGISTRATE.item("tree_cutter", TreeCutterItem::new)
             .properties(p->p.attributes(TreeCutterItem.createAttributes(TreeCutterItem.STURDY, 0.0F, -3.0F))
                     .rarity(Rarity.RARE))
             .register();
     public static final ItemEntry<BlockPlacerItem> BLOCK_PLACER = REGISTRATE.item("block_placer", BlockPlacerItem::new)
-            .properties(p->p.rarity(Rarity.RARE))
+            .properties(p->p.rarity(Rarity.EPIC))
             .register();
     public static final ItemEntry<Item> PRISMARINE_FAN_BLADES = REGISTRATE.item("prismarine_fan_blades", Item::new).register();
     public static final ItemEntry<Item> STURDY_CONDUIT = REGISTRATE.item("sturdy_conduit", Item::new).register();

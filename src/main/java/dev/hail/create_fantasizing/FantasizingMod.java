@@ -23,6 +23,7 @@ import dev.hail.create_fantasizing.block.transporter.TransporterEntity;
 import dev.hail.create_fantasizing.data.CFAAttachmentTypes;
 import dev.hail.create_fantasizing.data.CFADataComponents;
 import dev.hail.create_fantasizing.data.CFARecipeTypes;
+import dev.hail.create_fantasizing.data.CFATriggers;
 import dev.hail.create_fantasizing.event.CFAPackets;
 import dev.hail.create_fantasizing.item.CFAItems;
 import dev.hail.create_fantasizing.item.NoMultiplierKineticStats;
@@ -82,6 +83,7 @@ public class FantasizingMod
         CFACreativeTab.init(modEventBus);
 
         CFARecipeTypes.register(modEventBus);
+        CFATriggers.register(modEventBus);
         CFADataComponents.register(modEventBus);
         CFAAttachmentTypes.register(modEventBus);
         CFAPackets.register();

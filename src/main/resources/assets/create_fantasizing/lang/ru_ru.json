@@ -94,7 +94,7 @@
   "create_fantasizing.ponder.crate_usage.text_5": "...если внутри есть предметы, выпадет ящик с этими предметами.",
   "create_fantasizing.ponder.crate_usage.text_6": "Однако другие контейнеры и блоки с блок-энтити упаковать нельзя. Если ящик разрушить или снять, пока в нём такие предметы...",
   "create_fantasizing.ponder.crate_usage.text_7": "...они выпадут отдельно, остальные предметы по-прежнему будут упакованы.",
-  "create_fantasizing.ponder.crate_usage.text_8": "Ящики можно перемещать конструкцией, ограничения вместимости остаются в силе. (Но открыть их во время движения нельзя.)",
+  "create_fantasizing.ponder.crate_usage.text_8": "Ящики можно перемещать конструкцией, ограничения вместимости остаются в силе.",
   "create_fantasizing.ponder.crate_usage.text_9": "Ящики из разных материалов имеют разную максимальную вместимость.",
 
   "create_fantasizing.configuration.register_powder_snow_liquid_capabilities": "Регистрация возможностей жидкого снежного порошка",

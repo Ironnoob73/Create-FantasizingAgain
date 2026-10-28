@@ -1,6 +1,9 @@
 package dev.hail.create_fantasizing.integration.jei;
 
 import com.simibubi.create.AllItems;
+import com.simibubi.create.AllRecipeTypes;
+import com.simibubi.create.Create;
+import com.simibubi.create.compat.jei.ConversionRecipe;
 import com.simibubi.create.compat.jei.ToolboxColoringRecipeMaker;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import dev.hail.create_fantasizing.FantasizingMod;
@@ -11,14 +14,18 @@ import dev.hail.create_fantasizing.data.CFARecipeTypes;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
+import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.runtime.IIngredientManager;
 import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeInput;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -66,6 +73,29 @@ public class FantasizingJEI implements IModPlugin {
         IIngredientManager ingredientManager = registration.getIngredientManager();
         allCategories.forEach(c -> c.registerRecipes(registration));
         registration.addRecipes(RecipeTypes.CRAFTING, ToolboxColoringRecipeMaker.createRecipes().toList());
+        addMysteryConversions(registration);
+    }
+
+    /**
+     * By Deepseek V4.1 Flash 1017:
+     * Create 6 no longer displays datapack-driven conversion recipes by itself,
+     * so the display-only recipes shipped by this mod are appended to Create's
+     * existing Mystery Conversion category.
+     */
+    private void addMysteryConversions(IRecipeRegistration registration) {
+        ClientLevel level = Minecraft.getInstance().level;
+        if (level == null)
+            return;
+
+        List<RecipeHolder<ConversionRecipe>> conversions = level.getRecipeManager()
+                .getAllRecipesFor(AllRecipeTypes.CONVERSION.getType());
+        List<RecipeHolder<ConversionRecipe>> ownConversions = conversions.stream()
+                .filter(holder -> holder.id().getNamespace().equals(FantasizingMod.MOD_ID))
+                .toList();
+        if (!ownConversions.isEmpty())
+            registration.addRecipes(
+                    RecipeType.createRecipeHolderType(Create.asResource("mystery_conversion")),
+                    ownConversions);
     }
 
     @Override

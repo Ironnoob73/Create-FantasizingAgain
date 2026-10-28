@@ -1,0 +1,35 @@
+{
+  "parent": "create_fantasizing:root",
+  "criteria": {
+    "alternative_chromatic_compound": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "create_fantasizing:alternative_chromatic_compound"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "color": "#DBA213",
+      "translate": "advancement.create_fantasizing.alternative_chromatic_compound.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "create_fantasizing:alternative_chromatic_compound"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.create_fantasizing.alternative_chromatic_compound"
+    }
+  },
+  "requirements": [
+    [
+      "alternative_chromatic_compound"
+    ]
+  ]
+}

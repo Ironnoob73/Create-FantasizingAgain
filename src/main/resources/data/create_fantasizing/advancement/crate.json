@@ -1,0 +1,80 @@
+{
+  "parent": "create_fantasizing:transporter",
+  "criteria": {
+    "andesite_crate": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "create_fantasizing:andesite_crate"
+      }
+    },
+    "andesite_crate_alternative": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "create_fantasizing:andesite_crate_alternative"
+      }
+    },
+    "iron_crate": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "create_fantasizing:iron_crate"
+      }
+    },
+    "iron_crate_alternative": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "create_fantasizing:iron_crate_alternative"
+      }
+    },
+    "brass_crate": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "create_fantasizing:brass_crate"
+      }
+    },
+    "brass_crate_alternative": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "create_fantasizing:brass_crate_alternative"
+      }
+    },
+    "sturdy_crate": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "create_fantasizing:sturdy_crate"
+      }
+    },
+    "sturdy_crate_alternative": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "create_fantasizing:sturdy_crate_alternative"
+      }
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "color": "#DBA213",
+      "translate": "advancement.create_fantasizing.crate.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "create_fantasizing:andesite_crate"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.create_fantasizing.crate"
+    }
+  },
+  "requirements": [
+    [
+      "andesite_crate",
+      "iron_crate",
+      "brass_crate",
+      "sturdy_crate",
+      "andesite_crate_alternative",
+      "iron_crate_alternative",
+      "brass_crate_alternative",
+      "sturdy_crate_alternative"
+    ]
+  ]
+}

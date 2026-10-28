@@ -1,0 +1,32 @@
+{
+  "parent": "create_fantasizing:compact_engine",
+  "display": {
+    "icon": {
+      "id": "create_fantasizing:sculk_engine_frame"
+    },
+    "title": {
+      "translate": "advancement.create_fantasizing.sculk_engine"
+    },
+    "description": {
+      "color": "#DBA213",
+      "translate": "advancement.create_fantasizing.sculk_engine.desc"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": true,
+    "x": 1.0,
+    "y": 2.0
+  },
+  "criteria": {
+    "capture_warden": {
+      "trigger": "create_fantasizing:capture_warden",
+      "conditions": {}
+    }
+  },
+  "requirements": [
+    [
+      "capture_warden"
+    ]
+  ]
+}

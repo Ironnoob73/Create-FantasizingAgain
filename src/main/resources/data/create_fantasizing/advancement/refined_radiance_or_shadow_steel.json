@@ -1,0 +1,46 @@
+{
+  "parent": "create_fantasizing:alternative_chromatic_compound",
+  "criteria": {
+    "refined_radiance": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "create:refined_radiance"
+          }
+        ]
+      }
+    },
+    "shadow_steel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "create:shadow_steel"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "color": "#DBA213",
+      "translate": "advancement.create_fantasizing.refined_radiance_or_shadow_steel.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "create:refined_radiance"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.create_fantasizing.refined_radiance_or_shadow_steel"
+    }
+  },
+  "requirements": [
+    [
+      "refined_radiance",
+      "shadow_steel"
+    ]
+  ]
+}

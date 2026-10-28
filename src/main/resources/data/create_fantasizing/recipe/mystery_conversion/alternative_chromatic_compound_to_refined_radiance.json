@@ -1,0 +1,13 @@
+{
+  "type": "create:conversion",
+  "ingredients": [
+    {
+      "item": "create_fantasizing:alternative_chromatic_compound"
+    }
+  ],
+  "results": [
+    {
+      "id": "create:refined_radiance"
+    }
+  ]
+}
