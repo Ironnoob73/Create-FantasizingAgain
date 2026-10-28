@@ -33,6 +33,8 @@ public final class CFATriggers {
             register("tree_cutter_felled_tree");
     public static final DeferredHolder<CriterionTrigger<?>, SimpleTrigger> TREE_CUTTER_FELLED_LARGE_TREE =
             register("tree_cutter_felled_large_tree");
+    public static final DeferredHolder<CriterionTrigger<?>, SimpleTrigger> PHANTOM_TRANSMISSION =
+            register("phantom_transmission");
     public static final DeferredHolder<CriterionTrigger<?>, SimpleTrigger> CAPTURE_WARDEN =
             register("capture_warden");
     public static final DeferredHolder<CriterionTrigger<?>, SimpleTrigger> REFINED_RADIANCE_TUNNEL_PROCESSED =

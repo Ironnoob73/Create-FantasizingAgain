@@ -2,7 +2,9 @@ package dev.hail.create_fantasizing.mixin;
 
 import com.simibubi.create.content.kinetics.simpleRelays.ShaftBlock;
 import dev.hail.create_fantasizing.block.CFABlocks;
+import dev.hail.create_fantasizing.data.CFATriggers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
@@ -25,6 +27,8 @@ public class ShaftBlockMixin {
         if ((!player.isShiftKeyDown() || player.mayBuild()) && stack.getItem() == Items.PHANTOM_MEMBRANE){
             if (level.isClientSide)
                 cir.setReturnValue(ItemInteractionResult.SUCCESS);
+            else if (player instanceof ServerPlayer serverPlayer)
+                CFATriggers.PHANTOM_TRANSMISSION.get().trigger(serverPlayer);
             CFABlocks.PHANTOM_SHAFT.get().handlePhantom(state, level, pos);
 
             BlockState newState = level.getBlockState(pos);

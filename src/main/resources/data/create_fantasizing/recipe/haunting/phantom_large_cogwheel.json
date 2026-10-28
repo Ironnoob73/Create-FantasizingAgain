@@ -1,0 +1,13 @@
+{
+  "type": "create:haunting",
+  "ingredients": [
+    {
+      "item": "create:large_cogwheel"
+    }
+  ],
+  "results": [
+    {
+      "id": "create_fantasizing:phantom_large_cogwheel"
+    }
+  ]
+}

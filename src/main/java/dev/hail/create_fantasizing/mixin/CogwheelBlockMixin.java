@@ -3,7 +3,9 @@ package dev.hail.create_fantasizing.mixin;
 import com.simibubi.create.content.kinetics.simpleRelays.CogWheelBlock;
 import dev.hail.create_fantasizing.block.CFABlocks;
 import dev.hail.create_fantasizing.block.phantom_shaft.PhantomCogwheel;
+import dev.hail.create_fantasizing.data.CFATriggers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
@@ -30,6 +32,8 @@ public class CogwheelBlockMixin {
         if ((!player.isShiftKeyDown() && player.mayBuild()) && stack.getItem() == Items.PHANTOM_MEMBRANE && !(state.getBlock() instanceof PhantomCogwheel)){
             if (level.isClientSide)
                 cir.setReturnValue(ItemInteractionResult.SUCCESS);
+            else if (player instanceof ServerPlayer serverPlayer)
+                CFATriggers.PHANTOM_TRANSMISSION.get().trigger(serverPlayer);
             if (isLarge)
                 CFABlocks.PHANTOM_LARGE_COGWHEEL.get().handlePhantom(state, level, pos);
             else

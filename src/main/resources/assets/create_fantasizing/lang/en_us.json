@@ -90,6 +90,8 @@
   "advancement.create_fantasizing.tree_cutter_large.desc": "Fell a tree that drops more than 128 logs.",
   "advancement.create_fantasizing.compact_engine": "Stress compression technology",
   "advancement.create_fantasizing.compact_engine.desc": "Get any compact engine.",
+  "advancement.create_fantasizing.phantom_transmission": "Ghosts turning a millstone",
+  "advancement.create_fantasizing.phantom_transmission.desc": "Make Phantom Shaft or Phantom Cogwheel.",
   "advancement.create_fantasizing.sculk_engine": "Captured instantly",
   "advancement.create_fantasizing.sculk_engine.desc": "Make the Warden work for you!\n§7(Hidden Advancement)",
   "advancement.create_fantasizing.alternative_chromatic_compound": "Brilliantly colorful",
@@ -102,6 +104,8 @@
   "advancement.create_fantasizing.chromatic_tunnel_on_depot.desc": "Place Refined Radiance Tunnel or Shadow Steel Tunnel on Depot.\n§7(Hidden Advancement)",
   "advancement.create_fantasizing.taiji_chipset": "Holding the Universe",
   "advancement.create_fantasizing.taiji_chipset.desc": "Get Taiji Chipset.",
+  "advancement.create_fantasizing.yin_yang_engine": "Just a battery under the hood",
+  "advancement.create_fantasizing.yin_yang_engine.desc": "Place a Yin Yang Engine.",
   "advancement.create_fantasizing.block_placer": "God Hand",
   "advancement.create_fantasizing.block_placer.desc": "Get Block Placer.",
 

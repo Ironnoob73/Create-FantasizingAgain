@@ -1,0 +1,64 @@
+{
+  "parent": "create_fantasizing:compact_engine",
+  "display": {
+    "announce_to_chat": false,
+    "icon": {
+      "id": "create_fantasizing:phantom_cogwheel"
+    },
+    "title": {
+      "translate": "advancement.create_fantasizing.phantom_transmission"
+    },
+    "description": {
+      "color": "#DBA213",
+      "translate": "advancement.create_fantasizing.phantom_transmission.desc"
+    },
+    "show_toast": true
+  },
+  "criteria": {
+    "phantom_transmission": {
+      "trigger": "create_fantasizing:phantom_transmission",
+      "conditions": {}
+    },
+    "place_phantom_shaft": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "location": [
+          {
+            "condition": "minecraft:block_state_property",
+            "block": "create_fantasizing:phantom_shaft"
+          }
+        ]
+      }
+    },
+    "place_phantom_cogwheel": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "location": [
+          {
+            "condition": "minecraft:block_state_property",
+            "block": "create_fantasizing:phantom_cogwheel"
+          }
+        ]
+      }
+    },
+    "place_phantom_large_cogwheel": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "location": [
+          {
+            "condition": "minecraft:block_state_property",
+            "block": "create_fantasizing:phantom_large_cogwheel"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "phantom_transmission",
+      "place_phantom_shaft",
+      "place_phantom_cogwheel",
+      "place_phantom_large_cogwheel"
+    ]
+  ]
+}

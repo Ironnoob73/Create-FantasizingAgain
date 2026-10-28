@@ -125,6 +125,8 @@
   "advancement.create_fantasizing.tree_cutter_large.desc": "使用伐树者砍倒一棵掉落超过 128 个原木的树。",
   "advancement.create_fantasizing.compact_engine": "动力压缩技术",
   "advancement.create_fantasizing.compact_engine.desc": "获得任意压缩引擎。",
+  "advancement.create_fantasizing.phantom_transmission": "鬼推磨",
+  "advancement.create_fantasizing.phantom_transmission.desc": "制作幽灵传动杆或幽灵齿轮。",
   "advancement.create_fantasizing.sculk_engine": "顷刻炼化",
   "advancement.create_fantasizing.sculk_engine.desc": "让监守者为你打工！\n§7（隐藏进度）",
   "advancement.create_fantasizing.alternative_chromatic_compound": "异彩斑斓",
@@ -137,6 +139,8 @@
   "advancement.create_fantasizing.chromatic_tunnel_on_depot.desc": "将光辉石或暗影钢隧道放置于置物台上。\n§7（隐藏进度）",
   "advancement.create_fantasizing.taiji_chipset": "掌执乾坤",
   "advancement.create_fantasizing.taiji_chipset.desc": "获得太极芯片组。",
+  "advancement.create_fantasizing.yin_yang_engine": "不过是引擎盖下的一块电池",
+  "advancement.create_fantasizing.yin_yang_engine.desc": "放置一个晦明引擎。",
   "advancement.create_fantasizing.block_placer": "神之一手",
   "advancement.create_fantasizing.block_placer.desc": "获得方块放置器。",
 
