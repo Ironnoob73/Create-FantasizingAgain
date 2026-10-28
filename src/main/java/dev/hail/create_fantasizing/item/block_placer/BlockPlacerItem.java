@@ -153,7 +153,7 @@ public class BlockPlacerItem extends ZapperItem {
 
             int invAmount;
             if (stateToUse != null) {
-                invAmount = BlockPlacerTools.calculateItemsInInventory(stateToUse.getBlock(), true, player,
+                invAmount = BlockPlacerTools.calculateItemsInInventory(stateToUse, true, player,
                         CFAConfig.blockPlacerInfinityEnabled && pStack.getEnchantmentLevel(pLevel.holderOrThrow(Enchantments.INFINITY)) >= 1);
                 int selSize = activateCalculation(pLevel, player, pStack, stateToUse, raytrace);
                 if (!pStack.has(CFADataComponents.BLOCK_AMOUNT) || (pStack.get(CFADataComponents.BLOCK_AMOUNT) != invAmount))

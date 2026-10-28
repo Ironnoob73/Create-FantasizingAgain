@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.content.equipment.zapper.PlacementPatterns;
 import com.simibubi.create.content.equipment.zapper.ZapperItem;
+import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import com.simibubi.create.foundation.gui.AllIcons;
 import dev.hail.create_fantasizing.CFAConfig;
 import dev.hail.create_fantasizing.data.CFADataComponents;
@@ -33,10 +34,11 @@ import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -163,7 +165,7 @@ public enum BlockPlacerTools implements StringRepresentable {
                 }
             }
         }
-        return size;
+        return size * calculateSpecialBlockState(paintedState);
     }
 
     public static boolean isReplaceable(BlockState toReplace) {
@@ -195,7 +197,7 @@ public enum BlockPlacerTools implements StringRepresentable {
                 ? BlockSnapshot.create(pLevel.dimension(), pLevel, replacePos)
                 : null;
 
-        if (!creative && !paintState.isAir()) calculateItemsInInventory(paintBlock, false, player,
+        if (!creative && !paintState.isAir()) calculateItemsInInventory(paintState, false, player,
                 CFAConfig.blockPlacerInfinityEnabled && stack.getEnchantmentLevel(pLevel.holderOrThrow(Enchantments.INFINITY)) >= 1);
 
         dropResources(replaceState, pLevel, replacePos, replaceState.hasBlockEntity() ? pLevel.getBlockEntity(replacePos) : null, player, stack);
@@ -226,19 +228,19 @@ public enum BlockPlacerTools implements StringRepresentable {
         return false;
     }
 
-    public static int calculateItemsInInventory(Block paintBlock, boolean calculate, Player player, boolean generator) {
+    public static int calculateItemsInInventory(BlockState paintBlock, boolean calculate, Player player, boolean generator) {
         int amount = 0;
         var inv = player.getInventory();
         int size = inv.getContainerSize();
-        if (paintBlock.defaultBlockState().is(CFATags.RENEWABLE_BLOCKS) && generator) amount = size * 128;
+        if (paintBlock.is(CFATags.RENEWABLE_BLOCKS) && generator) amount = size * 128;
         else for (int slot = 0; slot < size; slot++) {
             var item = inv.getItem(slot);
             if (item.isEmpty())
                 continue;
-            if (item.is(paintBlock.asItem())) {
+            if (item.is(paintBlock.getBlock().asItem())) {
                 if (!calculate) {
-                    item.shrink(1);
-                    return 1;
+                    item.shrink(calculateSpecialBlockState(paintBlock));
+                    return calculateSpecialBlockState(paintBlock);
                 } else amount = amount + item.getCount();
             }
         }
@@ -348,6 +350,23 @@ public enum BlockPlacerTools implements StringRepresentable {
             itementity.setDefaultPickUpDelay();
             pLevel.addFreshEntity(itementity);
         }
+    }
+
+    public static int calculateSpecialBlockState(BlockState blockState){
+        if (blockState.hasProperty(BlockStateProperties.SLAB_TYPE)
+                && blockState.getValue(BlockStateProperties.SLAB_TYPE) == SlabType.DOUBLE)
+            return 2;
+        if (blockState.getBlock() instanceof TurtleEggBlock)
+            return blockState.getValue(TurtleEggBlock.EGGS);
+        if (blockState.getBlock() instanceof SeaPickleBlock)
+            return blockState.getValue(SeaPickleBlock.PICKLES);
+        if (blockState.getBlock() instanceof SnowLayerBlock)
+            return blockState.getValue(SnowLayerBlock.LAYERS);
+        if (blockState.getBlock() instanceof CandleBlock)
+            return blockState.getValue(CandleBlock.CANDLES);
+        if (blockState.getBlock() instanceof PinkPetalsBlock)
+            return blockState.getValue(PinkPetalsBlock.AMOUNT);
+        return 1;
     }
 
 }
