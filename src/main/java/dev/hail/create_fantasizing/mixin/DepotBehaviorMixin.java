@@ -38,8 +38,11 @@ public class DepotBehaviorMixin extends BlockEntityBehaviour{
 
         ItemStack previousItem = heldItem.stack;
         boolean wasLocked = heldItem.locked;
-        BeltProcessingBehaviour.ProcessingResult result = wasLocked ? processingBehaviour.handleHeldItem(heldItem, transportedHandler)
-                : processingBehaviour.handleReceivedItem(heldItem, transportedHandler);
+        BeltProcessingBehaviour.ProcessingResult result = null;
+        if (processingBehaviour != null) {
+            result = wasLocked ? processingBehaviour.handleHeldItem(heldItem, transportedHandler)
+                    : processingBehaviour.handleReceivedItem(heldItem, transportedHandler);
+        }
         if (heldItem == null || result == BeltProcessingBehaviour.ProcessingResult.REMOVE) {
             heldItem = null;
             blockEntity.sendData();
