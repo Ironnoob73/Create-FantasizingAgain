@@ -42,7 +42,7 @@ public abstract class TrackBlockItemMixin {
     )
     private boolean cfa$acceptSturdyGirder(BlockEntry<?> entry, ItemStack stack, UseOnContext pContext) {
         if (entry.isIn(stack) || CFABlocks.STURDY_GIRDER.isIn(stack))
-            if (!pContext.getLevel().isClientSide && pContext.getPlayer() instanceof ServerPlayer serverPlayer)
+            if (!pContext.getLevel().isClientSide && pContext.getPlayer() instanceof ServerPlayer serverPlayer && CFABlocks.STURDY_GIRDER.isIn(stack))
                 CFATriggers.STURDY_GIRDER_TRACK.get().trigger(serverPlayer);
         return entry.isIn(stack) || CFABlocks.STURDY_GIRDER.isIn(stack);
     }
