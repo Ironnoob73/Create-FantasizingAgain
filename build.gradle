@@ -111,6 +111,8 @@ dependencies {
     runtimeOnly "maven.modrinth:inventory-profiles-next:neoforge-1.21.1-2.2.3"
     runtimeOnly "maven.modrinth:libipn:neoforge-1.21.1-6.6.2"
     runtimeOnly "maven.modrinth:kotlin-for-forge:5.10.0"
+
+    //implementation "curse.maven:steam-n-rails-neoforge-1414670:8522154"
 }
 
 tasks.withType(ProcessResources).configureEach {
